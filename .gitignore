@@ -1,0 +1,17 @@
+# CakePHP tmp content
+*/tmp/cache/*
+*/tmp/logs/*
+*/tmp/sessions/*
+*/tmp/tests/*
+
+# swap et al
+*~
+*.swp
+*.bak
+
+# eclipse bloat
+.project
+.cache
+.cache/*
+.settings
+.settings/*
