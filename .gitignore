@@ -1,8 +1,5 @@
 # CakePHP tmp content
 /app/tmp/cache/*
-/app/tmp/logs/*
-/app/tmp/sessions/*
-/app/tmp/tests/*
 
 # swap et al
 *~
