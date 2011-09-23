@@ -1,6 +1,9 @@
 # CakePHP tmp content
 /app/tmp/cache/*
 
+# database configuration
+/app/config/database.php
+
 # swap et al
 *~
 *.swp
