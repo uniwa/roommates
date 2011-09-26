@@ -3,8 +3,6 @@
 <?php
 echo $form->create('House', array('action' => 'edit'));
 
-echo $form->input('id', array('type' => 'hidden'));
-
 echo $form->input('house_type_id');
 echo $form->input('address');
 echo $form->input('area');
