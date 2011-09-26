@@ -37,7 +37,7 @@
         <td><?php echo $house['House']['area']; ?></td>
         <td><?php echo $house['House']['bedroom_num']; ?></td>
         <td><?php echo $house['House']['bathroom_num']; ?></td>
-        <td><?php echo $house['House']['heating_id']; ?></td>
+        <td><?php echo $house['House']['heating_type_id']; ?></td>
         <td><?php echo $house['House']['price']; ?></td>
         <td><?php echo $house['House']['construction_year']; ?></td>
         <td><?php echo $house['House']['furnitured']; ?></td>
