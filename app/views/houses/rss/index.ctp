@@ -1,3 +1,4 @@
+<?php
 $this->set('documentData', array(
                 'xmlns:dc' => 'http://purl.org/dc/elements/1.1/'));
 $this->set('channelData', array(
@@ -5,3 +6,22 @@ $this->set('channelData', array(
                 'link' => $this->Html->url('/', true),
                 'description' => __("Most recent houses.", true),
                 'language' => 'en-us'));
+
+foreach ($house as $houses) {
+    $houseTime = strtotime($house['House']['modified']);
+
+    $houseLink = array(
+        'controller' => 'houses',
+        'action' => 'view',
+        'year' => date('Y', $houseTime),
+        'month' => date('m', $houseTime),
+        'day' => date('d', $houseTime),
+        $house['House']['address']
+    );
+
+    echo $this->Rss->item(array(), array(
+        'title' => $house['House']['address'],
+        'link' => $houseLink,
+        'pubDate' => $house['House']['created']));
+    }
+?>
