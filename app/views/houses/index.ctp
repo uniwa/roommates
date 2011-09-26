@@ -30,14 +30,14 @@
 
     <?php foreach ($houses as $house): ?>
     <tr>
-        <td><?php echo $house['House']['house_type_id']; ?></td>
+        <td><?php echo $house['HouseType']['type']; ?></td>
         <td><?php echo $house['House']['address']; ?></td>
         <td><?php echo $house['House']['postal_code']; ?></td>
-        <td><?php echo $house['House']['floor_id']; ?></td>
+        <td><?php echo $house['Floor']['type']; ?></td>
         <td><?php echo $house['House']['area']; ?></td>
         <td><?php echo $house['House']['bedroom_num']; ?></td>
         <td><?php echo $house['House']['bathroom_num']; ?></td>
-        <td><?php echo $house['House']['heating_id']; ?></td>
+        <td><?php echo $house['HeatingType']['type']; ?></td>
         <td><?php echo $house['House']['price']; ?></td>
         <td><?php echo $house['House']['construction_year']; ?></td>
         <td><?php echo $house['House']['furnitured']; ?></td>
