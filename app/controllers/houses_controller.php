@@ -7,8 +7,8 @@ class HousesController extends AppController {
         $this->set('houses', $this->House->find('all'));
     }
 
-    function view($location = null) {
-        $this->House->location = $location;
+    function view($id = null) {
+        $this->House->id = $id;
         $this->set('house', $this->House->read());
     }
 
