@@ -9,7 +9,7 @@ class HousesController extends AppController {
         if ($this->RequestHandler->isRss()) {
             $houses = $this->House->find('all',
                         array('limit' => 20, 'order' => 'House.modified DESC'));
-            return $this->set(compact('houses'))
+            return $this->set(compact('houses'));
         }
 
         $this->set('houses', $this->House->find('all'));
