@@ -16,8 +16,10 @@ foreach ($houses as $house) {
         $house['House']['id']
     );
 
+    // TODO: add house type to title
+    $houseTitle = "{$house['House']['address']}-{$house['House']['area']}τμ";
     echo $this->Rss->item(array(), array(
-        'title' => $house['House']['address'],
+        'title' => $houseTitle,
         'link' => $houseLink,
         'pubDate' => $house['House']['created']));
     }
