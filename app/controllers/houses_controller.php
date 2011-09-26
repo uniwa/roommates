@@ -46,7 +46,7 @@ class HousesController extends AppController {
         }
         else {
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('This house has been updated.');
+                $this->Session->setFlash('The house has been updated.');
                 $this->redirect(array('action' => 'index'));
             }
         }
