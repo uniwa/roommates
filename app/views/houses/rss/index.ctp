@@ -7,7 +7,7 @@ $this->set('channelData', array(
                 'description' => __("Most recent houses.", true),
                 'language' => 'en-us'));
 
-foreach ($house as $houses) {
+foreach ($houses as $house) {
     $houseTime = strtotime($house['House']['modified']);
 
     $houseLink = array(
