@@ -3,15 +3,15 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
 DROP SCHEMA IF EXISTS `roommates` ;
-CREATE SCHEMA IF NOT EXISTS `roommates` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `roommates` DEFAULT CHARACTER SET utf8;
 USE `roommates` ;
 
 -- -----------------------------------------------------
--- Table `roommates`.`floor`
+-- Table `roommates`.`floors`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `roommates`.`floor` ;
+DROP TABLE IF EXISTS `roommates`.`floors` ;
 
-CREATE  TABLE IF NOT EXISTS `roommates`.`floor` (
+CREATE  TABLE IF NOT EXISTS `roommates`.`floors` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `type` VARCHAR(20) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -20,11 +20,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `roommates`.`house_type`
+-- Table `roommates`.`house_types`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `roommates`.`house_type` ;
+DROP TABLE IF EXISTS `roommates`.`house_types` ;
 
-CREATE  TABLE IF NOT EXISTS `roommates`.`house_type` (
+CREATE  TABLE IF NOT EXISTS `roommates`.`house_types` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `type` VARCHAR(25) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -33,11 +33,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `roommates`.`heating`
+-- Table `roommates`.`heating_types`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `roommates`.`heating` ;
+DROP TABLE IF EXISTS `roommates`.`heating_types` ;
 
-CREATE  TABLE IF NOT EXISTS `roommates`.`heating` (
+CREATE  TABLE IF NOT EXISTS `roommates`.`heating_types` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `type` VARCHAR(10) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -46,11 +46,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `roommates`.`house`
+-- Table `roommates`.`houses`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `roommates`.`house` ;
+DROP TABLE IF EXISTS `roommates`.`houses` ;
 
-CREATE  TABLE IF NOT EXISTS `roommates`.`house` (
+CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `address` VARCHAR(50) NOT NULL ,
   `postal_code` VARCHAR(5) NULL DEFAULT NULL ,
@@ -80,17 +80,17 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`house` (
   INDEX `fk_house_heating1` (`heating_id` ASC) ,
   CONSTRAINT `fk_house_floor`
     FOREIGN KEY (`floor_id` )
-    REFERENCES `roommates`.`floor` (`id` )
+    REFERENCES `roommates`.`floors` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_house_house_type1`
     FOREIGN KEY (`house_type_id` )
-    REFERENCES `roommates`.`house_type` (`id` )
+    REFERENCES `roommates`.`house_types` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_house_heating1`
     FOREIGN KEY (`heating_id` )
-    REFERENCES `roommates`.`heating` (`id` )
+    REFERENCES `roommates`.`heating_types` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

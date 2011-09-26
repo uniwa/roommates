@@ -1,0 +1,13 @@
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'υπόγειο');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'ημιυπόγειο');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'υπερυψωμένο');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'ισόγειο');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'ημιόροφος');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'1');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'2');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'3');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'4');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'5');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'6');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'7');
+INSERT INTO `roommates`.`floors` (`id`,`type`) VALUES (NULL,'8+');
