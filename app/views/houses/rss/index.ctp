@@ -13,10 +13,7 @@ foreach ($houses as $house) {
     $houseLink = array(
         'controller' => 'houses',
         'action' => 'view',
-        'year' => date('Y', $houseTime),
-        'month' => date('m', $houseTime),
-        'day' => date('d', $houseTime),
-        $house['House']['address']
+        $house['House']['id']
     );
 
     echo $this->Rss->item(array(), array(
