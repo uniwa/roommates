@@ -7,20 +7,19 @@ $this->set('channelData', array(
                 'description' => __("Most recent houses.", true),
                 'language' => 'en-us'));
 
-foreach ($house as $houses) {
+foreach ($houses as $house) {
     $houseTime = strtotime($house['House']['modified']);
 
     $houseLink = array(
         'controller' => 'houses',
         'action' => 'view',
-        'year' => date('Y', $houseTime),
-        'month' => date('m', $houseTime),
-        'day' => date('d', $houseTime),
-        $house['House']['address']
+        $house['House']['id']
     );
 
+    // TODO: add house type to title
+    $houseTitle = "{$house['House']['address']}-{$house['House']['area']}τμ";
     echo $this->Rss->item(array(), array(
-        'title' => $house['House']['address'],
+        'title' => $houseTitle,
         'link' => $houseLink,
         'pubDate' => $house['House']['created']));
     }
