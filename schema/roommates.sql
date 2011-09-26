@@ -100,7 +100,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `roommates`.`profiles`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `roommates`.`houses` ;
+DROP TABLE IF EXISTS `roommates`.`profiles` ;
 
 CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `id` INT NOT NULL AUTO_INCREMENT ,
