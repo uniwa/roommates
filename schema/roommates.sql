@@ -97,7 +97,32 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `roommates`.`profiles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roommates`.`houses` ;
 
+CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `firstname` VARCHAR(45) NOT NULL ,
+  `lastname` VARCHAR(45) NOT NULL ,
+  `email` VARCHAR(45) NOT NULL ,
+  `age` SMALLINT NOT NULL ,
+  `sex` ENUM('άνδρας', 'γυναίκα') NOT NULL ,
+  `phone` VARCHAR(45) NULL ,
+  `smoker` TINYINT(1)  NULL ,
+  `pet` TINYINT(1)  NULL ,
+  `child` TINYINT(1)  NULL ,
+  `couple` TINYINT(1)  NULL ,
+  `max_roommates` TINYINT NULL ,
+-- `sexual_orientation` ENUM('straight', 'gay/lesbian', 'bisexual') NULL ,
+  `visible` TINYINT(1)  NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- ----------------------------------------------------
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
