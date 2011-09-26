@@ -71,6 +71,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `availability_date` DATE NOT NULL COMMENT '	' ,
   `rent_period` TINYINT NULL DEFAULT NULL COMMENT '	' ,
   `description` VARCHAR(256) NULL DEFAULT NULL ,
+  `created` DATETIME DEFAULT NULL ,
+  `modified` DATETIME DEFAULT NULL ,
   `floor_id` INT NOT NULL ,
   `house_type_id` INT NOT NULL ,
   `heating_type_id` INT NOT NULL ,
@@ -117,6 +119,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `max_roommates` TINYINT NULL ,
 -- `sexual_orientation` ENUM('straight', 'gay/lesbian', 'bisexual') NULL ,
   `visible` TINYINT(1)  NULL ,
+  `created` DATETIME DEFAULT NULL ,
+  `modified` DATETIME DEFAULT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
