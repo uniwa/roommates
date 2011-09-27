@@ -1,5 +1,4 @@
 <h1>public profiles</h1>
-
 <p><?php echo $this->Html->link("Add Profile", array('action' => 'add')); ?></p>
 
 <table>

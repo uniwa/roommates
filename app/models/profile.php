@@ -5,30 +5,31 @@ class Profile extends AppModel {
     var $validate = array(
 	'firstname' => array(
 		'rule' => 'alphaNumeric',
-		'message' => 'Enter a valid first name'),
+		'message' => 'Εισάγετε ένα έγκυρο όνομα.'),
 
 	'lastname' => array(
 		'rule' => 'alphaNumeric',
-		'message' => 'Enter a valid last name'),
+		'message' => 'Εισάγετε ένα έγκυρο επίθετο.'),
 
 	'email' => array(
 		'rule' => 'email',
-		'message' => 'Enter a valid email'),
+		'message' => 'Εισάγετε μία έγκυρη ηλεκτρονική διεύθυνση.'),
 
 	'age' => array(
-		'rule' => array('between', 18, 99),
-		'message' => 'Enter age between 18 and 99'),
+		'rule' => array('comparison', '>=', 18),
+		'message' => 'Αποδεκτή ηλικία από 18 και άνω'),
 
 	'sex' => array(
-		'rule' => array('inList', array('Male', 'Female'))),
+		'rule' => array('inList', array(0, 1)),
+		'message' => 'Εισάγετε ένα έγκυρο φύλο'),
 
 	'phone' => array(
-		'rule' => array('decimal', 10),
-		'message' => 'Please enter 10 digits'),
+		'rule' => '/^[0-9]{10}$/i',
+		'message' => 'Εισάγετε ένα έγκυρο δεκαψήφιο τηλέφωνο επικοινωνίας'),
 		
 	'max_roommates' => array(
-		'rule' => array('range', -1, 11),
-		'message' => 'Please enter a number between 0 and 10')
+		'rule' => '/^[1-9]{1}$/i',
+		'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]')
 	);
 
 }
