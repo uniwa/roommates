@@ -27,6 +27,10 @@ class HousesController extends AppController {
                 $this->redirect(array('action' => 'index'));
             }
         }
+            
+        $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
+        $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
+        $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));
     }
 
     function delete($id) {
@@ -42,10 +46,14 @@ class HousesController extends AppController {
         }
         else {
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('This house has been updated.');
+                $this->Session->setFlash('The house has been updated.');
                 $this->redirect(array('action' => 'index'));
             }
         }
+
+        $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
+        $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
+        $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));
     }
 }
 ?>
