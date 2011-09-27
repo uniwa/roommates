@@ -18,14 +18,12 @@ foreach ($houses as $house) {
 
     $houseTitle = "{$house['HouseType']['type']}-{$house['House']['area']}τμ";
 
-    App::import('format');
     $bodyText = "Διεύθυνση : {$house['House']['address']}<br />
                  Τιμή : {$house['House']['price']}<br />
                  Διαθεσιμότητα : {$time->format(
                                     $format = 'd-m-Y',
                                     $house['House']['availability_date'])
                                  }";
-
     /* sanitize body */
     App::import('Sanitize');
     $bodyText = Sanitize::stripAll($bodyText);
