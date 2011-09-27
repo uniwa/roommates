@@ -19,6 +19,14 @@ class Profile extends AppModel {
 		'rule' => array('between', 18, 99),
 		'message' => 'Enter age between 18 and 99'),
 
+	'agemin' => array(
+		'rule' => array('between', 18, 98),
+		'message' => 'Enter age between 18 and 99'),
+
+	'agemax' => array(
+		'rule' => array('between', 19, 99),
+		'message' => 'Enter age between 18 and 99'),
+
 	'sex' => array(
 		'rule' => array('inList', array('Male', 'Female'))),
 

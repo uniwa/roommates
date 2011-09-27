@@ -51,6 +51,40 @@ class ProfilesController extends AppController {
 			}
 		}
 
+	function search(){
+		$searchArgs = $this->data['Profile'];
+
+		// set the conditions
+		$searchconditions = array('Profile.visible' => 1);
+
+		if(!empty($searchArgs['agemin'])){
+			$searchconditions['Profile.age >'] = $searchArgs['agemin'];
+		}
+		if(!empty($searchArgs['agemax'])){
+			$searchconditions['Profile.age <'] = $searchArgs['agemax'];
+		}
+		$sexLabels = array('άνδρας', 'γυναίκα');
+		if(($searchArgs['sex'] != '') && ($searchArgs['sex'] < 2)){
+			$searchconditions['Profile.sex'] = $sexLabels[$searchArgs['sex']];
+		}
+		if(($searchArgs['smoker'] != '') && ($searchArgs['smoker'] < 2)){
+			$searchconditions['Profile.smoker'] = $searchArgs['smoker'];
+		}
+		if(($searchArgs['pet'] != '') && ($searchArgs['pet'] < 2)){
+			$searchconditions['Profile.pet'] = $searchArgs['pet'];
+		}
+		if(($searchArgs['child'] != '') && ($searchArgs['child'] < 2)){
+			$searchconditions['Profile.child'] = $searchArgs['child'];
+		}
+		if(($searchArgs['couple'] != '') && ($searchArgs['couple'] < 2)){
+			$searchconditions['Profile.couple'] = $searchArgs['couple'];
+		}
+		if(!empty($searchArgs['max_roommates']) && ($searchArgs['max_roommates'] > 1)){
+			$searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
+		}
+
+		$this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
+	}
 
 }
 ?>
