@@ -16,10 +16,20 @@ foreach ($houses as $house) {
         $house['House']['id']
     );
 
-    $houseTitle = "{$house['House']['address']}-{$house['HouseType']['type']}-{$house['House']['area']}τμ";
+    $houseTitle = "{$house['HouseType']['type']}-{$house['House']['area']}τμ";
+
+    $bodyText = "Διεύθυνση : {$house['House']['address']}<br />
+                 Τιμή : {$house['House']['price']}<br />
+                 Διαθεσιμότητα : {$house['House']['availability_date']}";
+
+    /* sanitize body */
+    App::import('Sanitize');
+    $bodyText = Sanitize::stripAll($bodyText);
+
     echo $this->Rss->item(array(), array(
         'title' => $houseTitle,
         'link' => $houseLink,
+        'description' => $bodyText,
         'pubDate' => $house['House']['created']));
     }
 ?>
