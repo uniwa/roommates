@@ -1,11 +1,12 @@
-<h1>public profiles</h1>
+<h1>κατάλογος δημόσιων προφίλ</h1>
 
-<p><?php echo $this->Html->link("Add Profile", array('action' => 'add')); ?></p>
+<p><?php echo $this->Html->link("προσθήκη προφίλ", array('action' => 'add')); ?></p>
+<p><?php echo $this->Html->link("αναζήτηση συγκατοίκων", array('action' => 'search')); ?></p>
 
 <table>
 	<tr>
         <td>όνομα</td>
-	<td>επίθετο</td>
+		<td>επίθετο</td>
         <td>email</td>
         <td>ηλικία</td>
         <td>φύλο</td>
@@ -35,11 +36,11 @@
         <td><?php echo $profile['Profile']['couple']; ?></td>
         <td><?php echo $profile['Profile']['max_roommates']; ?></td>
 
-	<td><?php echo $this->Html->link('Delete', 
+	<td><?php echo $this->Html->link('διαγραφή', 
 					 array('action' => 'delete', $profile['Profile']['id']),
 					 null,
 					 'Are you sure?') ?>
-	    <?php echo $this->Html->link('Edit', 
+	    <?php echo $this->Html->link('επεξεργασία', 
 				         array('action' => 'edit', $profile['Profile']['id'])); ?> 
 	</td>
 
