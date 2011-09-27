@@ -16,8 +16,7 @@ foreach ($houses as $house) {
         $house['House']['id']
     );
 
-    // TODO: add house type to title
-    $houseTitle = "{$house['House']['address']}-{$house['House']['area']}τμ";
+    $houseTitle = "{$house['House']['address']}-{$house['HouseType']['type']}-{$house['House']['area']}τμ";
     echo $this->Rss->item(array(), array(
         'title' => $houseTitle,
         'link' => $houseLink,
