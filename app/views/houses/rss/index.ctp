@@ -19,7 +19,7 @@ foreach ($houses as $house) {
     $houseTitle = "{$house['HouseType']['type']}-{$house['House']['area']}τμ";
 
     $bodyText = "Διεύθυνση : {$house['House']['address']}<br />
-                 Τιμή : {$house['House']['price']}<br />
+                 Τιμή : {$house['House']['price']}€<br />
                  Διαθεσιμότητα : {$time->format(
                                     $format = 'd-m-Y',
                                     $house['House']['availability_date'])
