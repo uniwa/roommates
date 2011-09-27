@@ -2,10 +2,10 @@
 $this->set('documentData', array(
                 'xmlns:dc' => 'http://purl.org/dc/elements/1.1/'));
 $this->set('channelData', array(
-                'title' => __("Most Recent Houses", true),
+                'title' => __("Πρόσφατες καταχωρήσεις σπιτιών.", true),
                 'link' => $this->Html->url('/', true),
-                'description' => __("Most recent houses.", true),
-                'language' => 'en-us'));
+                'description' => __("Πρόσφατες καταχωρήσεις σπιτιών.", true),
+                'language' => 'el'));
 
 foreach ($houses as $house) {
     $houseTime = strtotime($house['House']['modified']);
