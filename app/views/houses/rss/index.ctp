@@ -16,7 +16,7 @@ foreach ($houses as $house) {
         $house['House']['id']
     );
 
-    $houseTitle = "{$house['HouseType']['type']}-{$house['House']['area']}τμ";
+    $houseTitle = "{$house['HouseType']['type']}, {$house['House']['area']}τμ";
 
     $bodyText = "<strong>Διεύθυνση:</strong> {$house['House']['address']}<br />
                  <strong>Τιμή:</strong> {$house['House']['price']}€<br />
