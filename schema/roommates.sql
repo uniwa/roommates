@@ -117,7 +117,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `lastname` VARCHAR(45) NOT NULL ,
   `email` VARCHAR(45) NOT NULL ,
   `age` SMALLINT NOT NULL ,
-  `sex` ENUM('άνδρας', 'γυναίκα') NOT NULL ,
+  `sex` TINYINT(1) NOT NULL COMMENT '1->male, 0->female',
   `phone` VARCHAR(45) NULL ,
   `smoker` TINYINT(1)  NULL ,
   `pet` TINYINT(1)  NULL ,
