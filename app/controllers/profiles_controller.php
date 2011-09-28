@@ -85,11 +85,5 @@ class ProfilesController extends AppController {
 	$this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
     }
 
-    function criteria(){
-
-
-
-    }
-
 }
 ?>

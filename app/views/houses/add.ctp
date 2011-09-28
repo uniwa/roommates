@@ -3,21 +3,21 @@
 <?php
 echo $form->create('House');
 
-echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας'));
+echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας', 'empty' => 'Επιλέξτε...'));
 echo $form->input('address', array('label' => 'Διεύθυνση'));
 echo $form->input('postal_code', array('label' => 'Ταχυδρομικός κώδικας'));
 echo $form->input('area', array('label' => 'Εμβαδό'));
-echo $form->input('floor_id', array('label' => 'Όροφος'));
+echo $form->input('floor_id', array('label' => 'Όροφος', 'empty' => 'Επιλέξτε...'));
 echo $form->input('bedroom_num', array('label' => 'Αριθμός δωματίων'));
 echo $form->input('bathroom_num', array('label' => 'Αριθμός μπάνιων'));
 echo $form->input('price', array('label' => 'Τιμή'));
-echo $form->input('availability_date', array('label' => 'Διαθέσιμο από', 
+echo $form->input('availability_date', array('label' => 'Διαθέσιμο από', 'empty' => '---',
                     'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y') + 5));
 echo $form->input('construction_year', array('label' => 'Έτος κατασκευής', 'type' => 'select', 
                     'options' => $available_constr_years, 'empty' => 'Άγνωστο'));
 echo $form->input('solar_heater', array('label' => 'Ηλιακός θερμοσίφωνας'));
 echo $form->input('furnitured', array('label' => 'Επιπλομένο'));
-echo $form->input('heating_type_id', array('label' => 'Είδος θέρμανσης'));
+echo $form->input('heating_type_id', array('label' => 'Είδος θέρμανσης', 'empty' => 'Επιλέξτε...'));
 echo $form->input('aircondition', array('label' => 'Κλιματισμός'));
 echo $form->input('garden', array('label' => 'Κήπος'));
 echo $form->input('parking', array('label' => 'Θέση πάρκινγκ'));

@@ -6,6 +6,42 @@ class House extends AppModel {
 
     var $validate = array(
 
+        'house_type_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε έναν τύπο.'
+            ),
+            'number' => array(
+                'rule' => '/^[1-5]$/',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
+        'floor_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε όροφο.'
+            ),
+            'number' => array(
+                'rule' => '/^[1-9][0-3]{0,1}$/',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
+        'heating_type_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε είδος θέρμανσης.'
+            ),
+            'number' => array(
+                'rule' => '/^[1-3]$/',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
         'address' => array(
             'maxsize' => array(
                 'rule' => array('maxLength', 50),
@@ -21,76 +57,122 @@ class House extends AppModel {
             )
         ),
 
-        'area' => array (
-            'size' => array(
-                'rule' => array('between', 2, 3),
-                'message' => 'Το εμβαδό πρέπει να είναι διψήφιος ή τριψήφιος αριθμός.'
+        'availability_date' => array(
+            'non_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ εισάγετε μια ημερομηνία.'
             ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
+            'valid_date' => array(
+                'rule' => 'date',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
             )
+        ),
+
+        'area' => array (
+            'rule' => '/^[1-9]\d{0,2}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 999.'
         ),
 
         'bedroom_num' => array(
-            'size' => array(
-                'rule' => array('between', 1, 2),
-                'message' => 'Ο αριθμός δωματίων πρέπει να είναι το πολύ διψήφιος αριθμός.'
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]\d{0,1}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 99.'
         ),
 
         'price' => array(
-            'size' => array(
-                'rule' => array('maxLength', 4),
-                'message' => 'Η τιμή μπορεί να είναι το πολύ τετραψήφιος αριθμός.'
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]\d{0,3}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 9999.'
         ),
 
         'postal_code' => array(
-            'size' => array(
-                'rule' => array('between', 5, 5),
-                'message' => 'Εισάγετε σωστό ταχυδρομικό κώδικα.',
-                'required' => false,
-                'allowEmpty' => true,
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε σωστό ταχυδρομικό κώδικα.'
-            )
+            'rule' => '/^\d{5}$/',
+            'message' => 'Εισάγετε σωστό ταχυδρομικό κώδικα.',
+            'required' => false,
+            'allowEmpty' => true
         ),
 
         'bathroom_num' => array(
-            'size' => array(
-                'rule' => array('maxLength', 2),
-                'message' => 'Ο αριθμός των μπάνιων μπορεί να είναι το πολύ διψήφιος αριθμός.',
-                'required' => false,
-                'allowEmpty' => true
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 9.',
+            'required' => false,
+            'allowEmpty' => true
         ),
 
         'rent_period' => array(
-            'size' => array(
-                'rule' => array('maxLength', 3),
-                'message' => 'Η περίοδος ενοικίασης μπορεί να είναι το πολύ τριψήφιος αριθμός.',
-                'required' => false,
-                'allowEmpty' => true
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]\d{0,2}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 999.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'construction_year' => array(
+            'rule' => '/^\d{4}$/',
+            'message' => 'Εισάγετε έναν τετραψήφιο αριθμό.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'solar_heater' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'furnitured' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'aircondition' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'garden' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'parking' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'shared_pay' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'security_doors' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'disability_facilities' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'storeroom' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
         )
     );
 }

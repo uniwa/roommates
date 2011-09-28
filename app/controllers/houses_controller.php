@@ -22,21 +22,16 @@ class HousesController extends AppController {
 
     function add() {
         if (!empty($this->data)) {
+            /* replace with user id after implementing authentication */
+            $this->data['House']['profile_id'] = '1';
+            /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
                 $this->redirect(array('action' => 'index'));
             }
         }
             
-        $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
-        $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
-        $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));
-
-        $entries = array();
-        for($i = 1950; $i <= date('Y'); $i++) {
-            $entries[$i] = $i;
-        }
-        $this->set('available_constr_years', $entries);
+        $this->set_add_edit_vars();
     }
 
     function delete($id) {
@@ -57,6 +52,10 @@ class HousesController extends AppController {
             }
         }
 
+        $this->set_add_edit_vars();
+    }
+
+    private function set_add_edit_vars() {
         $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
         $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
         $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));
