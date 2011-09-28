@@ -18,7 +18,7 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     'getaroommate',
                                     'bob@supercorp.it',
                                     '50',
-                                    'άνδρας',
+                                    '0',
                                     '2101234567',
                                     '1', -- smoker
                                     '1', -- pet
@@ -50,7 +50,7 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     'hasahouse',
                                     'sally@tiredof.me',
                                     '33',
-                                    'γυναίκα',
+                                    '1',
                                     '2101234567',
                                     '0', -- smoker
                                     '0', -- pet
@@ -81,7 +81,7 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     'isbroke',
                                     'david@on.it',
                                     '25',
-                                    'άνδρας',
+                                    '0',
                                     '2101234567',
                                     '1', -- smoker
                                     '0', -- pet
@@ -112,7 +112,7 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     'issingle',
                                     'clair@isnot.me',
                                     '22',
-                                    'γυναίκα',
+                                    '1',
                                     '2101234567',
                                     '0', -- smoker
                                     '1', -- pet
@@ -144,7 +144,7 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     'isvulcan',
                                     'spock@uss.e',
                                     '35',
-                                    'άνδρας',
+                                    '0',
                                     '2101234567',
                                     '0', -- smoker
                                     '0', -- pet
