@@ -58,7 +58,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `bedroom_num` TINYINT NOT NULL ,
   `bathroom_num` TINYINT NULL DEFAULT NULL ,
   `price` SMALLINT NOT NULL ,
-  `construction_year` DATE NULL DEFAULT NULL ,
+  `construction_year` INT NULL DEFAULT NULL ,
   `solar_heater` TINYINT(1)  NULL DEFAULT NULL ,
   `furnitured` TINYINT(1)  NULL DEFAULT NULL ,
   `aircondition` TINYINT(1)  NULL DEFAULT NULL ,
