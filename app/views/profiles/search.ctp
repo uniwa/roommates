@@ -8,7 +8,7 @@
 	echo "ηλικία\n<br />";
 	echo $this->Form->input('agemin', $ageminoptions);
 	echo $this->Form->input('agemax', $agemaxoptions)."\n";
-	$sexoptions = array('γυναίκα', 'άνδρας', 'αδιάφορο');
+	$sexoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 	$options = array('όχι', 'ναι', 'αδιάφορο');
 	echo 'sex'. $this->Form->select('sex', $sexoptions) ."\n";
 	echo 'καπνιστής'. $this->Form->select('smoker', $options) ."\n";
@@ -23,7 +23,7 @@
 <table>
 	<tr>
         <td>Όνομα</td>
-	<td>Επίθετο</td>
+		<td>Επίθετο</td>
         <td>Email</td>
         <td>Ηλικία</td>
         <td>Φύλο</td>
