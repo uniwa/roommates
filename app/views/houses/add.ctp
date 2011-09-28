@@ -1,9 +1,9 @@
 
-<h1>Add House</h1>
+<h1>Προσθήκη κατοικίας</h1>
 <?php
 echo $form->create('House');
 
-echo $form->input('house_type_id', array('label' => 'Τύπος'));
+echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας'));
 echo $form->input('address', array('label' => 'Διεύθυνση'));
 echo $form->input('postal_code', array('label' => 'Ταχυδρομικός κώδικας'));
 echo $form->input('area', array('label' => 'Εμβαδό'));
@@ -11,8 +11,8 @@ echo $form->input('floor_id', array('label' => 'Όροφος'));
 echo $form->input('bedroom_num', array('label' => 'Αριθμός δωματίων'));
 echo $form->input('bathroom_num', array('label' => 'Αριθμός μπάνιων'));
 echo $form->input('price', array('label' => 'Τιμή'));
-echo $form->input('availability_date', array('label' => 'Διαθέσιμο από'));
-echo $form->input('construction_year', array('label' => 'Έτος κατασκευής'));
+echo $form->input('availability_date', array('label' => 'Διαθέσιμο από', 'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y') + 5));
+echo $form->input('construction_year', array('label' => 'Έτος κατασκευής', 'dateFormat' => 'DMY', 'minYear' => 1950, 'maxYear' => date('Y')));
 echo $form->input('solar_heater', array('label' => 'Ηλιακός θερμοσίφωνας'));
 echo $form->input('furnitured', array('label' => 'Επιπλομένο'));
 echo $form->input('heating_type_id', array('label' => 'Είδος θέρμανσης'));
