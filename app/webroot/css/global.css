@@ -180,7 +180,6 @@ body {
     background: none;
 }
 
-
 /*content*/
 #content {
     width: 70%;
@@ -281,7 +280,6 @@ input[type=submit] {
     border-width: 1px;
 }
 
-
 /*tables*/
 
 table {
@@ -334,56 +332,73 @@ table a {
     text-decoration: none;
 }
 
-p{ /*to be removed*/
+p {
+    /*to be removed*/
 
     padding: 10px;
 }
 
-
-.name{
-    font-size:26px;
+.name {
+    font-size: 26px;
 }
 
-.mail{
-    background: url(../img/email_icon.jpg)  left no-repeat;
+.mail {
+    background: url(../img/email_icon.jpg) left no-repeat;
     padding-left: 35px;
 }
 
-.gender{
-    background: url(../img/gender_icon.gif)  left no-repeat;
+.gender {
+    background: url(../img/gender_icon.gif) left no-repeat;
     padding-left: 35px;
 }
 
-.tel{
-    background: url(../img/telefon-symbol.gif)  left no-repeat;
+.tel {
+    background: url(../img/telefon-symbol.gif) left no-repeat;
     padding-left: 35px;
 }
 
-
-.smoking{
-    background: url(../img/smoke_icon_01.gif)  left no-repeat;
-    padding-left: 35px;
-}
-.pet{
-    background: url(../img/pet.png)  left no-repeat;
-    padding-left: 35px;
-}
-.kid{
-    background: url(../img/Children-icon.png)  left no-repeat;
+.smoking {
+    background: url(../img/smoke_icon_01.gif) left no-repeat;
     padding-left: 35px;
 }
 
-.couple{
-    background: url(../img/users_mixed_gender.png)  left no-repeat;
+.pet {
+    background: url(../img/pet.png) left no-repeat;
     padding-left: 35px;
 }
 
-.rmates{
-    background: url(../img/icon_roommates.jpg)  left no-repeat;
+.kid {
+    background: url(../img/Children-icon.png) left no-repeat;
     padding-left: 35px;
 }
 
-.age{
-    font-size:14px;
+.couple {
+    background: url(../img/users_mixed_gender.png) left no-repeat;
+    padding-left: 35px;
 }
 
+.rmates {
+    background: url(../img/icon_roommates.jpg) left no-repeat;
+    padding-left: 35px;
+}
+
+.age {
+    font-size: 14px;
+}
+
+.avatar {
+
+}
+
+.profile {
+    padding: 0 30px;
+    background: #DFE4EE;
+    background-image: -moz-linear-gradient(center bottom, #D9D9D9 0%, #F0F0F0 40%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #D9D9D9), color-stop(0.4, #F0F0F0));
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Gradient(startColorStr=#F0F0F0, endColorStr=#D9D9D9)';
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr = #F0F0F0, endColorStr = #D9D9D9);
+    -moz-box-shadow: 0 1px 2px #ddd;
+    -webkit-box-shadow: 0 1px 2px #838383;
+    box-shadow: 0 1px 2px #838383;
+    border: 1px solid #f2f2f2;
+}
