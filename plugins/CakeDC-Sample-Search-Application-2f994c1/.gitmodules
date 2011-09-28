@@ -1,6 +1,0 @@
-[submodule "plugins/migrations"]
-	path = plugins/migrations
-	url = http://github.com/CakeDC/migrations.git
-[submodule "plugins/search"]
-	path = plugins/search
-	url = http://github.com/CakeDC/search.git
