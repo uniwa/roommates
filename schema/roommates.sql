@@ -146,12 +146,11 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `criteria_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`),
   INDEX `fk_criteria_id` (`criteria_id` ASC),
-  CONSTRAINT 'fk_profile_criteria'
-    FOREIGN KEY ('criteria_id')
-    REFERENCES 'roommates'.'criteria'('id')
+  CONSTRAINT `fk_profile_criteria`
+    FOREIGN KEY (`criteria_id`)
+    REFERENCES `roommates`.`criteria`(`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION) 
-
+    ON UPDATE NO ACTION
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
