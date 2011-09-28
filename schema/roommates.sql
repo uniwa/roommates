@@ -107,11 +107,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 --
--- Table structure for table `criteria`
+-- Table structure for table `preferences`
 --
-DROP TABLE IF EXISTS `roommates`.`criteria` ;
+DROP TABLE IF EXISTS `roommates`.`preferences` ;
 
-CREATE TABLE IF NOT EXISTS `criteria` (
+CREATE TABLE IF NOT EXISTS `preferences` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `age_min` tinyint(4) DEFAULT NULL,
   `age_max` tinyint(4) DEFAULT NULL,
@@ -143,12 +143,12 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `visible` TINYINT(1)  NULL ,
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,
-  `criteria_id` INT DEFAULT NULL ,
+  `preferences_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`),
-  INDEX `fk_criteria_id` (`criteria_id` ASC),
-  CONSTRAINT `fk_profile_criteria`
-    FOREIGN KEY (`criteria_id`)
-    REFERENCES `roommates`.`criteria`(`id`)
+  INDEX `fk_preferences_id` (`preferences_id` ASC),
+  CONSTRAINT `fk_profile_preferences`
+    FOREIGN KEY (`preferences_id`)
+    REFERENCES `roommates`.`preferences`(`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 )
