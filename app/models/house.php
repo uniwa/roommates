@@ -22,75 +22,39 @@ class House extends AppModel {
         ),
 
         'area' => array (
-            'size' => array(
-                'rule' => array('between', 2, 3),
-                'message' => 'Το εμβαδό πρέπει να είναι διψήφιος ή τριψήφιος αριθμός.'
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]\d{0,2}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 999.'
         ),
 
         'bedroom_num' => array(
-            'size' => array(
-                'rule' => array('between', 1, 2),
-                'message' => 'Ο αριθμός δωματίων πρέπει να είναι το πολύ διψήφιος αριθμός.'
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]\d{0,1}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 99.'
         ),
 
         'price' => array(
-            'size' => array(
-                'rule' => array('maxLength', 4),
-                'message' => 'Η τιμή μπορεί να είναι το πολύ τετραψήφιος αριθμός.'
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]\d{0,3}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 9999.'
         ),
 
         'postal_code' => array(
-            'size' => array(
-                'rule' => array('between', 5, 5),
-                'message' => 'Εισάγετε σωστό ταχυδρομικό κώδικα.',
-                'required' => false,
-                'allowEmpty' => true,
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε σωστό ταχυδρομικό κώδικα.'
-            )
+            'rule' => '/^\d{5}$/',
+            'message' => 'Εισάγετε σωστό ταχυδρομικό κώδικα.',
+            'required' => false,
+            'allowEmpty' => true
         ),
 
         'bathroom_num' => array(
-            'size' => array(
-                'rule' => array('maxLength', 2),
-                'message' => 'Ο αριθμός των μπάνιων μπορεί να είναι το πολύ διψήφιος αριθμός.',
-                'required' => false,
-                'allowEmpty' => true
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 9.',
+            'required' => false,
+            'allowEmpty' => true
         ),
 
         'rent_period' => array(
-            'size' => array(
-                'rule' => array('maxLength', 3),
-                'message' => 'Η περίοδος ενοικίασης μπορεί να είναι το πολύ τριψήφιος αριθμός.',
-                'required' => false,
-                'allowEmpty' => true
-            ),
-            'integer' => array(
-                'rule' => '/^\d+$/',
-                'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό.'
-            )
+            'rule' => '/^[1-9]\d{0,2}$/',
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 999.',
+            'required' => false,
+            'allowEmpty' => true
         ),
 
         'construction_year' => array(
