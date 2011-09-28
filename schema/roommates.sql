@@ -106,6 +106,21 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+--
+-- Table structure for table `criteria`
+--
+DROP TABLE IF EXISTS `roommates`.`criteria` ;
+
+CREATE TABLE IF NOT EXISTS `criteria` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `age_min` tinyint(4) DEFAULT NULL,
+  `age_max` tinyint(4) DEFAULT NULL,
+  `mates_min` tinyint(4) DEFAULT NULL,
+  `mates_max` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8;
+
 -- -----------------------------------------------------
 -- Table `roommates`.`profiles`
 -- -----------------------------------------------------
@@ -128,7 +143,16 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `visible` TINYINT(1)  NULL ,
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,
-  PRIMARY KEY (`id`) )
+  `criteria_id` INT DEFAULT NULL ,
+  PRIMARY KEY (`id`),
+  INDEX `fk_criteria_id` (`criteria_id` ASC),
+  CONSTRAINT 'fk_profile_criteria'
+    FOREIGN KEY ('criteria_id')
+    REFERENCES 'roommates'.'criteria'('id')
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION) 
+
+)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
