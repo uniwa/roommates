@@ -28,5 +28,7 @@ echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης'));
 echo $form->input('description', array('label' => 'Περιγραφή'));
 
+echo $form->input('id', array('type' => 'hidden'));
+
 echo $form->end('Save house');
 ?>

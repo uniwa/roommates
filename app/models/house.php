@@ -94,16 +94,10 @@ class House extends AppModel {
         ),
 
         'construction_year' => array(
-            'size' => array(
-                'rule' => array('between', 4, 4),
-                'message' => 'Το έτος πρέπει να είναι τετραψήφιος αριθμός.',
-                'required' => false,
-                'allowEmpty' => true
-            ),
-            'integer' => array(
-                'rule' => '/^\d{4}$/',
-                'message' => 'Εισάγετε έναν τετραψήφιο αριθμό.'
-            )
+            'rule' => '/^\d{4}$/',
+            'message' => 'Εισάγετε έναν τετραψήφιο αριθμό.',
+            'required' => false,
+            'allowEmpty' => true
         )
     );
 }
