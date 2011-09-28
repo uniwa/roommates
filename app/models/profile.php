@@ -2,6 +2,8 @@
 
 class Profile extends AppModel {
     var $name = 'Profile';
+    var $hasMany = 'House';
+
     var $validate = array(
 	'firstname' => array(
 		'rule' => 'alphaNumeric',
