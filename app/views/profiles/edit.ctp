@@ -1,4 +1,4 @@
-<h1>Edit Profile</h1>
+<h1>Επεξεργασία Προφίλ</h1>
 <?php
 	echo $this->Form->create('Profile');
 
@@ -7,10 +7,10 @@
 	echo $this->Form->input('email', array('label' => 'Email'));
 	echo $this->Form->input('age', array('label' => 'Ηλικία'));
 
-	echo $this->Form->input('sex', array(
+	echo $this->Form->input('Profile.sex', array(
+	'type' => 'radio',
 	'label' => 'Φύλο',
-	'separator' => '--separator--',
-	'options' => array('Άνδρας', 'Γυναίκα')
+	'options' => array('1'=>'Άνδρας', '0'=>'Γυναίκα')
 	));
 
 	echo $this->Form->input('phone', array('label' => 'Τηλέφωνο'));
