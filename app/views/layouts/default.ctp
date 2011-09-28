@@ -2,6 +2,7 @@
 <html>
 <head>
 <title><?php echo $title_for_layout?></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <?php echo $scripts_for_layout ?>
 
