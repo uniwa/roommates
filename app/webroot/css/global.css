@@ -75,7 +75,7 @@ body {
     padding-right: 10px;
     text-align: center;
     background: #344e66 url(../img/logotile.jpg) repeat-y left top;
-    height: 800px;
+    height: 600px;
 }
 
 #logo h1, #logo h2 {
@@ -104,7 +104,7 @@ body {
 #navigation {
     width: 160px;
     background: #cbcbcb url(../img/navtile.jpg) repeat-y left top;
-    height: 850px;
+    height: 650px;
 }
 
 #nav, #nav ul {
@@ -184,7 +184,7 @@ body {
 /*content*/
 #content {
     width: 70%;
-    min-height: 900px;
+    min-height: 700px;
     padding-left: 20px;
     padding-right: 20px;
     background: white;
@@ -333,3 +333,57 @@ table a {
     color: #21759B;
     text-decoration: none;
 }
+
+p{ /*to be removed*/
+
+    padding: 10px;
+}
+
+
+.name{
+    font-size:26px;
+}
+
+.mail{
+    background: url(../img/email_icon.jpg)  left no-repeat;
+    padding-left: 35px;
+}
+
+.gender{
+    background: url(../img/gender_icon.gif)  left no-repeat;
+    padding-left: 35px;
+}
+
+.tel{
+    background: url(../img/telefon-symbol.gif)  left no-repeat;
+    padding-left: 35px;
+}
+
+
+.smoking{
+    background: url(../img/smoke_icon_01.gif)  left no-repeat;
+    padding-left: 35px;
+}
+.pet{
+    background: url(../img/pet.png)  left no-repeat;
+    padding-left: 35px;
+}
+.kid{
+    background: url(../img/Children-icon.png)  left no-repeat;
+    padding-left: 35px;
+}
+
+.couple{
+    background: url(../img/users_mixed_gender.png)  left no-repeat;
+    padding-left: 35px;
+}
+
+.rmates{
+    background: url(../img/icon_roommates.jpg)  left no-repeat;
+    padding-left: 35px;
+}
+
+.age{
+    font-size:14px;
+}
+
