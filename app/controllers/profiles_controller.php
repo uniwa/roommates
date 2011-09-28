@@ -21,35 +21,35 @@ class ProfilesController extends AppController {
         $this->set('profile', $this->Profile->read());
     }
 
-    		function add(){
-			if (!empty($this->data)) {
-				if ($this->Profile->save($this->data)){
-					$this->Session->setFlash('Το προφίλ προστέθηκε.');
-					$this->redirect(array('action' => 'index'));
-				}
+	function add(){
+		if (!empty($this->data)) {
+			if ($this->Profile->save($this->data)){
+				$this->Session->setFlash('Το προφίλ προστέθηκε.');
+				$this->redirect(array('action' => 'index'));
 			}
-		}	
+		}
+	}	
 
 	
-		function delete($id){
-			if ($this->Profile->delete($id)){
-				$this->Session->setFlash('Το προφίλ διεγράφη.');
+	function delete($id){
+		if ($this->Profile->delete($id)){
+			$this->Session->setFlash('Το προφίλ διεγράφη.');
+			$this->redirect(array('action'=> 'index'));
+		}
+	}
+
+
+	function edit($id = null){
+		$this->Profile->id = $id;
+		if (empty($this->data)){
+			$this->data = $this->Profile->read();
+		}else {
+			if ($this->Profile->save($this->data)){
+				$this->Session->setFlash('Το προφίλ ενημερώθηκε.');
 				$this->redirect(array('action'=> 'index'));
 			}
 		}
-
-
-		function edit($id = null){
-			$this->Profile->id = $id;
-			if (empty($this->data)){
-				$this->data = $this->Profile->read();
-			}else {
-				if ($this->Profile->save($this->data)){
-					$this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-					$this->redirect(array('action'=> 'index'));
-				}
-			}
-		}
+	}
 
 	function search(){
 		$searchArgs = $this->data['Profile'];
@@ -63,9 +63,9 @@ class ProfilesController extends AppController {
 		if(!empty($searchArgs['agemax'])){
 			$searchconditions['Profile.age <'] = $searchArgs['agemax'];
 		}
-		$sexLabels = array('������', '�������');
+//		$sexLabels = array('άνδρας', 'γυναίκα');
 		if(($searchArgs['sex'] != '') && ($searchArgs['sex'] < 2)){
-			$searchconditions['Profile.sex'] = $sexLabels[$searchArgs['sex']];
+			$searchconditions['Profile.sex'] = $searchArgs['sex'];
 		}
 		if(($searchArgs['smoker'] != '') && ($searchArgs['smoker'] < 2)){
 			$searchconditions['Profile.smoker'] = $searchArgs['smoker'];
