@@ -347,8 +347,12 @@ p {
     padding-left: 35px;
 }
 
-.gender {
-    background: url(../img/gender_icon.gif) left no-repeat;
+.male {
+    background: url(../img/male.png) left no-repeat;
+    padding-left: 35px;
+}
+.female {
+    background: url(../img/female.jpg) left no-repeat;
     padding-left: 35px;
 }
 
@@ -392,13 +396,9 @@ p {
 
 .profile {
     padding: 0 30px;
-    background: #DFE4EE;
-    background-image: -moz-linear-gradient(center bottom, #D9D9D9 0%, #F0F0F0 40%);
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #D9D9D9), color-stop(0.4, #F0F0F0));
-    -ms-filter: 'progid:DXImageTransform.Microsoft.Gradient(startColorStr=#F0F0F0, endColorStr=#D9D9D9)';
-    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr = #F0F0F0, endColorStr = #D9D9D9);
-    -moz-box-shadow: 0 1px 2px #ddd;
-    -webkit-box-shadow: 0 1px 2px #838383;
-    box-shadow: 0 1px 2px #838383;
+    background: #fff;
+    -moz-box-shadow: 3px 3px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 6px #ccc;
+    box-shadow: 3px 3px 6px #ccc;
     border: 1px solid #f2f2f2;
 }
