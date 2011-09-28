@@ -15,3 +15,7 @@
 .cache/*
 .settings
 .settings/*
+
+
+#phpStorm bloat
+.idea/*
