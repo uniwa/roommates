@@ -23,14 +23,6 @@ class ProfilesController extends AppController {
 
     		function add(){
 			if (!empty($this->data)) {
-				if ($this->data['Profile']['sex'] == 0 ){
-
-					$this->data['Profile']['sex'] = 'άνδρας';				
-				}else{
-				
-					$this->data['Profile']['sex'] = 'γυναίκα';
-				}
-
 				if ($this->Profile->save($this->data)){
 					$this->Session->setFlash('Το προφίλ προστέθηκε.');
 					$this->redirect(array('action' => 'index'));

@@ -22,17 +22,17 @@
 
 <table>
 	<tr>
-        <td>όνομα</td>
-		<td>επίθετο</td>
-        <td>email</td>
-        <td>ηλικία</td>
-        <td>φύλο</td>
-        <td>τηλέφωνο</td>
-        <td>καπνιστής</td>
-        <td>κατοικίδιο</td>
-        <td>παιδί</td>
-        <td>ζευγάρι</td>
-        <td>συγκάτοικοι</td>
+        <td>Όνομα</td>
+	<td>Επίθετο</td>
+        <td>Email</td>
+        <td>Ηλικία</td>
+        <td>Φύλο</td>
+        <td>Τηλέφωνο</td>
+        <td>Καπνιστής</td>
+        <td>Κατοικίδιο</td>
+        <td>Παιδί</td>
+        <td>Ζευγάρι</td>
+        <td>Συγκάτοικοι</td>
 	</tr>
 
 	<!-- Here is where we loop through our $profiles array, printing out info -->
@@ -56,7 +56,7 @@
 	<td><?php echo $this->Html->link('Delete', 
 					 array('action' => 'delete', $profile['Profile']['id']),
 					 null,
-					 'Are you sure?') ?>
+					 'Είστε βέβαιος για τη διαγραφή;') ?>
 	    <?php echo $this->Html->link('Edit', 
 				         array('action' => 'edit', $profile['Profile']['id'])); ?> 
 	</td>
