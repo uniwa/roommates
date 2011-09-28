@@ -1,8 +1,9 @@
 <!DOCTYPE>
 <html>
 <head>
-    <title><?php echo $title_for_layout?></title>
-    <?php echo $scripts_for_layout ?>
+<title><?php echo $title_for_layout?></title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<?php echo $scripts_for_layout ?>
 
     <?php echo $this->Html->css('global'); ?>
 
