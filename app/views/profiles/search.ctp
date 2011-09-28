@@ -8,14 +8,15 @@
 	echo "ηλικία\n<br />";
 	echo $this->Form->input('agemin', $ageminoptions);
 	echo $this->Form->input('agemax', $agemaxoptions)."\n";
+	echo $this->Form->input('max_roommates', $maxmatesoptions);
+	echo "<br />\n";
 	$sexoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 	$options = array('όχι', 'ναι', 'αδιάφορο');
-	echo 'sex'. $this->Form->select('sex', $sexoptions) ."\n";
+	echo 'φύλο'. $this->Form->select('sex', $sexoptions) ."\n";
 	echo 'καπνιστής'. $this->Form->select('smoker', $options) ."\n";
 	echo 'κατοικίδιο'. $this->Form->select('pet', $options) ."\n";
 	echo 'παιδί'. $this->Form->select('child', $options) ."\n";
-	echo 'ζευγάρι'. $this->Form->select('couple', $options) ."\n";
-	echo $this->Form->input('max_roommates', $maxmatesoptions);
+	echo 'ζευγάρι'. $this->Form->select('couple', $options) ."<br /><br />\n";
 
 	echo $this->Form->end('αναζήτηση');
 ?>

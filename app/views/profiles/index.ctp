@@ -3,12 +3,6 @@
 <p><?php echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?></p>
 <p><?php echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?></p>
 
-<p><?php $sexmale = 'Άνδρας'; ?></p>
-<p><?php $sexfemale = 'Γυναίκα'; ?></p>
-
-<p><?php $yes = 'Ναι'; ?></p>
-<p><?php $no = 'Όχι'; ?></p>
-
 <table>
 	<tr>
 	<tr>
