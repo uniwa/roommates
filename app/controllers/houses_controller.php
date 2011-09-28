@@ -31,6 +31,12 @@ class HousesController extends AppController {
         $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
         $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
         $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));
+
+        $entries = array();
+        for($i = 1950; $i <= date('Y'); $i++) {
+            $entries[$i] = $i;
+        }
+        $this->set('available_constr_years', $entries);
     }
 
     function delete($id) {
