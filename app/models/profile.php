@@ -19,6 +19,14 @@ class Profile extends AppModel {
 		'rule' => array('comparison', '>=', 18),
 		'message' => 'Αποδεκτή ηλικία από 18 και άνω'),
 
+	'agemin' => array(
+		'rule' => array('between', 18, 98),
+		'message' => 'Enter age between 18 and 99'),
+
+	'agemax' => array(
+		'rule' => array('between', 19, 99),
+		'message' => 'Enter age between 18 and 99'),
+
 	'sex' => array(
 		'rule' => array('inList', array(0, 1)),
 		'message' => 'Εισάγετε ένα έγκυρο φύλο'),

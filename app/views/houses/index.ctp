@@ -31,7 +31,9 @@
     <?php foreach ($houses as $house): ?>
     <tr>
         <td><?php echo $house['HouseType']['type']; ?></td>
-        <td><?php echo $house['House']['address']; ?></td>
+        <td><?php echo $this->Html->link($house['House']['address'], 
+                        array('controller' => 'houses', 'action' => 'view', 
+                        $house['House']['id'])); ?></td>
         <td><?php echo $house['House']['postal_code']; ?></td>
         <td><?php echo $house['Floor']['type']; ?></td>
         <td><?php echo $house['House']['area']; ?></td>
