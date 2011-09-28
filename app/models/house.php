@@ -62,6 +62,69 @@ class House extends AppModel {
             'message' => 'Εισάγετε έναν τετραψήφιο αριθμό.',
             'required' => false,
             'allowEmpty' => true
+        ),
+
+        'solar_heater' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'furnitured' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'aircondition' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'garden' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'parking' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'shared_pay' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'security_doors' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'disability_facilities' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
+        ),
+
+        'storeroom' => array(
+            'rule' => '/^[0-1]$/',
+            'message' => 'Υπήρξε κάποιο σφάλμα.',
+            'required' => false,
+            'allowEmpty' => true
         )
     );
 }
