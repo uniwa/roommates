@@ -22,47 +22,58 @@
 
 <table>
 	<tr>
-        <td>Όνομα</td>
-		<td>Επίθετο</td>
-        <td>Email</td>
-        <td>Ηλικία</td>
-        <td>Φύλο</td>
-        <td>Τηλέφωνο</td>
-        <td>Καπνιστής</td>
-        <td>Κατοικίδιο</td>
-        <td>Παιδί</td>
-        <td>Ζευγάρι</td>
-        <td>Συγκάτοικοι</td>
+        <td>όνομα</td>
+		<td>επίθετο</td>
+        <td>ηλικία</td>
+        <td>φύλο</td>
+<!--		
+        <td>email</td>
+        <td>τηλέφωνο</td>
+        <td>καπνιστής</td>
+        <td>κατοικίδιο</td>
+        <td>παιδί</td>
+        <td>ζευγάρι</td>
+        <td>συγκάτοικοι</td>
+-->
 	</tr>
 
 	<!-- Here is where we loop through our $profiles array, printing out info -->
 
-    <?php foreach ($profiles as $profile): ?>
-    <tr>
-	<td><?php echo $this->Html->link($profile['Profile']['firstname'],array('controller' => 'profiles',
+    <?php
+		$oddLine = true;
+		foreach ($profiles as $profile):
+			$rowCSS = ($oddLine)?'0':'1';
+			$rowCSS = "bgcolor".$rowCSS;
+	?>
+    <tr class='<?php echo $rowCSS; ?>'>
+		<td><?php echo $this->Html->link($profile['Profile']['firstname'],array('controller' => 'profiles',
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
-        <td><?php echo $this->Html->link($profile['Profile']['lastname'],array('controller' => 'profiles',
+		<td><?php echo $this->Html->link($profile['Profile']['lastname'],array('controller' => 'profiles',
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
-        <td><?php echo $profile['Profile']['email']; ?></td>
-        <td><?php echo $profile['Profile']['age']; ?></td>
-        <td><?php echo $profile['Profile']['sex']; ?></td>
-        <td><?php echo $profile['Profile']['phone']; ?></td>
-        <td><?php echo $profile['Profile']['smoker']; ?></td>
-        <td><?php echo $profile['Profile']['pet']; ?></td>
-        <td><?php echo $profile['Profile']['child']; ?></td>
-        <td><?php echo $profile['Profile']['couple']; ?></td>
-        <td><?php echo $profile['Profile']['max_roommates']; ?></td>
-
-	<td><?php echo $this->Html->link('Delete', 
-					 array('action' => 'delete', $profile['Profile']['id']),
-					 null,
-					 'Είστε βέβαιος για τη διαγραφή;') ?>
-	    <?php echo $this->Html->link('Edit', 
-				         array('action' => 'edit', $profile['Profile']['id'])); ?> 
-	</td>
-
+		<td><?php echo $profile['Profile']['age']; ?></td>
+		<?php
+			$sexLabels = array('άνδρας', 'γυναίκα');
+		?>
+		<td><?php echo $sexLabels[$profile['Profile']['sex']]; ?></td>
+<!--
+		<td><?php echo $profile['Profile']['email']; ?></td>
+		<td><?php echo $profile['Profile']['phone']; ?></td>
+		<td><?php echo $profile['Profile']['smoker']; ?></td>
+		<td><?php echo $profile['Profile']['pet']; ?></td>
+		<td><?php echo $profile['Profile']['child']; ?></td>
+		<td><?php echo $profile['Profile']['couple']; ?></td>
+		<td><?php echo $profile['Profile']['max_roommates']; ?></td>
+-->
+		<td><?php echo $this->Html->link('διαγραφή',
+					 array('action' => 'delete', $profile['Profile']['id']), null, 'Είστε σίγουρος;') ?>
+		<?php echo $this->Html->link('επεξεργασία',
+						 array('action' => 'edit', $profile['Profile']['id'])); ?> 
+		</td>
     </tr>
-    <?php endforeach; ?>
+    <?php
+		$oddLine = !$oddLine;
+		endforeach;
+	?>
 </table>
 
 
