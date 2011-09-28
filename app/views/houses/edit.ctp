@@ -3,11 +3,11 @@
 <?php
 echo $form->create('House', array('action' => 'edit'));
 
-echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας'));
+echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας', 'empty' => 'Επιλέξτε...'));
 echo $form->input('address', array('label' => 'Διεύθυνση'));
 echo $form->input('postal_code', array('label' => 'Ταχυδρομικός κώδικας'));
 echo $form->input('area', array('label' => 'Εμβαδό'));
-echo $form->input('floor_id', array('label' => 'Όροφος'));
+echo $form->input('floor_id', array('label' => 'Όροφος', 'empty' => 'Επιλέξτε...'));
 echo $form->input('bedroom_num', array('label' => 'Αριθμός δωματίων'));
 echo $form->input('bathroom_num', array('label' => 'Αριθμός μπάνιων'));
 echo $form->input('price', array('label' => 'Τιμή'));
