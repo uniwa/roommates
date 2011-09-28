@@ -30,14 +30,12 @@ class ProfilesController extends AppController {
 		}
 	}	
 
-	
 	function delete($id){
 		if ($this->Profile->delete($id)){
 			$this->Session->setFlash('Το προφίλ διεγράφη.');
 			$this->redirect(array('action'=> 'index'));
 		}
 	}
-
 
 	function edit($id = null){
 		$this->Profile->id = $id;
