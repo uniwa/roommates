@@ -22,6 +22,9 @@ class HousesController extends AppController {
 
     function add() {
         if (!empty($this->data)) {
+            /* replace with user id after implementing authentication */
+            $this->data['House']['profile_id'] = '1';
+            /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
                 $this->redirect(array('action' => 'index'));
