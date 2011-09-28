@@ -6,6 +6,42 @@ class House extends AppModel {
 
     var $validate = array(
 
+        'house_type_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε έναν τύπο.'
+            ),
+            'number' => array(
+                'rule' => '/^[1-5]$/',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
+        'floor_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε όροφο.'
+            ),
+            'number' => array(
+                'rule' => '/^[1-9][0-3]{0,1}$/',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
+        'heating_type_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε είδος θέρμανσης.'
+            ),
+            'number' => array(
+                'rule' => '/^[1-3]$/',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
         'address' => array(
             'maxsize' => array(
                 'rule' => array('maxLength', 50),
@@ -18,6 +54,18 @@ class House extends AppModel {
             'valid' => array(
                 'rule' => '/[a-zA-Zα-ωΑ-Ω0-9ΆάΈέΎύΊίΌόΏώϊϋΐΰ,. ]+$/',
                 'message' => 'Η διεύθυνση περιέχει έναν μη έγκυρο χαρακτήρα.'
+            )
+        ),
+
+        'availability_date' => array(
+            'non_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ εισάγετε μια ημερομηνία.'
+            ),
+            'valid_date' => array(
+                'rule' => 'date',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
+                'allowEmpty' => true
             )
         ),
 
