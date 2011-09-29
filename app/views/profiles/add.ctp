@@ -20,9 +20,39 @@
 	echo $this->Form->input('couple', array('label' => 'Ζευγάρι'));
 	echo $this->Form->input('max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
 	echo $this->Form->checkbox('visible', array('checked' => true)) . 'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου';
-	
-	echo $this->Form->end('Save Profile');
-
-
 ?>
+
+
+<br /><br /><br /><br />
+<h1>Κριτήρια Επιλογής Συγκατοικου</h1>
+
+<?php
+
+    $sexoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
+    $options = array('Ναι', 'Όχι', 'Αδιάφορο');
+
+	echo $this->Form->input('age_min', array('label' => 'Ηλικία από'));
+	echo $this->Form->input('age_max', array('label' => 'έως'));
+
+	echo $this->Form->input('mates_min', array('label' => 'Αριθμός Συγκατοίκων από'));
+	echo $this->Form->input('mates_max', array('label' => 'έως'));
+?>
+
+<br /><br />
+<?php  
+    echo 'Φύλο'. $this->Form->select('sex', $sexoptions);
+    echo 'Καπνιστής'. $this->Form->select('smoker', $options);
+    echo 'Κατοικίδιο'. $this->Form->select('pet', $options);
+    echo 'Παιδί'. $this->Form->select('child', $options);
+    echo 'Ζευγάρι'. $this->Form->select('couple', $options);
+?>
+
+<br /><br />
+<?php
+    
+    echo $this->Form->end('Υποβολή');
+?>
+
+
+
 
