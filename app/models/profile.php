@@ -42,7 +42,6 @@ class Profile extends AppModel {
 		'rule' => '/^[1-9]{1}$/i',
 		'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]')
 	);
-
 }
 
 ?>
