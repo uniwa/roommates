@@ -63,7 +63,7 @@ class ProfilesController extends AppController {
 	if(!empty($searchArgs['agemax'])){
 		$searchconditions['Profile.age <'] = $searchArgs['agemax'];
 	}
-	$genderLabels = array('άνδρας', 'γυναίκα');
+	$genderLabels = array('Ξ†Ξ½Ξ΄ΟΞ±Ο‚', 'Ξ“Ο…Ξ½Ξ±Ξ―ΞΊΞ±');
 	if(($searchArgs['gender'] != '') && ($searchArgs['gender'] < 2)){
 		$searchconditions['Profile.gender'] = $genderLabels[$searchArgs['gender']];
 	}
