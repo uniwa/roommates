@@ -2,7 +2,7 @@
 
 <p><?php echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?></p>
 <p><?php echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?></p>
-
+<!-- OLD view
 <table>
 	<tr>
 	<tr>
@@ -10,7 +10,7 @@
 		<td>επίθετο</td>
         <td>ηλικία</td>
         <td>φύλο</td>
-<!--		
+
         <td>email</td>
         <td>τηλέφωνο</td>
         <td>καπνιστής</td>
@@ -18,10 +18,9 @@
         <td>παιδί</td>
         <td>ζευγάρι</td>
         <td>συγκάτοικοι</td>
--->
+
 	</tr>
 
-	<!-- Here is where we loop through our $profiles array, printing out info -->
 
     <?php
 		$oddLine = true;
@@ -39,7 +38,7 @@
 			$sexLabels = array('άνδρας', 'γυναίκα');
 		?>
 		<td><?php echo $sexLabels[$profile['Profile']['sex']]; ?></td>
-<!--
+
 		<td><?php echo $profile['Profile']['email']; ?></td>
 		<td><?php echo $profile['Profile']['phone']; ?></td>
 		<td><?php echo $profile['Profile']['smoker']; ?></td>
@@ -47,7 +46,7 @@
 		<td><?php echo $profile['Profile']['child']; ?></td>
 		<td><?php echo $profile['Profile']['couple']; ?></td>
 		<td><?php echo $profile['Profile']['max_roommates']; ?></td>
--->
+
 		<td><?php echo $this->Html->link('διαγραφή',
 					 array('action' => 'delete', $profile['Profile']['id']), null, 'Είστε σίγουρος;') ?>
 		<?php echo $this->Html->link('επεξεργασία',
@@ -59,7 +58,7 @@
 		endforeach;
 	?>
 </table>
-
+-->
 
     <ul class="thelist">
 
@@ -82,7 +81,7 @@
 
                Ηλικία: <?php echo $profile['Profile']['age']; ?>
 <br />
-    <?php if ($profile['Profile']['sex'])
+    <?php if ($profile['Profile']['gender'])
         echo '<p class="female">Γυναίκα.</p>';
     else
         echo '<p class="male">Άνδρας.</p>';

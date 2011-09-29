@@ -1,6 +1,18 @@
 <div class="profile">
+
     <p class="name"><?php echo $profile['Profile']['firstname'] . " " . $profile['Profile']['lastname'] ?><span
             class="age"> - Ηλικία: <?php echo $profile['Profile']['age'] ?></span></p>
+
+<div id="actions">
+     <?php echo $this->Html->link('επεξεργασία',
+						 array('action' => 'edit', $profile['Profile']['id'])); ?>
+
+    <?php echo $this->Html->link('διαγραφή',
+					 array('action' => 'delete', $profile['Profile']['id']), null, 'Είστε σίγουρος;') ?>
+
+</div>
+
+
     <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
 
     <p class="mail">email: <?php echo $profile['Profile']['email'] ?></p>
@@ -21,4 +33,6 @@
     <p class="couple"><?php if (!$profile['Profile']['couple']) echo "Δεν" ?>Είμαστε Ζευγάρι.</p>
 
     <p class="rmates">Επιθυμώ να συγκατοικήσω με το πολυ <?php echo $profile['Profile']['max_roommates'] ?> άτομα.</p>
+
+
 </div>
