@@ -5,6 +5,10 @@ class Profile extends AppModel {
     var $hasMany = 'House';
    // var $belongsTo = array('Preference');
 
+    var $virtualFields = array(
+        'age' => "YEAR(NOW()) - Profile.dob"
+    );
+
     var $validate = array(
 	'firstname' => array(
 		'rule' => 'alphaNumeric',

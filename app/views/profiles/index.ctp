@@ -80,7 +80,7 @@
                 <?php echo $this->Html->link($profile['Profile']['firstname'].' '.$profile['Profile']['lastname'],array('controller' => 'profiles',
 			'action' => 'view', $profile['Profile']['id'])); ?>
 
-               Ηλικία: <?php echo date('Y') - $profile['Profile']['dob']; ?>
+               Ηλικία: <?php echo $profile['Profile']['age']; ?>
 <br />
     <?php if ($profile['Profile']['gender'])
         echo '<p class="female">Γυναίκα.</p>';
