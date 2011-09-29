@@ -18,17 +18,21 @@
 	echo $this->Form->input('couple', array('label' => 'Ζευγάρι'));
 	echo $this->Form->input('max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
 
+
+
 echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 
 	echo $this->Form->input('id', array('type' => 'hidden'));
 
+
 //	echo $this->Form->end('Αποθήκευση');
+
 
 ?>
 
 
-<br /><br /><br /><br />
-<h1>Κριτήρια Επιλογής Συγκατοικου</h1>
+
+<h2>Κριτήρια Επιλογής Συγκατοικου</h2>
 
 <?php
 
@@ -42,8 +46,7 @@ echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γί
 	echo $this->Form->input('mates_max', array('label' => 'έως'));
 ?>
 
-<br /><br />
-<?php  
+<?php
     echo 'Φύλο'. $this->Form->select('sex', $sexoptions);
     echo 'Καπνιστής'. $this->Form->select('smoker', $options);
     echo 'Κατοικίδιο'. $this->Form->select('pet', $options);
@@ -51,9 +54,8 @@ echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γί
     echo 'Ζευγάρι'. $this->Form->select('couple', $options);
 ?>
 
-<br /><br />
 <?php
-    
+
     echo $this->Form->end('Υποβολή');
 ?>
 
