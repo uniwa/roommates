@@ -55,7 +55,7 @@
 		<?php
 			$genderLabels = array('άνδρας', 'γυναίκα');
 		?>
-		<td><?php echo $genderLabels[$profile['Profile']['sex']]; ?></td>
+		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
 <!--
 		<td><?php echo $profile['Profile']['email']; ?></td>
 		<td><?php echo $profile['Profile']['phone']; ?></td>
