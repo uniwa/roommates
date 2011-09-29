@@ -3,6 +3,8 @@ class ProfilesController extends AppController {
 
     var $name = 'Profiles';
     var $components = array('RequestHandler');
+ //   var $profile = 
+ //   var $preferences = 
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -21,6 +23,16 @@ class ProfilesController extends AppController {
         $this->set('profile', $this->Profile->read());
     }
 
+/*    function add(){
+	if (!empty($this->data)) {
+		if ($this->Profile->save($this->data)){
+			$this->Session->setFlash('Το προφίλ προστέθηκε.');
+			$this->redirect(array('action' => 'index'));
+		}
+	}
+    }*/	
+
+
     function add(){
 	if (!empty($this->data)) {
 		if ($this->Profile->save($this->data)){
@@ -29,6 +41,7 @@ class ProfilesController extends AppController {
 		}
 	}
     }	
+
 
 	
     function delete($id){

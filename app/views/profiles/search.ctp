@@ -12,7 +12,7 @@
 	echo "<br />\n";
 	$sexoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 	$options = array('όχι', 'ναι', 'αδιάφορο');
-	echo 'φύλο'. $this->Form->select('sex', $sexoptions) ."\n";
+	echo 'φύλο'. $this->Form->select('gender', $sexoptions) ."\n";
 	echo 'καπνιστής'. $this->Form->select('smoker', $options) ."\n";
 	echo 'κατοικίδιο'. $this->Form->select('pet', $options) ."\n";
 	echo 'παιδί'. $this->Form->select('child', $options) ."\n";

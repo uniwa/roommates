@@ -1,17 +1,15 @@
-<h1>Δημιουργία Προφίλ</h1>
+<h2>Δημιουργία Προφίλ</h2>
 <?php
-	echo $this->Form->create('Profile');
+   echo $this->Form->create('Profile');
 
 	echo $this->Form->input('firstname', array('label' => 'Όνομα'));
 	echo $this->Form->input('lastname', array('label' => 'Επώνυμο'));
 	echo $this->Form->input('email', array('label' => 'Email'));
 	echo $this->Form->input('age', array('label' => 'Ηλικία'));
 
-	echo $this->Form->input('Profile.sex', array(
-	'type' => 'radio', 
-	'label' => 'Φύλο',
-	'options' => array('0'=>'Άνδρας', '1'=>'Γυναίκα')
-	));
+	echo $this->Form->radio('gender',  array('0' => 'Άνδρας', '1' => 'Γυναίκα'),array('legend'=>false));
+
+
 
 	echo $this->Form->input('phone', array('label' => 'Τηλέφωνο'));
 	echo $this->Form->input('smoker', array('label' =>'Καπνιστής'));
@@ -19,12 +17,22 @@
 	echo $this->Form->input('child', array('label' => 'Παιδί'));
 	echo $this->Form->input('couple', array('label' => 'Ζευγάρι'));
 	echo $this->Form->input('max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
-	echo $this->Form->checkbox('visible', array('checked' => true)) . 'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου';
+
+
+
+echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
+
+	echo $this->Form->input('id', array('type' => 'hidden'));
+
+
+//	echo $this->Form->end('Αποθήκευση');
+
+
 ?>
 
 
-<br /><br /><br /><br />
-<h1>Κριτήρια Επιλογής Συγκατοικου</h1>
+
+<h2>Κριτήρια Επιλογής Συγκατοικου</h2>
 
 <?php
 
@@ -38,8 +46,7 @@
 	echo $this->Form->input('mates_max', array('label' => 'έως'));
 ?>
 
-<br /><br />
-<?php  
+<?php
     echo 'Φύλο'. $this->Form->select('sex', $sexoptions);
     echo 'Καπνιστής'. $this->Form->select('smoker', $options);
     echo 'Κατοικίδιο'. $this->Form->select('pet', $options);
@@ -47,9 +54,8 @@
     echo 'Ζευγάρι'. $this->Form->select('couple', $options);
 ?>
 
-<br /><br />
 <?php
-    
+
     echo $this->Form->end('Υποβολή');
 ?>
 
