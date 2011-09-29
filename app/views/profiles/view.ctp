@@ -1,7 +1,7 @@
 <div class="profile">
 
     <p class="name"><?php echo $profile['Profile']['firstname'] . " " . $profile['Profile']['lastname'] ?><span
-            class="age"> - Ηλικία: <?php echo $profile['Profile']['age'] ?></span></p>
+            class="age"> - Ηλικία: <?php echo date('Y') - $profile['Profile']['dob'] ?></span></p>
 
 <div id="actions">
      <?php echo $this->Html->link('επεξεργασία',
