@@ -22,9 +22,8 @@ echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γί
 	echo $this->Form->input('id', array('type' => 'hidden'));
 
 	echo $this->Form->end('Αποθήκευση');
-
-	echo $this->Form->checkbox('visible', array('checked' => true)) . 'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου';
 ?>
+
 
 
 <h2>Κριτήρια Επιλογής Συγκατοικου</h2>
@@ -50,7 +49,7 @@ echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γί
 ?>
 
 <?php
-    
+
     echo $this->Form->end('Υποβολή');
 ?>
 
