@@ -18,6 +18,10 @@ class Profile extends AppModel {
 		'rule' => 'email',
 		'message' => 'Εισάγετε μία έγκυρη ηλεκτρονική διεύθυνση.'),
 
+	'dob' => array(
+		'rule' => array('comparison', '>=', 1920),
+		'message' => 'Βάλτε μια αποδεκτή ημερομηνία γέννησης.'),
+
 	'age' => array(
 		'rule' => array('comparison', '>=', 18),
 		'message' => 'Αποδεκτή ηλικία από 18 και άνω'),
@@ -42,7 +46,6 @@ class Profile extends AppModel {
 		'rule' => '/^[1-9]{1}$/i',
 		'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]')
 	);
-
 }
 
 ?>
