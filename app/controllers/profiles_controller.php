@@ -55,6 +55,12 @@ class ProfilesController extends AppController {
                 $this->redirect(array('action'=> 'index'));
             }
         }
+
+        $dob = array();
+        foreach ( range((int)date('Y'), 1920) as $year ) {
+            $dob[$year] = $year;
+        }
+        $this->set('available_birth_dates', $dob);
      }
 
     function search() {
