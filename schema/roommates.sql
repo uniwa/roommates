@@ -139,7 +139,6 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `child` TINYINT(1)  NULL ,
   `couple` TINYINT(1)  NULL ,
   `max_roommates` TINYINT NULL ,
--- `sexual_orientation` ENUM('straight', 'gay/lesbian', 'bisexual') NULL ,
   `visible` TINYINT(1)  NULL ,
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,
