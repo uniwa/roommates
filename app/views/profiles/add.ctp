@@ -50,7 +50,8 @@ echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γί
 ?>
 
 <?php
-    echo 'Φύλο'. $this->Form->select('gender', $genderoptions);
+//	$genderLabels = array('άνδρας', 'γυναίκα');
+    echo 'Φύλο'. $this->Form->select('gender', $genderLabels);
     echo 'Καπνιστής'. $this->Form->select('smoker', $options);
     echo 'Κατοικίδιο'. $this->Form->select('pet', $options);
     echo 'Παιδί'. $this->Form->select('child', $options);

@@ -8,7 +8,7 @@
 
 	<tr>
         <td>όνομα</td>
-	<td>επίθετο</td>
+		<td>επίθετο</td>
         <td>ηλικία</td>
         <td>φύλο</td>
 
@@ -36,7 +36,7 @@
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
 		<td><?php echo date('Y') - $profile['Profile']['dob']; ?></td>
 		<?php
-			$genderLabels = array('άνδρας', 'γυναίκα');
+//			$genderLabels = array('άνδρας', 'γυναίκα');
 		?>
 		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
 

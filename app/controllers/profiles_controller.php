@@ -15,6 +15,8 @@ class ProfilesController extends AppController {
             return $this->set(compact('profiles'));
         }
 
+		$genderLabels = array('άνδρας', 'γυναίκα');
+		$this->set('genderLabels', $genderLabels);
         $this->set('profiles', $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1))));
     }
 
@@ -35,6 +37,8 @@ class ProfilesController extends AppController {
         foreach ( range((int)date('Y'), 1920) as $year ) {
             $dob[$year] = $year;
         }
+		$genderLabels = array('άνδρας', 'γυναίκα');
+		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
     }
 	
