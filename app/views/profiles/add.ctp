@@ -17,14 +17,13 @@
 	echo $this->Form->input('child', array('label' => 'Παιδί'));
 	echo $this->Form->input('couple', array('label' => 'Ζευγάρι'));
 	echo $this->Form->input('max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
-<<<<<<< HEAD
+
 echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 
 	echo $this->Form->input('id', array('type' => 'hidden'));
 
-	echo $this->Form->end('Αποθήκευση');
-=======
-	echo $this->Form->checkbox('visible', array('checked' => true)) . 'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου';
+//	echo $this->Form->end('Αποθήκευση');
+
 ?>
 
 
@@ -51,7 +50,6 @@ echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γί
     echo 'Παιδί'. $this->Form->select('child', $options);
     echo 'Ζευγάρι'. $this->Form->select('couple', $options);
 ?>
->>>>>>> bd20f18639c6fc11575109d7cdd90783858712e2
 
 <br /><br />
 <?php
