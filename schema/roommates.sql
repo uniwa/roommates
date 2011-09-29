@@ -106,9 +106,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
---
--- Table structure for table `preferences`
---
 DROP TABLE IF EXISTS `roommates`.`preferences` ;
 
 CREATE TABLE IF NOT EXISTS `preferences` (
@@ -132,14 +129,13 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `lastname` VARCHAR(45) NOT NULL ,
   `email` VARCHAR(45) NOT NULL ,
   `age` SMALLINT NOT NULL ,
-  `sex` TINYINT(1) NOT NULL COMMENT '1->male, 0->female',
+  `gender` TINYINT(1) NOT NULL COMMENT '1->male, 0->female',
   `phone` VARCHAR(45) NULL ,
   `smoker` TINYINT(1)  NULL ,
   `pet` TINYINT(1)  NULL ,
   `child` TINYINT(1)  NULL ,
   `couple` TINYINT(1)  NULL ,
   `max_roommates` TINYINT NULL ,
--- `sexual_orientation` ENUM('straight', 'gay/lesbian', 'bisexual') NULL ,
   `visible` TINYINT(1)  NULL ,
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,

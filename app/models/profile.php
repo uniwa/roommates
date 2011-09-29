@@ -3,6 +3,7 @@
 class Profile extends AppModel {
     var $name = 'Profile';
     var $hasMany = 'House';
+   // var $belongsTo = array('Preference');
 
     var $validate = array(
 	'firstname' => array(
@@ -29,7 +30,7 @@ class Profile extends AppModel {
 		'rule' => array('between', 19, 99),
 		'message' => 'Enter age between 18 and 99'),
 
-	'sex' => array(
+	'gender' => array(
 		'rule' => array('inList', array(0, 1)),
 		'message' => 'Εισάγετε ένα έγκυρο φύλο'),
 

@@ -10,6 +10,7 @@
 	echo $this->Form->radio('gender',  array('0' => 'Άνδρας', '1' => 'Γυναίκα'),array('legend'=>false));
 
 
+
 	echo $this->Form->input('phone', array('label' => 'Τηλέφωνο'));
 	echo $this->Form->input('smoker', array('label' =>'Καπνιστής'));
 	echo $this->Form->input('pet', array('label' =>'Κατοικίδιο'));
