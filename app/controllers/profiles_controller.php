@@ -70,11 +70,13 @@ class ProfilesController extends AppController {
         $searchconditions = array('Profile.visible' => 1);
 
         if(!empty($searchArgs['agemin'])) {
-            $searchconditions['Profile.age >'] = $searchArgs['agemin'];
+            //$searchconditions['Profile.age >'] = $searchArgs['agemin'];
+            $searchconditions['Profile.dob <='] = $this->age_to_year($searchArgs['agemin']);
         }
 
         if(!empty($searchArgs['agemax'])) {
-            $searchconditions['Profile.age <'] = $searchArgs['agemax'];
+            //$searchconditions['Profile.age <'] = $searchArgs['agemax'];
+            $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['agemax']);
         }
 
         $genderLabels = array('Άνδρας', 'Γυναίκα');
@@ -103,5 +105,10 @@ class ProfilesController extends AppController {
         }
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
     }
+
+    private function age_to_year($age) {
+        return date('Y') - $age;
+    }
+
 }
 ?>
