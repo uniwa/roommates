@@ -1,9 +1,9 @@
 <!DOCTYPE>
 <html>
 <head>
-<title><?php echo $title_for_layout?></title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<?php echo $scripts_for_layout ?>
+    <title><?php echo $title_for_layout?></title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <?php echo $scripts_for_layout ?>
 
     <?php echo $this->Html->css('global'); ?>
 
@@ -31,9 +31,23 @@
                 <a href="#"><span>Αρχική</span></a>
             </li>
             <li>
+                <?php echo $this->Html->link('Ολα τα σπίτια', array(
+                                                                   'controller' => 'houses',
+                                                                   'action' => 'index')); ?>
+
+            </li>
+
+
+            <li>
                 <?php echo $this->Html->link('Ολα τα προφιλ', array(
                                                                    'controller' => 'profiles',
                                                                    'action' => 'index')); ?>
+
+            </li>
+            <li>
+                <?php echo $this->Html->link('Δημιουργία προφιλ', array(
+                                                                       'controller' => 'profiles',
+                                                                       'action' => 'add')); ?>
 
             </li>
 
@@ -44,12 +58,9 @@
 
             </li>
 
-            <li class="page_item page-item-192">
-                <a href="#" title="">Αναζήτηση Σπιτιού</a>
-            </li>
 
             <li class="rss">
-                <a href="#" title="Subscribe to my RSS Feed"><img src="<?php echo $this->webroot; ?>img/rss.png"
+                <a href="#" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rss.png"
                                                                   alt="RSS-feed"/></a>
             </li>
 

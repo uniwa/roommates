@@ -17,7 +17,7 @@ foreach ($profiles as $profile) {
         $profile['Profile']['id']
     );
 
-    $profileTitle = "{$profile['Profile']['sex']}, {$profile['Profile']['age']}ετών";
+    $profileTitle = "{$profile['Profile']['gender']}, {$profile['Profile']['age']}ετών";
 
     $bodyText = "<strong>Μέγιστος επιθυμητός αριθμός συγκατοίκων:</strong> {$profile['Profile']['max_roommates']}";
 
