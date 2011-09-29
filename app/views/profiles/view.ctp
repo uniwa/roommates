@@ -12,13 +12,13 @@
     ?>
     <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
 
-    <p class="smoking"> <?php if ($profile['Profile']['smoker']) echo "Δεν"; ?> Είμαι Καπνιστής.</p>
+    <p class="smoking"> <?php if (!$profile['Profile']['smoker']) echo "Δεν"; ?> Είμαι Καπνιστής.</p>
 
-    <p class="pet"> <?php if ($profile['Profile']['pet']) echo "Δεν" ?> 'Εχω Κατοικίδιο.</p>
+    <p class="pet"> <?php if (!$profile['Profile']['pet']) echo "Δεν" ?> 'Εχω Κατοικίδιο.</p>
 
-    <p class="kid"> <?php if ($profile['Profile']['child']) echo "Δεν" ?> 'Εχω παιδί.</p>
+    <p class="kid"> <?php if (!$profile['Profile']['child']) echo "Δεν" ?> 'Εχω παιδί.</p>
 
-    <p class="couple"><?php if ($profile['Profile']['couple']) echo "Δεν" ?>Είμαστε Ζευγάρι.</p>
+    <p class="couple"><?php if (!$profile['Profile']['couple']) echo "Δεν" ?>Είμαστε Ζευγάρι.</p>
 
     <p class="rmates">Επιθυμώ να συγκατοικήσω με το πολυ <?php echo $profile['Profile']['max_roommates'] ?> άτομα.</p>
 </div>

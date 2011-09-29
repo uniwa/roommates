@@ -59,3 +59,53 @@
 		endforeach;
 	?>
 </table>
+
+
+    <ul class="thelist">
+
+        <?php
+		$oddLine = true;
+		foreach ($profiles as $profile):
+			$rowCSS = ($oddLine)?'0':'1';
+			$rowCSS = "bgcolor".$rowCSS;
+	?>
+
+
+        <li>
+            <div class="photo">
+                <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
+
+            </div>
+            <div class="info">
+                <?php echo $this->Html->link($profile['Profile']['firstname'].' '.$profile['Profile']['lastname'],array('controller' => 'profiles',
+			'action' => 'view', $profile['Profile']['id'])); ?>
+
+               Ηλικία: <?php echo $profile['Profile']['age']; ?>
+<br />
+    <?php if ($profile['Profile']['sex'])
+        echo '<p class="female">Γυναίκα.</p>';
+    else
+        echo '<p class="male">Άνδρας.</p>';
+    ?>
+    <p class="smoking"> <?php if (!$profile['Profile']['smoker']) echo "Δεν"; ?> Είμαι Καπνιστής.</p>
+
+    <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
+
+
+            </div>
+
+            <div class="aboutme">
+
+            </div>
+
+        </li>
+
+
+
+            <?php
+		$oddLine = !$oddLine;
+		endforeach;
+
+	?>
+
+    </ul>
