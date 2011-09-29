@@ -85,7 +85,7 @@ class ProfilesController extends AppController {
 
         $genderLabels = array('Άνδρας', 'Γυναίκα');
         if(($searchArgs['gender'] != '') && ($searchArgs['gender'] < 2)) {
-            $searchconditions['Profile.gender'] = $genderLabels[$searchArgs['gender']];
+            $searchconditions['Profile.gender'] = $searchArgs['gender'];
         }
 
         if(($searchArgs['smoker'] != '') && ($searchArgs['smoker'] < 2)) {

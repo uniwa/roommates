@@ -35,11 +35,8 @@
 		<td><?php echo $this->Html->link($profile['Profile']['lastname'],array('controller' => 'profiles',
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
 		<td><?php echo date('Y') - $profile['Profile']['dob']; ?></td>
-		<?php
-//			$genderLabels = array('άνδρας', 'γυναίκα');
-		?>
-		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
 
+		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
 		<td><?php echo $profile['Profile']['email']; ?></td>
 		<td><?php echo $profile['Profile']['phone']; ?></td>
 		<td><?php echo $profile['Profile']['smoker']; ?></td>
