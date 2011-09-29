@@ -17,7 +17,7 @@
 
     <p class="mail">email: <?php echo $profile['Profile']['email'] ?></p>
 
-    <?php if ($profile['Profile']['sex'])
+    <?php if ($profile['Profile']['gender'])
         echo '<p class="female">Γυναίκα.</p>';
     else
         echo '<p class="male">Άνδρας.</p>';

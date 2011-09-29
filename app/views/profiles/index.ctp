@@ -1,7 +1,8 @@
 <h1>Kατάλογος Δημόσιων Προφίλ</h1>
+<?php echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?>
 
-<p><?php echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?></p>
-<p><?php echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?></p>
+
+<!--<p>--><?php //echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?><!--</p>-->
 <!-- OLD view
 <table>
 
@@ -35,9 +36,9 @@
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
 		<td><?php echo $profile['Profile']['age']; ?></td>
 		<?php
-			$sexLabels = array('άνδρας', 'γυναίκα');
+			$genderLabels = array('άνδρας', 'γυναίκα');
 		?>
-		<td><?php echo $sexLabels[$profile['Profile']['sex']]; ?></td>
+		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
 
 		<td><?php echo $profile['Profile']['email']; ?></td>
 		<td><?php echo $profile['Profile']['phone']; ?></td>

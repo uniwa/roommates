@@ -5,7 +5,7 @@
 	$minoptions = array('label' => 'από');
 	$maxoptions = array('label' => 'μέχρι');
   
-	$sexoptions = array('Ανδρας', 'Γυναίκα', 'Αδιάφορο');
+	$genderoptions = array('Ανδρας', 'Γυναίκα', 'Αδιάφορο');
 	$options = array('Ναι', 'Οχι', 'Αδιάφορο');
 
 
@@ -13,7 +13,7 @@
 	echo $this->Form->input('min_age', $minoptions);
 	echo $this->Form->input('max_age', $maxoptions)."\n";
 
-	echo 'Φύλο'. $this->Form->select('sex', $sexoptions) ."\n";
+	echo 'Φύλο'. $this->Form->select('gender', $sexoptions) ."\n";
 	echo 'Καπνιστής'. $this->Form->select('smoker', $options) ."\n";
 	echo 'Κατοικίδιο'. $this->Form->select('pet', $options) ."\n";
 	echo 'Παιδί'. $this->Form->select('child', $options) ."\n";
