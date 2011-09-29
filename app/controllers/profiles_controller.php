@@ -32,7 +32,7 @@ class ProfilesController extends AppController {
         }
 
         $dob = array();
-        foreach ( range(1920, (int)date('Y')) as $year ) {
+        foreach ( range((int)date('Y'), 1920) as $year ) {
             $dob[$year] = $year;
         }
         $this->set('available_birth_dates', $dob);
