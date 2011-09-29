@@ -30,7 +30,13 @@ class ProfilesController extends AppController {
                 $this->redirect(array('action' => 'index'));
             }
         }
-    }	
+
+        $dob = array();
+        foreach ( range(1920, (int)date('Y')) as $year ) {
+            $dob[] = $year;
+        }
+        $this->set('available_birth_dates', $dob);
+    }
 	
     function delete($id) {
         if ($this->Profile->delete($id)) {
