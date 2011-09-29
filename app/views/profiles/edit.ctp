@@ -10,7 +10,7 @@
 	echo $this->Form->input('Profile.sex', array(
 	'type' => 'radio',
 	'label' => 'Φύλο',
-	'options' => array('1'=>'Άνδρας', '0'=>'Γυναίκα')
+	'options' => array('0'=>'Άνδρας', '1'=>'Γυναίκα')
 	));
 
 	echo $this->Form->input('phone', array('label' => 'Τηλέφωνο'));

@@ -4,10 +4,10 @@
 <p><?php echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?></p>
 
 <table>
-	<tr>
+
 	<tr>
         <td>όνομα</td>
-		<td>επίθετο</td>
+	<td>επίθετο</td>
         <td>ηλικία</td>
         <td>φύλο</td>
 <!--		

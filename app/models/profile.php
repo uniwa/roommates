@@ -3,6 +3,7 @@
 class Profile extends AppModel {
     var $name = 'Profile';
     var $hasMany = 'House';
+   // var $belongsTo = array('Preference');
 
     var $validate = array(
 	'firstname' => array(

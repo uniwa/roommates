@@ -106,9 +106,9 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
---
+-------------------------------------------
 -- Table structure for table `preferences`
---
+-------------------------------------------
 DROP TABLE IF EXISTS `roommates`.`preferences` ;
 
 CREATE TABLE IF NOT EXISTS `preferences` (
