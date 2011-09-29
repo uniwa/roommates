@@ -51,7 +51,7 @@
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
 		<td><?php echo $this->Html->link($profile['Profile']['lastname'],array('controller' => 'profiles',
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
-		<td><?php echo date('Y') - $profile['Profile']['dob']; ?></td>
+		<td><?php echo $profile['Profile']['age']; ?></td>
 		<?php
 			$genderLabels = array('άνδρας', 'γυναίκα');
 		?>
