@@ -2,10 +2,14 @@
 <?php
    echo $this->Form->create('Profile', array('action'=>'add'));
 
-	echo $this->Form->input('Profile.firstname', array('label' => 'Όνομα'));
-	echo $this->Form->input('Profile.lastname', array('label' => 'Επώνυμο'));
-	echo $this->Form->input('Profile.email', array('label' => 'Email'));
-	echo $this->Form->input('Profile.age', array('label' => 'Ηλικία'));
+
+	echo $this->Form->input('firstname', array('label' => 'Όνομα'));
+	echo $this->Form->input('lastname', array('label' => 'Επώνυμο'));
+	echo $this->Form->input('email', array('label' => 'Email'));
+	//echo $this->Form->input('age', array('label' => 'Ηλικία'));a
+    echo $form->input('dob', array('label' => 'Ημερομηνία γέννησης', 'type' => 'select',
+                    'options' => $available_birth_dates));
+
 
 	echo $this->Form->radio('Profile.gender',  array('0' => 'Άνδρας', '1' => 'Γυναίκα'),array('legend'=>false));
 
@@ -37,14 +41,14 @@ echo $this->Form->input('Profile.visible', array('checked' => true ,'label' =>'�
 	echo $this->Form->input('Preference.mates_min', array('label' => 'Αριθμός Συγκατοίκων από'));
 	echo $this->Form->input('Preference.mates_max', array('label' => 'έως'));
 
-/*
-    echo 'Φύλο'. $this->Form->select('sex', $sexoptions);
+
+/*<?php
+    echo 'Φύλο'. $this->Form->select('gender', $genderLabels);
     echo 'Καπνιστής'. $this->Form->select('smoker', $options);
     echo 'Κατοικίδιο'. $this->Form->select('pet', $options);
     echo 'Παιδί'. $this->Form->select('child', $options);
     echo 'Ζευγάρι'. $this->Form->select('couple', $options);
 */
-
     echo $this->Form->end('Υποβολή');
 ?>
 

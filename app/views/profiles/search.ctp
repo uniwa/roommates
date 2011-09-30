@@ -10,9 +10,9 @@
 	echo $this->Form->input('agemax', $agemaxoptions)."\n";
 	echo $this->Form->input('max_roommates', $maxmatesoptions);
 	echo "<br />\n";
-	$sexoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
+	$genderoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 	$options = array('όχι', 'ναι', 'αδιάφορο');
-	echo 'φύλο'. $this->Form->select('gender', $sexoptions) ."\n";
+	echo 'φύλο'. $this->Form->select('gender', $genderoptions) ."\n";
 	echo 'καπνιστής'. $this->Form->select('smoker', $options) ."\n";
 	echo 'κατοικίδιο'. $this->Form->select('pet', $options) ."\n";
 	echo 'παιδί'. $this->Form->select('child', $options) ."\n";
@@ -53,9 +53,9 @@
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
 		<td><?php echo $profile['Profile']['age']; ?></td>
 		<?php
-			$sexLabels = array('άνδρας', 'γυναίκα');
+			$genderLabels = array('άνδρας', 'γυναίκα');
 		?>
-		<td><?php echo $sexLabels[$profile['Profile']['sex']]; ?></td>
+		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
 <!--
 		<td><?php echo $profile['Profile']['email']; ?></td>
 		<td><?php echo $profile['Profile']['phone']; ?></td>

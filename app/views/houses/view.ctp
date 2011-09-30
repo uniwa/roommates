@@ -55,3 +55,13 @@
     <!-- free text description -->
     <p><span class="bold">Περιγραφή:</span> <?php echo $house['House']['description']?></p>
 </div>
+
+
+
+<div id="actions">
+ <?php echo $html->link('Edit', array('action' => 'edit', $house['House']['id']));?>
+ <?php echo $html->link('Delete', array('action' => 'delete', $house['House']['id']), null, 'Are you sure?')?>
+</div>
+    
+
+

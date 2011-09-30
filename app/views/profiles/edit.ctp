@@ -5,7 +5,11 @@
 	echo $this->Form->input('firstname', array('label' => 'Όνομα'));
 	echo $this->Form->input('lastname', array('label' => 'Επώνυμο'));
 	echo $this->Form->input('email', array('label' => 'Email'));
-	echo $this->Form->input('age', array('label' => 'Ηλικία'));
+//	echo $this->Form->input('age', array('label' => 'Ηλικία'));
+
+    echo $form->input('dob', array('label' => 'Ημερομηνία γέννησης', 'type' => 'select',
+                    'options' => $available_birth_dates));
+
 
 	echo $this->Form->radio('gender',  array('0' => 'Άνδρας', '1' => 'Γυναίκα'),array('legend'=>false));
 

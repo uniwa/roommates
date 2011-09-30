@@ -1,13 +1,14 @@
 <h1>Kατάλογος Δημόσιων Προφίλ</h1>
+<?php echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?>
 
-<p><?php echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?></p>
-<p><?php echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?></p>
+
+<!--<p>--><?php //echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?><!--</p>-->
 <!-- OLD view
 <table>
 
 	<tr>
         <td>όνομα</td>
-	<td>επίθετο</td>
+		<td>επίθετο</td>
         <td>ηλικία</td>
         <td>φύλο</td>
 
@@ -33,12 +34,9 @@
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
 		<td><?php echo $this->Html->link($profile['Profile']['lastname'],array('controller' => 'profiles',
 			'action' => 'view', $profile['Profile']['id'])); ?></td>
-		<td><?php echo $profile['Profile']['age']; ?></td>
-		<?php
-			$sexLabels = array('άνδρας', 'γυναίκα');
-		?>
-		<td><?php echo $sexLabels[$profile['Profile']['sex']]; ?></td>
+		<td><?php echo date('Y') - $profile['Profile']['dob']; ?></td>
 
+		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
 		<td><?php echo $profile['Profile']['email']; ?></td>
 		<td><?php echo $profile['Profile']['phone']; ?></td>
 		<td><?php echo $profile['Profile']['smoker']; ?></td>

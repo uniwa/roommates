@@ -5,6 +5,10 @@ class Profile extends AppModel {
     var $hasMany = array('House');
 
 
+    var $virtualFields = array(
+        'age' => "YEAR(NOW()) - Profile.dob"
+    );
+
     var $validate = array(
 	'firstname' => array(
 		'rule' => 'alphaNumeric',
@@ -17,6 +21,10 @@ class Profile extends AppModel {
 	'email' => array(
 		'rule' => 'email',
 		'message' => 'Εισάγετε μία έγκυρη ηλεκτρονική διεύθυνση.'),
+
+	'dob' => array(
+		'rule' => array('comparison', '>=', 1920),
+		'message' => 'Βάλτε μια αποδεκτή ημερομηνία γέννησης.'),
 
 	'age' => array(
 		'rule' => array('comparison', '>=', 18),
@@ -42,7 +50,6 @@ class Profile extends AppModel {
 		'rule' => '/^[1-9]{1}$/i',
 		'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]')
 	);
-
 }
 
 ?>
