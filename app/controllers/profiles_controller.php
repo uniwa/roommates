@@ -3,13 +3,11 @@ class ProfilesController extends AppController {
 
     var $name = 'Profiles';
     var $components = array('RequestHandler');
-<<<<<<< HEAD
 
-=======
  //   var $profile = 
  //   var $preferences = 
-//	var $uses = array('House');
->>>>>>> 607acef625dd643fb06016886f2a674fef69ebbb
+ //	var $uses = array('House');
+
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -58,18 +56,17 @@ class ProfilesController extends AppController {
 
 
     function edit($id = null) {
-        //$preferenceid = $this->Profile->Preference->find(array('id'=> $this->data['Preference']['id']), array('id'));
-        //$this->Profile->Preference->id = $preferenceid['Preference']['id'];
-        //$this->Profile->saveAll($this->data);
 
+        $this->Profile->id = $id;
+//      $koko = $this->Profile->Preference->find('all', array('fields' =>'id'));
+//      $koko = $this->data['Preference']['id'];
+//      var_dump($koko); die();
 
-          $this->Profile->id = $id;
-        $this->Profile->Preference->id = $this->Profile->Preference->find('all', array('field' =>'Preference.id'));
-      
-
+        
         if (empty($this->data)) {
             $this->data = $this->Profile->read();
-        } else {       
+        } else {  
+     
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
                 $this->redirect(array('action'=> 'index'));
@@ -84,25 +81,6 @@ class ProfilesController extends AppController {
      }
 
 
-
-/*    function edit($id = null) {
-        $this->Profile->id = $id;
-        if (empty($this->data)) {
-            $this->data = $this->Profile->read();
-        } else {
-            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
-                $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-                $this->redirect(array('action'=> 'index'));
-            }
-        }
-
-        $dob = array();
-        foreach ( range((int)date('Y') - 17, date('Y') - 80) as $year ) {
-            $dob[$year] = $year;
-        }
-        $this->set('available_birth_dates', $dob);
-     }
-*/
     function search() {
         $searchArgs = $this->data['Profile'];
 

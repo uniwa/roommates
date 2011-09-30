@@ -46,6 +46,7 @@
     echo 'Ζευγάρι'. $this->Form->select('couple', $options);
 */
 
-   	echo $this->Form->input('id', array('type' => 'hidden'));
+   	echo $this->Form->input('Profile.id', array('type' => 'hidden'));
+   	echo $this->Form->input('Preference.id', array('type' => 'hidden'));
     echo $this->Form->end('Υποβολή');
 ?>
