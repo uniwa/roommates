@@ -3,7 +3,13 @@ class ProfilesController extends AppController {
 
     var $name = 'Profiles';
     var $components = array('RequestHandler');
+<<<<<<< HEAD
 
+=======
+ //   var $profile = 
+ //   var $preferences = 
+//	var $uses = array('House');
+>>>>>>> 607acef625dd643fb06016886f2a674fef69ebbb
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -34,7 +40,7 @@ class ProfilesController extends AppController {
         }
 
         $dob = array();
-        foreach ( range((int)date('Y'), 1920) as $year ) {
+        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
 		$genderLabels = array('άνδρας', 'γυναίκα');
@@ -91,7 +97,7 @@ class ProfilesController extends AppController {
         }
 
         $dob = array();
-        foreach ( range((int)date('Y'), 1920) as $year ) {
+        foreach ( range((int)date('Y') - 17, date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
         $this->set('available_birth_dates', $dob);
@@ -102,6 +108,12 @@ class ProfilesController extends AppController {
 
         // set the conditions
         $searchconditions = array('Profile.visible' => 1);
+
+		if(!empty($this->data['User']['hasHouse'])){
+			$ownerId = $this->Profile->House->find('all', array('fields' => 'DISTINCT profile_id'));
+			$ownerId = Set::extract($ownerId, '/House/profile_id');
+			$searchconditions['Profile.id'] = $ownerId;
+		};
 
         if(!empty($searchArgs['agemin'])) {
             //$searchconditions['Profile.age >'] = $searchArgs['agemin'];

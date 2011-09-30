@@ -17,6 +17,8 @@
 	echo 'κατοικίδιο'. $this->Form->select('pet', $options) ."\n";
 	echo 'παιδί'. $this->Form->select('child', $options) ."\n";
 	echo 'ζευγάρι'. $this->Form->select('couple', $options) ."<br /><br />\n";
+	echo 'διαθέτει σπίτι'.$this->Form->checkbox('User.hasHouse',
+		array('value' => 1, 'checked' => false, 'hiddenField' => false));
 
 	echo $this->Form->end('αναζήτηση');
 ?>
