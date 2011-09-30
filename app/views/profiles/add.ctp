@@ -21,10 +21,7 @@
 	echo $this->Form->input('Profile.child', array('label' => 'Παιδί'));
 	echo $this->Form->input('Profile.couple', array('label' => 'Ζευγάρι'));
 	echo $this->Form->input('Profile.max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
-
-
-
-echo $this->Form->input('Profile.visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
+    echo $this->Form->input('Profile.visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 ?>
 
 

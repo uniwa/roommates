@@ -27,8 +27,7 @@ class ProfilesController extends AppController {
 
     function add(){
     	if (!empty($this->data)) {
-                //var_dump($this->data); die();
-             unset($this->Profile->Preference->validate['preferences_id']);         
+             //var_dump($this->data); die();     
     	     $this->Profile->saveAll($this->data, array('validate'=>'first'));
 		     $this->Session->setFlash('Το προφίλ προστέθηκε.');
 			 $this->redirect(array('action' => 'index'));
@@ -42,26 +41,8 @@ class ProfilesController extends AppController {
 		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
     }	
-  
-/*    function add(){
-        if (!empty($this->data)) {
-            if ($this->Profile->save($this->data)) {
-                $this->Session->setFlash('Το προφίλ προστέθηκε.');
-                $this->redirect(array('action' => 'index'));
-            }
-        }
 
 
-        $dob = array();
-        foreach ( range((int)date('Y'), 1920) as $year ) {
-            $dob[$year] = $year;
-        }
-		$genderLabels = array('άνδρας', 'γυναίκα');
-		$this->set('genderLabels', $genderLabels);
-        $this->set('available_birth_dates', $dob);
-    }
-*/
-	
     function delete($id) {
         if ($this->Profile->delete($id)) {
             $this->Session->setFlash('Το προφίλ διεγράφη.');
@@ -69,12 +50,21 @@ class ProfilesController extends AppController {
         }
     }
 
+
     function edit($id = null) {
-        $this->Profile->id = $id;
+        //$preferenceid = $this->Profile->Preference->find(array('id'=> $this->data['Preference']['id']), array('id'));
+        //$this->Profile->Preference->id = $preferenceid['Preference']['id'];
+        //$this->Profile->saveAll($this->data);
+
+
+          $this->Profile->id = $id;
+        $this->Profile->Preference->id = $this->Profile->Preference->find('all', array('field' =>'Preference.id'));
+      
+
         if (empty($this->data)) {
             $this->data = $this->Profile->read();
-        } else {
-            if ($this->Profile->save($this->data)) {
+        } else {       
+            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
                 $this->redirect(array('action'=> 'index'));
             }
@@ -87,6 +77,26 @@ class ProfilesController extends AppController {
         $this->set('available_birth_dates', $dob);
      }
 
+
+
+/*    function edit($id = null) {
+        $this->Profile->id = $id;
+        if (empty($this->data)) {
+            $this->data = $this->Profile->read();
+        } else {
+            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
+                $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
+                $this->redirect(array('action'=> 'index'));
+            }
+        }
+
+        $dob = array();
+        foreach ( range((int)date('Y'), 1920) as $year ) {
+            $dob[$year] = $year;
+        }
+        $this->set('available_birth_dates', $dob);
+     }
+*/
     function search() {
         $searchArgs = $this->data['Profile'];
 

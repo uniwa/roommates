@@ -14,19 +14,38 @@
 	echo $this->Form->radio('gender',  array('0' => 'Άνδρας', '1' => 'Γυναίκα'),array('legend'=>false));
 
 
-
-	echo $this->Form->input('phone', array('label' => 'Τηλέφωνο'));
-	echo $this->Form->input('smoker', array('label' =>'Καπνιστής'));
-	echo $this->Form->input('pet', array('label' =>'Κατοικίδιο'));
-	echo $this->Form->input('child', array('label' => 'Παιδί'));
-	echo $this->Form->input('couple', array('label' => 'Ζευγάρι'));
-	echo $this->Form->input('max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
-echo $this->Form->input('visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
-
-	echo $this->Form->input('id', array('type' => 'hidden'));
-
-	echo $this->Form->end('Αποθήκευση');
+	echo $this->Form->input('Profile.phone', array('label' => 'Τηλέφωνο'));
+	echo $this->Form->input('Profile.smoker', array('label' =>'Καπνιστής'));
+	echo $this->Form->input('Profile.pet', array('label' =>'Κατοικίδιο'));
+	echo $this->Form->input('Profile.child', array('label' => 'Παιδί'));
+	echo $this->Form->input('Profile.couple', array('label' => 'Ζευγάρι'));
+	echo $this->Form->input('Profile.max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
+    echo $this->Form->input('Profile.visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 
 ?>
 
+<h2>Κριτήρια Επιλογής Συγκατοίκου</h2>
 
+<?php
+
+    $sexoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
+    $options = array('Ναι', 'Όχι', 'Αδιάφορο');
+
+	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
+	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
+
+	echo $this->Form->input('Preference.mates_min', array('label' => 'Αριθμός Συγκατοίκων από'));
+	echo $this->Form->input('Preference.mates_max', array('label' => 'έως'));
+
+
+/*<?php
+    echo 'Φύλο'. $this->Form->select('gender', $genderLabels);
+    echo 'Καπνιστής'. $this->Form->select('smoker', $options);
+    echo 'Κατοικίδιο'. $this->Form->select('pet', $options);
+    echo 'Παιδί'. $this->Form->select('child', $options);
+    echo 'Ζευγάρι'. $this->Form->select('couple', $options);
+*/
+
+   	echo $this->Form->input('id', array('type' => 'hidden'));
+    echo $this->Form->end('Υποβολή');
+?>
