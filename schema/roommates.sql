@@ -141,9 +141,9 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `modified` DATETIME DEFAULT NULL ,
   `preference_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`),
-  INDEX `fk_preferences_id` (`preferences_id` ASC),
-  CONSTRAINT `fk_profile_preferences`
-    FOREIGN KEY (`preferences_id`)
+  INDEX `fk_preference_id` (`preference_id` ASC),
+  CONSTRAINT `fk_profile_preference`
+    FOREIGN KEY (`preference_id`)
     REFERENCES `roommates`.`preferences`(`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
