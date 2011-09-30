@@ -3,8 +3,7 @@ class ProfilesController extends AppController {
 
     var $name = 'Profiles';
     var $components = array('RequestHandler');
- //   var $profile = 
- //   var $preferences = 
+
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -30,19 +29,36 @@ class ProfilesController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 	}
-    }*/	
+    }
+*/	
 
 
     function add(){
-	if (!empty($this->data)) {
-		if ($this->Profile->save($this->data)){
-			$this->Session->setFlash('Το προφίλ προστέθηκε.');
-			$this->redirect(array('action' => 'index'));
-		}
-	}
+    	if (!empty($this->data)) {
+                //var_dump($this->data); die();
+             unset($this->Profile->Preference->validate['preferences_id']);         
+    	     $this->Profile->saveAll($this->data, array('validate'=>'first'));
+		     $this->Session->setFlash('Το προφίλ προστέθηκε.');
+			 $this->redirect(array('action' => 'index'));
+        }
     }	
+  
+
+/*    function add(){
+    	if (!empty($this->data)) {
+                
+                $preference = $this->Preference->save($this->data);
+                if (!empty($profile)){
+                        this->data['Preference'][]
+                }
 
 
+	    	    $this->Profile->saveAll($this->data, array('validate'=>'first'));
+		    	$this->Session->setFlash('Το προφίλ προστέθηκε.');
+			    $this->redirect(array('action' => 'index'));
+        }
+    }
+*/
 	
     function delete($id){
 	if ($this->Profile->delete($id)){
