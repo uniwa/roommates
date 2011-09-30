@@ -106,6 +106,9 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `roommates`.`preferences`
+-- -----------------------------------------------------
 DROP TABLE IF EXISTS `roommates`.`preferences` ;
 
 CREATE TABLE IF NOT EXISTS `preferences` (
@@ -114,6 +117,11 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `age_max` tinyint(4) DEFAULT NULL,
   `mates_min` tinyint(4) DEFAULT NULL,
   `mates_max` tinyint(4) DEFAULT NULL,
+  `pref_gender` TINYINT(2) DEFAULT NULL,
+  `pref_smoker` TINYINT(2)  NULL ,
+  `pref_pet` TINYINT(2)  NULL ,
+  `pref_child` TINYINT(2)  NULL ,
+  `pref_couple` TINYINT(2)  NULL ,
   PRIMARY KEY (`id`))
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8;
