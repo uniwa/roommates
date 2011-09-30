@@ -29,7 +29,7 @@
 
 <?php
 
-    $sexoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
+    $genderLabels = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
     $options = array('Ναι', 'Όχι', 'Αδιάφορο');
 
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
@@ -38,14 +38,13 @@
 	echo $this->Form->input('Preference.mates_min', array('label' => 'Αριθμός Συγκατοίκων από'));
 	echo $this->Form->input('Preference.mates_max', array('label' => 'έως'));
 
+    echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $genderLabels));
+    echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $options));
+    echo $this->Form->input('Preference.pref_pet', array('label' => 'Κατοικίδιο', 'type' => 'select', 'options' => $options));
+    echo $this->Form->input('Preference.pref_child', array('label' => 'Παιδί', 'type' => 'select', 'options' => $options));
+    echo $this->Form->input('Preference.pref_couple', array('label' => 'Ζευγάρι', 'type' => 'select', 'options' => $options));
 
-/*<?php
-    echo 'Φύλο'. $this->Form->select('gender', $genderLabels);
-    echo 'Καπνιστής'. $this->Form->select('smoker', $options);
-    echo 'Κατοικίδιο'. $this->Form->select('pet', $options);
-    echo 'Παιδί'. $this->Form->select('child', $options);
-    echo 'Ζευγάρι'. $this->Form->select('couple', $options);
-*/
+
     echo $this->Form->end('Υποβολή');
 ?>
 
