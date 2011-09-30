@@ -370,9 +370,7 @@ p {
     float: left;
 }
 
-
-
-#ProfileAddForm label ,#ProfileEditForm label {
+#ProfileAddForm label, #ProfileEditForm label {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 12px;
     font-weight: bold;
@@ -382,7 +380,7 @@ p {
     display: inline-block;
 }
 
-#ProfileAddForm input[type=text] ,#ProfileEditForm input[type=text] {
+#ProfileAddForm input[type=text], #ProfileEditForm input[type=text] {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     padding: 4px;
     border: solid 1px #C6C6C6;
@@ -420,6 +418,7 @@ input[type=submit] {
 
 #actions {
     float: right;
+    padding: 20px;
 }
 
 #actions a {
@@ -440,10 +439,8 @@ input[type=submit] {
     -webkit-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
 }
 
-
-
-#HouseAddForm label{
-        font-family: Helvetica, Verdana, Arial, sans-serif;
+#HouseAddForm label,#HouseEditForm label {
+    font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 12px;
     font-weight: bold;
     color: #21759B;
@@ -451,7 +448,8 @@ input[type=submit] {
     min-width: 120px;
     display: inline-block;
 }
-#HouseAddForm input[type=text], #HouseAddForm textarea{
+
+#HouseAddForm input[type=text], #HouseAddForm textarea ,#HouseEditForm input[type=text],#HouseEditForm textarea{
     font-family: Helvetica, Verdana, Arial, sans-serif;
     padding: 4px;
     border: solid 1px #C6C6C6;
@@ -464,11 +462,44 @@ input[type=submit] {
 }
 
 select {
-background: #AACFE4;
-color: #21759B;
-padding: 4px;
-cursor: pointer;
-border: solid 1px #21759B;
-background: #DFE4EE;
-max-width: 200px;
+    background: #AACFE4;
+    color: #21759B;
+    padding: 4px;
+    cursor: pointer;
+    border: solid 1px #21759B;
+    background: #DFE4EE;
+    max-width: 200px;
 }
+
+.cb1 {
+    background: url(../img/cb1.png) no-repeat left top;
+    padding: 7px 10px;
+}
+
+.cb0 {
+    background: url(../img/cb0.png) no-repeat left top;
+    padding: 7px 10px;
+
+}
+
+.houseprofile {
+    /*TODO remove*/
+    background-color: whiteSmoke;
+    background-image: -moz-linear-gradient(top, whiteSmoke, #E2E2E2);
+    background-image: -o-linear-gradient(top, whiteSmoke, #E2E2E2);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(whiteSmoke), to(#E2E2E2));
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: inset 0 1px white, 0 1px #A7A7A7;
+    -moz-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
+    -webkit-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
+    border:  3px double #ccc;
+}
+
+
+.textarea label{
+    float:left;
+}
+
+

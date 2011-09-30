@@ -26,7 +26,7 @@ echo $form->input('security_doors', array('label' => 'Πόρτες ασφαλε�
 echo $form->input('disability_facilities', array('label' => 'Προσβάσιμο από ΑΜΕΑ'));
 echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης'));
-echo $form->input('description', array('label' => 'Περιγραφή'));
+echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 
 echo $form->end('Save house');
 ?>
