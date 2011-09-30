@@ -23,7 +23,7 @@ class Profile extends AppModel {
 		'message' => 'Εισάγετε μία έγκυρη ηλεκτρονική διεύθυνση.'),
 
 	'dob' => array(
-		'rule' => array('comparison', '>=', 1920),
+		'rule' => array('isValidDate'),
 		'message' => 'Βάλτε μια αποδεκτή ημερομηνία γέννησης.'),
 
 	'agemin' => array(
@@ -46,6 +46,11 @@ class Profile extends AppModel {
 		'rule' => '/^[1-9]{1}$/i',
 		'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]')
 	);
+
+    function isValidDate($check) {
+        $dob = (int)$check["dob"];
+        return $dob >= date('Y')-80 && $dob <= date('Y')-17;
+    }
 }
 
 ?>
