@@ -442,3 +442,33 @@ input[type=submit] {
 
 
 
+#HouseAddForm label{
+        font-family: Helvetica, Verdana, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #21759B;
+    line-height: 19px;
+    min-width: 120px;
+    display: inline-block;
+}
+#HouseAddForm input[type=text], #HouseAddForm textarea{
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    padding: 4px;
+    border: solid 1px #C6C6C6;
+    border-bottom: solid 1px #E3E3E3;
+    color: #333;
+    -moz-box-shadow: inset 0 4px 6px #ccc;
+    -webkit-box-shadow: inset 0 4px 6px #ccc;
+    box-shadow: inset 0 4px 6px #ccc;
+
+}
+
+select {
+background: #AACFE4;
+color: #21759B;
+padding: 4px;
+cursor: pointer;
+border: solid 1px #21759B;
+background: #DFE4EE;
+max-width: 200px;
+}
