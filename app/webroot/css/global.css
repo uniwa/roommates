@@ -502,4 +502,26 @@ select {
     float:left;
 }
 
+h1{
+	font-size: 24px;
+	font-weight: 900;
+	margin: 0px 0px 30px 0px;
+}
 
+.topframe{
+	margin: 12px 24px 24px 24px;
+	font-size: 16px;
+}
+
+.short-textbox{
+	width: 50px;
+}
+
+.short-field{
+	float: left;
+	margin: 0px 12px 0px 0px;
+}
+
+.clear-all{
+	clear: all;
+}
