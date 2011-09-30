@@ -140,7 +140,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `visible` TINYINT(1)  NULL ,
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,
-  `preferences_id` INT DEFAULT NULL ,
+  `preference_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`),
   INDEX `fk_preferences_id` (`preferences_id` ASC),
   CONSTRAINT `fk_profile_preferences`
