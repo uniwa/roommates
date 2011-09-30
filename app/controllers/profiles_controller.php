@@ -24,17 +24,6 @@ class ProfilesController extends AppController {
         $this->set('profile', $this->Profile->read());
     }
 
-<<<<<<< HEAD
-/*    function add(){
-	if (!empty($this->data)) {
-		if ($this->Profile->save($this->data)){
-			$this->Session->setFlash('Το προφίλ προστέθηκε.');
-			$this->redirect(array('action' => 'index'));
-		}
-	}
-    }
-*/	
-
 
     function add(){
     	if (!empty($this->data)) {
@@ -44,32 +33,24 @@ class ProfilesController extends AppController {
 		     $this->Session->setFlash('Το προφίλ προστέθηκε.');
 			 $this->redirect(array('action' => 'index'));
         }
+
+        $dob = array();
+        foreach ( range((int)date('Y'), 1920) as $year ) {
+            $dob[$year] = $year;
+        }
+		$genderLabels = array('άνδρας', 'γυναίκα');
+		$this->set('genderLabels', $genderLabels);
+        $this->set('available_birth_dates', $dob);
     }	
   
-
 /*    function add(){
-    	if (!empty($this->data)) {
-                
-                $preference = $this->Preference->save($this->data);
-                if (!empty($profile)){
-                        this->data['Preference'][]
-                }
-
-
-	    	    $this->Profile->saveAll($this->data, array('validate'=>'first'));
-		    	$this->Session->setFlash('Το προφίλ προστέθηκε.');
-			    $this->redirect(array('action' => 'index'));
-        }
-    }
-*/
-=======
-    function add(){
         if (!empty($this->data)) {
             if ($this->Profile->save($this->data)) {
                 $this->Session->setFlash('Το προφίλ προστέθηκε.');
                 $this->redirect(array('action' => 'index'));
             }
         }
+
 
         $dob = array();
         foreach ( range((int)date('Y'), 1920) as $year ) {
@@ -79,7 +60,7 @@ class ProfilesController extends AppController {
 		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
     }
->>>>>>> c239597ab693a3e0c6c4f141d4725628dc552b5b
+*/
 	
     function delete($id) {
         if ($this->Profile->delete($id)) {
