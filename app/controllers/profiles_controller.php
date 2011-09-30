@@ -35,7 +35,7 @@ class ProfilesController extends AppController {
         }
 
         $dob = array();
-        foreach ( range((int)date('Y'), 1920) as $year ) {
+        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
 		$genderLabels = array('άνδρας', 'γυναίκα');
@@ -62,7 +62,7 @@ class ProfilesController extends AppController {
         }
 
         $dob = array();
-        foreach ( range((int)date('Y'), 1920) as $year ) {
+        foreach ( range((int)date('Y') - 17, date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
         $this->set('available_birth_dates', $dob);
