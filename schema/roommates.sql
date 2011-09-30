@@ -129,7 +129,6 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `lastname` VARCHAR(45) NOT NULL ,
   `email` VARCHAR(45) NOT NULL ,
   `dob` SMALLINT NOT NULL COMMENT 'date of birth',
-  `age` SMALLINT NOT NULL ,
   `gender` TINYINT(1) NOT NULL COMMENT '1->male, 0->female',
   `phone` VARCHAR(45) NULL ,
   `smoker` TINYINT(1)  NULL ,
@@ -140,11 +139,11 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `visible` TINYINT(1)  NULL ,
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,
-  `preferences_id` INT DEFAULT NULL ,
+  `preference_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`),
-  INDEX `fk_preferences_id` (`preferences_id` ASC),
-  CONSTRAINT `fk_profile_preferences`
-    FOREIGN KEY (`preferences_id`)
+  INDEX `fk_preference_id` (`preference_id` ASC),
+  CONSTRAINT `fk_profile_preference`
+    FOREIGN KEY (`preference_id`)
     REFERENCES `roommates`.`preferences`(`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
