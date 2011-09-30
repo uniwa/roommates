@@ -26,10 +26,6 @@ class Profile extends AppModel {
 		'rule' => array('comparison', '>=', 1920),
 		'message' => 'Βάλτε μια αποδεκτή ημερομηνία γέννησης.'),
 
-	'age' => array(
-		'rule' => array('comparison', '>=', 18),
-		'message' => 'Αποδεκτή ηλικία από 18 και άνω'),
-
 	'agemin' => array(
 		'rule' => array('between', 18, 98),
 		'message' => 'Enter age between 18 and 99'),
