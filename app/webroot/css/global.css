@@ -260,8 +260,8 @@ table a {
 
 p {
     /*to be removed*/
-
-    padding: 10px;
+    /*padding: 6px;*/
+    padding: 0.38em;
 }
 
 .name {
