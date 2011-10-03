@@ -1,11 +1,19 @@
 <?php
 $this->set('documentData', array(
-                'xmlns:dc' => 'http://purl.org/dc/elements/1.1/'));
-$this->set('channelData', array(
-                'title' => __("Πρόσφατες καταχωρήσεις σπιτιών.", true),
-                'link' => $this->Html->url('/', true),
-                'description' => __("Πρόσφατες καταχωρήσεις σπιτιών.", true),
-                'language' => 'el'));
+                'xmlns:atom' => 'http://www.w3.org/2005/Atom'));
+$channel = array(
+            'title' => __("Πρόσφατες καταχωρήσεις σπιτιών.", true),
+            'link' => $this->Html->url('/', true),
+            'description' => __("Πρόσφατες καταχωρήσεις σπιτιών.", true),
+            'language' => 'el',
+            'atom:link' => array(
+                'attrib' => array(
+                    'href' =>  $this->Html->url('/houses/index.rss', true),
+                    'rel' => 'self',
+                    'type' => 'application/rss+xml'))
+            );
+
+$this->set('channelData', $channel);
 
 foreach ($houses as $house) {
     $houseTime = strtotime($house['House']['modified']);

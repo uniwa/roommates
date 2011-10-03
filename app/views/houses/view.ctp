@@ -1,7 +1,7 @@
 <h1>Ενοικιάζεται</h1><div class="profile houseProfile">
     <div id="actions">
- <?php echo $html->link('Edit', array('action' => 'edit', $house['House']['id']));?>
- <?php echo $html->link('Delete', array('action' => 'delete', $house['House']['id']), null, 'Are you sure?')?>
+ <?php echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));?>
+ <?php echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;')?>
 </div>
         <div class="photo">
             <img src="<?php echo $this->webroot; ?>img/homedefault.png" alt="Home Picture" class="avatar"/>
@@ -29,7 +29,7 @@
         <span class="checkbox cb<?php echo $house['House']['solar_heater']?>">&nbsp;</span>
     </p>
     <p>
-        <span class="bold">Επιπλομένο:</span>
+        <span class="bold">Επιπλωμένο:</span>
         <span class="checkbox cb<?php echo $house['House']['furnitured']?>">&nbsp;</span>
     </p>
     <p>
