@@ -15,6 +15,16 @@ class HousesController extends AppController {
         $this->set('houses', $this->House->find('all'));
     }
 
+    function beforeFilter() {
+        parent::beforeFilter();
+
+        if(!class_exists('L10n'))
+            App::import('Core','L10n');
+
+        $this->L10n = new L10n();
+        $this->L10n->get('gr');
+    }
+
     function view($id = null) {
         $this->House->id = $id;
         $this->set('house', $this->House->read());
@@ -30,16 +40,8 @@ class HousesController extends AppController {
                 $this->redirect(array('action' => 'index'));
             }
         }
-            
-        $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
-        $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
-        $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));
 
-        $entries = array();
-        for($i = 1950; $i <= date('Y'); $i++) {
-            $entries[$i] = $i;
-        }
-        $this->set('available_constr_years', $entries);
+        $this->setAddEditVars();
     }
 
     function delete($id) {
@@ -60,6 +62,10 @@ class HousesController extends AppController {
             }
         }
 
+        $this->setAddEditVars();
+    }
+
+    private function setAddEditVars() {
         $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
         $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
         $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));

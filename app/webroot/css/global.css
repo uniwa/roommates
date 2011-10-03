@@ -260,8 +260,8 @@ table a {
 
 p {
     /*to be removed*/
-    /*padding: 6px;*/
-    padding: 0.38em;
+
+    padding: 10px;
 }
 
 .name {
@@ -506,6 +506,12 @@ h1{
 	font-size: 24px;
 	font-weight: 900;
 	margin: 0px 0px 30px 0px;
+}
+
+h2{
+	font-size: 20px;
+	font-weight: 900;
+	margin: 20px 0px 10px 0px;
 }
 
 .topframe{
