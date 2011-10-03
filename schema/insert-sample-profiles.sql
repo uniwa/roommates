@@ -1,3 +1,21 @@
+INSERT INTO `roommates`.`preferences` ( `age_min`,
+                                        `age_max`,
+                                        `mates_max`,
+                                        `pref_gender`,
+                                        `pref_smoker`,
+                                        `pref_pet`,
+                                        `pref_child`,
+                                        `pref_couple`)
+
+                                VALUES (18,
+                                        35,
+                                        2,
+                                        0, -- male
+                                        2,
+                                        1,
+                                        0,
+                                        0);
+
 -- insert Bob
 INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `lastname`, 
@@ -12,7 +30,8 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `max_roommates`,
                                     `visible`,
                                     `created`,
-                                    `modified`)
+                                    `modified`,
+                                    `preference_id`)
 
                             VALUES ('bob',
                                     'getaroommate',
@@ -27,8 +46,28 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     '2', -- max roommate#
                                     '1', -- visible
                                     NOW(),  --
-                                    NOW()); -- These are normally handled by cakephp
+                                    NOW(),
+                                    LAST_INSERT_ID()); -- These are normally handled by cakephp
  
+
+
+INSERT INTO `roommates`.`preferences` ( `age_min`,
+                                        `age_max`,
+                                        `mates_max`,
+                                        `pref_gender`,
+                                        `pref_smoker`,
+                                        `pref_pet`,
+                                        `pref_child`,
+                                        `pref_couple`)
+
+                                VALUES (18,
+                                        35,
+                                        1,
+                                        1, -- female
+                                        0,
+                                        2,
+                                        0,
+                                        0);
 
 -- insert Sally
 INSERT INTO `roommates`.`profiles` (`firstname`,
@@ -44,7 +83,8 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `max_roommates`,
                                     `visible`,
                                     `created`,
-                                    `modified`)
+                                    `modified`,
+                                    `preference_id`)
 
                             VALUES ('sally',
                                     'hasahouse',
@@ -59,8 +99,27 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     '1', -- max roommate#
                                     '1', -- visible
                                     NOW(),  --
-                                    NOW()); -- These are normally handled by cakephp
+                                    NOW(),
+                                    LAST_INSERT_ID()); -- These are normally handled by cakephp
 
+
+INSERT INTO `roommates`.`preferences` ( `age_min`,
+                                        `age_max`,
+                                        `mates_max`,
+                                        `pref_gender`,
+                                        `pref_smoker`,
+                                        `pref_pet`,
+                                        `pref_child`,
+                                        `pref_couple`)
+
+                                VALUES (18,
+                                        35,
+                                        2,
+                                        0, -- male
+                                        2,
+                                        2,
+                                        0,
+                                        0);
 -- insert david
 INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `lastname`, 
@@ -75,7 +134,8 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `max_roommates`,
                                     `visible`,
                                     `created`,
-                                    `modified`)
+                                    `modified`,
+                                    `preference_id`)
 
                             VALUES ('david',
                                     'isbroke',
@@ -90,7 +150,26 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     '1', -- max roommate#
                                     '1', -- visible
                                     NOW(),  --
-                                    NOW()); -- These are handled by cakephp
+                                    NOW(), 
+                                    LAST_INSERT_ID()); -- These are normally handled by cakephp
+
+INSERT INTO `roommates`.`preferences` ( `age_min`,
+                                        `age_max`,
+                                        `mates_max`,
+                                        `pref_gender`,
+                                        `pref_smoker`,
+                                        `pref_pet`,
+                                        `pref_child`,
+                                        `pref_couple`)
+
+                                VALUES (18,
+                                        35,
+                                        2,
+                                        1, -- male
+                                        1,
+                                        2,
+                                        2,
+                                        2);
 
 -- insert Clair
 INSERT INTO `roommates`.`profiles` (`firstname`,
@@ -106,7 +185,8 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `max_roommates`,
                                     `visible`,
                                     `created`,
-                                    `modified`)
+                                    `modified`,
+                                    `preference_id`)
 
                             VALUES ('clair',
                                     'issingle',
@@ -121,9 +201,27 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     '4', -- max roommate#
                                     '1', -- visible
                                     NOW(),  --
-                                    NOW()); -- These are normally handled by cakephp
+                                    NOW(),
+                                    LAST_INSERT_ID());
 
 
+INSERT INTO `roommates`.`preferences` ( `age_min`,
+                                        `age_max`,
+                                        `mates_max`,
+                                        `pref_gender`,
+                                        `pref_smoker`,
+                                        `pref_pet`,
+                                        `pref_child`,
+                                        `pref_couple`)
+
+                                VALUES (18,
+                                        35,
+                                        3,
+                                        2, -- male
+                                        2,
+                                        2,
+                                        2,
+                                        2);
 -- insert spock
 INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `lastname`, 
@@ -138,7 +236,8 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     `max_roommates`,
                                     `visible`,
                                     `created`,
-                                    `modified`)
+                                    `modified`,
+                                    `preference_id`)
 
                             VALUES ('spock',
                                     'isvulcan',
@@ -153,4 +252,6 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     '1', -- max roommate#
                                     '1', -- visible
                                     NOW(),  --
-                                    NOW()); -- These are handled by cakephp
+                                    NOW(), -- These are handled by cakephp
+                                    LAST_INSERT_ID());
+
