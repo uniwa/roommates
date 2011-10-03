@@ -6,8 +6,8 @@ class Profile extends AppModel {
 
 	var $hasMany = array('House');
 
-	var $belongsTo = array('Preference' => array('className'    => 'Preference',
-						     'foreignKey'   => 'preference_id')
+	var $belongsTo = array('Preference' => array('className' => 'Preference',
+						     'foreignKey' => 'preference_id')
 	);
 
 	var $virtualFields = array(
@@ -16,12 +16,12 @@ class Profile extends AppModel {
 
 	var $validate = array(
 		'firstname' => array(
-			'rule' => '/[a-zA-Zα-ωΑ-ΩΆάΈέΎύΊίΌόΏώϊϋΐΰς]+$/',
+			'rule' => '/[a-zA-ZαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎύΊίΌόΏώϊϋΐΰς]+$/',
 			'message' => 'Εισάγετε ένα έγκυρο όνομα.'),
 	
 		'lastname' => array(
-			'rule' => '/[a-zA-Zα-ωΑ-ΩΆάΈέΎύΊίΌόΏώϊϋΐΰς]+$/',
-			'message' => 'Εισάγετε ένα έγκυρο επίθετο.'),
+			'rule' => '/[a-zA-ZαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎύΊίΌόΏώϊϋΐΰς]+$/',
+			'message' => 'Εισάγετε ένα έγκυρο επώνυμο.'),
 	
 		'email' => array(
 			'rule' => 'email',
@@ -29,7 +29,7 @@ class Profile extends AppModel {
 	
 		'dob' => array(
 			'rule' => array('isValidDate'),
-			'message' => 'Εισάγετε μια αποδεκτή ημερομηνία γέννησης.'),
+			'message' => 'Εισάγετε μια έγκυρη ημερομηνία γέννησης.'),
 
 		'gender' => array(
 			'rule' => array('inList', array(0, 1)),
@@ -59,13 +59,13 @@ class Profile extends AppModel {
 	
 		'couple' => array(
 			'rule' => '/^[0-1]$/',
-			'rule' => '/^[0-1]$/',
+			'message' => 'Υπήρξε κάποιο σφάλμα.',
 	        	'required' => false,
 	        	'allowEmpty' => true),
 	
 		'max_roommates' => array(
 			'rule' => '/^[1-9]{1}$/i',
-			'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]'),
+			'message' => 'Εισάγετε ένα έγκυρο φράγμα συγκατοίκων [1,9]'),
 	
 		'visible' => array(
 			'rule' => '/^[0-1]$/',

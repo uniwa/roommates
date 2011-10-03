@@ -26,7 +26,7 @@
 <?php
 
 	$gender_labels = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-	$yni_options = array('Ναι', 'Όχι', 'Αδιάφορο');
+	$yni_options = array('Αδιάφορο', 'Ναι', 'Όχι');
 
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
 	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
