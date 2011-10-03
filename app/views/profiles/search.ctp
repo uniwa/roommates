@@ -1,35 +1,67 @@
-<h1>αναζήτηση συγκατοίκων</h1>
+<div class='topframe'>
+<h1>Αναζήτηση Συγκατοίκων</h1>
 <?php
-	echo $this->Form->create('Profile', array('action'=>'search'));
 
-	$ageminoptions = array('label' => 'από');
-	$agemaxoptions = array('label' => 'μέχρι');
-	$maxmatesoptions = array('label' => 'ελάχιστοι επιθυμητοί συγκάτοικοι');
-	echo "ηλικία\n<br />";
-	echo $this->Form->input('agemin', $ageminoptions);
-	echo $this->Form->input('agemax', $agemaxoptions)."\n";
-	echo $this->Form->input('max_roommates', $maxmatesoptions);
+	echo $this->Form->create('Profile', array('action'=>'search'))."\n";
+
+	$ageminoptions = array('label' => 'από: ', 'class' => 'short-textbox');
+	$agemaxoptions = array('label' => 'μέχρι: ', 'class' => 'short-textbox');
+	$maxmatesoptions = array('label' => 'ελάχιστοι επιθυμητοί συγκάτοικοι: ', 'class' => 'short-textbox');
+	
+	echo "<div class='short-field'>ηλικία</div>\n";
+	echo "<div class='short-field'>".$this->Form->input('agemin', $ageminoptions)."</div>\n";
+	echo "<div class='short-field'>".$this->Form->input('agemax', $agemaxoptions)."</div>\n";
+	echo "<div class='clear-all'>&nbsp;</div>\n";
+	echo $this->Form->input('max_roommates', $maxmatesoptions)."\n";
 	echo "<br />\n";
+	
 	$genderoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 	$options = array('όχι', 'ναι', 'αδιάφορο');
-	echo 'φύλο'. $this->Form->select('gender', $genderoptions) ."\n";
-	echo 'καπνιστής'. $this->Form->select('smoker', $options) ."\n";
-	echo 'κατοικίδιο'. $this->Form->select('pet', $options) ."\n";
-	echo 'παιδί'. $this->Form->select('child', $options) ."\n";
-	echo 'ζευγάρι'. $this->Form->select('couple', $options) ."<br /><br />\n";
-	echo 'διαθέτει σπίτι'.$this->Form->checkbox('User.hasHouse',
-		array('value' => 1, 'checked' => false, 'hiddenField' => false));
-
+?>
+<table>
+	<tr>
+		<td>
+<?php
+	echo 'φύλο '.$this->Form->select('gender', $genderoptions)."\n";
+	echo 'καπνιστής '.$this->Form->select('smoker', $options)."\n";
+?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+<?php
+	echo 'κατοικίδιο '.$this->Form->select('pet', $options)."\n";
+	echo 'παιδί '.$this->Form->select('child', $options)."\n";
+?>
+		</td>
+		<td>
+	</tr>
+	<tr>
+		<td>
+<?php
+	echo 'ζευγάρι '.$this->Form->select('couple', $options)."<br /><br />\n";
+?>
+		</td>
+		<td>
+			&nbsp;
+		</td>
+	</tr>
+</table>
+<?php
+	echo 'διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse',
+		array('value' => 1, 'checked' => false, 'hiddenField' => false))."<br /><br />\n";
 	echo $this->Form->end('αναζήτηση');
 ?>
+</div>
 
+<!--
 <table>
 	<tr>
         <td>όνομα</td>
 		<td>επίθετο</td>
         <td>ηλικία</td>
         <td>φύλο</td>
-<!--		
+		
         <td>email</td>
         <td>τηλέφωνο</td>
         <td>καπνιστής</td>
@@ -37,10 +69,9 @@
         <td>παιδί</td>
         <td>ζευγάρι</td>
         <td>συγκάτοικοι</td>
--->
+
 	</tr>
 
-	<!-- Here is where we loop through our $profiles array, printing out info -->
 
     <?php
 		$oddLine = true;
@@ -58,7 +89,7 @@
 			$genderLabels = array('άνδρας', 'γυναίκα');
 		?>
 		<td><?php echo $genderLabels[$profile['Profile']['gender']]; ?></td>
-<!--
+
 		<td><?php echo $profile['Profile']['email']; ?></td>
 		<td><?php echo $profile['Profile']['phone']; ?></td>
 		<td><?php echo $profile['Profile']['smoker']; ?></td>
@@ -66,7 +97,7 @@
 		<td><?php echo $profile['Profile']['child']; ?></td>
 		<td><?php echo $profile['Profile']['couple']; ?></td>
 		<td><?php echo $profile['Profile']['max_roommates']; ?></td>
--->
+
 		<td><?php echo $this->Html->link('διαγραφή',
 					 array('action' => 'delete', $profile['Profile']['id']), null, 'Είστε σίγουρος;') ?>
 		<?php echo $this->Html->link('επεξεργασία',
@@ -78,5 +109,55 @@
 		endforeach;
 	?>
 </table>
+-->
+
+    <ul class="thelist">
+
+        <?php
+		$oddLine = true;
+		foreach ($profiles as $profile):
+			$rowCSS = ($oddLine)?'0':'1';
+			$rowCSS = "bgcolor".$rowCSS;
+	?>
+
+
+        <li>
+            <div class="photo">
+                <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
+
+            </div>
+            <div class="info">
+                <?php echo $this->Html->link($profile['Profile']['firstname'].' '.$profile['Profile']['lastname'],array('controller' => 'profiles',
+			'action' => 'view', $profile['Profile']['id'])); ?>
+
+               Ηλικία: <?php echo $profile['Profile']['age']; ?>
+<br />
+    <?php if ($profile['Profile']['gender'])
+        echo '<p class="female">Γυναίκα.</p>';
+    else
+        echo '<p class="male">Άνδρας.</p>';
+    ?>
+    <p class="smoking"> <?php if (!$profile['Profile']['smoker']) echo "Δεν"; ?> Είμαι Καπνιστής.</p>
+
+    <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
+
+
+            </div>
+
+            <div class="aboutme">
+
+            </div>
+
+        </li>
+
+
+
+            <?php
+		$oddLine = !$oddLine;
+		endforeach;
+
+	?>
+
+    </ul>
 
 

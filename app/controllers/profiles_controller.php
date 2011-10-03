@@ -32,6 +32,7 @@ class ProfilesController extends AppController {
     function add(){
     	if (!empty($this->data)) {
              //var_dump($this->data); die();     
+
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                  $this->Session->setFlash('Το προφίλ προστέθηκε.');
                  $this->redirect(array('action' => 'index'));
