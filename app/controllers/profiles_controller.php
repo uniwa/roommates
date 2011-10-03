@@ -32,10 +32,10 @@ class ProfilesController extends AppController {
     function add(){
     	if (!empty($this->data)) {
              //var_dump($this->data); die();     
-    	     $this->Profile->saveAll($this->data, array('validate'=>'first'));
+    	     if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
 		     $this->Session->setFlash('Το προφίλ προστέθηκε.');
 			 $this->redirect(array('action' => 'index'));
-        }
+        }}
 
         $dob = array();
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
