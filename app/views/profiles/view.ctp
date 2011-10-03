@@ -36,7 +36,7 @@
 
 	<?php
 	     $gender_options = array('άνδρας', 'γυναίκα', 'αδιάφορο');
-		 $general_options = array('ναι', 'όχι', 'αδιάφορο');
+		 $general_options = array('αδιάφορο', 'ναι', 'όχι');
 	?>
 	<h2>Κριτήρια Επιλογής Συγκατοίκου</h2>
 	<?php
