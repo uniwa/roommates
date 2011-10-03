@@ -260,8 +260,8 @@ table a {
 
 p {
     /*to be removed*/
-
-    padding: 10px;
+    /*padding: 6px;*/
+    padding: 0.38em;
 }
 
 .name {
@@ -522,6 +522,6 @@ h1{
 	margin: 0px 12px 0px 0px;
 }
 
-.clear-all{
-	clear: all;
+.clear-both{
+	clear: both;
 }

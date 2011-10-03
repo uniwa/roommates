@@ -16,13 +16,11 @@ class Profile extends AppModel {
 
 	var $validate = array(
 		'firstname' => array(
-			//'rule' => '[\p{L}-[\p{isBasicLatin}\p{isGreek}]]', /*'[\p{Greek}]',*//*'/^[a-z]{2,}$/i',*/
-			'rule' => '/^[a-zA-Z]{2,}$/i',
-			//'rule' => '/^[α-ωΑ-Ω]{2,}$/i',
+			'rule' => '/[a-zA-Zα-ωΑ-ΩΆάΈέΎύΊίΌόΏώϊϋΐΰς]+$/',
 			'message' => 'Εισάγετε ένα έγκυρο όνομα.'),
 	
 		'lastname' => array(
-			'rule' => '/^[a-zA-Z]{2,}$/i',
+			'rule' => '/[a-zA-Zα-ωΑ-ΩΆάΈέΎύΊίΌόΏώϊϋΐΰς]+$/',
 			'message' => 'Εισάγετε ένα έγκυρο επίθετο.'),
 	
 		'email' => array(
