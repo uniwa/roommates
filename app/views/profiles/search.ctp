@@ -11,7 +11,7 @@
 	echo "<div class='short-field'>ηλικία</div>\n";
 	echo "<div class='short-field'>".$this->Form->input('agemin', $ageminoptions)."</div>\n";
 	echo "<div class='short-field'>".$this->Form->input('agemax', $agemaxoptions)."</div>\n";
-	echo "<div class='clear-all'>&nbsp;</div>\n";
+	echo "<div class='clear-both'>&nbsp;</div>\n";
 	echo $this->Form->input('max_roommates', $maxmatesoptions)."\n";
 	echo "<br />\n";
 	
