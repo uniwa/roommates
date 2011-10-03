@@ -522,6 +522,6 @@ h1{
 	margin: 0px 12px 0px 0px;
 }
 
-.clear-all{
-	clear: all;
+.clear-both{
+	clear: both;
 }
