@@ -32,10 +32,12 @@ class ProfilesController extends AppController {
     function add(){
     	if (!empty($this->data)) {
              //var_dump($this->data); die();     
-    	     if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-		     $this->Session->setFlash('Το προφίλ προστέθηκε.');
-			 $this->redirect(array('action' => 'index'));
-        }}
+
+            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
+                 $this->Session->setFlash('Το προφίλ προστέθηκε.');
+                 $this->redirect(array('action' => 'index'));
+            }
+        }
 
         $dob = array();
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
@@ -74,7 +76,7 @@ class ProfilesController extends AppController {
         }
 
         $dob = array();
-        foreach ( range((int)date('Y'), 1920) as $year ) {
+        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
         $this->set('available_birth_dates', $dob);
