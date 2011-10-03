@@ -16,7 +16,7 @@ echo $form->input('availability_date', array('label' => 'Διαθέσιμο απ
 echo $form->input('construction_year', array('label' => 'Έτος κατασκευής', 'type' => 'select', 
                     'options' => $available_constr_years, 'empty' => 'Άγνωστο'));
 echo $form->input('solar_heater', array('label' => 'Ηλιακός θερμοσίφωνας'));
-echo $form->input('furnitured', array('label' => 'Επιπλομένο'));
+echo $form->input('furnitured', array('label' => 'Επιπλωμένο'));
 echo $form->input('heating_type_id', array('label' => 'Είδος θέρμανσης', 'empty' => 'Επιλέξτε...'));
 echo $form->input('aircondition', array('label' => 'Κλιματισμός'));
 echo $form->input('garden', array('label' => 'Κήπος'));

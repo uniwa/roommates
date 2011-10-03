@@ -29,7 +29,7 @@
         <span class="checkbox cb<?php echo $house['House']['solar_heater']?>">&nbsp;</span>
     </p>
     <p>
-        <span class="bold">Επιπλομένο:</span>
+        <span class="bold">Επιπλωμένο:</span>
         <span class="checkbox cb<?php echo $house['House']['furnitured']?>">&nbsp;</span>
     </p>
     <p>
