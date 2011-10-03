@@ -7,6 +7,8 @@ $this->set('channelData', array(
                 'description' => __("Πρόσφατες εγγραφές χρηστών.", true),
                 'language' => 'el'));
 
+$genderList = array('άνδρας', 'γυναίκα');
+
 foreach ($profiles as $profile) {
     /* ignore modified profiles */
     $profileTime = strtotime($profile['Profile']['created']);
@@ -17,7 +19,7 @@ foreach ($profiles as $profile) {
         $profile['Profile']['id']
     );
 
-    $profileTitle = "{$profile['Profile']['gender']}, {$profile['Profile']['age']}ετών";
+    $profileTitle = "{$genderList[$profile['Profile']['gender']]}, {$profile['Profile']['age']}ετών";
 
     $bodyText = "<strong>Μέγιστος επιθυμητός αριθμός συγκατοίκων:</strong> {$profile['Profile']['max_roommates']}";
 
