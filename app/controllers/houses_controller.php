@@ -15,6 +15,18 @@ class HousesController extends AppController {
         $this->set('houses', $this->House->find('all'));
     }
 
+    function beforeFilter() {
+        parent::beforeFilter();
+
+        if(!class_exists('L10n')) {
+            App::import('Core','L10n');
+        }
+
+        $this->L10n = new L10n();
+        $this->L10n->get('gr');
+        Configure::write('Config.language'. 'gr');
+    }
+
     function view($id = null) {
         $this->House->id = $id;
         $this->set('house', $this->House->read());
