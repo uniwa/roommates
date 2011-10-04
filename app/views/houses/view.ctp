@@ -63,7 +63,7 @@
 </div>
 <div class="info-block">
     <!-- free text description -->
-    <p><span class="bold">Περιγραφή:</span> <?php echo $house['House']['description']?></p>
+    <p><span class="bold">Περιγραφή:</span> <?php echo Sanitize::html($house['House']['description'])?></p>
 </div>
 
 
