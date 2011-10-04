@@ -289,9 +289,21 @@ p {
 }
 
 .smoking {
-    background: url(../img/smoke_icon_01.gif) left no-repeat;
+    background: url(../img/cigarette.gif) left no-repeat;
     padding-left: 35px;
 }
+
+.smoker {
+    background: url(../img/cigarette.gif) left no-repeat;
+    padding-left: 35px;
+}
+
+.nosmoker {
+    background: url(../img/nosmoking.png) left no-repeat;
+    padding-left: 35px;
+}
+
+
 
 .pet {
     background: url(../img/pet.png) left no-repeat;
@@ -417,6 +429,34 @@ input[type=submit] {
     margin-top: -3px;
     border-width: 1px;
 }
+.addbutton {
+
+    color: #667;
+
+    background: #DFE4EE;
+    background-image: -moz-linear-gradient(center bottom, #D9D9D9 0%, #F0F0F0 40%);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #D9D9D9), color-stop(0.4, #F0F0F0));
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Gradient(startColorStr=#F0F0F0, endColorStr=#D9D9D9)';
+    filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr = #F0F0F0, endColorStr = #D9D9D9);
+    -moz-box-shadow: 0 1px 2px #ddd;
+    -webkit-box-shadow: 0 1px 2px #838383;
+    box-shadow: 0 1px 2px #838383;
+
+    border-color: #13455B;
+    text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;
+    padding: 3px 10px;
+    font-size: 13px;
+    border-style: solid;
+    -moz-border-radius: 11px;
+    -khtml-border-radius: 11px;
+    -webkit-border-radius: 11px;
+    border-radius: 11px;
+    cursor: pointer;
+    text-decoration: none;
+    border-width: 1px;
+}
+
+
 
 #actions {
     float: right;

@@ -29,7 +29,7 @@
 
         <ul id="nav">
             <li class="page_item current_page_item home">
-                <a href="/profiles/search"><span>Αρχική</span></a>
+                <a href="#"><span>Αρχική</span></a>
             </li>
             <li>
                 <?php echo $this->Html->link('Ολα τα σπίτια', array(

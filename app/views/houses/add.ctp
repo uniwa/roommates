@@ -1,5 +1,5 @@
 
-<h1>Προσθήκη κατοικίας</h1>
+<h2>Προσθήκη κατοικίας</h2>
 <?php
 echo $form->create('House');
 
@@ -28,6 +28,6 @@ echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης'));
 echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 
-echo $form->end('Save house');
+echo $form->end('Αποθήκευση');
 ?>
 
