@@ -1,5 +1,5 @@
 
-<h1>Επεξεργασία κατοικίας</h1>
+<h2>Επεξεργασία κατοικίας</h2>
 <?php
 echo $form->create('House', array('action' => 'edit'));
 
@@ -30,5 +30,5 @@ echo $form->input('description', array('label' => 'Περιγραφή','type'=>'
 
 echo $form->input('id', array('type' => 'hidden'));
 
-echo $form->end('Save house');
+echo $form->end('Αποθήκευση');
 ?>

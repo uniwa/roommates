@@ -1,4 +1,4 @@
-<h1>Ενοικιάζεται</h1><div class="profile houseProfile">
+<h2>Ενοικιάζεται</h2><div class="profile houseProfile">
     <div id="actions">
  <?php echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));?>
  <?php echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;')?>
