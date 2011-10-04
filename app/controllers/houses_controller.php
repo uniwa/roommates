@@ -1,4 +1,7 @@
 <?php
+
+App::import('Sanitize');
+
 class HousesController extends AppController {
 
     var $name = 'Houses';

@@ -29,9 +29,13 @@ foreach ($profiles as $profile) {
         $profile['Profile']['id']
     );
 
-    $profileTitle = "{$genderList[$profile['Profile']['gender']]}, {$profile['Profile']['age']}ετών";
+    $profileTitle = "{$genderList[$profile['Profile']['gender']]}, {$profile['Profile']['age']} ετών";
 
     $bodyText = "<strong>Μέγιστος επιθυμητός αριθμός συγκατοίκων:</strong> {$profile['Profile']['max_roommates']}";
+
+    /* sanitize body */
+    App::import('Sanitize');
+    $bodyText = Sanitize::stripAll($bodyText);
 
     echo $this->Rss->item(array(), array(
         'title' => $profileTitle,

@@ -31,11 +31,6 @@ class Preference extends AppModel {
 		'required' => false,
 		'allowEmpty' => true),
 		
-	'mates_max' => array(
-		'rule' => '/^[1-9]{1}$/i',
-		'message' => 'Εισάγετε έγκυρο άνω φράγμα συγκατοίκων [1,9]',
-		'required' => false, 
-		'allowEmpty' => true),
 
 	'mates_min' => array(
 		'rule' => '/^[1-9]{1}$/i',

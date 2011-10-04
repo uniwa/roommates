@@ -25,21 +25,22 @@
 
 <?php
 
-	$gender_labels = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-	$yni_options = array('Αδιάφορο', 'Ναι', 'Όχι');
+	$gender_labels = array('άνδρας', 'γυναίκα', 'αδιάφορο');
+	$yni_options = array('όχι', 'ναι', 'αδιάφορο');
+
 
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
 	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
 
-	echo $this->Form->input('Preference.mates_min', array('label' => 'Αριθμός Συγκατοίκων από'));
-	echo $this->Form->input('Preference.mates_max', array('label' => 'έως'));
+	echo $this->Form->input('Preference.mates_min', array('label' => 'Ζητούμενος αριθμός συγκατοίκων'));
 
-	echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $gender_labels));
-	echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $yni_options));
-	echo $this->Form->input('Preference.pref_pet', array('label' => 'Κατοικίδιο', 'type' => 'select', 'options' => $yni_options));
-	echo $this->Form->input('Preference.pref_child', array('label' => 'Παιδί', 'type' => 'select', 'options' => $yni_options));
-	echo $this->Form->input('Preference.pref_couple', array('label' => 'Ζευγάρι', 'type' => 'select', 'options' => $yni_options));
+	echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $gender_labels, 'selected' => 2));
+	echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $yni_options, 'selected' => 2));
+	echo $this->Form->input('Preference.pref_pet', array('label' => 'Κατοικίδιο', 'type' => 'select', 'options' => $yni_options, 'selected' => 2));
+	echo $this->Form->input('Preference.pref_child', array('label' => 'Παιδί', 'type' => 'select', 'options' => $yni_options, 'selected' => 2));
+	echo $this->Form->input('Preference.pref_couple', array('label' => 'Ζευγάρι', 'type' => 'select', 'options' => $yni_options, 'selected' => 2));
 
+	echo "<br />\n";
 	echo $this->Form->end('Υποβολή');
 ?>
 
