@@ -20,7 +20,7 @@
     <p><span class="bold">Θέρμανση:</span> <?php echo $house['HeatingType']['type']?></p>
     <p><span class="bold">Τιμή:</span> <?php echo $house['House']['price']?>€</p>
     <p><span class="bold">Διαθέσιμο από:</span> <?php echo $time->format($format = 'd / m / Y', $house['House']['availability_date'])?></p>
-    <p><span class="bold">Περίοδος ενοικίασης:</span> <?php echo $house['House']['rent_period']?></p>
+    <p><span class="bold">Περίοδος ενοικίασης:</span> <?php echo ($house['House']['rent_period']) ? $house['House']['rent_period']." μήνες" : '-' ?></p>
 </div>
 <div class="info-block">
     <!-- boolean fields -->
