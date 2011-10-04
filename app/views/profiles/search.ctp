@@ -15,23 +15,23 @@
 	echo $this->Form->input('max_roommates', $maxmatesoptions)."\n";
 	echo "<br />\n";
 	
-	$genderoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
-	$options = array('όχι', 'ναι', 'αδιάφορο');
+	$genderoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
+	$options = array('Όχι', 'Ναι', 'Αδιάφορο');
 ?>
 <table>
 	<tr>
 		<td>
 <?php
-	echo 'φύλο '.$this->Form->select('gender', $genderoptions)."\n";
-	echo 'καπνιστής '.$this->Form->select('smoker', $options)."\n";
+	echo $this->Form->input('gender', array('label' => 'Φύλο ', 'options' => $genderoptions, 'default' => '2'))."\n";
+	echo $this->Form->input('smoker', array('label' => 'Καπνιστής ', 'options' => $options, 'default' => '2'))."\n";
 ?>
 		</td>
 	</tr>
 	<tr>
 		<td>
 <?php
-	echo 'κατοικίδιο '.$this->Form->select('pet', $options)."\n";
-	echo 'παιδί '.$this->Form->select('child', $options)."\n";
+	echo $this->Form->input('pet', array('label' => 'Κατοικίδιο ', 'options' => $options, 'default' => '2'))."\n";
+	echo $this->Form->input('child', array('label' => 'Παιδί ', 'options' => $options, 'default' => '2'))."\n";
 ?>
 		</td>
 		<td>
@@ -39,7 +39,7 @@
 	<tr>
 		<td>
 <?php
-	echo 'ζευγάρι '.$this->Form->select('couple', $options)."<br /><br />\n";
+	echo $this->Form->input('couple', array('label' => 'Ζευγάρι ', 'options' => $options, 'default' => '2'))."<br /><br />\n";
 ?>
 		</td>
 		<td>

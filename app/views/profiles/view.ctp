@@ -36,14 +36,13 @@
 
 	<?php
 	     $gender_options = array('άνδρας', 'γυναίκα', 'αδιάφορο');
-		 $general_options = array('αδιάφορο', 'ναι', 'όχι');
+		 $general_options = array('όχι', 'ναι', 'αδιάφορο');
 	?>
 	<h2>Κριτήρια Επιλογής Συγκατοίκου</h2>
 	<?php
 		$age_min = $profile['Preference']['age_min'];
 		$age_max = $profile['Preference']['age_max'];
 		$mates_min = $profile['Preference']['mates_min'];
-		$mates_max = $profile['Preference']['mates_max'];
 	?>
     <p>
 		<?php
@@ -61,13 +60,10 @@
 	</p>
     <p>
 		<?php
-			if($mates_min || $mates_max){
-                echo "Αριθμός συγκατοίκων: ";
+			if($mates_min){
+                echo "Ελάχιστος αριθμός συγκατοίκων: ";
                 if($mates_min){
-				    echo "από ".$profile['Preference']['mates_min'];
-				}
-				if($mates_max){
-				    echo " μέχρι ".$profile['Preference']['mates_max'];
+				    echo $profile['Preference']['mates_min'];
 				}
 			}
 				
