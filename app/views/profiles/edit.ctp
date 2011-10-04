@@ -20,7 +20,7 @@
 	echo $this->Form->input('Profile.child', array('label' => 'Παιδί'));
 	echo $this->Form->input('Profile.couple', array('label' => 'Ζευγάρι'));
 	echo $this->Form->input('Profile.max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
-    echo $this->Form->input('Profile.visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
+    echo $this->Form->input('Profile.visible', array('label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 
 ?>
 
@@ -33,7 +33,7 @@
 
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
 	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
-	echo $this->Form->input('Preference.mates_min', array('label' => 'Ζητούμενος αριθμός συγκατοίκων'));
+	echo $this->Form->input('Preference.mates_min', array('label' => 'Ελάχιστος αριθμός συγκατοίκων'));
 
     echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $genderLabels));
     echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $options));

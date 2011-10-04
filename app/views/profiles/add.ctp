@@ -32,7 +32,7 @@
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
 	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
 
-	echo $this->Form->input('Preference.mates_min', array('label' => 'Ζητούμενος αριθμός συγκατοίκων'));
+	echo $this->Form->input('Preference.mates_min', array('label' => 'Ελάχιστος αριθμός συγκατοίκων'));
 
 	echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $gender_labels, 'selected' => 2));
 	echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $yni_options, 'selected' => 2));

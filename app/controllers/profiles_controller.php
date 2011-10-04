@@ -1,4 +1,6 @@
 <?php
+
+App::import('Sanitize');
 class ProfilesController extends AppController {
 
     var $name = 'Profiles';
