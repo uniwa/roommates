@@ -322,7 +322,7 @@ p {
 }
 
 .profile {
-    padding: 0 30px;
+    /*padding: 0 30px;*/
     background: #fff;
     -moz-box-shadow: 3px 3px 6px #ccc;
     -webkit-box-shadow: 3px 3px 6px #ccc;
@@ -333,7 +333,7 @@ p {
 /*λίστα profile*/
 
 .thelist {
-    width: 55%;
+    width: 510px;
     margin: 30px auto; /* TODO make this 0 auto */
     border: 4px double #ccc;
     background: #F0F0F0;
@@ -348,7 +348,7 @@ p {
 
 .thelist li {
     border: 4px double #ccc;
-    min-height: 164px;
+    min-height: 180px;
 }
 
 .thelist li:hover {
@@ -368,7 +368,8 @@ p {
 
 .info {
     float: left;
-    width: 40%;
+    /*width: 40%;*/
+    
 }
 
 #ProfileAddForm label, #ProfileEditForm label {
