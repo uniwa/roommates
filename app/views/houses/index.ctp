@@ -1,6 +1,6 @@
 <h2>Λίστα Σπιτιών</h2>
 
-<?php echo $this->Html->link("Προσθήκη Σπιτιού", array('action' => 'add')); ?>
+<?php echo $this->Html->link("Προσθήκη Νέου Σπιτιού", array('action' => 'add'),array('class' => 'addButton')); ?>
 
 
 <ul class="thelist">

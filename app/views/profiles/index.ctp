@@ -1,5 +1,5 @@
-<h1>Kατάλογος Δημόσιων Προφίλ</h1>
-<?php echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?>
+<h2>Kατάλογος Δημόσιων Προφίλ</h2>
+<?php echo $this->Html->link("Προσθήκη Νέου Προφίλ", array('action' => 'add'),array('class' => 'addButton')); ?>
 
 
 <!--<p>--><?php //echo $this->Html->link("Αναζήτηση Συγκατοίκων", array('action' => 'search')); ?><!--</p>-->
@@ -84,7 +84,15 @@
     else
         echo '<p class="male">Άνδρας.</p>';
     ?>
-    <p class="smoking"> <?php if (!$profile['Profile']['smoker']) echo "Δεν"; ?> Είμαι Καπνιστής.</p>
+<!--    <p class="smoking"> --><?php //if (!$profile['Profile']['smoker']) echo "Δεν"; ?><!-- Είμαι Καπνιστής.</p>-->
+
+
+     <?php if ($profile['Profile']['smoker'])
+        echo '<p class="smoker">Καπνιστής</p>';
+    else
+        echo '<p class="nosmoker">Δεν είμαι Καπνιστής.</p>';
+    ?>
+
 
     <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
 
