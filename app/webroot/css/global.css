@@ -250,12 +250,18 @@ table tr {
 
 table td {
     padding: 0 5px;
-
+    width: 160px; /*TODO next 3 lines*/
+    text-align: right;
+    line-height: 30px;
 }
 
 table a {
     color: #21759B;
     text-decoration: none;
+}
+
+table select {
+    float: right;
 }
 
 p {
@@ -302,8 +308,6 @@ p {
     background: url(../img/nosmoking.png) left no-repeat;
     padding-left: 35px;
 }
-
-
 
 .pet {
     background: url(../img/pet.png) left no-repeat;
@@ -381,7 +385,7 @@ p {
 .info {
     float: left;
     /*width: 40%;*/
-    
+
 }
 
 #ProfileAddForm label, #ProfileEditForm label {
@@ -429,10 +433,9 @@ input[type=submit] {
     margin-top: -3px;
     border-width: 1px;
 }
-.addbutton {
 
+.addButton {
     color: #667;
-
     background: #DFE4EE;
     background-image: -moz-linear-gradient(center bottom, #D9D9D9 0%, #F0F0F0 40%);
     background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #D9D9D9), color-stop(0.4, #F0F0F0));
@@ -441,7 +444,6 @@ input[type=submit] {
     -moz-box-shadow: 0 1px 2px #ddd;
     -webkit-box-shadow: 0 1px 2px #838383;
     box-shadow: 0 1px 2px #838383;
-
     border-color: #13455B;
     text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;
     padding: 3px 10px;
@@ -455,8 +457,6 @@ input[type=submit] {
     text-decoration: none;
     border-width: 1px;
 }
-
-
 
 #actions {
     float: right;
@@ -481,7 +481,7 @@ input[type=submit] {
     -webkit-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
 }
 
-#HouseAddForm label,#HouseEditForm label {
+#HouseAddForm label, #HouseEditForm label {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 12px;
     font-weight: bold;
@@ -491,7 +491,7 @@ input[type=submit] {
     display: inline-block;
 }
 
-#HouseAddForm input[type=text], #HouseAddForm textarea ,#HouseEditForm input[type=text],#HouseEditForm textarea{
+#HouseAddForm input[type=text], #HouseAddForm textarea, #HouseEditForm input[type=text], #HouseEditForm textarea {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     padding: 4px;
     border: solid 1px #C6C6C6;
@@ -518,7 +518,7 @@ select {
     padding: 7px 10px;
 }
 
-.cb0 {
+.cb0 ,.cb {
     background: url(../img/cb0.png) no-repeat left top;
     padding: 7px 10px;
 
@@ -536,40 +536,50 @@ select {
     box-shadow: inset 0 1px white, 0 1px #A7A7A7;
     -moz-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
     -webkit-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
-    border:  3px double #ccc;
+    border: 3px double #ccc;
 }
 
-
-.textarea label{
-    float:left;
+.textarea label {
+    float: left;
 }
 
-h1{
-	font-size: 24px;
-	font-weight: 900;
-	margin: 0px 0px 30px 0px;
+h1 {
+    font-size: 24px;
+    font-weight: 900;
+    margin: 0px 0px 30px 0px;
 }
 
-h2{
-	font-size: 20px;
-	font-weight: 900;
-	margin: 20px 0px 10px 0px;
+h2 {
+    font-size: 20px;
+    font-weight: 900;
+    margin: 20px 0px 10px 0px;
 }
 
-.topframe{
-	margin: 12px 24px 24px 24px;
-	font-size: 16px;
+.topframe {
+    margin: 12px 24px 24px 24px;
+    font-size: 16px;
 }
 
-.short-textbox{
-	width: 50px;
+.short-textbox {
+    width: 50px;
 }
 
-.short-field{
-	float: left;
-	margin: 0px 12px 0px 0px;
+.short-field {
+    float: left;
+    margin: 0px 12px 0px 0px;
 }
 
-.clear-both{
-	clear: both;
+.clear-both {
+    clear: both;
 }
+
+/*TODO temporary css searchform */
+
+#ProfileSearchForm {
+    border: 2px solid #ccc;
+    background: #f5f5f5;
+    padding: 10px 18px;
+    width: 350px;
+    margin: 0 auto;
+}
+

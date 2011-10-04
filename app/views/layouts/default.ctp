@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
     <title><?php echo $title_for_layout?></title>
@@ -18,7 +18,7 @@
         </div>
         <h1>Εθελοντικές Δράσεις</h1>
 
-        <h2>υπηρεσιες δικτύωσης με επίκεντρο εθελοντικές δράσεις</h2>
+        <h2>Υπηρεσίες δικτύωσης με επίκεντρο εθελοντικές δράσεις</h2>
 
         <a href="#" title=""><img class="title" src="<?php echo $this->webroot; ?>img/logo.png" alt=""/></a>
 

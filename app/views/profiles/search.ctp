@@ -6,9 +6,9 @@
 
 	$ageminoptions = array('label' => 'από: ', 'class' => 'short-textbox');
 	$agemaxoptions = array('label' => 'μέχρι: ', 'class' => 'short-textbox');
-	$maxmatesoptions = array('label' => 'ελάχιστοι επιθυμητοί συγκάτοικοι: ', 'class' => 'short-textbox');
+	$maxmatesoptions = array('label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι: ', 'class' => 'short-textbox');
 	
-	echo "<div class='short-field'>ηλικία</div>\n";
+	echo "<div class='short-field'>Ηλικία</div>";
 	echo "<div class='short-field'>".$this->Form->input('agemin', $ageminoptions)."</div>\n";
 	echo "<div class='short-field'>".$this->Form->input('agemax', $agemaxoptions)."</div>\n";
 	echo "<div class='clear-both'>&nbsp;</div>\n";
@@ -23,6 +23,7 @@
 		<td>
 <?php
 	echo 'φύλο '.$this->Form->select('gender', $genderoptions)."\n";
+    echo '</td><td>';
 	echo 'καπνιστής '.$this->Form->select('smoker', $options)."\n";
 ?>
 		</td>
@@ -31,15 +32,16 @@
 		<td>
 <?php
 	echo 'κατοικίδιο '.$this->Form->select('pet', $options)."\n";
+    echo '</td><td>';
 	echo 'παιδί '.$this->Form->select('child', $options)."\n";
 ?>
 		</td>
-		<td>
+
 	</tr>
 	<tr>
 		<td>
 <?php
-	echo 'ζευγάρι '.$this->Form->select('couple', $options)."<br /><br />\n";
+	echo 'ζευγάρι '.$this->Form->select('couple', $options);
 ?>
 		</td>
 		<td>
@@ -48,11 +50,12 @@
 	</tr>
 </table>
 <?php
-	echo 'διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse',
+	echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse',
 		array('value' => 1, 'checked' => false, 'hiddenField' => false))."<br /><br />\n";
 	echo $this->Form->end('αναζήτηση');
 ?>
 </div>
+
 
 <!--
 <table>

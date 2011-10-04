@@ -24,7 +24,13 @@
     ?>
     <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
 
-    <p class="smoking"> <?php if (!$profile['Profile']['smoker']) echo "Δεν"; ?> Είμαι Καπνιστής.</p>
+
+     <?php if ($profile['Profile']['smoker'])
+        echo '<p class="smoker">Είμαι Καπνιστής</p>';
+    else
+        echo '<p class="nosmoker">Δεν είμαι Καπνιστής.</p>';
+    ?>
+
 
     <p class="pet"> <?php if (!$profile['Profile']['pet']) echo "Δεν" ?> 'Εχω Κατοικίδιο.</p>
 
