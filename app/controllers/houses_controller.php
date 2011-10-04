@@ -1,4 +1,7 @@
 <?php
+
+App::import('Sanitize');
+
 class HousesController extends AppController {
 
     var $name = 'Houses';
@@ -35,6 +38,7 @@ class HousesController extends AppController {
             /* replace with user id after implementing authentication */
             $this->data['House']['profile_id'] = '1';
             /* debug: var_dump($this->data); die(); */
+            $this->data['House']['description'] = Sanitize::html($this->data['House']['description']);
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
                 $this->redirect(array('action' => 'index'));
@@ -56,6 +60,7 @@ class HousesController extends AppController {
             $this->data = $this->House->read();
         }
         else {
+            $this->data['House']['description'] = Sanitize::html($this->data['House']['description']);
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('The house has been updated.');
                 $this->redirect(array('action' => 'index'));
