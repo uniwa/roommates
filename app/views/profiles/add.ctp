@@ -26,7 +26,7 @@
 <?php
 
 	$gender_labels = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-	$yni_options = array('Αδιάφορο', 'Ναι', 'Όχι');
+	$yni_options = array('Όχι', 'Ναι', 'Αδιάφορο');
 
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
 	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
@@ -34,12 +34,13 @@
 	echo $this->Form->input('Preference.mates_min', array('label' => 'Αριθμός Συγκατοίκων από'));
 	echo $this->Form->input('Preference.mates_max', array('label' => 'έως'));
 
-	echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $gender_labels));
-	echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $yni_options));
-	echo $this->Form->input('Preference.pref_pet', array('label' => 'Κατοικίδιο', 'type' => 'select', 'options' => $yni_options));
-	echo $this->Form->input('Preference.pref_child', array('label' => 'Παιδί', 'type' => 'select', 'options' => $yni_options));
-	echo $this->Form->input('Preference.pref_couple', array('label' => 'Ζευγάρι', 'type' => 'select', 'options' => $yni_options));
+	echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $gender_labels, 'default' => '2'));
+	echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $yni_options, 'default' => '2'));
+	echo $this->Form->input('Preference.pref_pet', array('label' => 'Κατοικίδιο', 'type' => 'select', 'options' => $yni_options, 'default' => '2'));
+	echo $this->Form->input('Preference.pref_child', array('label' => 'Παιδί', 'type' => 'select', 'options' => $yni_options, 'default' => '2'));
+	echo $this->Form->input('Preference.pref_couple', array('label' => 'Ζευγάρι', 'type' => 'select', 'options' => $yni_options, 'default' => '2'));
 
+	echo "<br />\n";
 	echo $this->Form->end('Υποβολή');
 ?>
 
