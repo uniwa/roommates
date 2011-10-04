@@ -28,6 +28,7 @@
 	$gender_labels = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 	$yni_options = array('όχι', 'ναι', 'αδιάφορο');
 
+
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
 	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
 
@@ -39,6 +40,7 @@
 	echo $this->Form->input('Preference.pref_child', array('label' => 'Παιδί', 'type' => 'select', 'options' => $yni_options, 'selected' => 2));
 	echo $this->Form->input('Preference.pref_couple', array('label' => 'Ζευγάρι', 'type' => 'select', 'options' => $yni_options, 'selected' => 2));
 
+	echo "<br />\n";
 	echo $this->Form->end('Υποβολή');
 ?>
 
