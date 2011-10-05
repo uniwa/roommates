@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `roommates`.`municipalities`;
 
 CREATE TABLE IF NOT EXISTS `roommates`.`municipalities` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(30) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
