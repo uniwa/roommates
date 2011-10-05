@@ -28,6 +28,10 @@ echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης'));
 echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 
+echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type' => 'select', 'options' => $hosting));
+echo $form->input('currently_available', array('label' => 'Διαθεσιμότητα','type' => 'select', 'options' => $available));
+
+
 echo $form->input('id', array('type' => 'hidden'));
 
 echo $form->end('Αποθήκευση');

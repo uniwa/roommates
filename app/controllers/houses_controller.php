@@ -81,7 +81,7 @@ class HousesController extends AppController {
 
 	$no_mates = array();
 	for ($i = 1; $i <= 9; $i++){
-		$mates[$i] = $i;
+		$no_mates[$i] = $i;
 	}
 	$this->set('hosting_or_available', $no_mates);
 
