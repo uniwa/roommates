@@ -88,7 +88,14 @@
     else
         echo '<p class="male">Άνδρας.</p>';
     ?>
-    <p class="smoking"> <?php if (!$profile['Profile']['smoker']) echo "Δεν"; ?> Είμαι Καπνιστής.</p>
+
+                    <?php if ($profile['Profile']['gender'])
+        echo '<p class="smoker">Είμαι Καπνιστής.</p>';
+    else
+        echo '<p class="nosmoker">Δεν Είμαι Καπνιστής.</p>';
+    ?>
+
+
 
     <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
 

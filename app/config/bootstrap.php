@@ -48,3 +48,5 @@
  * Inflector::rules('plural', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
  *
  */
+Configure::write('GenderLabels', array('0' => 'Άνδρας', '1' => 'Γυναίκα', '2' => 'Αδιάφορο'));
+Configure::write('YNI', array('0' => 'Ναι', '1' => 'Όχι', '2' => 'Αδιάφορο'));

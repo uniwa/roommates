@@ -1,6 +1,6 @@
 <div class="profile">
 
-    <p class="name"><?php echo $profile['Profile']['firstname'] . " " . $profile['Profile']['lastname'] ?><span
+    <p class="name"><?php echo Sanitize::html($profile['Profile']['firstname'] . " " . $profile['Profile']['lastname'], array('remove' => true)) ?><span
             class="age"> - Ηλικία: <?php echo $profile['Profile']['age'] ?></span></p>
 
 <div id="actions">
@@ -15,14 +15,14 @@
 
     <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
 
-    <p class="mail">email: <?php echo $profile['Profile']['email'] ?></p>
+    <p class="mail">email: <?php echo Sanitize::html($profile['Profile']['email'], array('remove' => true)) ?></p>
 
     <?php if ($profile['Profile']['gender'])
         echo '<p class="female">Γυναίκα.</p>';
     else
         echo '<p class="male">Άνδρας.</p>';
     ?>
-    <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
+    <p class="tel">Τηλέφωνο: <?php echo Sanitize::html($profile['Profile']['phone'], array('remove' => true)) ?></p>
 
 
      <?php if ($profile['Profile']['smoker'])
@@ -38,7 +38,7 @@
 
     <p class="couple"><?php if (!$profile['Profile']['couple']) echo "Δεν" ?> Είμαστε Ζευγάρι.</p>
 
-    <p class="rmates">Επιθυμώ να συγκατοικήσω με το πολυ <?php echo $profile['Profile']['max_roommates'] ?> άτομα.</p>
+    <p class="rmates">Επιθυμώ να συγκατοικήσω με το πολυ <?php echo Sanitize::html($profile['Profile']['max_roommates'], array('remove' => true)) ?> άτομα.</p>
 
 	<?php
 	     $gender_options = array('άνδρας', 'γυναίκα', 'αδιάφορο');
@@ -55,10 +55,10 @@
 			if($age_min || $age_max){
                 echo "Ηλικία: ";
                 if($age_min){
-				    echo "από ".$profile['Preference']['age_min'];
+				    echo Sanitize::html("από ".$profile['Preference']['age_min'], array('remove' => true));
 				}
 				if($age_max){
-				    echo " μέχρι ".$profile['Preference']['age_max'];
+				    echo Sanitize::html(" μέχρι ".$profile['Preference']['age_max'], array('remove' => true));
 				}
 			}
 				
@@ -69,7 +69,7 @@
 			if($mates_min){
                 echo "Ελάχιστος αριθμός συγκατοίκων: ";
                 if($mates_min){
-				    echo $profile['Preference']['mates_min'];
+				    echo Sanitize::html($profile['Preference']['mates_min'], array('remove' => true));
 				}
 			}
 				
