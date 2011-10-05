@@ -18,6 +18,18 @@ class House extends AppModel {
             )
         ),
 
+        'municipality_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε δήμο.',
+            ),
+            'number' => array(
+                'rule' => '/^[1-99]$/',
+                'message' => 'Παρουσιάστικε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
         'floor_id' => array(
             'not_empty' => array(
                 'rule' => 'notEmpty',
