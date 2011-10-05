@@ -44,6 +44,17 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`heating_types` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Table `roommates`.`municipalities`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roommates`.`municipalities`;
+
+CREATE TABLE IF NOT EXISTS `roommates`.`municipalities` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Table `roommates`.`houses`
@@ -79,11 +90,13 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `currently_hosting` INT NOT NULL,
   `currently_available` INT NOT NULL,
   `profile_id` INT DEFAULT NULL ,
+  `municipality_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
   INDEX `fk_house_house_type1` (`house_type_id` ASC) ,
   INDEX `fk_house_heating1` (`heating_type_id` ASC) ,
   INDEX `fk_house_profile` (`profile_id` ASC) ,
+  INDEX `fk_house_municipality` (`municipality_id` ASC) ,
   CONSTRAINT `fk_house_floor`
     FOREIGN KEY (`floor_id` )
     REFERENCES `roommates`.`floors` (`id` )
@@ -102,6 +115,11 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   CONSTRAINT `fk_house_profile`
     FOREIGN KEY (`profile_id`)
     REFERENCES `roommates`.`profiles` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_house_minicipality`
+    FOREIGN KEY (`municipality_id`)
+    REFERENCES `roommates`.`municipalities` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
