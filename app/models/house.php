@@ -81,7 +81,7 @@ class House extends AppModel {
 
         'price' => array(
             'rule' => '/^[1-9]\d{0,3}$/',
-            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, έως 9999.'
+            'message' => 'Εισάγετε έναν θετικό ακέραιο αριθμό, χωρίς σημεία στίξης.'
         ),
 
         'postal_code' => array(
