@@ -30,8 +30,8 @@ echo $form->input('rent_period', array('label' => 'Περίοδος ενοικί
 echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 
 
-echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type'=>'select', 'options' => $hosting));
-echo $form->input('currently_available', array('label' => 'Διαθεσιμότητα','type'=>'select', 'options' => $available));
+echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type'=>'select', 'options' => $places_availability));
+echo $form->input('total_places', array('label' => 'Συνολική διαθεσιμότητα','type'=>'select', 'options' => $places_availability));
 
 echo $form->end('Αποθήκευση');
 ?>

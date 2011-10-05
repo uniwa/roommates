@@ -88,7 +88,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `house_type_id` INT NOT NULL ,
   `heating_type_id` INT NOT NULL ,
   `currently_hosting` INT NOT NULL,
-  `currently_available` INT NOT NULL,
+  `total_places` INT NOT NULL,
   `profile_id` INT DEFAULT NULL ,
   `municipality_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`) ,

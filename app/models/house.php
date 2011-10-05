@@ -181,9 +181,9 @@ class House extends AppModel {
 	),
 
 
-	'currently_available' => array(
+	'total_places' => array(
 	    'rule' => '/^[1-9]{1}$/i',
-	    'message' =>'Παρακαλώ εισάγετε τη διαθεσιμότητα θέσεων στην οικία'
+	    'message' =>'Παρακαλώ εισάγετε τη συνολική διαθεσιμότητα θέσεων στην οικία'
 	)
     );
 }
