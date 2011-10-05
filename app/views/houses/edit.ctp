@@ -5,6 +5,7 @@ echo $form->create('House', array('action' => 'edit'));
 
 echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας', 'empty' => 'Επιλέξτε...'));
 echo $form->input('address', array('label' => 'Διεύθυνση'));
+echo $form->input('municipality_id', array('label' => 'Δήμος', 'empty' => 'Επιλέξτε...'));
 echo $form->input('postal_code', array('label' => 'Τ.Κ.'));
 echo $form->input('area', array('label' => 'Εμβαδό'));
 echo $form->input('floor_id', array('label' => 'Όροφος', 'empty' => 'Επιλέξτε...'));
@@ -27,6 +28,10 @@ echo $form->input('disability_facilities', array('label' => 'Προσβάσιμ�
 echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης'));
 echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
+
+echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type' => 'select', 'options' => $places_availability));
+echo $form->input('total_places', array('label' => 'Συνολική διαθεσιμότητα','type' => 'select', 'options' => $places_availability));
+
 
 echo $form->input('id', array('type' => 'hidden'));
 
