@@ -138,5 +138,23 @@ class ProfilesController extends AppController {
         return date('Y') - $age;
     }
 
+    function saveSearchPreferences() {
+        $profile = $this->Profile->find('first', array('conditions' => array('Profile.id' => 1)));
+        $search_args = $this->data['Profile'];
+        $profile['Preference'] = array(
+                        'id' => $profile['Preference']['id'],
+                        'age_min' => $search_args['agemin'],
+                        'age_max' => $search_args['agemax'],
+                        'mates_min' => $search_args['max_roommates'],
+                        'pref_gender' => $search_args['gender'],
+                        'pref_smoker' => $search_args['smoker'],
+                        'pref_pet' => $search_args['pet'],
+                        'pref_child' => $search_args['child'],
+                        'pref_couple' => $search_args['couple']
+        );
+        $this->data['Preference'] = $profile['Preference'];
+        $this->Profile->Preference->save($this->data['Preference']);
+    }
+
 }
 ?>
