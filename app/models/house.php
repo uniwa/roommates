@@ -186,7 +186,18 @@ class House extends AppModel {
             'message' => 'Υπήρξε κάποιο σφάλμα.',
             'required' => false,
             'allowEmpty' => true
-        )
+        ),
+	
+	'currently_hosting' => array(
+	    'rule' => '/^[1-9]{1}$/i',
+	    'message' =>'Παρακαλώ εισάγετε τον τρέχοντα αριθμό κατοίκων της οικίας'
+	),
+
+
+	'total_places' => array(
+	    'rule' => '/^[1-9]{1}$/i',
+	    'message' =>'Παρακαλώ εισάγετε τη συνολική διαθεσιμότητα θέσεων στην οικία'
+	)
     );
 }
 
