@@ -68,9 +68,7 @@
 		<?php
 			if($mates_min){
                 echo "Ελάχιστος αριθμός συγκατοίκων: ";
-                if($mates_min){
-				    echo Sanitize::html($profile['Preference']['mates_min'], array('remove' => true));
-				}
+				echo Sanitize::html($profile['Preference']['mates_min'], array('remove' => true));
 			}
 				
 		?>
