@@ -78,6 +78,13 @@ class HousesController extends AppController {
             $entries[$i] = $i;
         }
         $this->set('available_constr_years', $entries);
+
+	$no_mates = array();
+	for ($i = 1; $i <= 9; $i++){
+		$mates[$i] = $i;
+	}
+	$this->set('hosting_or_available', $no_mates);
+
     }
 }
 ?>

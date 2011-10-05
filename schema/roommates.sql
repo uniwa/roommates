@@ -76,6 +76,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `floor_id` INT NOT NULL ,
   `house_type_id` INT NOT NULL ,
   `heating_type_id` INT NOT NULL ,
+  `currently_hosting` INT NOT NULL,
+  `currently_available` INT NOT NULL,
   `profile_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
