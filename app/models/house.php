@@ -24,7 +24,7 @@ class House extends AppModel {
                 'message' => 'Παρακαλώ επιλέξτε δήμο.',
             ),
             'number' => array(
-                'rule' => '/^[1-99]$/',
+                'rule' => '/^[1-9]\d*$/',
                 'message' => 'Παρουσιάστικε κάποιο σφάλμα.',
                 'allowEmpty' => true
             )
