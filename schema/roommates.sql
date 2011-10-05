@@ -125,6 +125,26 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+DROP TABLE IF EXISTS `roommates`.`users` ;
+-- -----------------------------------------------------
+-- Table `roommates`.`users`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `username` CHAR(50) NOT NULL ,
+  `password` CHAR(40) NOT NULL ,
+  `profiles_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_users_profiles1` (`profiles_id` ASC) ,
+  CONSTRAINT `fk_users_profiles1`
+    FOREIGN KEY (`profiles_id` )
+    REFERENCES `roommates`.`profiles` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
+
 
 -- -----------------------------------------------------
 -- Table `roommates`.`preferences`
