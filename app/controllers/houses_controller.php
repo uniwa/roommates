@@ -72,6 +72,7 @@ class HousesController extends AppController {
         $this->set('floors', $this->House->Floor->find('list', array('fields' => array('type'))));
         $this->set('houseTypes', $this->House->HouseType->find('list', array('fields' => array('type'))));
         $this->set('heatingTypes', $this->House->HeatingType->find('list', array('fields' => array('type'))));
+        $this->set('municipalities', $this->House->Municipality->find('list', array('fields' => array('name'))));
 
         $entries = array();
         for($i = 1950; $i <= date('Y'); $i++) {
