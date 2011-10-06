@@ -22,6 +22,10 @@ class HousesController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();
+        
+	if( $this->RequestHandler->isRss()){
+		$this->Auth->allow( 'index' );
+	}
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
