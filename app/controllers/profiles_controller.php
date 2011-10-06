@@ -5,11 +5,7 @@ class ProfilesController extends AppController {
 
     var $name = 'Profiles';
     var $components = array('RequestHandler');
-
- //   var $profile = 
- //   var $preferences = 
- //	var $uses = array('House');
-
+    var $paginate = array('limit' => 15);
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -22,7 +18,9 @@ class ProfilesController extends AppController {
 
 		$genderLabels = array('άνδρας', 'γυναίκα');
 		$this->set('genderLabels', $genderLabels);
-        $this->set('profiles', $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1))));
+
+        $profiles = $this->paginate('Profile', array('Profile.visible' => 1));
+        $this->set('profiles', $profiles);
     }
 
     function view($id = null) {

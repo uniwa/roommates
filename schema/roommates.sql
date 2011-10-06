@@ -183,6 +183,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `pet` TINYINT(1)  NULL ,
   `child` TINYINT(1)  NULL ,
   `couple` TINYINT(1)  NULL ,
+  `we_are` INT(11)  NULL ,
   `max_roommates` TINYINT NULL ,
   `visible` TINYINT(1)  NULL ,
   `created` DATETIME DEFAULT NULL ,
