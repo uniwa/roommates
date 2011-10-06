@@ -82,8 +82,22 @@ class ProfilesController extends AppController {
         $this->set('available_birth_dates', $dob);
      }
 
-
     function search() {
+
+        if(isset($this->params['form']['simplesearch'])) {
+            $this->simpleSearch();
+        }
+
+        if(isset($this->params['form']['searchbyprefs'])){
+            $this->searchBySavedPrefs();
+        }
+
+        if(isset($this->params['form']['savesearch'])) {
+            $this->saveSearchPreferences();
+        }
+    }
+
+    private function simpleSearch() {
         $searchArgs = $this->data['Profile'];
 
         // set the conditions
@@ -136,5 +150,26 @@ class ProfilesController extends AppController {
         return date('Y') - $age;
     }
 
+    private function saveSearchPreferences() {
+        $profile = $this->Profile->find('first', array('conditions' => array(
+                                                       'Profile.id' => $this->Auth->user('profile_id'))));
+        $search_args = $this->data['Profile'];
+        $profile['Preference'] = array(
+                        'id' => $profile['Preference']['id'],
+                        'age_min' => $search_args['agemin'],
+                        'age_max' => $search_args['agemax'],
+                        'mates_min' => $search_args['max_roommates'],
+                        'pref_gender' => $search_args['gender'],
+                        'pref_smoker' => $search_args['smoker'],
+                        'pref_pet' => $search_args['pet'],
+                        'pref_child' => $search_args['child'],
+                        'pref_couple' => $search_args['couple']
+        );
+        $this->data['Preference'] = $profile['Preference'];
+        $this->Profile->Preference->save($this->data['Preference']);
+    }
+
+    private function searchBySavedPrefs() {
+    }
 }
 ?>
