@@ -543,12 +543,26 @@ h1{
 	border-color: #b9bbbf;
 }
 
-.title{
+.frame-container{
 	margin: 16px 32px 4px 32px;
+}
+
+#top-photo{
+	border: 8px solid #efefef;
+	background-color: #999999;
+	float: right;
+	width: 100px;
+	height: 100px;
+	margin: 0px 0px 4px 0px;
+}
+
+.title{
+	clear: both;
+	margin: 8px 0px 8px -10px;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 20px;
     font-weight: bold;
-	text-shadow: #999999 1px 1px 0px;
+	text-shadow: #bbbbbb 1px 1px 0px;
 }
 
 #top-title{
@@ -559,7 +573,21 @@ h1{
     color: #4f6ca6;
 }
 
-.options{}
+.options{
+	clear: both;
+	margin: 0px 0px 0px 16px;
+}
+
+.profile-big{
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+	color: #bbbbbb;
+}
+
+.profile-strong{
+	color: #888888;
+}
 
 .subtitle{
 	margin: 0px 32px 20px 32px;

@@ -10,6 +10,7 @@
 
 <div class="info-block">
     <p><span class="bold">Διεύθυνση:</span> <?php echo $house['House']['address']?></p>
+    <p><span class="bold">Δήμος:</span> <?php echo $house['Municipality']['name']?></p>
     <p><span class="bold">Τ.Κ.:</span> <?php echo $house['House']['postal_code']?></p>
     <p><span class="bold">Τύπος:</span> <?php echo $house['HouseType']['type']?></p>
     <p><span class="bold">Τετραγωνικά:</span> <?php echo $house['House']['area']?></p>
@@ -66,6 +67,11 @@
     <p><span class="bold">Περιγραφή:</span> <?php echo Sanitize::html($house['House']['description'])?></p>
 </div>
 
+<div class="info-block">
+    <!-- availability -->
+    <p><span class="bold">Διαμένουν:</span> <?php echo Sanitize::html($house['House']['currently_hosting'])?> άτομα </p>
+    <p><span class="bold">Συνολική διαθεσιμότητα:</span> <?php echo Sanitize::html($house['House']['total_places'])?> άτομα </p>
+</div>
 
 
 
