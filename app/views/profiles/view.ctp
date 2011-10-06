@@ -13,6 +13,11 @@
 				$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
 				$couple = ($profile['Profile']['couple'])?'ναι':'όχι';
 				$child = ($profile['Profile']['child'])?'ναι':'όχι';
+				$weare = $profile['Profile']['we_are'];
+
+				//$koko = count($profile['House']);
+				//echo '<pre>'; print_r($koko); echo '</pre>'; die();	
+
 				echo Sanitize::html($name, array('remove' => true));
 				
 				function echoDetail($title, $option){
@@ -41,6 +46,15 @@
 				echoDetail('Παιδί', $child);
 				echoDetail('Ζευγάρι', $couple);
 			?></span>
+			
+			<?php echo 'Είμαστε ' .  $weare . ' άτομα'; ?><br />
+
+			<?php if (count($profile['House']) != 0){
+					//reads only the first users house
+					$myhouse = $profile['House'][0]['id'];?>
+					<img src = "<?php echo $this->webroot;?>img/home.png"><a href="http://localhost/roommates/houses/view/<?php echo $myhouse?>">  Το σπίτι μου</a>
+			<?php }?>
+			
 		</div>
 	</div>
 </div>

@@ -27,6 +27,8 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
         $this->Profile->id = $id;
+	//$koko = $this->Profile->read();
+	//echo '<pre>';print_r($koko);echo'</pre>';die();	
         $this->set('profile', $this->Profile->read());
     }
 
