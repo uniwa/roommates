@@ -662,6 +662,18 @@ h1{
 .profile-house{
 }
 
+/* pagination */
+.pagination ul li {
+    style: none;
+    display: inline;
+}
+
+.pagination ul {
+    text-align: center;
+}
+
+.pagination .disabled { display: none; }
+
 #login-frame{
     color: #6a6a6a;
     font-family: Helvetica, Verdana, Arial, sans-serif;

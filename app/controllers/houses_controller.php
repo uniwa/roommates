@@ -7,6 +7,7 @@ class HousesController extends AppController {
     var $name = 'Houses';
     var $components = array('RequestHandler');
     var $helpers = array('Text', 'Time');
+    var $paginate = array('limit' => 15);
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -14,8 +15,9 @@ class HousesController extends AppController {
                         array('limit' => 20, 'order' => 'House.modified DESC'));
             return $this->set(compact('houses'));
         }
-
-        $this->set('houses', $this->House->find('all'));
+        $houses = $this->paginate('House');
+        $this->set('houses', $houses);
+        //$this->set('houses', $this->House->find('all'));
     }
 
     function beforeFilter() {
