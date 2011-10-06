@@ -69,7 +69,7 @@
             /* show the previous link */
             echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
             /* show pages */
-            echo $paginator->numbers(array('first' => 3, 'last' => 3, 'separator' => ' ', 'tag' => 'li'));
+            echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => 4, 'separator' => ' ', 'tag' => 'li'));
             /* Shows the next link */
             echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
             /* show last page */
