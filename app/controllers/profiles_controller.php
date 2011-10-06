@@ -84,8 +84,22 @@ class ProfilesController extends AppController {
         $this->set('available_birth_dates', $dob);
      }
 
-
     function search() {
+
+        if(isset($this->params['form']['simplesearch'])) {
+            $this->simpleSearch();
+        }
+
+        if(isset($this->params['form']['searchbyprefs'])){
+            $this->searchBySavedPrefs();
+        }
+
+        if(isset($this->params['form']['savesearch'])) {
+            $this->saveSearchPreferences();
+        }
+    }
+
+    private function simpleSearch() {
         $searchArgs = $this->data['Profile'];
 
         // set the conditions
@@ -138,7 +152,7 @@ class ProfilesController extends AppController {
         return date('Y') - $age;
     }
 
-    function saveSearchPreferences() {
+    private function saveSearchPreferences() {
         $profile = $this->Profile->find('first', array('conditions' => array('Profile.id' => 1)));
         $search_args = $this->data['Profile'];
         $profile['Preference'] = array(
@@ -156,5 +170,7 @@ class ProfilesController extends AppController {
         $this->Profile->Preference->save($this->data['Preference']);
     }
 
+    private function searchBySavedPrefs() {
+    }
 }
 ?>

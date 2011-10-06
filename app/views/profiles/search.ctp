@@ -58,7 +58,8 @@
 <?php
 	echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse',
 		array('value' => 1, 'checked' => false, 'hiddenField' => false));
-    echo $this->Form->submit('αναζήτηση', array('name' => 'onlysearch'));
+    echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
+    echo $this->Form->submit('αναζήτηση με βάση τις προτιμήσεις μου', array('name' => 'searchbyprefs'));
     echo $this->Form->submit('αποθήκευση αναζήτησης', array('name' => 'savesearch'));
 	echo $this->Form->end();
 ?>
