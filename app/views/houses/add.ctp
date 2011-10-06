@@ -4,8 +4,8 @@
 echo $form->create('House');
 
 echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας', 'empty' => 'Επιλέξτε...'));
-echo $form->input('address', array('label' => 'Διεύθυνση'));
 echo $form->input('municipality_id', array('label' => 'Δήμος', 'empty' => 'Επιλέξτε...'));
+echo $form->input('address', array('label' => 'Διεύθυνση'));
 echo $form->input('postal_code', array('label' => 'Τ.K.'));
 echo $form->input('area', array('label' => 'Εμβαδό'));
 echo $form->input('floor_id', array('label' => 'Όροφος', 'empty' => 'Επιλέξτε...'));

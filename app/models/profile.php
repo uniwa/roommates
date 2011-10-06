@@ -6,6 +6,8 @@ class Profile extends AppModel {
 
 	var $hasMany = array('House');
 
+	var $hasOne = array('User');
+
 	var $belongsTo = array('Preference' => array('className' => 'Preference',
 						     'foreignKey' => 'preference_id')
 	);
