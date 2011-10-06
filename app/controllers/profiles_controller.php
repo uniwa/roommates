@@ -5,11 +5,7 @@ class ProfilesController extends AppController {
 
     var $name = 'Profiles';
     var $components = array('RequestHandler');
-
- //   var $profile = 
- //   var $preferences = 
- //	var $uses = array('House');
-
+    var $paginate = array('limit' => 15);
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -20,9 +16,11 @@ class ProfilesController extends AppController {
             return $this->set(compact('profiles'));
         }
 
-		$genderLabels = array('άνδρας', 'γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
-        $this->set('profiles', $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1))));
+
+        $profiles = $this->paginate('Profile', array('Profile.visible' => 1));
+        $this->set('profiles', $profiles);
     }
 
     function view($id = null) {
@@ -47,7 +45,7 @@ class ProfilesController extends AppController {
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
-		$genderLabels = array('άνδρας', 'γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
     }	
@@ -86,8 +84,22 @@ class ProfilesController extends AppController {
         $this->set('available_birth_dates', $dob);
      }
 
-
     function search() {
+
+        if(isset($this->params['form']['simplesearch'])) {
+            $this->simpleSearch();
+        }
+
+        if(isset($this->params['form']['searchbyprefs'])){
+            $this->searchBySavedPrefs();
+        }
+
+        if(isset($this->params['form']['savesearch'])) {
+            $this->saveSearchPreferences();
+        }
+    }
+
+    private function simpleSearch() {
         $searchArgs = $this->data['Profile'];
 
         // set the conditions
@@ -109,7 +121,7 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['agemax']);
         }
 
-        $genderLabels = array('Άνδρας', 'Γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
         if(($searchArgs['gender'] != '') && ($searchArgs['gender'] < 2)) {
             $searchconditions['Profile.gender'] = $searchArgs['gender'];
         }
@@ -140,5 +152,26 @@ class ProfilesController extends AppController {
         return date('Y') - $age;
     }
 
+    private function saveSearchPreferences() {
+        $profile = $this->Profile->find('first', array('conditions' => array(
+                                                       'Profile.id' => $this->Auth->user('profile_id'))));
+        $search_args = $this->data['Profile'];
+        $profile['Preference'] = array(
+                        'id' => $profile['Preference']['id'],
+                        'age_min' => $search_args['agemin'],
+                        'age_max' => $search_args['agemax'],
+                        'mates_min' => $search_args['max_roommates'],
+                        'pref_gender' => $search_args['gender'],
+                        'pref_smoker' => $search_args['smoker'],
+                        'pref_pet' => $search_args['pet'],
+                        'pref_child' => $search_args['child'],
+                        'pref_couple' => $search_args['couple']
+        );
+        $this->data['Preference'] = $profile['Preference'];
+        $this->Profile->Preference->save($this->data['Preference']);
+    }
+
+    private function searchBySavedPrefs() {
+    }
 }
 ?>

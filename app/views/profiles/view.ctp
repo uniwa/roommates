@@ -38,7 +38,7 @@
 			</h1>
 		</div>
 		<div id='main-details' class='options profile-big'>
-			<?php echo $age; ?></span> ετών, <span class='profile-strong'>
+			<span class='profile-strong'><?php echo $age; ?></span> ετών, <span class='profile-strong'>
 			<?php echo $gender; ?></span><br />
 			<?php
 				echoDetail('Καπνιστής', $smoker);
