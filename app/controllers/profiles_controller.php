@@ -16,7 +16,7 @@ class ProfilesController extends AppController {
             return $this->set(compact('profiles'));
         }
 
-		$genderLabels = array('άνδρας', 'γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
 
         $profiles = $this->paginate('Profile', array('Profile.visible' => 1));
@@ -43,7 +43,7 @@ class ProfilesController extends AppController {
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
-		$genderLabels = array('άνδρας', 'γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
     }	
@@ -105,7 +105,7 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['agemax']);
         }
 
-        $genderLabels = array('Άνδρας', 'Γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
         if(($searchArgs['gender'] != '') && ($searchArgs['gender'] < 2)) {
             $searchconditions['Profile.gender'] = $searchArgs['gender'];
         }
