@@ -82,12 +82,13 @@
 
     <ul class="thelist">
 
-        <?php
+<?php
+    if(isset($profiles)) {
 		$oddLine = true;
 		foreach ($profiles as $profile):
 			$rowCSS = ($oddLine)?'0':'1';
 			$rowCSS = "bgcolor".$rowCSS;
-	?>
+?>
 
 
         <li>
@@ -131,6 +132,7 @@
             <?php
 		$oddLine = !$oddLine;
 		endforeach;
+    }
 
 	?>
 
