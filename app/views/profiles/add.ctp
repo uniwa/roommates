@@ -12,10 +12,10 @@
 	echo $this->Form->radio('Profile.gender', array('0' => 'Άνδρας', '1' => 'Γυναίκα'), array('legend'=>false));
 
 	echo $this->Form->input('Profile.phone', array('label' => 'Τηλέφωνο'));
-	echo $this->Form->input('Profile.smoker', array('label' =>'Καπνιστής'));
-	echo $this->Form->input('Profile.pet', array('label' =>'Κατοικίδιο'));
-	echo $this->Form->input('Profile.child', array('label' => 'Παιδί'));
-	echo $this->Form->input('Profile.couple', array('label' => 'Ζευγάρι'));
+	echo $this->Form->input('Profile.smoker', array('label' =>'Είμαι καπνιστής'));
+	echo $this->Form->input('Profile.pet', array('label' =>'Έχω κατοικίδιο'));
+	echo $this->Form->input('Profile.child', array('label' => 'Έχω παιδί'));
+	echo $this->Form->input('Profile.couple', array('label' => 'Συζώ'));
 	echo $this->Form->input('Profile.max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
 	echo $this->Form->input('Profile.visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 ?>
