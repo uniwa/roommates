@@ -661,3 +661,14 @@ h1{
 
 .profile-house{
 }
+
+/* pagination */
+
+.pagination ul li {
+    style: none;
+    display: inline;
+}
+
+.pagination ul {
+    text-align: center;
+}
