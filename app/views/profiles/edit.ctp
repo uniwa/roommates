@@ -15,10 +15,10 @@
 
 
 	echo $this->Form->input('Profile.phone', array('label' => 'Τηλέφωνο'));
-	echo $this->Form->input('Profile.smoker', array('label' =>'Καπνιστής'));
-	echo $this->Form->input('Profile.pet', array('label' =>'Κατοικίδιο'));
-	echo $this->Form->input('Profile.child', array('label' => 'Παιδί'));
-	echo $this->Form->input('Profile.couple', array('label' => 'Ζευγάρι'));
+	echo $this->Form->input('Profile.smoker', array('label' =>'Είμαι καπνιστής'));
+	echo $this->Form->input('Profile.pet', array('label' =>'Έχω κατοικίδιο'));
+	echo $this->Form->input('Profile.child', array('label' => 'Έχω παιδί'));
+	echo $this->Form->input('Profile.couple', array('label' => 'Συζώ'));
 	echo $this->Form->input('Profile.max_roommates', array('label' =>'Μέγιστος αριθμός συγκατοίκων'));
     echo $this->Form->input('Profile.visible', array('label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 
@@ -36,10 +36,10 @@
 	echo $this->Form->input('Preference.mates_min', array('label' => 'Ελάχιστος αριθμός συγκατοίκων'));
 
     echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $genderLabels));
-    echo $this->Form->input('Preference.pref_smoker', array('label' => 'Καπνιστής', 'type' => 'select', 'options' => $options));
-    echo $this->Form->input('Preference.pref_pet', array('label' => 'Κατοικίδιο', 'type' => 'select', 'options' => $options));
-    echo $this->Form->input('Preference.pref_child', array('label' => 'Παιδί', 'type' => 'select', 'options' => $options));
-    echo $this->Form->input('Preference.pref_couple', array('label' => 'Ζευγάρι', 'type' => 'select', 'options' => $options));
+    echo $this->Form->input('Preference.pref_smoker', array('label' => 'Είναι καπνιστής', 'type' => 'select', 'options' => $options));
+    echo $this->Form->input('Preference.pref_pet', array('label' => 'Έχει κατοικίδιο', 'type' => 'select', 'options' => $options));
+    echo $this->Form->input('Preference.pref_child', array('label' => 'Έχει παιδί', 'type' => 'select', 'options' => $options));
+    echo $this->Form->input('Preference.pref_couple', array('label' => 'Συζεί', 'type' => 'select', 'options' => $options));
 
 
    	echo $this->Form->input('Profile.id', array('type' => 'hidden'));
