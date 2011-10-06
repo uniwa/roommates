@@ -125,19 +125,20 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-DROP TABLE IF EXISTS `roommates`.`users` ;
 -- -----------------------------------------------------
 -- Table `roommates`.`users`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `roommates`.`users` ;
+
 CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `username` CHAR(50) NOT NULL ,
   `password` CHAR(40) NOT NULL ,
-  `profiles_id` INT NOT NULL ,
+  `profile_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_users_profiles1` (`profiles_id` ASC) ,
+  INDEX `fk_users_profiles1` (`profile_id` ASC) ,
   CONSTRAINT `fk_users_profiles1`
-    FOREIGN KEY (`profiles_id` )
+    FOREIGN KEY (`profile_id` )
     REFERENCES `roommates`.`profiles` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
