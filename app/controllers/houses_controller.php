@@ -7,7 +7,7 @@ class HousesController extends AppController {
     var $name = 'Houses';
     var $components = array('RequestHandler');
     var $helpers = array('Text', 'Time');
-    var $paginate = array('limit' => 5);
+    var $paginate = array('limit' => 15);
 
     function index() {
         if ($this->RequestHandler->isRss()) {
