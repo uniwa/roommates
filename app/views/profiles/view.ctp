@@ -19,6 +19,16 @@
 					$span = array("open" => "<span class='profile-strong'>", "close" => "</span>");
 					echo $title.': '.$span['open'].$option.$span['close']."<br \>\n";
 				}
+				
+				function getPrefValue($preference, $values){
+					if($preference < 2){
+						$preference = ($preference)?$values[1]:$values[0];
+					}else{
+						$preference = $values[2];
+					}
+					
+					return $preference;
+				}
 			?>
 			</h1>
 		</div>
@@ -46,7 +56,22 @@
 			Επιθυμητός αριθμός συγκατοίκων: <span class='profile-strong'>
 			<?php
 				$roommateswanted = $profile['Profile']['max_roommates'];
-				echo Sanitize::html($roommateswanted, array('remove' => true))
+				$prefgender = $profile['Preference']['pref_gender'];
+				$prefsmoker = $profile['Preference']['pref_smoker'];
+				$prefpet = $profile['Preference']['pref_pet'];
+				$prefchild = $profile['Preference']['pref_child'];
+				$prefcouple = $profile['Preference']['pref_couple'];
+
+				$genderoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
+				$ynioptions = array('όχι', 'ναι', 'αδιάφορο');
+
+				$gender = getPrefValue($prefgender, $genderoptions);
+				$smoker = getPrefValue($prefsmoker, $ynioptions);
+				$pet = getPrefValue($prefpet, $ynioptions);
+				$child = getPrefValue($prefchild, $ynioptions);
+				$couple = getPrefValue($prefcouple, $ynioptions);
+				
+				echo $roommateswanted;
 			?></span>
 			<br />Ηλικία: 
 			<?php
@@ -60,51 +85,13 @@
 			?></span>μέχρι <span class='profile-strong'><?php
 					echo $profile['Preference']['age_max'];
 				}
-			?></span><br />Φύλο: <span class='profile-strong'>
+			?></span><br />
 			<?php
-				$prefgender = $profile['Preference']['pref_gender'];
-				if($prefgender < 2){
-					$prefgender = ($prefgender)?'άνδρες':'γυναίκες';
-				}else{
-					$prefgender = 'αδιάφορο';
-				}
-				echo $prefgender;
-			?></span><br />Καπνιστής: <span class='profile-strong'>
-			<?php
-				$prefsmoker = $profile['Preference']['pref_smoker'];
-				if($prefsmoker < 2){
-					$prefsmoker = ($profile['Preference']['pref_smoker'])?'ναι':'όχι';
-				}else{
-					$prefsmoker = 'αδιάφορο';
-				}
-				echo $prefsmoker;
-			?></span><br />Κατοικίδιο: <span class='profile-strong'>
-			<?php
-				$prefpet = $profile['Preference']['pref_pet'];
-				if($prefpet < 2){
-					$prefpet = ($profile['Preference']['pref_pet'])?'ναι':'όχι';
-				}else{
-					$prefpet = 'αδιάφορο';
-				}
-				echo $prefpet;
-			?></span><br />Παιδί: <span class='profile-strong'>
-			<?php
-				$prefchild = $profile['Preference']['pref_child'];
-				if($prefchild < 2){
-					$prefchild = ($profile['Preference']['pref_child'])?'ναι':'όχι';
-				}else{
-					$prefchild = 'αδιάφορο';
-				}
-				echo $prefchild;
-			?></span><br />Ζευγάρι: <span class='profile-strong'>
-			<?php
-				$prefcouple = $profile['Preference']['pref_couple'];
-				if($prefcouple < 2){
-					$prefcouple = ($profile['Preference']['pref_couple'])?'ναι':'όχι';
-				}else{
-					$prefcouple = 'αδιάφορο';
-				}
-				echo $prefcouple;
+				echoDetail('Φύλο', $gender);
+				echoDetail('Καπνιστής', $smoker);
+				echoDetail('Κατοικίδιο', $smoker);
+				echoDetail('Παιδί', $smoker);
+				echoDetail('Φύλο', $smoker);
 			?></span>
 		</div>
 	</div>
