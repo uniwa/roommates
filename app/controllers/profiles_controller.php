@@ -153,7 +153,8 @@ class ProfilesController extends AppController {
     }
 
     private function saveSearchPreferences() {
-        $profile = $this->Profile->find('first', array('conditions' => array('Profile.id' => 1)));
+        $profile = $this->Profile->find('first', array('conditions' => array(
+                                                       'Profile.id' => $this->Auth->user('profile_id'))));
         $search_args = $this->data['Profile'];
         $profile['Preference'] = array(
                         'id' => $profile['Preference']['id'],
