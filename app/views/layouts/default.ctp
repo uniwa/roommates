@@ -27,7 +27,7 @@
 
     <div id="navigation" class="column">
 
-        <ul id="nav">
+         <ul id="nav">
             <li class="page_item current_page_item home">
                 <a href="#"><span>Αρχική</span></a>
             </li>
@@ -59,11 +59,19 @@
 
             </li>
 
+		<?php if( $this->Session->read( 'Auth.User' ) ){
+		
+			echo '<li>';
+			echo $this->Html->link('Αποσύνδεση' , array( 'controller' => 'users',
+								     'action' => 'logout'));
+			echo '</li>';
+		}?>
+		
 
             <li class="rss">
                 <a href="#" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rss.png"
                                                                   alt="RSS-feed"/></a>
-            </li>
+	    </li>
 
 
         </ul>
