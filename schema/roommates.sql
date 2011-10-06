@@ -134,14 +134,15 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `username` CHAR(50) NOT NULL ,
   `password` CHAR(40) NOT NULL ,
-  `profile_id` INT NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_users_profiles1` (`profile_id` ASC) ,
-  CONSTRAINT `fk_users_profiles1`
-    FOREIGN KEY (`profile_id` )
-    REFERENCES `roommates`.`profiles` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+--  `profile_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) 
+--  INDEX `fk_users_profiles1` (`profile_id` ASC) ,
+--  CONSTRAINT `fk_users_profiles1`
+--    FOREIGN KEY (`profile_id` )
+--    REFERENCES `roommates`.`profiles` (`id` )
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION)
+)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci;
@@ -189,11 +190,18 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,
   `preference_id` INT DEFAULT NULL ,
+  `user_id` INT NOT NULL ,
   PRIMARY KEY (`id`),
   INDEX `fk_preference_id` (`preference_id` ASC),
+  INDEX `fk_user_id` (`user_id` ASC),
   CONSTRAINT `fk_profile_preference`
     FOREIGN KEY (`preference_id`)
     REFERENCES `roommates`.`preferences`(`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_id`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `roommates`.`users`(`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 )
