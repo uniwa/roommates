@@ -18,6 +18,18 @@ class House extends AppModel {
             )
         ),
 
+        'municipality_id' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ επιλέξτε δήμο.',
+            ),
+            'number' => array(
+                'rule' => array('range', 0, 67), /* 66 municipalities in db - ids between 1 and 66 */
+                'message' => 'Παρουσιάστικε κάποιο σφάλμα.',
+                'allowEmpty' => true
+            )
+        ),
+
         'floor_id' => array(
             'not_empty' => array(
                 'rule' => 'notEmpty',
@@ -53,7 +65,8 @@ class House extends AppModel {
             ),
             'valid' => array(
                 'rule' => '/^[\w\dαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς,. &]+$/',
-                'message' => 'Η διεύθυνση περιέχει έναν μη έγκυρο χαρακτήρα.'
+                'message' => 'Η διεύθυνση περιέχει έναν μη έγκυρο χαρακτήρα.',
+                'allowEmpty' => true
             )
         ),
 
@@ -173,7 +186,18 @@ class House extends AppModel {
             'message' => 'Υπήρξε κάποιο σφάλμα.',
             'required' => false,
             'allowEmpty' => true
-        )
+        ),
+	
+	'currently_hosting' => array(
+	    'rule' => '/^[1-9]{1}$/i',
+	    'message' =>'Παρακαλώ εισάγετε τον τρέχοντα αριθμό κατοίκων της οικίας'
+	),
+
+
+	'total_places' => array(
+	    'rule' => '/^[1-9]{1}$/i',
+	    'message' =>'Παρακαλώ εισάγετε τη συνολική διαθεσιμότητα θέσεων στην οικία'
+	)
     );
 }
 

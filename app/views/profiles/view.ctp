@@ -1,81 +1,107 @@
-<div class="profile">
-
-    <p class="name"><?php echo Sanitize::html($profile['Profile']['firstname'] . " " . $profile['Profile']['lastname'], array('remove' => true)) ?><span
-            class="age"> - Ηλικία: <?php echo $profile['Profile']['age'] ?></span></p>
-
-<div id="actions">
-     <?php echo $this->Html->link('επεξεργασία',
-						 array('action' => 'edit', $profile['Profile']['id'])); ?>
-
-    <?php echo $this->Html->link('διαγραφή',
-					 array('action' => 'delete', $profile['Profile']['id']), null, 'Είστε σίγουρος;') ?>
-
+<div id='top-frame' class='frame'>
+	<div class='frame-container'>
+		<div id='top-photo'>
+			<img src='./img/profile_avatar.png' />
+		</div>
+		<div id='top-title' class='title'>
+			<h1>
+			<?php
+				$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
+				echo Sanitize::html($name, array('remove' => true));
+			?>
+			</h1>
+		</div>
+		<div id='main-details' class='options profile-big'>
+			είμαι <span class='profile-strong'><?php
+				$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
+				echo $gender.", ".$profile['Profile']['age'];
+			?></span> ετών<br />
+			<span class='profile-strong'><?php
+				$smoker = ($profile['Profile']['smoker'])?'':'δεν ';
+				$smoker .= 'καπνίζω';
+				$pet = ($profile['Profile']['pet'])?'':'δεν ';
+				$pet .= 'έχω κατοικίδιο';
+				echo $smoker;
+			?></span>,<span class='profile-strong'><?php
+				echo ' '.$pet;
+			?></span><br />
+			<span class='profile-strong'><?php
+				$couple = ($profile['Profile']['couple'])?'':'δεν ';
+				$couple .= 'συζώ';
+				$child = ($profile['Profile']['child'])?'':'δεν ';
+				$child .= 'έχω παιδί';
+				echo $couple;
+			?></span> και <span class='profile-strong'><?php
+					echo $child;
+			?></span>
+		</div>
+	</div>
 </div>
 
-
-    <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
-
-    <p class="mail">email: <?php echo Sanitize::html($profile['Profile']['email'], array('remove' => true)) ?></p>
-
-    <?php if ($profile['Profile']['gender'])
-        echo '<p class="female">Γυναίκα.</p>';
-    else
-        echo '<p class="male">Άνδρας.</p>';
-    ?>
-    <p class="tel">Τηλέφωνο: <?php echo Sanitize::html($profile['Profile']['phone'], array('remove' => true)) ?></p>
-
-
-     <?php if ($profile['Profile']['smoker'])
-        echo '<p class="smoker">Είμαι Καπνιστής</p>';
-    else
-        echo '<p class="nosmoker">Δεν είμαι Καπνιστής.</p>';
-    ?>
-
-
-    <p class="pet"> <?php if (!$profile['Profile']['pet']) echo "Δεν" ?> 'Εχω Κατοικίδιο.</p>
-
-    <p class="kid"> <?php if (!$profile['Profile']['child']) echo "Δεν" ?> 'Εχω παιδί.</p>
-
-    <p class="couple"><?php if (!$profile['Profile']['couple']) echo "Δεν" ?> Είμαστε Ζευγάρι.</p>
-
-    <p class="rmates">Επιθυμώ να συγκατοικήσω με το πολυ <?php echo Sanitize::html($profile['Profile']['max_roommates'], array('remove' => true)) ?> άτομα.</p>
-
-	<?php
-	     $gender_options = array('άνδρας', 'γυναίκα', 'αδιάφορο');
-		 $general_options = array('όχι', 'ναι', 'αδιάφορο');
-	?>
-	<h2>Κριτήρια Επιλογής Συγκατοίκου</h2>
-	<?php
-		$age_min = $profile['Preference']['age_min'];
-		$age_max = $profile['Preference']['age_max'];
-		$mates_min = $profile['Preference']['mates_min'];
-	?>
-    <p>
-		<?php
-			if($age_min || $age_max){
-                echo "Ηλικία: ";
-                if($age_min){
-				    echo Sanitize::html("από ".$profile['Preference']['age_min'], array('remove' => true));
+<div id='bottom-frame' class='frame'>
+	<div class='frame-container'>
+		<div id='bottom-title' class='title'>
+			<h2>Προτιμήσεις συγκατοίκων</h2>
+		</div>
+		<div id='bottom-subtitle' class='subtitle'>
+		</div>
+		<div id='profile-preferences' class='options profile-big'>
+			Επιθυμώ να συγκατοικήσω με <span class='profile-strong'><?php
+				$roommateswanted = $profile['Profile']['max_roommates'];
+				echo Sanitize::html($roommateswanted, array('remove' => true))
+			?></span> άτομα.<br /><?php
+				$age_min = $profile['Preference']['age_min'];
+				$age_max = $profile['Preference']['age_max'];
+                if($age_min || $age_max){
+					echo 'ηλικίας ';
+			?><span class='profile-strong'><?php
+					$agepref = '';
+					$agepref .= ($age_min)?'από '.$profile['Preference']['age_min']:'';
+					$agepref .= ($age_max)?' μέχρι '.$profile['Preference']['age_max']:'';
+				    echo Sanitize::html($agepref, array('remove' => true));
 				}
-				if($age_max){
-				    echo Sanitize::html(" μέχρι ".$profile['Preference']['age_max'], array('remove' => true));
+			?></span> ετών,<br /><span class='profile-strong'><?php
+				switch($profile['Preference']['pref_gender']){
+					case 0:
+						$preferredgender = 'άνδρες';
+						break;
+					case 1:
+						$preferredgender = 'γυναίκες';
+						break;
+					default:
+						$preferredgender = false;
+						break;
 				}
-			}
-				
-		?>
-	</p>
-    <p>
-		<?php
-			if($mates_min){
-                echo "Ελάχιστος αριθμός συγκατοίκων: ";
-				echo Sanitize::html($profile['Preference']['mates_min'], array('remove' => true));
-			}
-				
-		?>
-	</p>
-    <p><?php echo "Φύλο: ".$gender_options[$profile['Preference']['pref_gender']] ?></p>
-    <p><?php echo "Καπνιστής: ".$general_options[$profile['Preference']['pref_smoker']] ?></p>
-    <p><?php echo "Κατοικίδιο: ".$general_options[$profile['Preference']['pref_pet']] ?></p>
-    <p><?php echo "Παιδί: ".$general_options[$profile['Preference']['pref_child']] ?></p>
-    <p><?php echo "Ζευγάρι: ".$general_options[$profile['Preference']['pref_couple']] ?></p>
+				if($preferredgender){
+					echo $preferredgender;
+				}
+			?></span><span class='profile-strong'><?php
+				if($profile['Preference']['pref_smoker'] < 2){
+					$prefsmoker = ($profile['Preference']['pref_smoker'])?'μη':'';
+					echo ', ';?><span class='profile-strong'><?php
+					echo $prefsmoker.' καπνιστές';
+				}
+			?></span><?php
+				if($profile['Preference']['pref_pet'] < 2){
+					?>, <span class='profile-strong'><?php
+					$prefpet = ($profile['Preference']['pref_pet'])?'χωρίς':'με';
+					echo $prefpet.' κατοικίδιο';
+				}
+			?></span><?php
+				if($profile['Preference']['pref_child'] < 2){
+					?>, <br /><span class='profile-strong'><?php
+					$prefchild = ($profile['Preference']['pref_child'])?'χωρίς':'με';
+					echo $prefchild.' παιδί';
+				}
+			?></span><?php
+				if($profile['Preference']['pref_couple'] < 2){
+					?>, <span class='profile-strong'><?php
+					$prefcouple = ($profile['Preference']['pref_couple'])?'δεν':'';
+					echo 'που '.$prefcouple.' συζούν';
+				}
+			?></span>.
+		</div>
+	</div>
 </div>
+
+<?php // echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?>

@@ -46,6 +46,7 @@
 						</div>
 						<div class='house-details'>
 						    <?php
+                                echo "Δήμος " . $house['Municipality']['name'] . " <br />";
 								echo $house['HouseType']['type'].", ".$house['House']['area']." τ.μ.<br />\n";
 								echo $house['Floor']['type']."<br />\n";
 							?>

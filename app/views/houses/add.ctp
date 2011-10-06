@@ -27,11 +27,11 @@ echo $form->input('security_doors', array('label' => 'Πόρτες ασφαλε�
 echo $form->input('disability_facilities', array('label' => 'Προσβάσιμο από ΑΜΕΑ'));
 echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης'));
-echo $form->input('description', array('label' => 'Περιγραφή','type'=>'texrea'));
+echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 
 
-echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type'=>'select', 'options' => $hosting_or_available));
-echo $form->input('currently_available', array('label' => 'Διαθεσιμότητα','type'=>'select', 'options' => $hosting_or_available));
+echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type'=>'select', 'options' => $places_availability));
+echo $form->input('total_places', array('label' => 'Συνολική διαθεσιμότητα','type'=>'select', 'options' => $places_availability));
 
 echo $form->end('Αποθήκευση');
 ?>
