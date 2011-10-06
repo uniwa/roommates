@@ -56,6 +56,7 @@ class ProfilesController extends AppController {
           if ($this->Profile->delete($id, $cascade = true)) {
              $this->Session->setFlash('Το προφίλ διεγράφη.');
              $this->redirect(array('action'=> 'index'));
+    	  }
     }
 
 
