@@ -154,7 +154,7 @@ class ProfilesController extends AppController {
         $profile = $this->Profile->find('first', array('conditions' => array(
                                                        'Profile.id' => $this->Auth->user('profile_id'))));
         $search_args = $this->data['Profile'];
-        $profile['Preference'] = array(
+        $this->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
                         'age_min' => $search_args['agemin'],
                         'age_max' => $search_args['agemax'],
@@ -164,9 +164,7 @@ class ProfilesController extends AppController {
                         'pref_pet' => $search_args['pet'],
                         'pref_child' => $search_args['child'],
                         'pref_couple' => $search_args['couple']
-        );
-        $this->data['Preference'] = $profile['Preference'];
-        $this->Profile->Preference->save($this->data['Preference']);
+        ));
     }
 
     private function searchBySavedPrefs() {
