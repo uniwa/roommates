@@ -72,7 +72,7 @@
     echo '</td><td>';
     echo $this->Form->submit('αναζήτηση με βάση τις προτιμήσεις μου', array('name' => 'searchbyprefs'));
     echo '</td><td>';
-    echo $this->Form->submit('αποθήκευση αναζήτησης', array('name' => 'savesearch'));
+    echo $this->Form->submit('αποθήκευση κριτηρίων αναζήτησης', array('name' => 'savesearch'));
 	echo $this->Form->end();
 ?>
         </td>

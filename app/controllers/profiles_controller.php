@@ -119,7 +119,6 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['agemax']);
         }
 
-        $genderLabels = array('Άνδρας', 'Γυναίκα');
         if(($searchArgs['gender'] != '') && ($searchArgs['gender'] < 2)) {
             $searchconditions['Profile.gender'] = $searchArgs['gender'];
         }
@@ -143,6 +142,7 @@ class ProfilesController extends AppController {
         if(!empty($searchArgs['max_roommates']) && ($searchArgs['max_roommates'] > 1)) {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
+
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
     }
 
@@ -170,6 +170,32 @@ class ProfilesController extends AppController {
     }
 
     private function searchBySavedPrefs() {
+        $profile = $this->Profile->find('first', array('conditions' => array(
+                                                       'Profile.id' => $this->Auth->user('profile_id'))));
+        $prefs = $profile['Preference'];
+        $search_conditions = array('Profile.visible' => 1);
+        if($prefs['age_min'] != null) {
+            $search_conditions['Profile.dob <='] = $this->age_to_year($prefs['age_min']);
+        }
+        if($prefs['age_max'] != null) {
+            $search_conditions['Profile.dob >='] = $this->age_to_year($prefs['age_max']);
+        }
+        if(($prefs['pref_gender'] < 2 && $prefs['pref_gender'] != null)) {
+            $search_conditions['Profile.gender'] = $prefs['pref_gender'];
+        }
+        if(($prefs['pref_smoker'] < 2 && $prefs['pref_smoker'] != null)) {
+            $search_conditions['Profile.smoker'] = $prefs['pref_smoker'];
+        }
+        if(($prefs['pref_child'] < 2) && $prefs['pref_child'] != null) {
+            $search_conditions['Profile.child'] = $prefs['pref_child'];
+        }
+        if(($prefs['pref_couple'] < 2 && $prefs['pref_couple'] != null)) {
+            $search_conditions['Profile.couple'] = $prefs['pref_couple'];
+        }
+        if($prefs['mates_min'] != null) {
+            $search_conditions['Profile.max_roommates >='] = $prefs['mates_min'];
+        }
+        $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
     }
 }
 ?>
