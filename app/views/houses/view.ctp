@@ -70,7 +70,7 @@
 <div class="info-block">
     <!-- availability -->
     <p><span class="bold">Διαμένουν:</span> <?php echo Sanitize::html($house['House']['currently_hosting'])?> άτομα </p>
-    <p><span class="bold">Συνολική διαθεσιμότητα:</span> <?php echo Sanitize::html($house['House']['total_places'])?> άτομα </p>
+    <p><span class="bold">Μπορούν συνολικά να συγκατοικήσουν:</span> <?php echo Sanitize::html($house['House']['total_places'])?> άτομα </p>
 </div>
 
 

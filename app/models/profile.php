@@ -67,14 +67,20 @@ class Profile extends AppModel {
 	
 		'max_roommates' => array(
 			'rule' => '/^[1-9]{1}$/i',
-			'message' => 'Εισάγετε ένα έγκυρο φράγμα συγκατοίκων [1,9]'),
+			'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]'),
 	
 		'visible' => array(
 			'rule' => '/^[0-1]$/',
 			'message' => 'Υπήρξε κάποιο σφάλμα.',
 			'required' => false,
 			'allowEmpty' => true),
-	);
+
+		'we_are' => array(
+			'rule' => '/^[1-8]{1}$/i',
+			'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,8]', 
+			'required' => false,
+			'allowEmpty' => true),
+);
 
 	function isValidDate($check) {
 		$dob = (int)$check["dob"];
