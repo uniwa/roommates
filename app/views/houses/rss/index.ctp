@@ -26,7 +26,8 @@ foreach ($houses as $house) {
 
     $houseTitle = "{$house['HouseType']['type']}, {$house['House']['area']}τμ";
 
-    $bodyText = "<strong>Διεύθυνση:</strong> {$house['House']['address']}<br />
+    $bodyText = "<strong>Δήμος:</strong> {$house['Municipality']['name']}<br />
+                 <strong>Διεύθυνση:</strong> {$house['House']['address']}<br />
                  <strong>Τιμή:</strong> {$house['House']['price']}€<br />
                  <strong>Διαθεσιμότητα:</strong> {$time->format(
                                     $format = 'd-m-Y',

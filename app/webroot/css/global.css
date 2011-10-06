@@ -468,7 +468,7 @@ select {
     cursor: pointer;
     border: solid 1px #21759B;
     background: #DFE4EE;
-    max-width: 200px;
+    max-width: 250px;
 }
 
 .cb1 {
@@ -582,11 +582,11 @@ h1{
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 20px;
     font-weight: bold;
-	color: #bbbbbb;
+	color: #555555;
 }
 
 .profile-strong{
-	color: #888888;
+	color: #4f6ca6;
 }
 
 .subtitle{
