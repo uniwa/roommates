@@ -52,10 +52,10 @@ class ProfilesController extends AppController {
 
 
     function delete($id) {
-        if ($this->Profile->delete($id, $cascade = true)) {
-            $this->Session->setFlash('Το προφίλ διεγράφη.');
-            $this->redirect(array('action'=> 'index'));
-        }
+
+          if ($this->Profile->delete($id, $cascade = true)) {
+             $this->Session->setFlash('Το προφίλ διεγράφη.');
+             $this->redirect(array('action'=> 'index'));
     }
 
 
