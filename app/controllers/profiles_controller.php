@@ -62,27 +62,28 @@ class ProfilesController extends AppController {
 
     function edit($id = null) {
 
+	$this->checkAccess( $id );
         $this->Profile->id = $id;
 //      $koko = $this->Profile->Preference->find('all', array('fields' =>'id'));
 //      $koko = $this->data['Preference']['id'];
 //      var_dump($koko); die();
 
-        
-        if (empty($this->data)) {
-            $this->data = $this->Profile->read();
-        } else {  
+         if (empty($this->data)) {
+             $this->data = $this->Profile->read();
+         } else {  
      
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
                 $this->redirect(array('action'=> 'index'));
             }
-        }
+         }
 
-        $dob = array();
-        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
+         $dob = array();
+         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
-        }
-        $this->set('available_birth_dates', $dob);
+         }
+	 $this->set('available_birth_dates', $dob);
+
      }
 
     function search() {
@@ -173,6 +174,19 @@ class ProfilesController extends AppController {
     }
 
     private function searchBySavedPrefs() {
+    }
+   
+    //check user's access
+    private function checkAccess($profile_id){
+	
+	$this->Profile->id = $profile_id;
+	$profile = $this->Profile->read();
+	$user_id = $profile['User']['id'];
+
+      
+	if( $this->Auth->user('id') != $user_id ){
+		$this->redirect( $this->referer() );
+	}
     }
 }
 ?>

@@ -1,7 +1,10 @@
 <h2>Ενοικιάζεται</h2><div class="profile houseProfile">
     <div id="actions">
- <?php echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));?>
- <?php echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;')?>
+<?php
+ if( $this->Session->read( 'Auth.User.id') == $house['Profile']['user_id'] ){
+  echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
+  echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
+ }?>
 </div>
         <div class="photo">
             <img src="<?php echo $this->webroot; ?>img/homedefault.png" alt="Home Picture" class="avatar"/>
