@@ -14,12 +14,52 @@ class ProfilesController extends AppController {
                                   'limit' => 20,
                                   'order' => 'Profile.modified DESC'));
             return $this->set(compact('profiles'));
+
         }
+
+		$order = array('Profile.modified' => 'desc');
+		$selectedOrder = 0;
+
+		if(isset($this->params['form']['selection'])){
+			$selectedOrder = $this->params['form']['selection'];
+			$ascoptions = array('asc', 'desc');
+			$orderField = 'Profile.modified';
+			switch($selectedOrder){
+				case 0:
+					$orderField = 'Profile.modified';
+					$ascDesc = $ascoptions[1];
+					break;
+				case 1:
+					$orderField = 'Profile.dob';
+					$ascDesc = $ascoptions[1];
+					break;
+				case 2:
+					$orderField = 'Profile.dob';
+					$ascDesc = $ascoptions[0];
+					break;
+				case 3:
+					$orderField = 'Profile.max_roommates';
+					$ascDesc = $ascoptions[0];
+					break;
+				case 4:
+					$orderField = 'Profile.max_roommates';
+					$ascDesc = $ascoptions[1];
+					break;
+			}
+			$order = array($orderField => $ascDesc);
+		}
+
+        $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
+        $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
 		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
 
-        $profiles = $this->paginate('Profile', array('Profile.visible' => 1));
+        $this->paginate = array(
+            'conditions' => array('Profile.visible' => 1),
+            'order' => $order
+        );
+        $profiles = $this->paginate('Profile');
         $this->set('profiles', $profiles);
     }
 
