@@ -107,7 +107,7 @@ class HousesController extends AppController {
 	$user_id = $house['Profile']['user_id'];
 	
 	
-	if($this->Auth->user('id') != $user_id ){
+	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){
 	
 		$this->redirect( $this->referer() );
 		
