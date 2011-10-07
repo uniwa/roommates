@@ -34,7 +34,7 @@
                 echo $foundmessage;
             ?>
         </div>
-        <div class='order-by house'>
+        <div class='order-by house-ord'>
             <?php
                 echo $this->Form->input('orderΒy', array(
                     'label' => 'Ταξινόμηση με: ',

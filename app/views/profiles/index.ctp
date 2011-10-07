@@ -28,7 +28,7 @@
                 echo $foundmessage;
             ?>
         </div>
-        <div class='order-by profile'>
+        <div class='order-by profile-ord'>
             <?php
                 echo $this->Form->input('orderΒy', array(
                     'label' => 'Ταξινόμηση με: ',

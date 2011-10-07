@@ -3,9 +3,9 @@ $(function(){
 		e.preventDefault();
 		var sel = $(this).find('select').val();
 		var dataString = {'selection':sel};
-		if($(this).hasClass('profile')){
+		if($(this).hasClass('profile-ord')){
 			var url = 'profiles';
-		}else if($(this).hasClass('house')){
+		}else if($(this).hasClass('house-ord')){
 			var url = 'houses';
 		}	
 		postit(url, dataString);
