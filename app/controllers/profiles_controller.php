@@ -183,6 +183,7 @@ class ProfilesController extends AppController {
                                         'child' => $search_args['child'],
                                         'couple' => $search_args['couple'],
                                         'mates' => $search_args['max_roommates']    ));
+        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
 
     private function searchBySavedPrefs() {
