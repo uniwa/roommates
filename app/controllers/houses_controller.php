@@ -15,6 +15,61 @@ class HousesController extends AppController {
                         array('limit' => 20, 'order' => 'House.modified DESC'));
             return $this->set(compact('houses'));
         }
+
+		$order = array('House.modified' => 'desc');
+		$selectedOrder = 0;
+
+		if(isset($this->params['form']['selection'])){
+			$selectedOrder = $this->params['form']['selection'];
+			$ascoptions = array('asc', 'desc');
+			$orderField = 'Profile.modified';
+			switch($selectedOrder){
+				case 0:
+					$orderField = 'House.modified';
+					$ascDesc = $ascoptions[1];
+					break;
+				case 1:
+					$orderField = 'House.price';
+					$ascDesc = $ascoptions[0];
+					break;
+				case 2:
+					$orderField = 'House.price';
+					$ascDesc = $ascoptions[1];
+					break;
+				case 3:
+					$orderField = 'House.municipality_id';
+					$ascDesc = $ascoptions[0];
+					break;
+				case 4:
+					$orderField = 'House.municipality_id';
+					$ascDesc = $ascoptions[1];
+					break;
+				case 5:
+					$orderField = 'House.area';
+					$ascDesc = $ascoptions[0];
+					break;
+				case 6:
+					$orderField = 'House.area';
+					$ascDesc = $ascoptions[1];
+					break;
+				case 7:
+					$orderField = 'House.currently_hosting';
+					$ascDesc = $ascoptions[0];
+					break;
+				case 8:
+					$orderField = 'House.currently_hosting';
+					$ascDesc = $ascoptions[1];
+					break;
+			}
+			$order = array($orderField => $ascDesc);
+		}
+
+        $orderOptions = array('τελευταία ενημέρωση', 'ενοίκιο αύξουσα', 'ενοίκιο φθίνουσα', 'δήμος αύξουσα', 'δήμος φθίνουσα', 'τετραγωνικά αύξουσα', 'τετραγωνικά φθίνουσα', 'ένοικοι αύξουσα', 'ένοικοι φθίνουσα');
+        $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
+
+        $this->paginate = array(
+            'order' => $order
+        );
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
         //$this->set('houses', $this->House->find('all'));
