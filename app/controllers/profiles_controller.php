@@ -96,6 +96,7 @@ class ProfilesController extends AppController {
 
         if(isset($this->params['form']['savesearch'])) {
             $this->saveSearchPreferences();
+            $this->simpleSearch();
         }
     }
 
@@ -121,7 +122,6 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['agemax']);
         }
 
-		$genderLabels = Configure::read('GenderLabels');
         if(($searchArgs['gender'] != '') && ($searchArgs['gender'] < 2)) {
             $searchconditions['Profile.gender'] = $searchArgs['gender'];
         }
@@ -146,6 +146,14 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
+        $this->set('defaults', array(   'age_min' => $searchArgs['agemin'],
+                                        'age_max' => $searchArgs['agemax'],
+                                        'gender' => $searchArgs['gender'],
+                                        'smoker' => $searchArgs['smoker'],
+                                        'pet' => $searchArgs['pet'],
+                                        'child' => $searchArgs['child'],
+                                        'couple' => $searchArgs['couple'],
+                                        'mates' => $searchArgs['max_roommates']    ));
     }
 
     private function age_to_year($age) {
@@ -154,9 +162,9 @@ class ProfilesController extends AppController {
 
     private function saveSearchPreferences() {
         $profile = $this->Profile->find('first', array('conditions' => array(
-                                                       'Profile.id' => $this->Auth->user('profile_id'))));
+                                                       'Profile.user_id' => $this->Auth->user('id'))));
         $search_args = $this->data['Profile'];
-        $profile['Preference'] = array(
+        $this->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
                         'age_min' => $search_args['agemin'],
                         'age_max' => $search_args['agemax'],
@@ -166,12 +174,56 @@ class ProfilesController extends AppController {
                         'pref_pet' => $search_args['pet'],
                         'pref_child' => $search_args['child'],
                         'pref_couple' => $search_args['couple']
-        );
-        $this->data['Preference'] = $profile['Preference'];
-        $this->Profile->Preference->save($this->data['Preference']);
+        ));
+        $this->set('defaults', array(   'age_min' => $search_args['agemin'],
+                                        'age_max' => $search_args['agemax'],
+                                        'gender' => $search_args['gender'],
+                                        'smoker' => $search_args['smoker'],
+                                        'pet' => $search_args['pet'],
+                                        'child' => $search_args['child'],
+                                        'couple' => $search_args['couple'],
+                                        'mates' => $search_args['max_roommates']    ));
+        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
 
     private function searchBySavedPrefs() {
+        $profile = $this->Profile->find('first', array('conditions' => array(
+                                                       'Profile.user_id' => $this->Auth->user('id'))));
+        $prefs = $profile['Preference'];
+        $search_conditions = array('Profile.visible' => 1);
+        if($prefs['age_min'] != null) {
+            $search_conditions['Profile.dob <='] = $this->age_to_year($prefs['age_min']);
+        }
+        if($prefs['age_max'] != null) {
+            $search_conditions['Profile.dob >='] = $this->age_to_year($prefs['age_max']);
+        }
+        if(($prefs['pref_gender'] < 2 && $prefs['pref_gender'] != null)) {
+            $search_conditions['Profile.gender'] = $prefs['pref_gender'];
+        }
+        if(($prefs['pref_smoker'] < 2 && $prefs['pref_smoker'] != null)) {
+            $search_conditions['Profile.smoker'] = $prefs['pref_smoker'];
+        }
+        if(($prefs['pref_pet'] < 2 && $prefs['pref_pet'] != null)) {
+            $search_conditions['Profile.pet'] = $prefs['pref_pet'];
+        }
+        if(($prefs['pref_child'] < 2) && $prefs['pref_child'] != null) {
+            $search_conditions['Profile.child'] = $prefs['pref_child'];
+        }
+        if(($prefs['pref_couple'] < 2 && $prefs['pref_couple'] != null)) {
+            $search_conditions['Profile.couple'] = $prefs['pref_couple'];
+        }
+        if($prefs['mates_min'] != null) {
+            $search_conditions['Profile.max_roommates >='] = $prefs['mates_min'];
+        }
+        $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
+        $this->set('defaults', array(   'age_min' => $prefs['age_min'],
+                                        'age_max' => $prefs['age_max'],
+                                        'gender' => $prefs['pref_gender'],
+                                        'smoker' => $prefs['pref_smoker'],
+                                        'pet' => $prefs['pref_pet'],
+                                        'child' => $prefs['pref_child'],
+                                        'couple' => $prefs['pref_couple'],
+                                        'mates' => $prefs['mates_min']  ));
     }
 }
 ?>
