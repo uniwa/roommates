@@ -165,6 +165,14 @@ class ProfilesController extends AppController {
                         'pref_child' => $search_args['child'],
                         'pref_couple' => $search_args['couple']
         ));
+        $this->set('defaults', array(   'age_min' => $search_args['agemin'],
+                                        'age_max' => $search_args['agemax'],
+                                        'gender' => $search_args['gender'],
+                                        'smoker' => $search_args['smoker'],
+                                        'pet' => $search_args['pet'],
+                                        'child' => $search_args['child'],
+                                        'couple' => $search_args['couple'],
+                                        'mates' => $search_args['max_roommates']    ));
     }
 
     private function searchBySavedPrefs() {
