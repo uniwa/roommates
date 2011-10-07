@@ -8,18 +8,23 @@ class ProfilesController extends AppController {
     var $paginate = array('limit' => 15);
 
     function index() {
-        if ($this->RequestHandler->isRss()) {
-            $profiles = $this->Profile->find('all',
-                            array('conditions' => array('Profile.visible' => 1),
-                                  'limit' => 20,
-                                  'order' => 'Profile.modified DESC'));
+	if ($this->RequestHandler->isRss()) {
+            $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1), 
+				    			  'limit' => 20, 
+				    			  'order' => 'Profile.modified.DESC'));
             return $this->set(compact('profiles'));
         }
 
-		$genderLabels = Configure::read('GenderLabels');
-		$this->set('genderLabels', $genderLabels);
+	$genderLabels = Configure::read('GenderLabels');
+	$this->set('genderLabels', $genderLabels);
 
-        $profiles = $this->paginate('Profile', array('Profile.visible' => 1));
+
+        if ($this->Auth->user('role') != 'admin'){
+        	$profiles = $this->paginate('Profile', array('Profile.visible' => 1));
+	}else{
+        	$profiles = $this->paginate('Profile');
+	}
+
         $this->set('profiles', $profiles);
     }
 
@@ -236,7 +241,7 @@ class ProfilesController extends AppController {
 	$user_id = $profile['User']['id'];
 
       
-	if( $this->Auth->user('id') != $user_id ){
+	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin') ){
 		$this->redirect( $this->referer() );
 	}
     }
