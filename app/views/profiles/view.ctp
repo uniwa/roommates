@@ -1,7 +1,13 @@
 <div id='top-frame' class='frame'>
 	<div class='frame-container'>
-		<div id='top-photo'>
-			<img src='./img/profile_avatar.png' />
+		<div id='profile-edit'>
+			<div id="actions">
+				<?php
+					if( ($this->Session->read('Auth.User.id') == $profile['Profile']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
+					}
+				?>
+			</div>
 		</div>
 		<div id='top-title' class='title'>
 			<h1>
@@ -38,6 +44,10 @@
 			</h1>
 		</div>
 		<div id='main-details' class='options profile-big'>
+			<div id='top-photo'>
+				<img src='./img/profile_avatar.png' />
+			</div>
+
 			<span class='profile-strong'><?php echo $age; ?></span> ετών, <span class='profile-strong'>
 			<?php echo $gender; ?></span><br />
 			<?php

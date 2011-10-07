@@ -656,7 +656,11 @@ h1{
 }
 
 .profile-details, .house-details{
-    margin: -4px 0px 0px 10px;
+    margin: -4px 0px 20px 10px;
+}
+
+.profile-edit{
+/*	float: right;*/
 }
 
 .profile-house{
@@ -693,4 +697,8 @@ h1{
 
 #login-inner legend{
 	margin: 0px 0px 12px 0px;
+}
+
+.order-by{
+    margin: 0px 0px 16px 32px;
 }

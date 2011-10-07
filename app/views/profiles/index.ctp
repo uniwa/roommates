@@ -1,3 +1,7 @@
+<?php
+    $html->script('jquery.min', false);
+    $html->script('main', false);
+?>
 <!--
 <div id='top-frame' class='frame'>
     <div id='top-title' class='title'>
@@ -24,6 +28,14 @@
                 echo $foundmessage;
             ?>
         </div>
+        <div class='order-by profile-ord'>
+            <?php
+                echo $this->Form->input('orderΒy', array(
+                    'label' => 'Ταξινόμηση με: ',
+                    'options' => $order_options['options'],
+					'selected' => $order_options['selected']));
+             ?>
+		</div>
         <div class="pagination">
             <ul>
             <?php
@@ -97,5 +109,3 @@
         </div>
     </div>
 </div>
-
-<?php // echo $this->Html->link("Προσθήκη Προφίλ", array('action' => 'add')); ?>
