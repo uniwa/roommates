@@ -146,6 +146,14 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
+        $this->set('defaults', array(   'age_min' => $searchArgs['agemin'],
+                                        'age_max' => $searchArgs['agemax'],
+                                        'gender' => $searchArgs['gender'],
+                                        'smoker' => $searchArgs['smoker'],
+                                        'pet' => $searchArgs['pet'],
+                                        'child' => $searchArgs['child'],
+                                        'couple' => $searchArgs['couple'],
+                                        'mates' => $searchArgs['max_roommates']    ));
     }
 
     private function age_to_year($age) {
@@ -154,7 +162,7 @@ class ProfilesController extends AppController {
 
     private function saveSearchPreferences() {
         $profile = $this->Profile->find('first', array('conditions' => array(
-                                                       'Profile.id' => $this->Auth->user('profile_id'))));
+                                                       'Profile.user_id' => $this->Auth->user('id'))));
         $search_args = $this->data['Profile'];
         $this->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
@@ -179,7 +187,7 @@ class ProfilesController extends AppController {
 
     private function searchBySavedPrefs() {
         $profile = $this->Profile->find('first', array('conditions' => array(
-                                                       'Profile.id' => $this->Auth->user('profile_id'))));
+                                                       'Profile.user_id' => $this->Auth->user('id'))));
         $prefs = $profile['Preference'];
         $search_conditions = array('Profile.visible' => 1);
         if($prefs['age_min'] != null) {
