@@ -132,8 +132,9 @@ DROP TABLE IF EXISTS `roommates`.`users` ;
 
 CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `username` CHAR(50) NOT NULL ,
-  `password` CHAR(40) NOT NULL ,
+  `username` VARCHAR(50) NOT NULL ,
+  `password` VARCHAR(40) NOT NULL ,
+  `role` VARCHAR(40),
 --  `profile_id` INT NOT NULL ,
   PRIMARY KEY (`id`) 
 --  INDEX `fk_users_profiles1` (`profile_id` ASC) ,
