@@ -94,6 +94,7 @@ class ProfilesController extends AppController {
 
         if(isset($this->params['form']['savesearch'])) {
             $this->saveSearchPreferences();
+            $this->simpleSearch();
         }
     }
 
@@ -142,7 +143,6 @@ class ProfilesController extends AppController {
         if(!empty($searchArgs['max_roommates']) && ($searchArgs['max_roommates'] > 1)) {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
-
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
     }
 
@@ -184,6 +184,9 @@ class ProfilesController extends AppController {
         if(($prefs['pref_smoker'] < 2 && $prefs['pref_smoker'] != null)) {
             $search_conditions['Profile.smoker'] = $prefs['pref_smoker'];
         }
+        if(($prefs['pref_pet'] < 2 && $prefs['pref_pet'] != null)) {
+            $search_conditions['Profile.pet'] = $prefs['pref_pet'];
+        }
         if(($prefs['pref_child'] < 2) && $prefs['pref_child'] != null) {
             $search_conditions['Profile.child'] = $prefs['pref_child'];
         }
@@ -194,6 +197,14 @@ class ProfilesController extends AppController {
             $search_conditions['Profile.max_roommates >='] = $prefs['mates_min'];
         }
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
+        $this->set('defaults', array(   'age_min' => $prefs['age_min'],
+                                        'age_max' => $prefs['age_max'],
+                                        'gender' => $prefs['pref_gender'],
+                                        'smoker' => $prefs['pref_smoker'],
+                                        'pet' => $prefs['pref_pet'],
+                                        'child' => $prefs['pref_child'],
+                                        'couple' => $prefs['pref_couple'],
+                                        'mates' => $prefs['mates_min']  ));
     }
 }
 ?>

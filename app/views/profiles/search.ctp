@@ -3,11 +3,19 @@
 
 <?php
     echo "<div class='clear-both'></div>";
-	echo $this->Form->create('Profile', array('action'=>'search'))."\n";
-
-	$ageminoptions = array('label' => 'Ηλικία από ', 'class' => 'short-textbox');
-	$agemaxoptions = array('label' => 'μέχρι ', 'class' => 'short-textbox');
-	$maxmatesoptions = array('label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι ', 'class' => 'short-textbox');
+    echo $this->Form->create('Profile', array('action'=>'search'));
+	$ageminoptions = array( 'label' => 'Ηλικία από ',
+                            'class' => 'short-textbox',
+                            'value' => isset($defaults) ? $defaults['age_min'] : '',
+                            'default' => '');
+	$agemaxoptions = array( 'label' => 'μέχρι ',
+                            'class' => 'short-textbox',
+                            'value' => isset($defaults) ? $defaults['age_max'] : '',
+                            'default' => '');
+	$maxmatesoptions = array(   'label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι ',
+                                'class' => 'short-textbox',
+                                'value' => isset($defaults) ? $defaults['mates'] : '',
+                                'default' => '');
     $genderoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
     $options = array('Όχι', 'Ναι', 'Αδιάφορο');
 ?>
@@ -28,17 +36,20 @@
         <td>
 
 <?php
-	echo $this->Form->input('gender', array('label' => 'Φύλο ',
-                                             'options' => $genderoptions,
-                                             'default' => '2'));
+	echo $this->Form->input('gender', array(    'label' => 'Φύλο ',
+                                                'options' => $genderoptions,
+                                                'value' => isset($defaults) ? $defaults['gender'] : '2',
+                                                'default' => '2'    ));
     echo '</td><td>';
 	echo $this->Form->input('smoker', array('label' => 'Καπνιστής ',
                                             'options' => $options,
-                                            'default' => '2'));
+                                            'default' => '2',
+                                            'value' => isset($defaults) ? $defaults['smoker'] : '2' ));
     echo '</td><td>';
-    echo $this->Form->input('pet', array('label' => 'Κατοικίδιο ',
-                                         'options' => $options,
-                                         'default' => '2'));
+    echo $this->Form->input('pet', array(   'label' => 'Κατοικίδιο ',
+                                            'options' => $options,
+                                            'default' => '2',
+                                            'value' => isset($defaults) ? $defaults['pet'] : '2'    ));
 ?>
 		</td>
 	</tr>
@@ -46,13 +57,15 @@
 		<td>
 <?php
 
-	echo $this->Form->input('child', array('label' => 'Παιδί ',
-                                           'options' => $options,
-                                           'default' => '2'));
+	echo $this->Form->input('child', array( 'label' => 'Παιδί ',
+                                            'options' => $options,
+                                            'default' => '2',
+                                            'value' => isset($defaults) ? $defaults['child'] : '2'  ));
     echo '</td><td>';
     echo $this->Form->input('couple', array('label' => 'Ζευγάρι ',
                                             'options' => $options,
-                                            'default' => '2'));
+                                            'default' => '2',
+                                            'value' => isset($defaults) ? $defaults['couple'] : '2' ));
     echo '</td><td>';
     echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse', array('value' => 1,
                                                                         'checked' => false,
