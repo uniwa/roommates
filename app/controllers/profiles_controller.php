@@ -30,7 +30,7 @@ class ProfilesController extends AppController {
         $this->set('profile', $this->Profile->read());
     }
 
-
+/*
     function add(){
     	if (!empty($this->data)) {
              //var_dump($this->data); die();     
@@ -57,7 +57,7 @@ class ProfilesController extends AppController {
             $this->redirect(array('action'=> 'index'));
         }
     }
-
+*/
 
     function edit($id = null) {
 
