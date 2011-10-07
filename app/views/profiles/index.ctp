@@ -35,6 +35,24 @@
                     'options' => $order_options['options'],
 					'selected' => $order_options['selected']));
              ?>
+		</div>
+        <div class="pagination">
+            <ul>
+            <?php
+                /* show first page */
+                //echo $paginator->first('⇤ Πρώτη ');
+                /* show the previous link */
+                echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                /* show pages */
+                echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' ', 'tag' => 'li'));
+                /* Shows the next link */
+                echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                /* show last page */
+                //echo $paginator->last('Τελευτευταία ⇥');
+                /* prints X of Y, where X is current page and Y is number of pages */
+                //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+            ?>
+            </ul>
         </div>
         <div id='results-profiles' class='results'>
             <ul>

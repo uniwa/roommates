@@ -6,11 +6,10 @@ class Profile extends AppModel {
 
 	var $hasMany = array('House');
 
-	var $hasOne = array('User');
-
-	var $belongsTo = array('Preference' => array('className' => 'Preference',
-						     'foreignKey' => 'preference_id')
-	);
+	var $belongsTo = array('Preference' => 
+                            array('className' => 'Preference',
+                                  'foreignKey' => 'preference_id'),
+                            'User');
 
 	var $virtualFields = array(
 		'age' => "YEAR(NOW()) - Profile.dob"
