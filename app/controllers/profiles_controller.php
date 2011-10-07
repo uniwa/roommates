@@ -16,7 +16,7 @@ class ProfilesController extends AppController {
             return $this->set(compact('profiles'));
         }
 
-		$genderLabels = array('άνδρας', 'γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
 
         $profiles = $this->paginate('Profile', array('Profile.visible' => 1));
@@ -25,6 +25,8 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
         $this->Profile->id = $id;
+	//$koko = $this->Profile->read();
+	//echo '<pre>';print_r($koko);echo'</pre>';die();	
         $this->set('profile', $this->Profile->read());
     }
 
@@ -43,7 +45,7 @@ class ProfilesController extends AppController {
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
         }
-		$genderLabels = array('άνδρας', 'γυναίκα');
+		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
     }	
