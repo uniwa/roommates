@@ -2,7 +2,7 @@
 
 class House extends AppModel {
     var $name = 'House';
-    var $belongsTo = array('HouseType', 'Floor', 'HeatingType', 'Municipality');
+    var $belongsTo = array('HouseType', 'Floor', 'HeatingType', 'Municipality', 'Profile');
 
     var $validate = array(
 

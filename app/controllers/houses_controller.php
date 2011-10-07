@@ -91,6 +91,8 @@ class HousesController extends AppController {
 
     function view($id = null) {
         $this->House->id = $id;
+        //$koko = $this->House->read();
+        //echo '<pre>';print_r($koko);echo'</pre>';die();       
         $this->set('house', $this->House->read());
     }
 
@@ -109,13 +111,18 @@ class HousesController extends AppController {
     }
 
     function delete($id) {
-        $this->House->delete($id);
+
+	$this->checkAccess( $id );
+        $this->House->delete( $id );
         $this->Session->setFlash('The house with id: '.$id.' has been deleted.');
         $this->redirect(array('action'=>'index'));
     }
 
     function edit($id = null) {
-        $this->House->id = $id;
+
+	$this->checkAccess( $id );
+	$this->House->id = $id;
+
         if (empty($this->data)) {
             $this->data = $this->House->read();
         }
@@ -146,6 +153,20 @@ class HousesController extends AppController {
 		$no_mates[$i] = $i;
 	}
 	$this->set('places_availability', $no_mates);
-   }
+    }
+
+    private function checkAccess( $house_id ){
+    	
+	$this->House->id = $house_id;
+	$house = $this->House->read();
+	$user_id = $house['Profile']['user_id'];
+	
+	
+	if($this->Auth->user('id') != $user_id ){
+	
+		$this->redirect( $this->referer() );
+		
+    	} 
+    }
 }
 ?>
