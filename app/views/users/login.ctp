@@ -1,4 +1,4 @@
-<div id='login-frame' class='frame'>
+<div id='login-frame' class='loginFrame'>
 	<div id='login-inner'>
 		<?php
 			echo $this->Session->flash('auth');
