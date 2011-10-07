@@ -674,11 +674,23 @@ h1{
 
 .pagination .disabled { display: none; }
 
+.loginFrame{
+	border-style: solid;
+	border-width: 5px;
+	margin: 4px auto 4px auto;
+	padding: 8px 10px 77px 1px;
+	width: 480px;
+}
+
 #login-frame{
     color: #6a6a6a;
+    background-image:url('../img/login-background.jpg');
+    background-repeat:no-repeat
+    height:214;
+    width:490
     font-family: Helvetica, Verdana, Arial, sans-serif;
-    font-size: 20px;
-	font-weight: 900;
+    font-size: 14px;
+    font-weight: 900;
 }
 
 #login-inner{
