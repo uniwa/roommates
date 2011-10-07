@@ -34,7 +34,6 @@
                 echo $foundmessage;
             ?>
         </div>
-<<<<<<< HEAD
         <div class='order-by house'>
             <?php
                 echo $this->Form->input('orderΒy', array(
@@ -42,7 +41,7 @@
                     'options' => $order_options['options'],
 					'selected' => $order_options['selected']));
              ?>
-=======
+        </div>
         <div class="pagination">
             <ul>
             <?php
@@ -60,7 +59,6 @@
                 //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
             ?>
             </ul>
->>>>>>> 5bcc8dc6717c0961e0ca162e9b4824054635f43a
         </div>
         <div id='results-houses' class='results'>
             <ul>
