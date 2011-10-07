@@ -2,6 +2,8 @@
     <div id="actions">
  <?php echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));?>
  <?php echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;')?>
+ <a href="http://localhost/roommates/profiles/view/<?php echo $house['House']['profile_id']?>">Προφίλ ιδιοκτήτη αγγελίας</a>
+
 </div>
         <div class="photo">
             <img src="<?php echo $this->webroot; ?>img/homedefault.png" alt="Home Picture" class="avatar"/>
