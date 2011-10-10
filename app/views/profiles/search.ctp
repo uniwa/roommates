@@ -96,13 +96,14 @@
 <ul class="thelist">
 
     <?php
-        if(isset($profiles)) {
+        if(empty($profiles)) {
+            echo 'Δεν βρέθηκαν αποτελέσματα.';
+        } else {
             $oddLine = true;
             foreach ($profiles as $profile):
                 $rowCSS = ($oddLine)?'0':'1';
                 $rowCSS = "bgcolor".$rowCSS;
     ?>
-
 
     <li>
         <div class="photo">
