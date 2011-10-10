@@ -197,7 +197,8 @@ class ProfilesController extends AppController {
                                         'pet' => $searchArgs['pet'],
                                         'child' => $searchArgs['child'],
                                         'couple' => $searchArgs['couple'],
-                                        'mates' => $searchArgs['max_roommates']    ));
+                                        'mates' => $searchArgs['max_roommates'],
+                                        'has_house' => !empty($this->data['User']['hasHouse'])  ));
     }
 
     private function age_to_year($age) {
@@ -226,7 +227,8 @@ class ProfilesController extends AppController {
                                         'pet' => $search_args['pet'],
                                         'child' => $search_args['child'],
                                         'couple' => $search_args['couple'],
-                                        'mates' => $search_args['max_roommates']    ));
+                                        'mates' => $search_args['max_roommates'],
+                                        'has_house' => !empty($this->data['User']['hasHouse'])  ));
         $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
 
@@ -267,7 +269,8 @@ class ProfilesController extends AppController {
                                         'pet' => $prefs['pref_pet'],
                                         'child' => $prefs['pref_child'],
                                         'couple' => $prefs['pref_couple'],
-                                        'mates' => $prefs['mates_min']  ));
+                                        'mates' => $prefs['mates_min'],
+                                        'has_house' => !empty($this->data['User']['hasHouse'])  ));
     }
 
     //check user's access
