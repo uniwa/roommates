@@ -156,7 +156,7 @@ class HousesController extends AppController {
     	
 	$this->House->id = $house_id;
 	$house = $this->House->read();
-	$user_id = $house['Profile']['user_id'];
+	$user_id = $house['User']['id'];
 	
 	
 	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){
