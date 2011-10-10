@@ -49,8 +49,9 @@
 				<img src='./img/profile_avatar.png' />
 			</div>
 
-			<span class='profile-strong'><?php echo $age; ?></span> ετών, <span class='profile-strong'>
-			<?php echo $gender; ?></span><br />
+			<span class='profile-strong'><?php echo $age; ?></span> ετών, 
+			<span class='profile-strong'><?php echo $gender; ?></span>
+			<br />
 			<?php
 				echoDetail('Καπνιστής', $smoker);
 				echoDetail('Κατοικίδιο', $pet);
@@ -59,9 +60,10 @@
 			?></span>
 			
 			<?php if ($weare == 1)
-				echo 'Είμαι ' .  $weare . ' άτομo';
-			      else 
-				echo 'Είμαστε ' .  $weare . ' άτομα'; ?>
+				echo 'Είμαι ' . $weare . ' άτομo';
+			      else
+				echo 'Είμαστε ' . $weare . ' άτομα';?>
+
 			<br />
 
 			<?php if ($mates_wanted == 1)
@@ -83,7 +85,7 @@
 <div id='bottom-frame' class='frame'>
 	<div class='frame-container'>
 		<div id='bottom-title' class='title'>
-			<h2>Προτιμήσεις συγκατοίκων</h2>
+			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
 		</div>
 		<div id='bottom-subtitle' class='subtitle'>
 		</div>
@@ -109,13 +111,20 @@
 			<?php
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
-				if($age_min){
-			?>από <span class='profile-strong'><?php
-					echo $profile['Preference']['age_min']." ";
+				
+				if ($age_min == $age_max){?> 
+					<span class='profile-strong'><?php
+						echo $profile['Preference']['age_min'];
 				}
-				if($age_max){
-			?></span>μέχρι <span class='profile-strong'><?php
-					echo $profile['Preference']['age_max'];
+				else{
+					if($age_min){
+				?>από <span class='profile-strong'><?php
+						echo $profile['Preference']['age_min']." ";
+					}
+					if($age_max){
+				?></span>μέχρι <span class='profile-strong'><?php
+						echo $profile['Preference']['age_max'];
+					}
 				}
 			?></span><br />
 			<?php
@@ -123,7 +132,7 @@
 				echoDetail('Καπνιστής', $smoker);
 				echoDetail('Κατοικίδιο', $smoker);
 				echoDetail('Παιδί', $smoker);
-				echoDetail('Φύλο', $smoker);
+				echoDetail('Ζευγάρι', $smoker);
 			?></span>
 		</div>
 	</div>
