@@ -68,7 +68,7 @@
                                             'value' => isset($defaults) ? $defaults['couple'] : '2' ));
     echo '</td><td>';
     echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse', array('value' => 1,
-                                                                        'checked' => false,
+                                                                        'checked' => isset($defaults) ? $defaults['has_house'] : false,
                                                                         'hiddenField' => false));
 ?>
 		</td>
@@ -96,6 +96,8 @@
 <ul class="thelist">
 
     <?php
+        if(isset($profiles)){
+
         if(empty($profiles)) {
             echo 'Δεν βρέθηκαν αποτελέσματα.';
         } else {
@@ -147,6 +149,7 @@
     <?php
 		        $oddLine = !$oddLine;
 		    endforeach;
+        }
         }
 
 	?>
