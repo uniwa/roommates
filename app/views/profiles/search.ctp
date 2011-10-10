@@ -68,7 +68,7 @@
                                             'value' => isset($defaults) ? $defaults['couple'] : '2' ));
     echo '</td><td>';
     echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse', array('value' => 1,
-                                                                        'checked' => false,
+                                                                        'checked' => isset($defaults) ? $defaults['has_house'] : false,
                                                                         'hiddenField' => false));
 ?>
 		</td>
@@ -93,32 +93,18 @@
 </table>
 </div>
 
-    <ul class="thelist">
+<ul class="thelist">
 
-<?php
-    if(isset($profiles)) {
-		$oddLine = true;
-		foreach ($profiles as $profile):
-			$rowCSS = ($oddLine)?'0':'1';
-			$rowCSS = "bgcolor".$rowCSS;
-?>
+    <?php
+        if(isset($profiles)){
 
-
-        <li>
-            <div class="photo">
-                <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
-
-            </div>
-            <div class="info">
-                <?php echo $this->Html->link($profile['Profile']['firstname'].' '.$profile['Profile']['lastname'],array('controller' => 'profiles',
-			'action' => 'view', $profile['Profile']['id'])); ?>
-
-               Ηλικία: <?php echo $profile['Profile']['age']; ?>
-<br />
-    <?php if ($profile['Profile']['gender'])
-        echo '<p class="female">Γυναίκα.</p>';
-    else
-        echo '<p class="male">Άνδρας.</p>';
+        if(empty($profiles)) {
+            echo 'Δεν βρέθηκαν αποτελέσματα.';
+        } else {
+            $oddLine = true;
+            foreach ($profiles as $profile):
+                $rowCSS = ($oddLine)?'0':'1';
+                $rowCSS = "bgcolor".$rowCSS;
     ?>
 
     <?php if ($profile['Profile']['smoker'])
@@ -146,9 +132,53 @@
 		$oddLine = !$oddLine;
 		endforeach;
     }
+    <li>
+        <div class="photo">
+            <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
+        </div>
+        <div class="info">
+            <?php echo $this->Html->link(   $profile['Profile']['firstname'].' '.$profile['Profile']['lastname'], 
+                                            array(  'controller' => 'profiles',
+			                                        'action' => 'view', 
+                                                    $profile['Profile']['id']));
+            ?>
+
+            Ηλικία: <?php echo $profile['Profile']['age']; ?> <br />
+
+            <?php   
+                if ($profile['Profile']['gender'])
+                    echo '<p class="female">Γυναίκα.</p>';
+                else
+                    echo '<p class="male">Άνδρας.</p>';
+            ?>
+
+            <?php   
+                if ($profile['Profile']['smoker'])
+                    echo    '<p class="smoker">'.
+                            ($profile['Profile']['gender'] ? 'Είμαι Κανπίστρια.' : 'Είμαι Καπνιστής.').
+                            '</p>';
+                else
+                    echo    '<p class="nosmoker">'.
+                            ($profile['Profile']['gender'] ? 'Δεν είμαι Κανπίστρια.' : 'Δεν είμαι Καπνιστής.').
+                            '</p>';
+            ?>
+
+            <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
+
+
+        </div>
+        <div class="aboutme"></div>
+
+    </li>
+
+    <?php
+		        $oddLine = !$oddLine;
+		    endforeach;
+        }
+        }
 
 	?>
 
-    </ul>
+</ul>
 
 
