@@ -93,62 +93,57 @@
 </table>
 </div>
 
-    <ul class="thelist">
+<ul class="thelist">
 
-<?php
-    if(isset($profiles)) {
-		$oddLine = true;
-		foreach ($profiles as $profile):
-			$rowCSS = ($oddLine)?'0':'1';
-			$rowCSS = "bgcolor".$rowCSS;
-?>
-
-
-        <li>
-            <div class="photo">
-                <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
-
-            </div>
-            <div class="info">
-                <?php echo $this->Html->link($profile['Profile']['firstname'].' '.$profile['Profile']['lastname'],array('controller' => 'profiles',
-			'action' => 'view', $profile['Profile']['id'])); ?>
-
-               Ηλικία: <?php echo $profile['Profile']['age']; ?>
-<br />
-    <?php if ($profile['Profile']['gender'])
-        echo '<p class="female">Γυναίκα.</p>';
-    else
-        echo '<p class="male">Άνδρας.</p>';
-    ?>
-
-                    <?php if ($profile['Profile']['gender'])
-        echo '<p class="smoker">Είμαι Καπνιστής.</p>';
-    else
-        echo '<p class="nosmoker">Δεν Είμαι Καπνιστής.</p>';
+    <?php
+        if(isset($profiles)) {
+            $oddLine = true;
+            foreach ($profiles as $profile):
+                $rowCSS = ($oddLine)?'0':'1';
+                $rowCSS = "bgcolor".$rowCSS;
     ?>
 
 
+    <li>
+        <div class="photo">
+            <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
+        </div>
+        <div class="info">
+            <?php echo $this->Html->link(   $profile['Profile']['firstname'].' '.$profile['Profile']['lastname'], 
+                                            array(  'controller' => 'profiles',
+			                                        'action' => 'view', 
+                                                    $profile['Profile']['id']));
+            ?>
 
-    <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
+            Ηλικία: <?php echo $profile['Profile']['age']; ?> <br />
+
+            <?php   if ($profile['Profile']['gender'])
+                        echo '<p class="female">Γυναίκα.</p>';
+                    else
+                        echo '<p class="male">Άνδρας.</p>';
+            ?>
+
+            <?php   if ($profile['Profile']['smoker'])
+                        echo '<p class="smoker">Είμαι Καπνιστής.</p>';
+                    else
+                        echo '<p class="nosmoker">Δεν Είμαι Καπνιστής.</p>';
+            ?>
+
+            <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
 
 
-            </div>
+        </div>
+        <div class="aboutme"></div>
 
-            <div class="aboutme">
+    </li>
 
-            </div>
-
-        </li>
-
-
-
-            <?php
-		$oddLine = !$oddLine;
-		endforeach;
-    }
+    <?php
+		        $oddLine = !$oddLine;
+		    endforeach;
+        }
 
 	?>
 
-    </ul>
+</ul>
 
 
