@@ -144,9 +144,9 @@ class ProfilesController extends AppController {
         $searchconditions = array('Profile.visible' => 1);
 
 		if(!empty($this->data['User']['hasHouse'])){
-			$ownerId = $this->Profile->House->find('all', array('fields' => 'DISTINCT profile_id'));
-			$ownerId = Set::extract($ownerId, '/House/profile_id');
-			$searchconditions['Profile.id'] = $ownerId;
+			$ownerId = $this->Profile->House->find('all', array('fields' => 'DISTINCT user_id'));
+			$ownerId = Set::extract($ownerId, '/House/user_id');
+			$searchconditions['Profile.user_id'] = $ownerId;
 		};
 
         if(!empty($searchArgs['agemin'])) {
