@@ -158,7 +158,6 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `age_min` tinyint(4) DEFAULT NULL,
   `age_max` tinyint(4) DEFAULT NULL,
-  `mates_min` tinyint(4) DEFAULT NULL,
   `pref_gender` TINYINT(2) DEFAULT NULL,
   `pref_smoker` TINYINT(2)  NULL ,
   `pref_pet` TINYINT(2)  NULL ,

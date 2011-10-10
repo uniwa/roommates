@@ -1,6 +1,5 @@
 INSERT INTO `roommates`.`preferences` ( `age_min`,
                                         `age_max`,
-                                        `mates_min`,
                                         `pref_gender`,
                                         `pref_smoker`,
                                         `pref_pet`,
@@ -9,7 +8,6 @@ INSERT INTO `roommates`.`preferences` ( `age_min`,
 
                                 VALUES (18,
                                         35,
-                                        2,
                                         0, -- male
                                         2,
                                         1,
@@ -55,7 +53,6 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
 
 INSERT INTO `roommates`.`preferences` ( `age_min`,
                                         `age_max`,
-                                        `mates_min`,
                                         `pref_gender`,
                                         `pref_smoker`,
                                         `pref_pet`,
@@ -64,7 +61,6 @@ INSERT INTO `roommates`.`preferences` ( `age_min`,
 
                                 VALUES (18,
                                         35,
-                                        1,
                                         1, -- female
                                         0,
                                         2,
@@ -109,7 +105,6 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
 
 INSERT INTO `roommates`.`preferences` ( `age_min`,
                                         `age_max`,
-                                        `mates_min`,
                                         `pref_gender`,
                                         `pref_smoker`,
                                         `pref_pet`,
@@ -118,7 +113,6 @@ INSERT INTO `roommates`.`preferences` ( `age_min`,
 
                                 VALUES (18,
                                         35,
-                                        2,
                                         0, -- male
                                         2,
                                         2,
@@ -161,7 +155,6 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
 
 INSERT INTO `roommates`.`preferences` ( `age_min`,
                                         `age_max`,
-                                        `mates_min`,
                                         `pref_gender`,
                                         `pref_smoker`,
                                         `pref_pet`,
@@ -170,7 +163,6 @@ INSERT INTO `roommates`.`preferences` ( `age_min`,
 
                                 VALUES (18,
                                         35,
-                                        2,
                                         1, -- male
                                         1,
                                         2,
@@ -215,7 +207,6 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
 
 INSERT INTO `roommates`.`preferences` ( `age_min`,
                                         `age_max`,
-                                        `mates_min`,
                                         `pref_gender`,
                                         `pref_smoker`,
                                         `pref_pet`,
@@ -224,7 +215,6 @@ INSERT INTO `roommates`.`preferences` ( `age_min`,
 
                                 VALUES (18,
                                         35,
-                                        3,
                                         2, -- male
                                         2,
                                         2,
