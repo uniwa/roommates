@@ -118,16 +118,22 @@
 
             Ηλικία: <?php echo $profile['Profile']['age']; ?> <br />
 
-            <?php   if ($profile['Profile']['gender'])
-                        echo '<p class="female">Γυναίκα.</p>';
-                    else
-                        echo '<p class="male">Άνδρας.</p>';
+            <?php   
+                if ($profile['Profile']['gender'])
+                    echo '<p class="female">Γυναίκα.</p>';
+                else
+                    echo '<p class="male">Άνδρας.</p>';
             ?>
 
-            <?php   if ($profile['Profile']['smoker'])
-                        echo '<p class="smoker">Είμαι Καπνιστής.</p>';
-                    else
-                        echo '<p class="nosmoker">Δεν Είμαι Καπνιστής.</p>';
+            <?php   
+                if ($profile['Profile']['smoker'])
+                    echo    '<p class="smoker">'.
+                            ($profile['Profile']['gender'] ? 'Είμαι Κανπίστρια' : 'Είμαι Καπνιστής.').
+                            '</p>';
+                else
+                    echo    '<p class="nosmoker">'.
+                            ($profile['Profile']['gender'] ? 'Δεν είμαι Κανπίστρια' : 'Δεν είμαι Καπνιστής.').
+                            '</p>';
             ?>
 
             <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
