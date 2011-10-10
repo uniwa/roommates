@@ -91,8 +91,6 @@ class HousesController extends AppController {
 
     function view($id = null) {
         $this->House->id = $id;
-        //$koko = $this->House->read();
-        //echo '<pre>';print_r($koko);echo'</pre>';die();       
         $this->set('house', $this->House->read());
     }
 

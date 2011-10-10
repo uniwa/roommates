@@ -69,8 +69,6 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
         $this->Profile->id = $id;
-	//$koko = $this->Profile->read();
-	//echo '<pre>';print_r($koko);echo'</pre>';die();	
         $this->set('profile', $this->Profile->read());
     }
 
@@ -107,9 +105,6 @@ class ProfilesController extends AppController {
     function edit($id = null) {
         $this->checkAccess( $id );
         $this->Profile->id = $id;
-//      $koko = $this->Profile->Preference->find('all', array('fields' =>'id'));
-//      $koko = $this->data['Preference']['id'];
-//      var_dump($koko); die();
 
         if (empty($this->data)) {
              $this->data = $this->Profile->read();
