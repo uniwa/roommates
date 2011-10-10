@@ -25,9 +25,9 @@
         <td>
 <?php
 	echo $this->Form->input('agemin', $ageminoptions);
-    echo '</td><td>';
+	echo '</td><td>';
 	echo $this->Form->input('agemax', $agemaxoptions);
-    //echo '</td><td>';
+    	echo '</td><td>';
 	//echo $this->Form->input('max_roommates', $maxmatesoptions);
 ?>
         </td>
@@ -107,31 +107,6 @@
                 $rowCSS = "bgcolor".$rowCSS;
     ?>
 
-    <?php if ($profile['Profile']['smoker'])
-        echo '<p class="smoker">Είμαι Καπνιστής.</p>';
-    else
-        echo '<p class="nosmoker">Δεν Είμαι Καπνιστής.</p>';
-    ?>
-
-
-
-    <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
-
-
-            </div>
-
-            <div class="aboutme">
-
-            </div>
-
-        </li>
-
-
-
-            <?php
-		$oddLine = !$oddLine;
-		endforeach;
-    }
     <li>
         <div class="photo">
             <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
