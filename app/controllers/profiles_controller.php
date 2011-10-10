@@ -8,14 +8,16 @@ class ProfilesController extends AppController {
     var $paginate = array('limit' => 15);
 
     function index() {
-        if ($this->RequestHandler->isRss()) {
-            $profiles = $this->Profile->find('all',
-                            array('conditions' => array('Profile.visible' => 1),
-                                  'limit' => 20,
-                                  'order' => 'Profile.modified DESC'));
+	if ($this->RequestHandler->isRss()) {
+            $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1), 
+				    			  'limit' => 20, 
+				    			  'order' => 'Profile.modified.DESC'));
             return $this->set(compact('profiles'));
 
         }
+
+	$genderLabels = Configure::read('GenderLabels');
+	$this->set('genderLabels', $genderLabels);
 
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;
@@ -52,14 +54,17 @@ class ProfilesController extends AppController {
         $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
-		$genderLabels = Configure::read('GenderLabels');
-		$this->set('genderLabels', $genderLabels);
+        if ($this->Auth->user('role') != 'admin'){
+ 	      	$this->paginate = array(
+        	   'conditions' => array('Profile.visible' => 1),
+        	    'order' => $order);
+	}
+	else{
+ 	      	$this->paginate = array(
+        	    'order' => $order);
+	}
 
-        $this->paginate = array(
-            'conditions' => array('Profile.visible' => 1),
-            'order' => $order
-        );
-        $profiles = $this->paginate('Profile');
+       	$profiles = $this->paginate('Profile');
         $this->set('profiles', $profiles);
     }
 
@@ -195,7 +200,8 @@ class ProfilesController extends AppController {
                                         'pet' => $searchArgs['pet'],
                                         'child' => $searchArgs['child'],
                                         'couple' => $searchArgs['couple'],
-                                        'mates' => $searchArgs['max_roommates']    ));
+                                        'mates' => $searchArgs['max_roommates'],
+                                        'has_house' => !empty($this->data['User']['hasHouse'])  ));
     }
 
     private function age_to_year($age) {
@@ -224,7 +230,8 @@ class ProfilesController extends AppController {
                                         'pet' => $search_args['pet'],
                                         'child' => $search_args['child'],
                                         'couple' => $search_args['couple'],
-                                        'mates' => $search_args['max_roommates']    ));
+                                        'mates' => $search_args['max_roommates'],
+                                        'has_house' => !empty($this->data['User']['hasHouse'])  ));
         $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
 
@@ -265,7 +272,8 @@ class ProfilesController extends AppController {
                                         'pet' => $prefs['pref_pet'],
                                         'child' => $prefs['pref_child'],
                                         'couple' => $prefs['pref_couple'],
-                                        'mates' => $prefs['mates_min']  ));
+                                        'mates' => $prefs['mates_min'],
+                                        'has_house' => !empty($this->data['User']['hasHouse'])  ));
     }
    
     //check user's access
@@ -276,7 +284,8 @@ class ProfilesController extends AppController {
 	$user_id = $profile['User']['id'];
 
       
-	if( $this->Auth->user('id') != $user_id ){
+	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin') ){
+	
 		/*
 		 * More info aboute params in app/app_error.php
 		 */	

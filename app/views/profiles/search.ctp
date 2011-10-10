@@ -12,10 +12,10 @@
                             'class' => 'short-textbox',
                             'value' => isset($defaults) ? $defaults['age_max'] : '',
                             'default' => '');
-	$maxmatesoptions = array(   'label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι ',
+	/*$maxmatesoptions = array(   'label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι ',
                                 'class' => 'short-textbox',
                                 'value' => isset($defaults) ? $defaults['mates'] : '',
-                                'default' => '');
+                                'default' => '');*/
     $genderoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
     $options = array('Όχι', 'Ναι', 'Αδιάφορο');
 ?>
@@ -25,10 +25,10 @@
         <td>
 <?php
 	echo $this->Form->input('agemin', $ageminoptions);
-    echo '</td><td>';
+	echo '</td><td>';
 	echo $this->Form->input('agemax', $agemaxoptions);
-    echo '</td><td>';
-	echo $this->Form->input('max_roommates', $maxmatesoptions);
+    	echo '</td><td>';
+	//echo $this->Form->input('max_roommates', $maxmatesoptions);
 ?>
         </td>
     </tr>
@@ -36,7 +36,7 @@
         <td>
 
 <?php
-	echo $this->Form->input('gender', array(    'label' => 'Φύλο ',
+	echo $this->Form->input('gender', array('label' => 'Φύλο ',
                                                 'options' => $genderoptions,
                                                 'value' => isset($defaults) ? $defaults['gender'] : '2',
                                                 'default' => '2'    ));
@@ -68,7 +68,7 @@
                                             'value' => isset($defaults) ? $defaults['couple'] : '2' ));
     echo '</td><td>';
     echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse', array('value' => 1,
-                                                                        'checked' => false,
+                                                                        'checked' => isset($defaults) ? $defaults['has_house'] : false,
                                                                         'hiddenField' => false));
 ?>
 		</td>
@@ -93,62 +93,67 @@
 </table>
 </div>
 
-    <ul class="thelist">
+<ul class="thelist">
 
-<?php
-    if(isset($profiles)) {
-		$oddLine = true;
-		foreach ($profiles as $profile):
-			$rowCSS = ($oddLine)?'0':'1';
-			$rowCSS = "bgcolor".$rowCSS;
-?>
+    <?php
+        if(isset($profiles)){
 
-
-        <li>
-            <div class="photo">
-                <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
-
-            </div>
-            <div class="info">
-                <?php echo $this->Html->link($profile['Profile']['firstname'].' '.$profile['Profile']['lastname'],array('controller' => 'profiles',
-			'action' => 'view', $profile['Profile']['id'])); ?>
-
-               Ηλικία: <?php echo $profile['Profile']['age']; ?>
-<br />
-    <?php if ($profile['Profile']['gender'])
-        echo '<p class="female">Γυναίκα.</p>';
-    else
-        echo '<p class="male">Άνδρας.</p>';
+        if(empty($profiles)) {
+            echo 'Δεν βρέθηκαν αποτελέσματα.';
+        } else {
+            $oddLine = true;
+            foreach ($profiles as $profile):
+                $rowCSS = ($oddLine)?'0':'1';
+                $rowCSS = "bgcolor".$rowCSS;
     ?>
 
-                    <?php if ($profile['Profile']['gender'])
-        echo '<p class="smoker">Είμαι Καπνιστής.</p>';
-    else
-        echo '<p class="nosmoker">Δεν Είμαι Καπνιστής.</p>';
-    ?>
+    <li>
+        <div class="photo">
+            <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
+        </div>
+        <div class="info">
+            <?php echo $this->Html->link(   $profile['Profile']['firstname'].' '.$profile['Profile']['lastname'], 
+                                            array(  'controller' => 'profiles',
+			                                        'action' => 'view', 
+                                                    $profile['Profile']['id']));
+            ?>
+
+            Ηλικία: <?php echo $profile['Profile']['age']; ?> <br />
+
+            <?php   
+                if ($profile['Profile']['gender'])
+                    echo '<p class="female">Γυναίκα.</p>';
+                else
+                    echo '<p class="male">Άνδρας.</p>';
+            ?>
+
+            <?php   
+                if ($profile['Profile']['smoker'])
+                    echo    '<p class="smoker">'.
+                            ($profile['Profile']['gender'] ? 'Είμαι Κανπίστρια.' : 'Είμαι Καπνιστής.').
+                            '</p>';
+                else
+                    echo    '<p class="nosmoker">'.
+                            ($profile['Profile']['gender'] ? 'Δεν είμαι Κανπίστρια.' : 'Δεν είμαι Καπνιστής.').
+                            '</p>';
+            ?>
+
+            <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
 
 
+        </div>
+        <div class="aboutme"></div>
 
-    <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
+    </li>
 
-
-            </div>
-
-            <div class="aboutme">
-
-            </div>
-
-        </li>
-
-
-
-            <?php
-		$oddLine = !$oddLine;
-		endforeach;
-    }
+    <?php
+		        $oddLine = !$oddLine;
+		    endforeach;
+        }
+        }
 
 	?>
 
-    </ul>
+</ul>
 
 

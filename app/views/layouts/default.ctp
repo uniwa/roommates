@@ -13,7 +13,16 @@
 
     <div id="logo" class="column">
         <div id="vcard">
-            <a href="#" title="Home"><img src="<?php echo $this->webroot; ?>img/vcard.png" alt="vCard"/></a>
+<?php
+$userid = $this->Session->read('Auth.User.id');
+echo $this->Html->link(
+    $this->Html->image("vcard.png", array("alt" => "Το προφίλ μου")),
+    "/profiles/view/$userid",
+    array('escape' => false)
+);
+
+?>
+
         </div>
         <h1>Εθελοντικές Δράσεις</h1>
 
@@ -26,7 +35,7 @@
 
     <div id="navigation" class="column">
 
-         <ul id="nav">
+        <ul id="nav">
             <li class="page_item current_page_item home">
                 <a href="#"><span>Αρχική</span></a>
             </li>
@@ -39,16 +48,13 @@
 
 
             <li>
-                <?php echo $this->Html->link('Ολα τα προφιλ', array(
+
+
+                <?php echo $this->Html->link(' Το προφίλ μου', array(
                                                                    'controller' => 'profiles',
-                                                                   'action' => 'index')); ?>
-
-            </li>
-            <li>
-                <?php echo $this->Html->link('Δημιουργία προφιλ', array(
-                                                                       'controller' => 'profiles',
-                                                                       'action' => 'add')); ?>
-
+                                                                   'action' => 'view',
+                                                                   $userid,
+                                                               )); ?>
             </li>
 
             <li>
@@ -58,19 +64,20 @@
 
             </li>
 
-		<?php if( $this->Session->read( 'Auth.User' ) ){
-		
-			echo '<li>';
-			echo $this->Html->link('Αποσύνδεση' , array( 'controller' => 'users',
-								     'action' => 'logout'));
-			echo '</li>';
-		}?>
-		
+            <?php if ($this->Session->read('Auth.User')) {
+
+            echo '<li>';
+            echo $this->Html->link('Αποσύνδεση', array('controller' => 'users',
+                                                      'action' => 'logout'));
+            echo '</li>';
+        }?>
+
 
             <li class="rss">
                 <a href="#" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rss.png"
-                                                                  alt="RSS-feed"/></a>
-	    </li>
+                                                   alt="RSS-feed"/></a>
+            </li>
+
 
 
         </ul>

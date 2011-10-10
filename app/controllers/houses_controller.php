@@ -162,7 +162,7 @@ class HousesController extends AppController {
 	$user_id = $house['Profile']['user_id'];
 	
 	
-	if($this->Auth->user('id') != $user_id ){
+	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){	
 		/*
 		 * More info about params in app/app_error.php
 		 */

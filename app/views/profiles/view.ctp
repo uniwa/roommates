@@ -3,8 +3,8 @@
 		<div id='profile-edit'>
 			<div id="actions">
 				<?php
-					if( $this->Session->read('Auth.User.id') == $profile['Profile']['id'] ){
-						echo $html->link('Επεξεργασία', array('action' => 'view', $profile['Profile']['id']));
+					if( ($this->Session->read('Auth.User.id') == $profile['Profile']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
 					}
 				?>
 			</div>
@@ -20,6 +20,7 @@
 				$couple = ($profile['Profile']['couple'])?'ναι':'όχι';
 				$child = ($profile['Profile']['child'])?'ναι':'όχι';
 				$weare = $profile['Profile']['we_are'];
+				$mates_wanted = $profile['Profile']['max_roommates'];
 
 				//$koko = count($profile['House']);
 				//echo '<pre>'; print_r($koko); echo '</pre>'; die();	
@@ -48,8 +49,9 @@
 				<img src='./img/profile_avatar.png' />
 			</div>
 
-			<span class='profile-strong'><?php echo $age; ?></span> ετών, <span class='profile-strong'>
-			<?php echo $gender; ?></span><br />
+			<span class='profile-strong'><?php echo $age; ?></span> ετών, 
+			<span class='profile-strong'><?php echo $gender; ?></span>
+			<br />
 			<?php
 				echoDetail('Καπνιστής', $smoker);
 				echoDetail('Κατοικίδιο', $pet);
@@ -57,7 +59,18 @@
 				echoDetail('Ζευγάρι', $couple);
 			?></span>
 			
-			<?php echo 'Είμαστε ' .  $weare . ' άτομα'; ?><br />
+			<?php if ($weare == 1)
+				echo 'Είμαι ' . $weare . ' άτομo';
+			      else
+				echo 'Είμαστε ' . $weare . ' άτομα';?>
+
+			<br />
+
+			<?php if ($mates_wanted == 1)
+				echo 'Ζητείται ' . $mates_wanted . ' άτομο';
+			      else
+				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
+			<br />
 
 			<?php if (count($profile['House']) != 0){
 					//reads only the first users house
@@ -72,14 +85,12 @@
 <div id='bottom-frame' class='frame'>
 	<div class='frame-container'>
 		<div id='bottom-title' class='title'>
-			<h2>Προτιμήσεις συγκατοίκων</h2>
+			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
 		</div>
 		<div id='bottom-subtitle' class='subtitle'>
 		</div>
 		<div id='profile-preferences' class='options profile-big'>
-			Επιθυμητός αριθμός συγκατοίκων: <span class='profile-strong'>
 			<?php
-				$roommateswanted = $profile['Profile']['max_roommates'];
 				$prefgender = $profile['Preference']['pref_gender'];
 				$prefsmoker = $profile['Preference']['pref_smoker'];
 				$prefpet = $profile['Preference']['pref_pet'];
@@ -95,19 +106,25 @@
 				$child = getPrefValue($prefchild, $ynioptions);
 				$couple = getPrefValue($prefcouple, $ynioptions);
 				
-				echo $roommateswanted;
 			?></span>
 			<br />Ηλικία: 
 			<?php
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
-				if($age_min){
-			?>από <span class='profile-strong'><?php
-					echo $profile['Preference']['age_min']." ";
+				
+				if ($age_min == $age_max){?> 
+					<span class='profile-strong'><?php
+						echo $profile['Preference']['age_min'];
 				}
-				if($age_max){
-			?></span>μέχρι <span class='profile-strong'><?php
-					echo $profile['Preference']['age_max'];
+				else{
+					if($age_min){
+				?>από <span class='profile-strong'><?php
+						echo $profile['Preference']['age_min']." ";
+					}
+					if($age_max){
+				?></span>μέχρι <span class='profile-strong'><?php
+						echo $profile['Preference']['age_max'];
+					}
 				}
 			?></span><br />
 			<?php
@@ -115,7 +132,7 @@
 				echoDetail('Καπνιστής', $smoker);
 				echoDetail('Κατοικίδιο', $smoker);
 				echoDetail('Παιδί', $smoker);
-				echoDetail('Φύλο', $smoker);
+				echoDetail('Ζευγάρι', $smoker);
 			?></span>
 		</div>
 	</div>

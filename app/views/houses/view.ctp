@@ -1,7 +1,7 @@
 <h2>Ενοικιάζεται</h2><div class="profile houseProfile">
     <div id="actions">
 <?php
- if( $this->Session->read( 'Auth.User.id') == $house['Profile']['user_id'] ){
+ if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
   echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
   echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
  }?>
@@ -74,11 +74,11 @@
 
 <div class="info-block">
     <!-- availability -->
-    <p><span class="bold">Διαμένουν:</span> <?php echo Sanitize::html($house['House']['currently_hosting'])?> άτομα </p>
-    <p><span class="bold">Μπορούν συνολικά να συγκατοικήσουν:</span> <?php echo Sanitize::html($house['House']['total_places'])?> άτομα </p>
+    <p><span class="bold">Διαμένουν:</span> 
+	<?php echo Sanitize::html($house['House']['currently_hosting'])?> <?php echo $house['House']['currently_hosting'] == 1 ? 'άτομο' : 'άτομα'?></p>
+    <p><span class="bold">Μπορούν συνολικά να συγκατοικήσουν:</span> 
+	<?php echo Sanitize::html($house['House']['total_places'])?> <?php echo $house['House']['total_places'] == 1 ? 'άτομο' : 'άτομα'?></p>
 </div>
-
-
 
 </div>
 
