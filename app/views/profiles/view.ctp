@@ -81,9 +81,7 @@
 		<div id='bottom-subtitle' class='subtitle'>
 		</div>
 		<div id='profile-preferences' class='options profile-big'>
-			Επιθυμητός αριθμός συγκατοίκων: <span class='profile-strong'>
 			<?php
-				$roommateswanted = $profile['Profile']['max_roommates'];
 				$prefgender = $profile['Preference']['pref_gender'];
 				$prefsmoker = $profile['Preference']['pref_smoker'];
 				$prefpet = $profile['Preference']['pref_pet'];
@@ -99,7 +97,6 @@
 				$child = getPrefValue($prefchild, $ynioptions);
 				$couple = getPrefValue($prefcouple, $ynioptions);
 				
-				echo $roommateswanted;
 			?></span>
 			<br />Ηλικία: 
 			<?php
