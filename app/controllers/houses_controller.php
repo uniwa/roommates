@@ -163,9 +163,10 @@ class HousesController extends AppController {
 	
 	
 	if($this->Auth->user('id') != $user_id ){
-		$this->header('HTTP/1.1 403 Forbidden');
-		$this->autoRender = false;
-		exit();			
+		/*
+		 * More info about params in app/app_error.php
+		 */
+		$this->cakeError( 'error403' );
     	} 
     }
 }
