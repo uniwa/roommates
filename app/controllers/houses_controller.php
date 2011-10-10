@@ -22,7 +22,7 @@ class HousesController extends AppController {
 		if(isset($this->params['form']['selection'])){
 			$selectedOrder = $this->params['form']['selection'];
 			$ascoptions = array('asc', 'desc');
-			$orderField = 'Profile.modified';
+			$orderField = 'House.modified';
 			switch($selectedOrder){
 				case 0:
 					$orderField = 'House.modified';
