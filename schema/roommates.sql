@@ -89,13 +89,13 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `heating_type_id` INT NOT NULL ,
   `currently_hosting` INT NOT NULL,
   `total_places` INT NOT NULL,
-  `profile_id` INT DEFAULT NULL ,
+  `user_id` INT DEFAULT NULL ,
   `municipality_id` INT DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
   INDEX `fk_house_house_type1` (`house_type_id` ASC) ,
   INDEX `fk_house_heating1` (`heating_type_id` ASC) ,
-  INDEX `fk_house_profile` (`profile_id` ASC) ,
+  INDEX `fk_house_user` (`user_id` ASC) ,
   INDEX `fk_house_municipality` (`municipality_id` ASC) ,
   CONSTRAINT `fk_house_floor`
     FOREIGN KEY (`floor_id` )
@@ -112,9 +112,9 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
     REFERENCES `roommates`.`heating_types` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_house_profile`
-    FOREIGN KEY (`profile_id`)
-    REFERENCES `roommates`.`profiles` (`id`)
+  CONSTRAINT `fk_house_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `roommates`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_house_minicipality`
