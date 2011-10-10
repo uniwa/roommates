@@ -18,7 +18,7 @@
 	echo $this->Form->input('Profile.couple', array('label' => 'Συζώ'));
 	echo $this->Form->input('Profile.we_are', array('label' => 'Είμαστε'));
 
-	echo $this->Form->input('Profile.max_roommates', array('label' =>'Μέγιστος επιθυμητός αριθμός συγκατοίκων'));
+	echo $this->Form->input('Profile.max_roommates', array('label' =>'Ζητούνται'));
 	echo $this->Form->input('Profile.visible', array('checked' => true ,'label' =>'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 ?>
 
