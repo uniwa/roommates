@@ -8,7 +8,7 @@ class ProfilesController extends AppController {
     var $paginate = array('limit' => 15);
 
     function index() {
-	if ($this->RequestHandler->isRss()) {
+        if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1), 
 				    			  'limit' => 20, 
 				    			  'order' => 'Profile.modified.DESC'));
@@ -16,8 +16,8 @@ class ProfilesController extends AppController {
 
         }
 
-	$genderLabels = Configure::read('GenderLabels');
-	$this->set('genderLabels', $genderLabels);
+    	$genderLabels = Configure::read('GenderLabels');
+    	$this->set('genderLabels', $genderLabels);
 
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;
@@ -55,16 +55,15 @@ class ProfilesController extends AppController {
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         if ($this->Auth->user('role') != 'admin'){
- 	      	$this->paginate = array(
-        	   'conditions' => array('Profile.visible' => 1),
-        	    'order' => $order);
-	}
-	else{
- 	      	$this->paginate = array(
-        	    'order' => $order);
-	}
+            $this->paginate = array(
+                        'conditions' => array('Profile.visible' => 1),
+                        'order' => $order);
+        }
+        else {
+            $this->paginate = array('order' => $order);
+        }
 
-       	$profiles = $this->paginate('Profile');
+        $profiles = $this->paginate('Profile');
         $this->set('profiles', $profiles);
     }
 
@@ -106,33 +105,29 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-
-	$this->checkAccess( $id );
+        $this->checkAccess( $id );
         $this->Profile->id = $id;
 //      $koko = $this->Profile->Preference->find('all', array('fields' =>'id'));
 //      $koko = $this->data['Preference']['id'];
 //      var_dump($koko); die();
 
-         if (empty($this->data)) {
+        if (empty($this->data)) {
              $this->data = $this->Profile->read();
-         } else {  
-     
+        } else {
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
                 $this->redirect(array('action'=> 'index'));
             }
-         }
+        }
 
-         $dob = array();
-         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
+        $dob = array();
+        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
-         }
-	 $this->set('available_birth_dates', $dob);
-
+        }
+        $this->set('available_birth_dates', $dob);
      }
 
     function search() {
-
         if(isset($this->params['form']['simplesearch'])) {
             $this->simpleSearch();
         }
@@ -272,20 +267,17 @@ class ProfilesController extends AppController {
                                         'couple' => $prefs['pref_couple'],
                                         'mates' => $prefs['mates_min']  ));
     }
-   
+
     //check user's access
     private function checkAccess($profile_id){
-	
-	$this->Profile->id = $profile_id;
-	$profile = $this->Profile->read();
-	$user_id = $profile['User']['id'];
-
-      
-	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin') ){
-		$this->header('HTTP/1.1 403 Forbidden');
-		$this->autoRender = false;
-		exit();
-	}
+        $this->Profile->id = $profile_id;
+        $profile = $this->Profile->read();
+        $user_id = $profile['User']['id'];
+        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin') ){
+            $this->header('HTTP/1.1 403 Forbidden');
+            $this->autoRender = false;
+            exit();
+        }
     }
 }
 ?>
