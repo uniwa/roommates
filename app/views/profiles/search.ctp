@@ -128,11 +128,11 @@
             <?php   
                 if ($profile['Profile']['smoker'])
                     echo    '<p class="smoker">'.
-                            ($profile['Profile']['gender'] ? 'Είμαι Κανπίστρια' : 'Είμαι Καπνιστής.').
+                            ($profile['Profile']['gender'] ? 'Είμαι Κανπίστρια.' : 'Είμαι Καπνιστής.').
                             '</p>';
                 else
                     echo    '<p class="nosmoker">'.
-                            ($profile['Profile']['gender'] ? 'Δεν είμαι Κανπίστρια' : 'Δεν είμαι Καπνιστής.').
+                            ($profile['Profile']['gender'] ? 'Δεν είμαι Κανπίστρια.' : 'Δεν είμαι Καπνιστής.').
                             '</p>';
             ?>
 
