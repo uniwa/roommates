@@ -57,7 +57,11 @@
 				echoDetail('Ζευγάρι', $couple);
 			?></span>
 			
-			<?php echo 'Είμαστε ' .  $weare . ' άτομα'; ?><br />
+			<?php if ($weare == 1)
+				echo 'Είμαι ' .  $weare . ' άτομo';
+			      else 
+				echo 'Είμαστε ' .  $weare . ' άτομα'; ?>
+			<br />
 
 			<?php if (count($profile['House']) != 0){
 					//reads only the first users house
