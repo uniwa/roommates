@@ -6,7 +6,7 @@ class ProfilesController extends AppController {
     var $name = 'Profiles';
     var $components = array('RequestHandler');
     var $paginate = array('limit' => 15);
-    var $uses = array("User","Profile");
+    var $uses = array("Profile", "House");
 
     function index() {
         if ($this->RequestHandler->isRss()) {
@@ -70,13 +70,14 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
         $this->Profile->id = $id;
-        $tmp = $this->Profile->read();
-        $this->User->id = $tmp["Profile"]["user_id"];
-        //$this->User->id = $id;
-        //$this->Profile->id = $id;
-        //$this->set('profile', $this->Profile->read());
-        $this->set('user', $this->User->read());
-        echo "<pre>";var_dump($this->User->read());echo "</pre>";die();
+        /* get profile + user + preferences */
+        $profile = $this->Profile->read();
+        $this->set('profile', $profile);
+
+        /* get houses for user - empty array on none */
+        $conditions = array("user_id" => $profile["Profile"]["user_id"]);
+        $house = $this->House->find('all', array('conditions' => $conditions));
+        $this->set('house', $house);
     }
 
 /*

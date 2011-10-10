@@ -3,8 +3,8 @@
 		<div id='profile-edit'>
 			<div id="actions">
 				<?php
-					if( ($this->Session->read('Auth.User.id') == $user['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
-						echo $html->link('Επεξεργασία', array('action' => 'edit', $user['Profile']['id']));
+					if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
 					}
 				?>
 			</div>
@@ -12,16 +12,16 @@
 		<div id='top-title' class='title'>
 			<h1>
 			<?php
-				$name = $user['Profile']['firstname']." ".$user['Profile']['lastname'];
-				$age = $user['Profile']['age'];
-				$gender = ($user['Profile']['gender'])?'γυναίκα':'άνδρας';
-				$smoker = ($user['Profile']['smoker'])?'ναι':'όχι';
-				$pet = ($user['Profile']['pet'])?'ναι':'όχι';
-				$couple = ($user['Profile']['couple'])?'ναι':'όχι';
-				$child = ($user['Profile']['child'])?'ναι':'όχι';
-				$weare = $user['Profile']['we_are'];
+				$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
+				$age = $profile['Profile']['age'];
+				$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
+				$smoker = ($profile['Profile']['smoker'])?'ναι':'όχι';
+				$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
+				$couple = ($profile['Profile']['couple'])?'ναι':'όχι';
+				$child = ($profile['Profile']['child'])?'ναι':'όχι';
+				$weare = $profile['Profile']['we_are'];
 
-				//$koko = count($user['House']);
+				//$koko = count($profile['House']);
 				//echo '<pre>'; print_r($koko); echo '</pre>'; die();	
 
 				echo Sanitize::html($name, array('remove' => true));
@@ -63,9 +63,9 @@
 				echo 'Είμαστε ' .  $weare . ' άτομα'; ?>
 			<br />
 
-			<?php if (count($user['House']) != 0){
+			<?php if (count($house) != 0){
 					//reads only the first users house
-					$myhouse = $user['House'][0]['id'];?>
+					$myhouse = $house[0]['House']['id'];?>
 					<img src = "<?php echo $this->webroot;?>img/home.png"><a href="http://localhost/roommates/houses/view/<?php echo $myhouse?>">  Το σπίτι μου</a>
 			<?php }?>
 			
@@ -82,11 +82,11 @@
 		</div>
 		<div id='profile-preferences' class='options profile-big'>
 			<?php
-				$prefgender = $user['Profile']['Preference']['pref_gender'];
-				$prefsmoker = $user['Preference']['pref_smoker'];
-				$prefpet = $user['Preference']['pref_pet'];
-				$prefchild = $user['Preference']['pref_child'];
-				$prefcouple = $user['Preference']['pref_couple'];
+				$prefgender = $profile['Preference']['pref_gender'];
+				$prefsmoker = $profile['Preference']['pref_smoker'];
+				$prefpet = $profile['Preference']['pref_pet'];
+				$prefchild = $profile['Preference']['pref_child'];
+				$prefcouple = $profile['Preference']['pref_couple'];
 
 				$genderoptions = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 				$ynioptions = array('όχι', 'ναι', 'αδιάφορο');
@@ -100,15 +100,15 @@
 			?></span>
 			<br />Ηλικία: 
 			<?php
-				$age_min = $user['Preferences']['age_min'];
-				$age_max = $user['Preference']['age_max'];
+				$age_min = $profile['Preference']['age_min'];
+				$age_max = $profile['Preference']['age_max'];
 				if($age_min){
 			?>από <span class='profile-strong'><?php
-					echo $user['Preference']['age_min']." ";
+					echo $profile['Preference']['age_min']." ";
 				}
 				if($age_max){
 			?></span>μέχρι <span class='profile-strong'><?php
-					echo $user['Preference']['age_max'];
+					echo $profile['Preference']['age_max'];
 				}
 			?></span><br />
 			<?php
