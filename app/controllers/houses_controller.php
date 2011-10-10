@@ -109,8 +109,7 @@ class HousesController extends AppController {
     }
 
     function delete($id) {
-
-	$this->checkAccess( $id );
+        $this->checkAccess( $id );
         $this->House->delete( $id );
         $this->Session->setFlash('The house with id: '.$id.' has been deleted.');
         $this->redirect(array('action'=>'index'));
