@@ -20,6 +20,7 @@
 				$couple = ($profile['Profile']['couple'])?'ναι':'όχι';
 				$child = ($profile['Profile']['child'])?'ναι':'όχι';
 				$weare = $profile['Profile']['we_are'];
+				$mates_wanted = $profile['Profile']['max_roommates'];
 
 				//$koko = count($profile['House']);
 				//echo '<pre>'; print_r($koko); echo '</pre>'; die();	
@@ -61,6 +62,12 @@
 				echo 'Είμαι ' .  $weare . ' άτομo';
 			      else 
 				echo 'Είμαστε ' .  $weare . ' άτομα'; ?>
+			<br />
+
+			<?php if ($mates_wanted == 1)
+				echo 'Ζητείται ' . $mates_wanted . ' άτομο';
+			      else
+				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
 			<br />
 
 			<?php if (count($profile['House']) != 0){
