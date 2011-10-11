@@ -78,20 +78,18 @@
 
 	</tr>
 	<tr><td>&nbsp;</td></tr>
-	<tr>
-		<td colspan='3'>
-			<?php
-				echo $this->Form->input('orderΒy', array(
-					'label' => 'Ταξινόμηση με: ',
-					'options' => $order_options['options'],
-					'selected' => $order_options['selected']));
-			 ?>
-		</td>
-	</tr>
 </table>
 <table>
     <tr>
         <td>
+<?php
+    echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
+    echo '</td><td>';
+    echo $this->Form->submit('αναζήτηση με βάση τις προτιμήσεις μου', array('name' => 'searchbyprefs'));
+    echo '</td><td>';
+    echo $this->Form->submit('αποθήκευση κριτηρίων αναζήτησης', array('name' => 'savesearch'));
+	echo $this->Form->end();
+?>
         </td>
     </tr>
 </table>
