@@ -72,11 +72,10 @@
 				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
 			<br />
 
-			<?php if (count($house) != 0){
+			<?php if ($houseid != NULL){
 					//reads only the first users house
-					$myhouse = $house[0]['House']['id'];
 					echo $this->Html->link($this->Html->image("home.png", array("alt" => "Το σπίτι μου")), 
-			           			       "/houses/view/$myhouse", 
+			           			       "/houses/view/$houseid", 
 				   			       array('escape'=>false));
 			      } ?>
 		</div>
