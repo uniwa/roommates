@@ -22,38 +22,11 @@ class ProfilesController extends AppController {
 
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;
-
 		if(isset($this->params['form']['selection'])){
 			$selectedOrder = $this->params['form']['selection'];
-			$ascoptions = array('asc', 'desc');
-			$orderField = 'Profile.modified';
-			switch($selectedOrder){
-				case 0:
-					$orderField = 'Profile.modified';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 1:
-					$orderField = 'Profile.dob';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 2:
-					$orderField = 'Profile.dob';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 3:
-					$orderField = 'Profile.max_roommates';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 4:
-					$orderField = 'Profile.max_roommates';
-					$ascDesc = $ascoptions[1];
-					break;
-			}
-			$order = array($orderField => $ascDesc);
 		}
-
-        $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
-        $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
+		
+		$order = $this->getSortOrder($selectedOrder);
 
         if ($this->Auth->user('role') != 'admin'){
             $this->paginate = array(
@@ -195,6 +168,7 @@ class ProfilesController extends AppController {
         if(!empty($searchArgs['max_roommates']) && ($searchArgs['max_roommates'] > 1)) {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
+		
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
         $this->set('defaults', array(   'age_min' => $searchArgs['agemin'],
                                         'age_max' => $searchArgs['agemax'],
@@ -284,5 +258,38 @@ class ProfilesController extends AppController {
             $this->cakeError('error403'/*, array()*/ );
         }
     }
+
+	private function getSortOrder($selectedOrder){
+		$ascoptions = array('asc', 'desc');
+		$orderField = 'Profile.modified';
+		switch($selectedOrder){
+			case 0:
+				$orderField = 'Profile.modified';
+				$ascDesc = $ascoptions[1];
+				break;
+			case 1:
+				$orderField = 'Profile.dob';
+				$ascDesc = $ascoptions[1];
+				break;
+			case 2:
+				$orderField = 'Profile.dob';
+				$ascDesc = $ascoptions[0];
+				break;
+			case 3:
+				$orderField = 'Profile.max_roommates';
+				$ascDesc = $ascoptions[0];
+				break;
+			case 4:
+				$orderField = 'Profile.max_roommates';
+				$ascDesc = $ascoptions[1];
+				break;
+			}
+		$order = array($orderField => $ascDesc);
+
+        $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
+        $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
+		
+		return $order;
+	}
 }
 ?>

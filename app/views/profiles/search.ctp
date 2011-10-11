@@ -78,8 +78,17 @@
 
 	</tr>
 	<tr><td>&nbsp;</td></tr>
+	<tr>
+		<td colspan='3'>
+			<?php
+				echo $this->Form->input('orderΒy', array(
+					'label' => 'Ταξινόμηση με: ',
+					'options' => $order_options['options'],
+					'selected' => $order_options['selected']));
+			 ?>
+		</td>
+	</tr>
 </table>
-
 <table>
     <tr>
         <td>
