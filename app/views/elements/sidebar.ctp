@@ -23,7 +23,7 @@
 
         <?php if ($this->Session->read('Auth.User')) {
             echo '<li>';
-            echo $this->Html->link('Αποσύνδεση', array('controller' => 'users',
+            echo $this->Html->link('Αποσύνδεση ('.$this->Session->read("Auth.User.username").")", array('controller' => 'users',
                                                       'action' => 'logout'));
             echo '</li>';
         }?>
