@@ -70,6 +70,7 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
 
+	$this->checkExistance($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         /* get profile  contains:
@@ -117,7 +118,8 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-        $this->checkAccess( $id );
+        $this->checkExistance($id);
+	$this->checkAccess( $id );
         $this->Profile->id = $id;
 
         if (empty($this->data)) {
@@ -196,6 +198,8 @@ class ProfilesController extends AppController {
         if(!empty($searchArgs['max_roommates']) && ($searchArgs['max_roommates'] > 1)) {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
+        // exclude logged user's profile
+        $searchconditions['Profile.user_id !='] = $this->Auth->user('id');
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
         $this->set('defaults', array(   'age_min' => $searchArgs['agemin'],
                                         'age_max' => $searchArgs['agemax'],
@@ -262,6 +266,8 @@ class ProfilesController extends AppController {
         if(($prefs['pref_couple'] < 2 && $prefs['pref_couple'] != null)) {
             $search_conditions['Profile.couple'] = $prefs['pref_couple'];
         }
+        // exclude logged user's profile
+        $search_conditions['Profile.user_id !='] = $this->Auth->user('id');
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
         $this->set('defaults', array(   'age_min' => $prefs['age_min'],
                                         'age_max' => $prefs['age_max'],
@@ -285,5 +291,20 @@ class ProfilesController extends AppController {
             $this->cakeError('error403'/*, array()*/ );
         }
     }
+
+      //check user's existance
+      private function checkExistance($profile_id){
+        $this->Profile->id = $profile_id;
+        $profile = $this->Profile->read();
+        
+	if( $profile == NULL ){
+            /*
+             * More info aboute params in app/app_error.php
+             */
+            $this->cakeError('error404'/*, array()*/ );
+        }
+    }
+
+
 }
 ?>
