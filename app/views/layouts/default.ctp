@@ -88,9 +88,14 @@ echo $this->Html->link(
     <!-- /#navigation -->
 
     <div id="content" class="column">
+<?php
+    echo $this->Session->flash();
+    echo $this->Session->flash('auth');
+?>
 
 
-        <?php echo $content_for_layout ?>
+	<?php echo $content_for_layout ?>
+	
 
     </div>
     <!-- /#content -->
