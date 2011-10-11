@@ -90,6 +90,7 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
+	$this->checkExistance($id);
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
@@ -101,9 +102,7 @@ class HousesController extends AppController {
 
     function add() {
         if (!empty($this->data)) {
-            $profile = $this->House->Profile->find('first', array('conditions' => array(
-                                                       'Profile.user_id' => $this->Auth->user('id'))));
-            $this->data['House']['profile_id'] = $profile['Profile']['id'];
+            $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
@@ -122,7 +121,7 @@ class HousesController extends AppController {
     }
 
     function edit($id = null) {
-
+	$this->checkExistance($id);
 	$this->checkAccess( $id );
 	$this->House->id = $id;
 
@@ -163,8 +162,8 @@ class HousesController extends AppController {
 	$this->House->id = $house_id;
 	$house = $this->House->read();
 	$user_id = $house['User']['id'];
-	
-	
+
+		
 	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){	
 		/*
 		 * More info about params in app/app_error.php
@@ -172,5 +171,23 @@ class HousesController extends AppController {
 		$this->cakeError( 'error403' );
     	} 
     }
+
+    //check houses existance
+    private function checkExistance( $house_id ){
+    	
+	$this->House->id = $house_id;
+	$house = $this->House->read();
+	//pr($house); die();
+		
+	if($house == NULL ){	
+		/*
+		 * More info about params in app/app_error.php
+		 */
+		$this->cakeError( 'error404' );
+    	} 
+    }
+
+
+
 }
 ?>
