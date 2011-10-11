@@ -68,7 +68,7 @@ class HousesController extends AppController {
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
-            'order' => $order
+            'order' => $order, 'limit' => 15
         );
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
