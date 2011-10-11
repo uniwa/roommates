@@ -23,7 +23,15 @@ class UsersController extends AppController{
             if ( $user["Profile"]["id"] == NULL ) {
                 $this->create_profile($this->User->id);
             }
+
+            $ids = $this->getAuthUserIds();
+            if (isset($ids["House"]["id"])) {
+                $this->Session->write("houseid", $ids["House"]["id"]);
+            } else {
+                $this->Session->write("houseid", NULL);
+            }
             $this->redirect($this->Auth->redirect());
+
         }
 	}
 
