@@ -42,17 +42,17 @@
 	echo $this->Form->input('gender', array('label' => 'Φύλο ',
                                                 'options' => $genderoptions,
                                                 'value' => isset($defaults) ? $defaults['gender'] : '2',
-                                                'default' => '2'    ));
+                                                'default' => '2'));
     echo '</td><td>';
 	echo $this->Form->input('smoker', array('label' => 'Καπνιστής ',
                                             'options' => $options,
                                             'default' => '2',
-                                            'value' => isset($defaults) ? $defaults['smoker'] : '2' ));
+                                            'value' => isset($defaults) ? $defaults['smoker'] : '2'));
     echo '</td><td>';
     echo $this->Form->input('pet', array(   'label' => 'Κατοικίδιο ',
                                             'options' => $options,
                                             'default' => '2',
-                                            'value' => isset($defaults) ? $defaults['pet'] : '2'    ));
+                                            'value' => isset($defaults) ? $defaults['pet'] : '2'));
 ?>
 		</td>
 	</tr>
@@ -75,11 +75,19 @@
                                                                         'hiddenField' => false));
 ?>
 		</td>
-
+	</tr>
+	<tr>
+		<td colspan='3'>
+		<?php
+			echo $this->Form->input('orderby', array(
+				'label' => 'Ταξινόμηση με: ',
+				'options' => $order_options['options'],
+				'default' => $order_options['selected']));
+		 ?>
+		</td>
 	</tr>
 	<tr><td>&nbsp;</td></tr>
 </table>
-
 <table>
     <tr>
         <td>
@@ -125,6 +133,24 @@
 				echo $foundmessage;
             ?>
         </div>
+        <div class="pagination">
+            <ul>
+            <?php
+                /* show first page */
+                //echo $paginator->first('⇤ Πρώτη ');
+                /* show the previous link */
+                echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                /* show pages */
+                echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' ', 'tag' => 'li'));
+                /* Shows the next link */
+                echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                /* show last page */
+                //echo $paginator->last('Τελευτευταία ⇥');
+                /* prints X of Y, where X is current page and Y is number of pages */
+                //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+            ?>
+            </ul>
+        </div>
         <div id='results-profiles' class='results'>
             <ul>
 			<?php
@@ -161,6 +187,24 @@
                     </div>
                 </li>
                 <?php endforeach; ?>
+            </ul>
+        </div>
+        <div class="pagination">
+            <ul>
+            <?php
+                /* show first page */
+                //echo $paginator->first('⇤ Πρώτη ');
+                /* show the previous link */
+                echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                /* show pages */
+                echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' ', 'tag' => 'li'));
+                /* Shows the next link */
+                echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                /* show last page */
+                //echo $paginator->last('Τελευτευταία ⇥');
+                /* prints X of Y, where X is current page and Y is number of pages */
+                //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+            ?>
             </ul>
         </div>
 		<?php

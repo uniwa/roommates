@@ -22,38 +22,11 @@ class ProfilesController extends AppController {
 
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;
-
 		if(isset($this->params['form']['selection'])){
 			$selectedOrder = $this->params['form']['selection'];
-			$ascoptions = array('asc', 'desc');
-			$orderField = 'Profile.modified';
-			switch($selectedOrder){
-				case 0:
-					$orderField = 'Profile.modified';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 1:
-					$orderField = 'Profile.dob';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 2:
-					$orderField = 'Profile.dob';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 3:
-					$orderField = 'Profile.max_roommates';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 4:
-					$orderField = 'Profile.max_roommates';
-					$ascDesc = $ascoptions[1];
-					break;
-			}
-			$order = array($orderField => $ascDesc);
 		}
-
-        $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
-        $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
+		
+		$order = $this->getSortOrder($selectedOrder);
 
         if ($this->Auth->user('role') != 'admin'){
             $this->paginate = array(
@@ -139,6 +112,7 @@ class ProfilesController extends AppController {
      }
 
     function search() {
+		$this->getSortOrder(0);
         if(isset($this->params['form']['simplesearch'])) {
             $this->simpleSearch();
         }
@@ -200,7 +174,21 @@ class ProfilesController extends AppController {
         }
         // exclude logged user's profile
         $searchconditions['Profile.user_id !='] = $this->Auth->user('id');
-        $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
+		
+		$order = array('Profile.modified' => 'desc');
+		$selectedOrder = 0;
+		if(isset($searchArgs['orderby'])){
+			$selectedOrder = $searchArgs['orderby'];
+		}
+		
+		$order = $this->getSortOrder($selectedOrder);
+		$this->paginate = array(
+				'conditions' => $searchconditions,
+				'order' => $order
+			);
+
+        $profiles = $this->paginate('Profile');
+        $this->set('profiles', $profiles);
         $this->set('defaults', array(   'age_min' => $searchArgs['agemin'],
                                         'age_max' => $searchArgs['agemax'],
                                         'gender' => $searchArgs['gender'],
@@ -268,7 +256,21 @@ class ProfilesController extends AppController {
         }
         // exclude logged user's profile
         $search_conditions['Profile.user_id !='] = $this->Auth->user('id');
-        $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
+
+		$order = array('Profile.modified' => 'desc');
+		$selectedOrder = 0;
+		if(isset($this->data['Profile']['orderby'])){
+			$selectedOrder = $this->data['Profile']['orderby'];
+		}
+		
+		$order = $this->getSortOrder($selectedOrder);
+		$this->paginate = array(
+				'conditions' => $search_conditions,
+				'order' => $order
+			);
+
+        $profiles = $this->paginate('Profile');
+        $this->set('profiles', $profiles);
         $this->set('defaults', array(   'age_min' => $prefs['age_min'],
                                         'age_max' => $prefs['age_max'],
                                         'gender' => $prefs['pref_gender'],
@@ -292,19 +294,50 @@ class ProfilesController extends AppController {
         }
     }
 
-      //check user's existance
-      private function checkExistance($profile_id){
-        $this->Profile->id = $profile_id;
-        $profile = $this->Profile->read();
+	private function getSortOrder($selectedOrder){
+		$ascoptions = array('asc', 'desc');
+		$orderField = 'Profile.modified';
+		switch($selectedOrder){
+			case 0:
+				$orderField = 'Profile.modified';
+				$ascDesc = $ascoptions[1];
+				break;
+			case 1:
+				$orderField = 'Profile.dob';
+				$ascDesc = $ascoptions[1];
+				break;
+			case 2:
+				$orderField = 'Profile.dob';
+				$ascDesc = $ascoptions[0];
+				break;
+			case 3:
+				$orderField = 'Profile.max_roommates';
+				$ascDesc = $ascoptions[0];
+				break;
+			case 4:
+				$orderField = 'Profile.max_roommates';
+				$ascDesc = $ascoptions[1];
+				break;
+			}
+		$order = array($orderField => $ascDesc);
+
+        $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
+        $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
+		
+		return $order;
+	}
+
+	//check user's existance
+	private function checkExistance($profile_id){
+		$this->Profile->id = $profile_id;
+		$profile = $this->Profile->read();
         
-	if( $profile == NULL ){
+		if( $profile == NULL ){
             /*
-             * More info aboute params in app/app_error.php
+             * More info about params in app/app_error.php
              */
             $this->cakeError('error404'/*, array()*/ );
         }
     }
-
-
 }
 ?>
