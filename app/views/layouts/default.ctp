@@ -7,6 +7,7 @@
 
     <?php echo $this->Html->css('global'); ?>
 
+
 </head>
 <body>
 <div id="container">
