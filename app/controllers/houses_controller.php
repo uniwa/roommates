@@ -101,9 +101,7 @@ class HousesController extends AppController {
 
     function add() {
         if (!empty($this->data)) {
-            $profile = $this->House->Profile->find('first', array('conditions' => array(
-                                                       'Profile.user_id' => $this->Auth->user('id'))));
-            $this->data['House']['profile_id'] = $profile['Profile']['id'];
+            $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
