@@ -208,6 +208,22 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Table `roommates`.`images`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `roommates`.`images` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `location` VARCHAR(100) NOT NULL,
+  `house_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_image_house` (`house_id` ASC) ,
+  CONSTRAINT `fk_image_house`
+    FOREIGN KEY (`house_id` )
+    REFERENCES `roommates`.`houses` (`id` )
+) 
+ENGINE=InnoDB  
+DEFAULT CHARACTER SET = utf8;
+
 
 -- ----------------------------------------------------
 SET SQL_MODE=@OLD_SQL_MODE;
