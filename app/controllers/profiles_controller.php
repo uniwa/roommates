@@ -195,6 +195,8 @@ class ProfilesController extends AppController {
         if(!empty($searchArgs['max_roommates']) && ($searchArgs['max_roommates'] > 1)) {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
+        // exclude logged user's profile
+        $searchconditions['Profile.user_id !='] =  $this->Auth->user('id');
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
         $this->set('defaults', array(   'age_min' => $searchArgs['agemin'],
                                         'age_max' => $searchArgs['agemax'],
@@ -261,6 +263,8 @@ class ProfilesController extends AppController {
         if(($prefs['pref_couple'] < 2 && $prefs['pref_couple'] != null)) {
             $search_conditions['Profile.couple'] = $prefs['pref_couple'];
         }
+        // exclude logged user's profile
+        $search_conditions['Profile.user_id !='] =  $this->Auth->user('id');
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
         $this->set('defaults', array(   'age_min' => $prefs['age_min'],
                                         'age_max' => $prefs['age_max'],
