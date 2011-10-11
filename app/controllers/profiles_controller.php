@@ -124,6 +124,7 @@ class ProfilesController extends AppController {
     }
 
     private function simpleSearch() {
+		$order = $this->getSortOrder(0);
         $searchArgs = $this->data['Profile'];
 
         // set the conditions
