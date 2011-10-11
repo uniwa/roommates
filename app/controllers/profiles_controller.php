@@ -42,6 +42,7 @@ class ProfilesController extends AppController {
     }
 
     function view($id = null) {
+
 	$this->checkExistance($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;

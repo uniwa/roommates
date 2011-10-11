@@ -101,6 +101,15 @@ class HousesController extends AppController {
     }
 
     function add() {
+        /* if user already owns a house bail out */
+        $conditions = array("user_id" => $this->Auth->user('id'));
+        $res = $this->House->find('first', array('conditions' => $conditions));
+        if (isset($res["House"]["id"])) {
+            $this->Session->setFlash('Έχετε ήδη ένα σπίτι αποθηκευμένο.');
+            $this->redirect(array('action' => 'index'));
+        }
+        //pr($res); die();
+
         if (!empty($this->data)) {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
