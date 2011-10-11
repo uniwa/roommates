@@ -1,11 +1,18 @@
 <h2>Ενοικιάζεται</h2><div class="profile houseProfile">
     <div id="actions">
 <?php
- if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+ //if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+ if( ($this->Session->read( 'Auth.User.id') == $userid) || ($this->Session->read('Auth.User.role') == 'admin') ){
   echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
   echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
- }?>
- <a href="http://localhost/roommates/profiles/view/<?php echo $house['House']['profile_id']?>">Προφίλ ιδιοκτήτη αγγελίας</a>
+ }
+
+ echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/$userid");
+?> 
+ 
+
+   <li>
+        <div class="photo">
 
 </div>
         <div class="photo">

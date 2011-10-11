@@ -3,7 +3,7 @@
 		<div id='profile-edit'>
 			<div id="actions">
 				<?php
-					if( ($this->Session->read('Auth.User.id') == $profile['Profile']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+					if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
 						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
 					}
 				?>
@@ -72,12 +72,12 @@
 				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
 			<br />
 
-			<?php if (count($profile['House']) != 0){
+			<?php if ($houseid != NULL){
 					//reads only the first users house
-					$myhouse = $profile['House'][0]['id'];?>
-					<img src = "<?php echo $this->webroot;?>img/home.png"><a href="http://localhost/roommates/houses/view/<?php echo $myhouse?>">  Το σπίτι μου</a>
-			<?php }?>
-			
+					echo $this->Html->link($this->Html->image("home.png", array("alt" => "Το σπίτι μου")), 
+			           			       "/houses/view/$houseid", 
+				   			       array('escape'=>false));
+			      } ?>
 		</div>
 	</div>
 </div>

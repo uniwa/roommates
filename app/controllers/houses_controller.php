@@ -22,7 +22,7 @@ class HousesController extends AppController {
 		if(isset($this->params['form']['selection'])){
 			$selectedOrder = $this->params['form']['selection'];
 			$ascoptions = array('asc', 'desc');
-			$orderField = 'Profile.modified';
+			$orderField = 'House.modified';
 			switch($selectedOrder){
 				case 0:
 					$orderField = 'House.modified';
@@ -91,15 +91,19 @@ class HousesController extends AppController {
 
     function view($id = null) {
         $this->House->id = $id;
-        //$koko = $this->House->read();
-        //echo '<pre>';print_r($koko);echo'</pre>';die();       
-        $this->set('house', $this->House->read());
+        $this->House->recursive = 2;
+        $house = $this->House->read();
+
+        $this->set('house', $house);
+        /* profile id of the house owner */
+        $this->set('userid', $house["User"]["Profile"]["id"]);
     }
 
     function add() {
         if (!empty($this->data)) {
-            /* replace with user id after implementing authentication */
-            $this->data['House']['profile_id'] = '1';
+            $profile = $this->House->Profile->find('first', array('conditions' => array(
+                                                       'Profile.user_id' => $this->Auth->user('id'))));
+            $this->data['House']['profile_id'] = $profile['Profile']['id'];
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
@@ -111,8 +115,7 @@ class HousesController extends AppController {
     }
 
     function delete($id) {
-
-	$this->checkAccess( $id );
+        $this->checkAccess( $id );
         $this->House->delete( $id );
         $this->Session->setFlash('The house with id: '.$id.' has been deleted.');
         $this->redirect(array('action'=>'index'));
@@ -159,7 +162,7 @@ class HousesController extends AppController {
     	
 	$this->House->id = $house_id;
 	$house = $this->House->read();
-	$user_id = $house['Profile']['user_id'];
+	$user_id = $house['User']['id'];
 	
 	
 	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){	

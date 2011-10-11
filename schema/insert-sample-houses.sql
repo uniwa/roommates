@@ -25,7 +25,7 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									`heating_type_id`,
 									`currently_hosting`,
 									`total_places`,
-									`profile_id`,
+									`user_id`,
 									`municipality_id`	)
 
 						VALUES	(	'address 1',
@@ -84,7 +84,7 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									`heating_type_id`,
 									`currently_hosting`,
 									`total_places`,
-									`profile_id`,
+									`user_id`,
 									`municipality_id`	)
 
 						VALUES	(	'address 2',
@@ -143,7 +143,7 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									`heating_type_id`,
 									`currently_hosting`,
 									`total_places`,
-									`profile_id`,
+									`user_id`,
 									`municipality_id`	)
 
 						VALUES	(	'address 2',
