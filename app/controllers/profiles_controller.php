@@ -70,14 +70,19 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
         $this->Profile->id = $id;
-        /* get profile + user + preferences */
+        $this->Profile->recursive = 2;
+        /* get profile  contains:
+                Profile + Preference + User + House
+         */
         $profile = $this->Profile->read();
         $this->set('profile', $profile);
-
-        /* get houses for user - empty array on none */
-        $conditions = array("user_id" => $profile["Profile"]["user_id"]);
-        $house = $this->House->find('all', array('conditions' => $conditions));
-        $this->set('house', $house);
+        /* get house id of this user - NULL if he doesn't own one */
+        if ( isset($profile["User"]["House"][0]["id"]) ) {
+            $houseid = $profile["User"]["House"][0]["id"];
+        } else {
+            $houseid = NULL;
+        }
+        $this->set('houseid', $houseid);
     }
 
 /*
