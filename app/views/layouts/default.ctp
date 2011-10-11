@@ -4,9 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 
     <?php echo $scripts_for_layout ?>
-
     <?php echo $this->Html->css('global'); ?>
-
 </head>
 <body>
 <div id="container">
@@ -36,8 +34,6 @@
                                                                    'controller' => 'houses',
                                                                    'action' => 'index')); ?>
             </li>
-
-
             <li>
                 <?php echo $this->Html->link(' Το προφίλ μου', array(
                                                                    'controller' => 'profiles',
@@ -45,7 +41,6 @@
                                                                    $userid,
                                                                )); ?>
             </li>
-
             <li>
                 <?php echo $this->Html->link('Αναζήτηση Συγκατοίκου', array(
                                                                            'controller' => 'profiles',
@@ -58,19 +53,12 @@
                                                           'action' => 'logout'));
                 echo '</li>';
             }?>
-
-
             <li class="rss">
                 <a href="#" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rss.png"
                                                    alt="RSS-feed"/></a>
             </li>
-
-
-
         </ul>
         <!-- /#nav -->
-
-
     </div>
     <!-- /#navigation -->
 
