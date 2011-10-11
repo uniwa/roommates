@@ -689,9 +689,10 @@ h1{
 #login-frame{
     color: #6a6a6a;
     background-image:url('../img/login-background.jpg');
-    background-repeat:no-repeat
-    height:214;
-    width:490
+    background-repeat:no-repeat;
+    max-height:130;
+    height:130;
+    width:480;
     font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 14px;
     font-weight: 900;
