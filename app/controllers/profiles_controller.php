@@ -69,6 +69,7 @@ class ProfilesController extends AppController {
     }
 
     function view($id = null) {
+
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         /* get profile  contains:
