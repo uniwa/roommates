@@ -403,7 +403,7 @@ input:focus {
     border-color: #5d7ba8;
 }
 
-input[type=submit] {
+input[type=submit], input[type=reset] {
     background: #7195AA;
     color: white;
     border-color: #13455B;
