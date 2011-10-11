@@ -338,8 +338,5 @@ class ProfilesController extends AppController {
             $this->cakeError('error404'/*, array()*/ );
         }
     }
-
-
->>>>>>> fe0ac2757f539af8d3d3801429d9dce78388c59d
 }
 ?>
