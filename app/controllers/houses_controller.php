@@ -115,6 +115,7 @@ class HousesController extends AppController {
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
+                $this->Session->write("houseid", $this->House->id);
                 $this->redirect(array('action' => 'index'));
             }
         }
@@ -126,6 +127,7 @@ class HousesController extends AppController {
         $this->checkAccess( $id );
         $this->House->delete( $id );
         $this->Session->setFlash('The house with id: '.$id.' has been deleted.');
+        $this->Session->write("houseid", NULL);
         $this->redirect(array('action'=>'index'));
     }
 
@@ -140,6 +142,7 @@ class HousesController extends AppController {
         else {
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('The house has been updated.');
+                $this->Session->write("houseid", $this->House->id);
                 $this->redirect(array('action' => 'index'));
             }
         }

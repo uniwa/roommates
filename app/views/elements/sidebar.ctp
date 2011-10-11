@@ -16,6 +16,18 @@
                                                            )); ?>
         </li>
         <li>
+            <?php
+                $session_houseid = $this->Session->read("houseid");
+                if ($session_houseid != NULL) {
+                    echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
+                                                                'action' => 'view', $session_houseid));
+                } else {
+                    echo $this->Html->link('Προσθήκη σπιτιού', array('controller' => 'houses',
+                                                                'action' => 'add'));
+                }
+            ?>
+        </li>
+        <li>
             <?php echo $this->Html->link('Αναζήτηση Συγκατοίκου', array(
                                                                        'controller' => 'profiles',
                                                                        'action' => 'search')); ?>
