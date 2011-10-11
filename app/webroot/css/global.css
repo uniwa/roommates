@@ -52,8 +52,17 @@ q:before, q:after {
 
 /*! Reset css*/
 
+/*google web font*/
+@font-face {
+    font-family: 'Ubuntu';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Ubuntu'), url('http://themes.googleusercontent.com/static/fonts/ubuntu/v2/_xyN3apAT_yRRDeqB3sPRg.woff') format('woff');
+}
+
 body {
-    font: 12px "Lucida Grande", Helvetica, Sans-serif;
+    font-size: 11px;
+    font-family: 'Ubuntu', Helvetica, Sans-serif;
     line-height: 1.5; /*unitless for proper inheritance*/
     color: #333;
     background: url(../img/bgtile.jpg) repeat left top;
@@ -192,7 +201,6 @@ body {
     padding-right: 20px;
     background: white;
 
-    font: 16px Helvetica, Sans-serif;
     line-height: 1.5;
     color: #333;
 }
@@ -371,7 +379,6 @@ p {
 }
 
 #ProfileAddForm label, #ProfileEditForm label {
-    font-family: Helvetica, Verdana, Arial, sans-serif;
     font-size: 12px;
     font-weight: bold;
     color: #21759B;
@@ -381,7 +388,6 @@ p {
 }
 
 #ProfileAddForm input[type=text], #ProfileEditForm input[type=text] {
-    font-family: Helvetica, Verdana, Arial, sans-serif;
     padding: 4px;
     border: solid 1px #C6C6C6;
     border-bottom: solid 1px #E3E3E3;
@@ -397,7 +403,7 @@ input:focus {
     border-color: #5d7ba8;
 }
 
-input[type=submit] {
+input[type=submit], input[type=reset] {
     background: #7195AA;
     color: white;
     border-color: #13455B;
@@ -439,8 +445,7 @@ input[type=submit] {
     -webkit-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
 }
 
-#HouseAddForm label,#HouseEditForm label {
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+#HouseAddForm label, #HouseEditForm label {
     font-size: 12px;
     font-weight: bold;
     color: #21759B;
@@ -449,8 +454,7 @@ input[type=submit] {
     display: inline-block;
 }
 
-#HouseAddForm input[type=text], #HouseAddForm textarea ,#HouseEditForm input[type=text],#HouseEditForm textarea{
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+#HouseAddForm input[type=text], #HouseAddForm textarea, #HouseEditForm input[type=text], #HouseEditForm textarea {
     padding: 4px;
     border: solid 1px #C6C6C6;
     border-bottom: solid 1px #E3E3E3;
@@ -494,32 +498,32 @@ select {
     box-shadow: inset 0 1px white, 0 1px #A7A7A7;
     -moz-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
     -webkit-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
-    border:  3px double #ccc;
+    border: 3px double #ccc;
 }
 
-
-.textarea label{
-    float:left;
+.textarea label {
+    float: left;
 }
 
-h1{
-	font-size: 24px;
-	font-weight: 900;
+h1 {
+    font-size: 24px;
+    font-weight: 900;
 }
 
-.topframe{
-	margin: 12px 24px 24px 24px;
-	font-size: 16px;
+.topframe {
+    margin: 12px 24px 24px 24px;
+    font-size: 16px;
 }
 
-.short-textbox{
-	width: 50px;
+.short-textbox {
+    width: 50px;
 }
 
-.short-field{
-	float: left;
-	margin: 0px 12px 0px 0px;
+.short-field {
+    float: left;
+    margin: 0px 12px 0px 0px;
 }
+
 
 .clear-both{
 	clear: both;
@@ -528,142 +532,139 @@ h1{
 .frame{
 	border-style: solid;
 	border-width: 5px;
-	margin: 4px auto 4px auto;
+	margin: 4px auto;
 	padding: 10px 10px 50px 10px;
 	width: 680px;
 }
 
-#top-frame{
-	border-color: #4f6ca6;
-	background-color: #f3f7ff;
+#top-frame {
+    border-color: #4f6ca6;
+    background-color: #f3f7ff;
 }
 
-#bottom-frame{
-	border-color: #4f6ca6;
-	border-color: #b9bbbf;
+#bottom-frame {
+    border-color: #4f6ca6;
+    border-color: #b9bbbf;
 }
 
-.frame-container{
-	margin: 16px 32px 4px 32px;
+.frame-container {
+    margin: 16px 32px 4px 32px;
 }
 
-#top-photo{
-	border: 8px solid #efefef;
-	background-color: #999999;
-	float: right;
-	width: 100px;
-	height: 100px;
-	margin: 0px 0px 4px 0px;
+#top-photo {
+    border: 8px solid #efefef;
+    background-color: #999999;
+    float: right;
+    width: 100px;
+    height: 100px;
+    margin: 0px 0px 4px 0px;
 }
 
-.title{
-	clear: both;
-	margin: 8px 0px 8px -10px;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+.title {
+    clear: both;
+    margin: 8px 0px 8px -10px;
     font-size: 20px;
     font-weight: bold;
-	text-shadow: #bbbbbb 1px 1px 0px;
+    text-shadow: #bbbbbb 1px 1px 0px;
 }
 
-#top-title{
+#top-title {
     color: #6a6a6a;
 }
 
-#bottom-title{
+#bottom-title {
     color: #4f6ca6;
 }
 
-.options{
-	clear: both;
-	margin: 0px 0px 0px 16px;
+.options {
+    clear: both;
+    margin: 0px 0px 0px 16px;
 }
 
-.profile-big{
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+.profile-big {
     font-size: 20px;
     font-weight: bold;
-	color: #555555;
+    color: #555555;
 }
 
-.profile-strong{
-	color: #4f6ca6;
+.profile-strong {
+    color: #4f6ca6;
 }
 
-.subtitle{
-	margin: 0px 32px 20px 32px;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+.subtitle {
+    margin: 0px 32px 20px 32px;
     font-size: 18px;
-	font-style: italic;
+    font-style: italic;
     color: #999999;
 }
 
-.results{}
-
-.card{
-	background-image: url('../img/card.png');
-	background-repeat: no-repeat;
-	margin: 0px auto 4px auto;
-    width: 420px;
-	height: 115px;
+.results {
 }
 
-.card-inner{
+.card {
+    background-image: url('../img/card.png');
+    background-repeat: no-repeat;
+    margin: 0px auto 4px auto;
+    width: 420px;
+    height: 115px;
+}
+
+.card-inner {
     clear: both;
 }
 
-.profile-pic, .house-pic{
+.profile-pic, .house-pic {
     float: left;
-	background-repeat: no-repeat;
-	margin: 20px 10px 0px 50px;
-	width: 70px;
-	height: 70px;
+    background-repeat: no-repeat;
+    margin: 20px 10px 0px 50px;
+    width: 70px;
+    height: 70px;
 }
 
-.house-pic{
-	background-image: url('../img/house.gif');
+.house-pic {
+    background-image: url('../img/house.gif');
 }
 
-.male{
-	background-image: url('../img/male.gif');
+.male {
+    background-image: url('../img/male.gif');
 }
 
-.female{
-	background-image: url('../img/female.gif');
+.female {
+    background-image: url('../img/female.gif');
 }
 
-.profile-info, .house-info{
+.profile-info, .house-info {
     float: left;
-	margin: 5px 0px 0px 0px;
+    margin: 5px 0px 0px 0px;
 }
 
-.profile-info{
-	width: 240px;
+.profile-info {
+    width: 240px;
 }
 
-.house-info{
-	margin-left: 10px;
-	width: 280px;
+.house-info {
+    margin-left: 10px;
+    width: 280px;
 }
 
-.profile-name, .house-name{
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+.profile-name, .house-name {
     font-size: 20px;
-	font-weight: 900;
+    font-weight: 900;
 }
 
-.profile-name a, .house-name a{
+.profile-name a, .house-name a {
     color: #999999;
 }
 
-.profile-details, .house-details{
+.profile-details, .house-details {
     margin: -4px 0px 20px 10px;
 }
 
-.profile-edit{
-/*	float: right;*/
+.profile-edit {
+    /*	float: right;*/
 }
 
-.profile-house{
+.profile-house {
 }
 
 /* pagination */
@@ -676,42 +677,55 @@ h1{
     text-align: center;
 }
 
-.pagination .disabled { display: none; }
-
-.loginFrame{
-	border-style: solid;
-	border-width: 5px;
-	margin: 4px auto 4px auto;
-	padding: 8px 10px 77px 1px;
-	width: 480px;
+.pagination .disabled {
+    display: none;
 }
 
-#login-frame{
-    color: #6a6a6a;
-    background-image:url('../img/login-background.jpg');
-    background-repeat:no-repeat;
-    max-height:130;
-    height:130;
-    width:480;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+.loginFrame {
+    border-style: solid;
+    border-width: 5px;
+    margin: 4px auto;
+    padding: 8px 10px 77px 1px;
+    width: 480px;
+    height: 130px;
+}
+
+.loginform {
+    margin: 0 auto;
+    width: 200px;
+    padding: 20px 0 0 110px;
     font-size: 14px;
-    font-weight: 900;
 }
 
-#login-inner{
-	margin: 4px auto 4px auto;
-	padding: 24px 0px 0px 0px;
-	width: 300px;
+.loginform input[type=submit] {
+
+    margin-top: 10px;
 }
 
-#login-inner label{
-	margin: 4px 8px 0px 16px;
+#login-frame {
+    color: #6a6a6a;
+    background-image: url('../img/login-background.jpg');
+    background-repeat: no-repeat;
+
 }
 
-#login-inner legend{
-	margin: 0px 0px 12px 0px;
+#login-inner {
+    width: 369px;
 }
 
-.order-by{
+.loginform label {
+    width: 80px;
+}
+
+#login-inner legend {
+}
+
+.order-by {
     margin: 0px 0px 16px 32px;
+}
+
+#authMessage{
+float: left;
+padding-left: 120px;
+color: red;
 }
