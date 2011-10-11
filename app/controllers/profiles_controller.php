@@ -109,6 +109,7 @@ class ProfilesController extends AppController {
      }
 
     function search() {
+		$this->getSortOrder(0);
         if(isset($this->params['form']['simplesearch'])) {
             $this->simpleSearch();
         }
@@ -124,7 +125,6 @@ class ProfilesController extends AppController {
     }
 
     private function simpleSearch() {
-		$order = $this->getSortOrder(0);
         $searchArgs = $this->data['Profile'];
 
         // set the conditions
@@ -170,7 +170,20 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.max_roommates >='] = $searchArgs['max_roommates'];
         }
 		
-        $this->set('profiles', $this->Profile->find('all', array('conditions' => $searchconditions)));
+		$order = array('Profile.modified' => 'desc');
+		$selectedOrder = 0;
+		if(isset($searchArgs['orderby'])){
+			$selectedOrder = $searchArgs['orderby'];
+		}
+		
+		$order = $this->getSortOrder($selectedOrder);
+		$this->paginate = array(
+				'conditions' => $searchconditions,
+				'order' => $order
+			);
+
+        $profiles = $this->paginate('Profile');
+        $this->set('profiles', $profiles);
         $this->set('defaults', array(   'age_min' => $searchArgs['agemin'],
                                         'age_max' => $searchArgs['agemax'],
                                         'gender' => $searchArgs['gender'],
@@ -236,7 +249,22 @@ class ProfilesController extends AppController {
         if(($prefs['pref_couple'] < 2 && $prefs['pref_couple'] != null)) {
             $search_conditions['Profile.couple'] = $prefs['pref_couple'];
         }
-        $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
+
+		$order = array('Profile.modified' => 'desc');
+		$selectedOrder = 0;
+		if(isset($this->data['Profile']['orderby'])){
+			$selectedOrder = $this->data['Profile']['orderby'];
+		}
+		
+		$order = $this->getSortOrder($selectedOrder);
+		$this->paginate = array(
+				'conditions' => $search_conditions,
+				'order' => $order
+			);
+
+        $profiles = $this->paginate('Profile');
+        $this->set('profiles', $profiles);
+//        $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
         $this->set('defaults', array(   'age_min' => $prefs['age_min'],
                                         'age_max' => $prefs['age_max'],
                                         'gender' => $prefs['pref_gender'],
