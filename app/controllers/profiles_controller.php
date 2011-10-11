@@ -203,7 +203,6 @@ class ProfilesController extends AppController {
                                         'pet' => $searchArgs['pet'],
                                         'child' => $searchArgs['child'],
                                         'couple' => $searchArgs['couple'],
-                                        'mates' => $searchArgs['max_roommates'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
     }
 
@@ -219,7 +218,6 @@ class ProfilesController extends AppController {
                         'id' => $profile['Preference']['id'],
                         'age_min' => $search_args['agemin'],
                         'age_max' => $search_args['agemax'],
-                        'mates_min' => $search_args['max_roommates'],
                         'pref_gender' => $search_args['gender'],
                         'pref_smoker' => $search_args['smoker'],
                         'pref_pet' => $search_args['pet'],
@@ -233,7 +231,6 @@ class ProfilesController extends AppController {
                                         'pet' => $search_args['pet'],
                                         'child' => $search_args['child'],
                                         'couple' => $search_args['couple'],
-                                        'mates' => $search_args['max_roommates'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
         $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
@@ -264,9 +261,6 @@ class ProfilesController extends AppController {
         if(($prefs['pref_couple'] < 2 && $prefs['pref_couple'] != null)) {
             $search_conditions['Profile.couple'] = $prefs['pref_couple'];
         }
-        if($prefs['mates_min'] != null) {
-            $search_conditions['Profile.max_roommates >='] = $prefs['mates_min'];
-        }
         $this->set('profiles', $this->Profile->find('all', array('conditions' => $search_conditions)));
         $this->set('defaults', array(   'age_min' => $prefs['age_min'],
                                         'age_max' => $prefs['age_max'],
@@ -275,7 +269,6 @@ class ProfilesController extends AppController {
                                         'pet' => $prefs['pref_pet'],
                                         'child' => $prefs['pref_child'],
                                         'couple' => $prefs['pref_couple'],
-                                        'mates' => $prefs['mates_min'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
     }
 
@@ -285,9 +278,10 @@ class ProfilesController extends AppController {
         $profile = $this->Profile->read();
         $user_id = $profile['User']['id'];
         if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin') ){
-            $this->header('HTTP/1.1 403 Forbidden');
-            $this->autoRender = false;
-            exit();
+            /*
+             * More info aboute params in app/app_error.php
+             */
+            $this->cakeError('error403'/*, array()*/ );
         }
     }
 }

@@ -20,6 +20,7 @@
 				$couple = ($profile['Profile']['couple'])?'ναι':'όχι';
 				$child = ($profile['Profile']['child'])?'ναι':'όχι';
 				$weare = $profile['Profile']['we_are'];
+				$mates_wanted = $profile['Profile']['max_roommates'];
 
 				//$koko = count($profile['House']);
 				//echo '<pre>'; print_r($koko); echo '</pre>'; die();	
@@ -48,8 +49,9 @@
 				<img src='./img/profile_avatar.png' />
 			</div>
 
-			<span class='profile-strong'><?php echo $age; ?></span> ετών, <span class='profile-strong'>
-			<?php echo $gender; ?></span><br />
+			<span class='profile-strong'><?php echo $age; ?></span> ετών, 
+			<span class='profile-strong'><?php echo $gender; ?></span>
+			<br />
 			<?php
 				echoDetail('Καπνιστής', $smoker);
 				echoDetail('Κατοικίδιο', $pet);
@@ -58,17 +60,25 @@
 			?></span>
 			
 			<?php if ($weare == 1)
-				echo 'Είμαι ' .  $weare . ' άτομo';
-			      else 
-				echo 'Είμαστε ' .  $weare . ' άτομα'; ?>
+				echo 'Είμαι ' . $weare . ' άτομo';
+			      else
+				echo 'Είμαστε ' . $weare . ' άτομα';?>
+
+			<br />
+
+			<?php if ($mates_wanted == 1)
+				echo 'Ζητείται ' . $mates_wanted . ' άτομο';
+			      else
+				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
 			<br />
 
 			<?php if (count($house) != 0){
 					//reads only the first users house
-					$myhouse = $house[0]['House']['id'];?>
-					<img src = "<?php echo $this->webroot;?>img/home.png"><a href="http://localhost/roommates/houses/view/<?php echo $myhouse?>">  Το σπίτι μου</a>
-			<?php }?>
-			
+					$myhouse = $house[0]['House']['id'];
+					echo $this->Html->link($this->Html->image("home.png", array("alt" => "Το σπίτι μου")), 
+			           			       "/houses/view/$myhouse", 
+				   			       array('escape'=>false));
+			      } ?>
 		</div>
 	</div>
 </div>
@@ -76,7 +86,7 @@
 <div id='bottom-frame' class='frame'>
 	<div class='frame-container'>
 		<div id='bottom-title' class='title'>
-			<h2>Προτιμήσεις συγκατοίκων</h2>
+			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
 		</div>
 		<div id='bottom-subtitle' class='subtitle'>
 		</div>
@@ -102,13 +112,20 @@
 			<?php
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
-				if($age_min){
-			?>από <span class='profile-strong'><?php
-					echo $profile['Preference']['age_min']." ";
+				
+				if ($age_min == $age_max){?> 
+					<span class='profile-strong'><?php
+						echo $profile['Preference']['age_min'];
 				}
-				if($age_max){
-			?></span>μέχρι <span class='profile-strong'><?php
-					echo $profile['Preference']['age_max'];
+				else{
+					if($age_min){
+				?>από <span class='profile-strong'><?php
+						echo $profile['Preference']['age_min']." ";
+					}
+					if($age_max){
+				?></span>μέχρι <span class='profile-strong'><?php
+						echo $profile['Preference']['age_max'];
+					}
 				}
 			?></span><br />
 			<?php
@@ -116,7 +133,7 @@
 				echoDetail('Καπνιστής', $smoker);
 				echoDetail('Κατοικίδιο', $smoker);
 				echoDetail('Παιδί', $smoker);
-				echoDetail('Φύλο', $smoker);
+				echoDetail('Ζευγάρι', $smoker);
 			?></span>
 		</div>
 	</div>

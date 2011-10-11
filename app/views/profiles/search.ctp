@@ -12,10 +12,10 @@
                             'class' => 'short-textbox',
                             'value' => isset($defaults) ? $defaults['age_max'] : '',
                             'default' => '');
-	$maxmatesoptions = array(   'label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι ',
+	/*$maxmatesoptions = array(   'label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι ',
                                 'class' => 'short-textbox',
                                 'value' => isset($defaults) ? $defaults['mates'] : '',
-                                'default' => '');
+                                'default' => '');*/
     $genderoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
     $options = array('Όχι', 'Ναι', 'Αδιάφορο');
 ?>
@@ -25,10 +25,10 @@
         <td>
 <?php
 	echo $this->Form->input('agemin', $ageminoptions);
-    echo '</td><td>';
+	echo '</td><td>';
 	echo $this->Form->input('agemax', $agemaxoptions);
-    echo '</td><td>';
-	echo $this->Form->input('max_roommates', $maxmatesoptions);
+    	echo '</td><td>';
+	//echo $this->Form->input('max_roommates', $maxmatesoptions);
 ?>
         </td>
     </tr>
@@ -36,7 +36,7 @@
         <td>
 
 <?php
-	echo $this->Form->input('gender', array(    'label' => 'Φύλο ',
+	echo $this->Form->input('gender', array('label' => 'Φύλο ',
                                                 'options' => $genderoptions,
                                                 'value' => isset($defaults) ? $defaults['gender'] : '2',
                                                 'default' => '2'    ));
