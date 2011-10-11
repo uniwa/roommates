@@ -1,5 +1,8 @@
-<div class='topframe'>
-<h1>Αναζήτηση Συγκατοίκων</h1><br/>
+<div id='top-frame' class='frame'>
+<div class='frame-container'>
+	<div id='top-title' class='title'>
+		<h1>Αναζήτηση συγκατοίκων</h1>
+	</div>
 
 <?php
     echo "<div class='clear-both'></div>";
@@ -92,68 +95,72 @@
     </tr>
 </table>
 </div>
+</div>
 
-<ul class="thelist">
-
-    <?php
-        if(isset($profiles)){
-
-        if(empty($profiles)) {
-            echo 'Δεν βρέθηκαν αποτελέσματα.';
-        } else {
-            $oddLine = true;
-            foreach ($profiles as $profile):
-                $rowCSS = ($oddLine)?'0':'1';
-                $rowCSS = "bgcolor".$rowCSS;
-    ?>
-
-    <li>
-        <div class="photo">
-            <img src="<?php echo $this->webroot; ?>img/profile_avatar.png" alt="Profile Picture" class="avatar"/>
+<?php
+	if(isset($profiles)){
+?>
+<div id='bottom-frame' class='frame'>
+    <div class='frame-container'>
+        <div id='bottom-title' class='title'>
+            <h2>Αποτελέσματα αναζήτησης</h2>
         </div>
-        <div class="info">
-            <?php echo $this->Html->link(   $profile['Profile']['firstname'].' '.$profile['Profile']['lastname'], 
-                                            array(  'controller' => 'profiles',
-			                                        'action' => 'view', 
-                                                    $profile['Profile']['id']));
+        <div id='bottom-subtitle' class='subtitle'>
+            <?php
+				$foundmessage = "Δεν βρέθηκαν προφίλ";
+				if(isset($profiles)){
+					$count = count($profiles);
+					if($count > 0){
+						$postfound = ($count == 1)?'ε ':'αν ';
+						$foundmessage = "Βρέθηκ".$postfound.$count." προφίλ\n";
+					}
+				}
+				echo $foundmessage;
             ?>
-
-            Ηλικία: <?php echo $profile['Profile']['age']; ?> <br />
-
-            <?php   
-                if ($profile['Profile']['gender'])
-                    echo '<p class="female">Γυναίκα.</p>';
-                else
-                    echo '<p class="male">Άνδρας.</p>';
-            ?>
-
-            <?php   
-                if ($profile['Profile']['smoker'])
-                    echo    '<p class="smoker">'.
-                            ($profile['Profile']['gender'] ? 'Είμαι Κανπίστρια.' : 'Είμαι Καπνιστής.').
-                            '</p>';
-                else
-                    echo    '<p class="nosmoker">'.
-                            ($profile['Profile']['gender'] ? 'Δεν είμαι Κανπίστρια.' : 'Δεν είμαι Καπνιστής.').
-                            '</p>';
-            ?>
-
-            <p class="tel">Τηλέφωνο: <?php echo $profile['Profile']['phone'] ?></p>
-
-
         </div>
-        <div class="aboutme"></div>
-
-    </li>
-
-    <?php
-		        $oddLine = !$oddLine;
-		    endforeach;
-        }
-        }
-
-	?>
-
-</ul>
-
-
+        <div id='results-profiles' class='results'>
+            <ul>
+			<?php
+				if(isset($profiles)) {
+			?>
+                <?php foreach ($profiles as $profile): ?>
+                <li>
+                    <div class='card'>
+                        <div class='card-inner'>
+                        <?php
+                            $gender = ($profile['Profile']['gender'])?'fe':'';
+                            echo "<div class='profile-pic ".$gender."male'>\n";
+                        ?>
+                        </div>
+                        <div class='profile-info'>
+                            <div class='profile-name'>
+                                <?php
+                                    echo $this->Html->link($profile['Profile']['firstname'].' '.$profile['Profile']['lastname'],
+                                        array('controller' => 'profiles', 'action' => 'view', $profile['Profile']['id']));
+                                ?>
+                            </div>
+                            <div class='profile-details'>
+                                <?php
+                                    echo $profile['Profile']['age'].", ";
+                                    $gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
+                                    echo $gender."<br />\n";
+                                    echo "email: ".$profile['Profile']['email']."<br />\n";
+                                ?>
+                            </div>
+                            <div class='profile-house'>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+		<?php
+			}
+		?>
+    </div>
+</div>
+<?php
+	}
+?>
