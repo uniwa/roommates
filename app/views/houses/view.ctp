@@ -9,7 +9,7 @@
 
  echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/$userid");
 ?> 
- 
+</div>
 
    <li>
         <div class="photo">
