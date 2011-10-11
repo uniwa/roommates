@@ -74,9 +74,11 @@
 
 			<?php if (count($profile['House']) != 0){
 					//reads only the first users house
-					$myhouse = $profile['House'][0]['id'];?>
-					<img src = "<?php echo $this->webroot;?>img/home.png"><a href="http://localhost/roommates/houses/view/<?php echo $myhouse?>">  Το σπίτι μου</a>
-			<?php }?>
+					$myhouse = $profile['House'][0]['id'];
+					echo $this->Html->link($this->Html->image("home.png", array("alt" => "Το σπίτι μου")), 
+			           			       "/houses/view/$myhouse", 
+				   			       array('escape'=>false));
+			      }?>
 			
 		</div>
 	</div>
