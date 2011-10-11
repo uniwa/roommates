@@ -13,16 +13,14 @@
 
     <div id="logo" class="column">
         <div id="vcard">
-<?php
-$userid = $this->Session->read('Auth.User.id');
-echo $this->Html->link(
-    $this->Html->image("vcard.png", array("alt" => "Το προφίλ μου")),
-    "/profiles/view/$userid",
-    array('escape' => false)
-);
-
-?>
-
+            <?php
+            $userid = $this->Session->read('Auth.User.id');
+            echo $this->Html->link(
+                $this->Html->image("vcard.png", array("alt" => "Το προφίλ μου")),
+                "/profiles/view/$userid",
+                array('escape' => false)
+            );
+            ?>
         </div>
         <h1>Εθελοντικές Δράσεις</h1>
 
