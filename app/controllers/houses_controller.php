@@ -91,7 +91,12 @@ class HousesController extends AppController {
 
     function view($id = null) {
         $this->House->id = $id;
-        $this->set('house', $this->House->read());
+        $this->House->recursive = 2;
+        $house = $this->House->read();
+
+        $this->set('house', $house);
+        /* profile id of the house owner */
+        $this->set('userid', $house["User"]["Profile"]["id"]);
     }
 
     function add() {
