@@ -739,7 +739,7 @@ color: red;
     float: left;
 }
 /*Φορμα προσθηκης κατοικιας*/
-#HouseEditForm ,#HouseAddForm{
+#HouseEditForm ,#HouseAddForm ,#ProfileEditForm, #ProfileAddForm{
     border:solid 1px #aacfe4;
 
     padding: 20px 0 20px 30px;
