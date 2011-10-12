@@ -20,3 +20,10 @@
 #phpStorm bloat
 .idea
 .idea/*
+
+#images
+
+/app/webroot/img/large/*
+/app/webroot/img/medium/*
+/app/webroot/img/original/*
+/app/webroot/img/thumbnails/*

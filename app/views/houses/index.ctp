@@ -1,5 +1,5 @@
 <?php
-    $html->script('jquery.min', false);
+    $html->script('jquery-1.6.4.min', false);
     $html->script('main', false);
 ?>
 <!--
