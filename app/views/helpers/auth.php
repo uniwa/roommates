@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * This helper class extract data from authenticated user
+ */
 class AuthHelper extends AppHelper{
 
 	private $user_id;
@@ -18,7 +20,7 @@ class AuthHelper extends AppHelper{
 	}
 
 	/*
-	 * Gets info about loged in user.
+ 	 * Gets info about loged in user.
 	 * for now only ids 
 	 */
 	function get( $choice ){
@@ -44,7 +46,7 @@ class AuthHelper extends AppHelper{
      		 case 'Profile':
                          switch( $property ){
 			  case 'id':
-			   return $this->user_id;
+			   return $this->profile_id;
 			   break;
 			 }
 			 break;
