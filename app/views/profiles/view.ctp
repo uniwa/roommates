@@ -75,7 +75,7 @@
             <div class="my-house">
                 <?php if ($houseid != NULL){
                         //reads only the first users house
-                        echo $this->Html->link($this->Html->image("home-small.png", array("alt" => "Το σπίτι μου", "class" => "home-small")), 
+                        echo $this->Html->link($this->Html->image("home-small.png", array("alt" => "Το σπίτι μου", "title" => "Το σπίτι μου", "class" => "home-small")), 
                                            "/houses/view/$houseid", 
                                        array('escape'=>false));
                       } ?>
