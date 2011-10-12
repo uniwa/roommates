@@ -331,12 +331,8 @@ class ProfilesController extends AppController {
 	private function checkExistance($profile_id){
 		$this->Profile->id = $profile_id;
 		$profile = $this->Profile->read();
-        
 		if( $profile == NULL ){
-            /*
-             * More info about params in app/app_error.php
-             */
-            $this->cakeError('error404'/*, array()*/ );
+            $this->cakeError('error404');
         }
     }
 }

@@ -68,7 +68,7 @@ class HousesController extends AppController {
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
-            'order' => $order
+            'order' => $order, 'limit' => 15
         );
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
@@ -192,20 +192,11 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
 
     //check houses existance
     private function checkExistance( $house_id ){
-    	
-	$this->House->id = $house_id;
-	$house = $this->House->read();
-	//pr($house); die();
-		
-	if($house == NULL ){	
-		/*
-		 * More info about params in app/app_error.php
-		 */
-		$this->cakeError( 'error404' );
-    	} 
+        $this->House->id = $house_id;
+        $house = $this->House->read();
+        if($house == NULL ){	
+            $this->cakeError( 'error404' );
+        }
     }
-
-
-
 }
 ?>
