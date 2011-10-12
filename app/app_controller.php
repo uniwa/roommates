@@ -41,7 +41,7 @@ class  AppController extends Controller{
 
 				'Profile' =>array( 'id' => $user['Profile']['id'] ),
 
-				'House' => array('id' => $user['House'][0]['id'] ) );	
+				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ) );	
 	
 	}
 }

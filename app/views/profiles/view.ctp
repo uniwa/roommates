@@ -130,9 +130,9 @@
 			<?php
 				echoDetail('Φύλο', $gender);
 				echoDetail('Καπνιστής', $smoker);
-				echoDetail('Κατοικίδιο', $smoker);
-				echoDetail('Παιδί', $smoker);
-				echoDetail('Ζευγάρι', $smoker);
+				echoDetail('Κατοικίδιο', $pet);
+				echoDetail('Παιδί', $child);
+				echoDetail('Ζευγάρι', $couple);
 			?></span>
 		</div>
 	</div>
