@@ -68,6 +68,10 @@ body {
     background: url(../img/bgtile.jpg) repeat left top;
 }
 
+
+h2{
+    font-size: 16px;
+}
 .column {
     float: left;
     padding-top: 20px;
@@ -383,7 +387,7 @@ p {
     font-weight: bold;
     color: #21759B;
     line-height: 19px;
-    min-width: 60px;
+    min-width: 65px;
     display: inline-block;
 }
 
@@ -768,4 +772,8 @@ width:30px;
 
 .agefrom{
     float:left;
+}
+
+#labelspreferences label{
+    min-width:100px;
 }
