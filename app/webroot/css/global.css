@@ -756,3 +756,16 @@ border-radius: 7px;
 -webkit-border-radius: 7px;
 }
 
+
+
+#agefields label {
+min-width:1px;
+}
+#agefields input[type="text"] {
+width:30px;
+    margin: 0 4px;
+}
+
+.agefrom{
+    float:left;
+}
