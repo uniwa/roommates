@@ -27,9 +27,9 @@
     <tr>
         <td>
 <?php
-	echo $this->Form->input('agemin', $ageminoptions);
+	echo $this->Form->input('age_min', $ageminoptions);
 	echo '</td><td>';
-	echo $this->Form->input('agemax', $agemaxoptions);
+	echo $this->Form->input('age_max', $agemaxoptions);
     	echo '</td><td>';
 	//echo $this->Form->input('max_roommates', $maxmatesoptions);
 ?>
@@ -39,17 +39,17 @@
         <td>
 
 <?php
-	echo $this->Form->input('gender', array('label' => 'Φύλο ',
+	echo $this->Form->input('pref_gender', array('label' => 'Φύλο ',
                                                 'options' => $genderoptions,
                                                 'value' => isset($defaults) ? $defaults['gender'] : '2',
                                                 'default' => '2'));
     echo '</td><td>';
-	echo $this->Form->input('smoker', array('label' => 'Καπνιστής ',
+	echo $this->Form->input('pref_smoker', array('label' => 'Καπνιστής ',
                                             'options' => $options,
                                             'default' => '2',
                                             'value' => isset($defaults) ? $defaults['smoker'] : '2'));
     echo '</td><td>';
-    echo $this->Form->input('pet', array(   'label' => 'Κατοικίδιο ',
+    echo $this->Form->input('pref_pet', array(   'label' => 'Κατοικίδιο ',
                                             'options' => $options,
                                             'default' => '2',
                                             'value' => isset($defaults) ? $defaults['pet'] : '2'));
@@ -60,12 +60,12 @@
 		<td>
 <?php
 
-	echo $this->Form->input('child', array( 'label' => 'Παιδί ',
+	echo $this->Form->input('pref_child', array( 'label' => 'Παιδί ',
                                             'options' => $options,
                                             'default' => '2',
                                             'value' => isset($defaults) ? $defaults['child'] : '2'  ));
     echo '</td><td>';
-    echo $this->Form->input('couple', array('label' => 'Ζευγάρι ',
+    echo $this->Form->input('pref_couple', array('label' => 'Ζευγάρι ',
                                             'options' => $options,
                                             'default' => '2',
                                             'value' => isset($defaults) ? $defaults['couple'] : '2' ));
@@ -104,7 +104,6 @@
     echo $this->Form->submit('καθαρισμός πεδίων', array('name' => 'resetvalues'));
     echo '</td><td>';
     echo $this->Form->submit('αποθήκευση κριτηρίων αναζήτησης', array('name' => 'savesearch'));
-    echo $this->Form->end();
 ?>
         </td>
     </tr>
@@ -124,7 +123,7 @@
             <?php
 				$foundmessage = "Δεν βρέθηκαν προφίλ";
 				if(isset($profiles)){
-					$count = count($profiles);
+					$count = $this->Paginator->counter(array('format' => '%count%'));//count($profiles);
 					if($count > 0){
 						$postfound = ($count == 1)?'ε ':'αν ';
 						$foundmessage = "Βρέθηκ".$postfound.$count." προφίλ\n";
