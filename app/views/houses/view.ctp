@@ -1,4 +1,13 @@
-<h2>Ενοικιάζεται</h2><div class="profile houseProfile">
+<?php
+
+ echo $this->Html->script('jquery');
+        echo $this->Html->script('jquery.fancybox-1.3.4.pack');
+        echo $this->Html->script('jquery.easing-1.3.pack');
+        echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
+        echo $this->Html->script('main');
+echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('media' => 'screen'));
+?>
+<h2></h2><div class="profile houseProfile">
     <div id="actions">
 <?php
  //if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
@@ -8,7 +17,7 @@
  }
 
  echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/$userid");
-?> 
+?>
 </div>
 
    <li>
@@ -81,13 +90,48 @@
 
 <div class="info-block">
     <!-- availability -->
-    <p><span class="bold">Διαμένουν:</span> 
+    <p><span class="bold">Διαμένουν:</span>
 	<?php echo Sanitize::html($house['House']['currently_hosting'])?> <?php echo $house['House']['currently_hosting'] == 1 ? 'άτομο' : 'άτομα'?></p>
-    <p><span class="bold">Μπορούν συνολικά να συγκατοικήσουν:</span> 
+    <p><span class="bold">Μπορούν συνολικά να συγκατοικήσουν:</span>
 	<?php echo Sanitize::html($house['House']['total_places'])?> <?php echo $house['House']['total_places'] == 1 ? 'άτομο' : 'άτομα'?></p>
 </div>
 
+
 </div>
 
 
+<div class="houseProfile" >
+	<h2></h2>
+	<?php
 
+	$i = 0;
+	foreach ($images as $image):
+
+        ?>
+
+
+    <div class="galleryimage">
+        <?php echo $this->Html->link(
+        $this->Html->image('uploads/thumbnails/' . $image['Image']['location'], array('alt' => 'house image')),
+        '/img/uploads/medium/' . $image['Image']['location'],
+        array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title','escape' => false)
+        ); ?>
+
+
+        <div class="imageactions">
+        <?php echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images' ,'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true))); ?>
+	</div>
+
+    </div>
+	<?php endforeach; ?>
+
+<div id="actions">
+
+
+<?php
+
+ if( ($this->Session->read( 'Auth.User.id') == $userid) || ($this->Session->read('Auth.User.role') == 'admin') ){
+    echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images' ,'action' => 'add', $house['House']['id'])); 
+ }
+?>
+</div>

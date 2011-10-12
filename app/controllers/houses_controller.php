@@ -98,6 +98,12 @@ class HousesController extends AppController {
         $this->set('house', $house);
         /* profile id of the house owner */
         $this->set('userid', $house["User"]["Profile"]["id"]);
+
+$images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+        $this->House->Image->recursive = 0;
+		$this->set('House.images', $this->paginate());
+		$this->set('images', $images);
+
     }
 
     function add() {
