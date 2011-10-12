@@ -539,7 +539,8 @@ h1 {
 	border-style: solid;
 	border-width: 5px;
 	margin: 4px auto;
-	padding: 10px 10px 50px 10px;
+	/*padding: 10px 10px 50px 10px;*/
+	padding: 0.7em;
 	width: 680px;
 }
 
@@ -561,8 +562,8 @@ h1 {
     border: 8px solid #efefef;
     background-color: #999999;
     float: right;
-    width: 100px;
-    height: 100px;
+    /*width: 100px;*/
+    /*height: 100px;*/
     margin: 0px 0px 4px 0px;
 }
 
@@ -742,22 +743,28 @@ color: red;
     width:130px;
     float: left;
 }
+
+#profile-edit {
+    float: right;
+    clear: right;
+}
+
 /*Φορμα προσθηκης κατοικιας*/
 #HouseEditForm ,#HouseAddForm ,#ProfileEditForm, #ProfileAddForm{
     border:solid 1px #aacfe4;
 
     padding: 20px 0 20px 30px;
-    
+
   -moz-box-shadow: 5px 5px 5px #ccc;
   -webkit-box-shadow: 5px 5px 5px #ccc;
   box-shadow: 5px 5px 5px #ccc;
-background-color: whiteSmoke;
-background-image: -moz-linear-gradient(top,whiteSmoke,#E2E2E2);
-background-image: -o-linear-gradient(top,whiteSmoke,#E2E2E2);
-background-image: -webkit-gradient(linear,left top,left bottom,from(whiteSmoke),to(#E2E2E2));
-border-radius: 7px;
--moz-border-radius: 7px;
--webkit-border-radius: 7px;
+    background-color: whiteSmoke;
+    background-image: -moz-linear-gradient(top,whiteSmoke,#E2E2E2);
+    background-image: -o-linear-gradient(top,whiteSmoke,#E2E2E2);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(whiteSmoke),to(#E2E2E2));
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
 }
 
 
