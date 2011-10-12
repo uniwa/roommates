@@ -78,9 +78,9 @@ class HousesController extends AppController {
     function beforeFilter() {
         parent::beforeFilter();
         
-	if( $this->RequestHandler->isRss()){
-		$this->Auth->allow( 'index' );
-	}
+        if( $this->RequestHandler->isRss()){
+            $this->Auth->allow( 'index' );
+        }
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -90,7 +90,7 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
-	$this->checkExistance($id);
+        $this->checkExistance($id);
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
@@ -132,9 +132,9 @@ class HousesController extends AppController {
     }
 
     function edit($id = null) {
-	$this->checkExistance($id);
-	$this->checkAccess( $id );
-	$this->House->id = $id;
+        $this->checkExistance($id);
+        $this->checkAccess( $id );
+        $this->House->id = $id;
 
         if (empty($this->data)) {
             $this->data = $this->House->read();
@@ -162,25 +162,25 @@ class HousesController extends AppController {
         }
         $this->set('available_constr_years', $entries);
 
-	$no_mates = array();
-	for ($i = 1; $i <= 9; $i++){
-		$no_mates[$i] = $i;
-	}
-	$this->set('places_availability', $no_mates);
+        $no_mates = array();
+        for ($i = 1; $i <= 9; $i++){
+            $no_mates[$i] = $i;
+        }
+        $this->set('places_availability', $no_mates);
     }
 
     private function checkAccess( $house_id ){
     	
-	$this->House->id = $house_id;
-	$house = $this->House->read();
-	$user_id = $house['User']['id'];
+        $this->House->id = $house_id;
+        $house = $this->House->read();
+        $user_id = $house['User']['id'];
 
-		
-	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){	
-		/*
-		 * More info about params in app/app_error.php
-		 */
-		$this->cakeError( 'error403' );
+
+        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){
+            /*
+            * More info about params in app/app_error.php
+            */
+            $this->cakeError( 'error403' );
     	} 
     }
 
