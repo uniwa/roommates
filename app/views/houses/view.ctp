@@ -119,17 +119,19 @@ echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('me
 
 
         <div class="imageactions">
-        <?php echo $this->Html->link(__('Διαγραφή', true), array('action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true))); ?>
+        <?php echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images' ,'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true))); ?>
 	</div>
 
     </div>
 	<?php endforeach; ?>
 
 <div id="actions">
-<?php echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images' ,'action' => 'add', $house['House']['id'])); ?>
+
+
+<?php
+
+ if( ($this->Session->read( 'Auth.User.id') == $userid) || ($this->Session->read('Auth.User.role') == 'admin') ){
+    echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images' ,'action' => 'add', $house['House']['id'])); 
+ }
+?>
 </div>
-
-
-
-
-

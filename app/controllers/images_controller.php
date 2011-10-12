@@ -34,14 +34,13 @@ class ImagesController extends AppController {
 				$this->Session->setFlash(__('Η εικόνα ΔΕΝ αποθηκεύτηκε', true));
 			}
 		}
-		//$categories = $this->Image->Categorie->find('list');
-		//$tags = $this->Image->Tag->find('list');
-//$this->set('houses');
+
 $this->set('house_id' , $id);
 
 	}
 
 	function delete($id = null) {
+        $this->Image->id = $id;
 		$imageData = $this->Image->read();
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for image', true));
