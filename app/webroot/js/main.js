@@ -1,12 +1,16 @@
 $(function(){
+	$.url = function(url) {
+		return $('base').attr('href')+url.substr(1);
+	}
+
 	$('.order-by').change(function(e){
 		e.preventDefault();
 		var sel = $(this).find('select').val();
 		var dataString = {'selection':sel};
 		if($(this).hasClass('profile-ord')){
-			var url = 'profiles';
+			var url = $.url('/profiles');
 		}else if($(this).hasClass('house-ord')){
-			var url = 'houses';
+			var url = $.url('/houses');
 		}	
 		postit(url, dataString);
 	});
@@ -41,14 +45,10 @@ $(function(){
 
     $(".imageactions").css("visibility", "hidden");
     $(".galleryimage").hover(
-        function() {
+        function(){
             $(this).find('.imageactions').css("visibility", "visible");
         },
-        function () {
+        function(){
             $(".imageactions").css("visibility", "hidden");
         });
-
-
-});
-
-
+})
