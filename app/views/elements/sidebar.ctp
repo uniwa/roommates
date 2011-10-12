@@ -18,14 +18,6 @@
                                                            )); ?>
         </li>
 
-        <?php $houseid = $this->Auth->get('House.id'); ?>
-        <li>
-            <?php echo $this->Html->link(' Το σπίτι μου', array(
-                                                               'controller' => 'houses',
-                                                               'action' => 'view',
-                                                               $houseid,
-                                                           )); ?>
-        </li>
         <li>
             <?php
                 $session_houseid = $this->Session->read("houseid");

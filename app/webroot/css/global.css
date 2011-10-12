@@ -745,3 +745,21 @@ color: red;
     clear: right;
 }
 
+/*Φορμα προσθηκης κατοικιας*/
+#HouseEditForm ,#HouseAddForm ,#ProfileEditForm, #ProfileAddForm{
+    border:solid 1px #aacfe4;
+
+    padding: 20px 0 20px 30px;
+
+  -moz-box-shadow: 5px 5px 5px #ccc;
+  -webkit-box-shadow: 5px 5px 5px #ccc;
+  box-shadow: 5px 5px 5px #ccc;
+    background-color: whiteSmoke;
+    background-image: -moz-linear-gradient(top,whiteSmoke,#E2E2E2);
+    background-image: -o-linear-gradient(top,whiteSmoke,#E2E2E2);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(whiteSmoke),to(#E2E2E2));
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
