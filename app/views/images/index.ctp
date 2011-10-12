@@ -18,7 +18,10 @@ echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('me
 		if ($i++ % 2 == 0) {
 			$class = ' class="altrow"';
 		}
+
+
 	?>
+
     <div class="galleryimage">
         <?php echo $this->Html->link(
         $this->Html->image('thumbnails/' . $image['Image']['location'], array('alt' => 'house image')),
