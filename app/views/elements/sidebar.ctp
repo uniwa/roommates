@@ -1,3 +1,5 @@
+
+
 <div id="navigation" class="column">
     <ul id="nav">
         <li class="page_item current_page_item home">
@@ -13,6 +15,15 @@
                                                                'controller' => 'profiles',
                                                                'action' => 'view',
                                                                $userid,
+                                                           )); ?>
+        </li>
+
+        <?php $houseid = $this->Auth->get('House.id'); ?>
+        <li>
+            <?php echo $this->Html->link(' Το σπίτι μου', array(
+                                                               'controller' => 'houses',
+                                                               'action' => 'view',
+                                                               $houseid,
                                                            )); ?>
         </li>
         <li>
