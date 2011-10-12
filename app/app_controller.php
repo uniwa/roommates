@@ -2,7 +2,7 @@
 class  AppController extends Controller{
 
 	var $components = array('Auth', 'Session');
-	var $Helpers  = Array('Html', 'Form', 'Session');
+	var $helpers  = Array('Html', 'Form', 'Session','Auth');
 	var $uses = array('User');
 
 	function beforeFilter(){
@@ -12,9 +12,20 @@ class  AppController extends Controller{
 	}
 
 	/*
+	 * Insert into $this->data the Auth array this Auth will extracted 
+	 * from custom helper class AuthHelper to render this data in view 
+	 */
+	function beforeRender(){
+
+		$this->data = am( $this->data, array( 'Auth' => $this->getAuthUserIds() ) );
+	}
+
+	/*
 	 * Return basic info about logged in user
-	 * Contains: User's Profile and House info
+	 * Contains: User's id Profile id and House id info
+	 * In future will include more info
 	 */ 
+	//TODO: Rename to authArray and change protected to private
 	protected function getAuthUserIds(){
 
 		$user_id = $this->Auth->user('id');
@@ -28,9 +39,7 @@ class  AppController extends Controller{
 
 		return array(  	'User' => array( 'id' => $user['User']['id'] ), 
 
-				'Profile' =>array( 'id' => $user['Profile']['id'], 
-					   'firstname' => $user['Profile']['firstname'],
-					   'lastname' => $user['Profile']['lastname'] ),
+				'Profile' =>array( 'id' => $user['Profile']['id'] ),
 
 				'House' => array('id' => $user['House'][0]['id'] ) );	
 	
