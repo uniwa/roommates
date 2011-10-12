@@ -8,7 +8,8 @@ class ImagesController extends AppController {
 		$this->set('images', $this->paginate());
 	}
 
-	function add() {		
+	function add( $id ) {
+
 		if(!empty($this->data)) {
 			$this->Image->create();
 			
@@ -27,15 +28,17 @@ class ImagesController extends AppController {
 			}
 			
 			if ($this->Image->save($this->data)) {
-				$this->Session->setFlash(__('The image has been saved', true));
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
+				$this->redirect($this->referer());
 			} else {
-				$this->Session->setFlash(__('The image could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__('Η εικόνα ΔΕΝ αποθηκεύτηκε', true));
 			}
 		}
 		//$categories = $this->Image->Categorie->find('list');
 		//$tags = $this->Image->Tag->find('list');
-$this->set('houses');
+//$this->set('houses');
+$this->set('house_id' , $id);
+
 	}
 
 	function delete($id = null) {

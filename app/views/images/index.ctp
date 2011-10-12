@@ -24,8 +24,8 @@ echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('me
 
     <div class="galleryimage">
         <?php echo $this->Html->link(
-        $this->Html->image('thumbnails/' . $image['Image']['location'], array('alt' => 'house image')),
-        '/img/medium/' . $image['Image']['location'],
+        $this->Html->image('uploads/thumbnails/' . $image['Image']['location'], array('alt' => 'house image')),
+        '/img/uploads/medium/' . $image['Image']['location'],
         array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title','escape' => false)
         ); ?>
 
