@@ -1,14 +1,5 @@
 <div id='top-frame' class='frame'>
 	<div class='frame-container'>
-		<div id='profile-edit'>
-			<div id="actions">
-				<?php
-					if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
-						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
-					}
-				?>
-			</div>
-		</div>
 		<div id='top-title' class='title'>
 			<h1>
 			<?php
@@ -78,6 +69,15 @@
 			           			       "/houses/view/$houseid", 
 				   			       array('escape'=>false));
 			      } ?>
+		</div>
+        <div id='profile-edit'>
+			<div id="actions">
+				<?php
+					if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
+					}
+				?>
+			</div>
 		</div>
 	</div>
 </div>
