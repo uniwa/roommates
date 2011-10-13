@@ -784,3 +784,37 @@ width:30px;
 #labelspreferences label{
     min-width:100px;
 }
+
+
+/*house profile*/
+
+.houseProfile table th{
+font-weight: 700;
+border-right: 1px solid #ccc;
+    /*background: #367889;*/
+    background: none;
+    /*color:white;*/
+    padding: 0 4px;
+    text-align: right;
+}
+
+.houseProfile table tr{
+
+border-bottom: 1px solid black;
+
+}
+.houseProfile table{
+    color: #344E66;
+background:  none;
+    border: none;
+    /*color:white;*/
+
+}
+
+
+
+
+
+.defaultimage{
+    margin: 20px 0 20px 90px;/*TODO temp*/
+}
