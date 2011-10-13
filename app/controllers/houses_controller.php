@@ -68,11 +68,12 @@ class HousesController extends AppController {
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
-            'order' => $order, 'limit' => 15
+            'order' => $order,
+			'conditions' => 'House.user_id !=' => $this->Auth->user('id'),
+			'limit' => 15
         );
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
-        //$this->set('houses', $this->House->find('all'));
     }
 
     function beforeFilter() {
