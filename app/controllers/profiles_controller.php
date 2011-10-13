@@ -248,18 +248,20 @@ class ProfilesController extends AppController {
     private function saveSearchPreferences() {
         $profile = $this->Profile->find('first', array('conditions' => array(
                                                        'Profile.user_id' => $this->Auth->user('id'))));
-        $search_args = $this->data['Profile'];
+        $search_args = $this->params['named'];
+		$ageMin = (isset($search_args['age_min']))?$search_args['age_min']:NULL;
+		$ageMax = (isset($search_args['age_max']))?$search_args['age_max']:NULL;
         $this->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
-                        'age_min' => $search_args['age_min'],
-                        'age_max' => $search_args['age_max'],
+                        'age_min' => $ageMin,
+                        'age_max' => $ageMax,
                         'pref_gender' => $search_args['pref_gender'],
                         'pref_smoker' => $search_args['pref_smoker'],
                         'pref_pet' => $search_args['pref_pet'],
                         'pref_child' => $search_args['pref_child'],
                         'pref_couple' => $search_args['pref_couple']
         ));
-        $this->set('defaults', array(   'age_min' => $search_args['age_min'],
+/*        $this->set('defaults', array(   'age_min' => $search_args['age_min'],
                                         'age_max' => $search_args['age_max'],
                                         'gender' => $search_args['pref_gender'],
                                         'smoker' => $search_args['pref_smoker'],
@@ -267,7 +269,7 @@ class ProfilesController extends AppController {
                                         'child' => $search_args['pref_child'],
                                         'couple' => $search_args['pref_couple'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
-        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
+*/        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
 
     private function searchBySavedPrefs() {
