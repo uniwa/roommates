@@ -131,11 +131,17 @@ class ProfilesController extends AppController {
 			if(isset($this->params['form']['savesearch'])) {
 				$searchType = 'saveprefs';
 			}
-		   // Merge our URL-encoded data with the URL parameters set above...
-		   $params = array_merge($url, $this->data['Profile']);
-		   $params = array_merge($params, array('searchtype' => $searchType));
-		   // Do the (magical) redirect
-		   $this->redirect($params);
+			if(isset($this->params['form']['resetvalues'])) {
+				$searchType = 'resetvalues';
+//				unset($params['named']);
+//				var_dump($params['named']);
+			}else{
+				// Merge our URL-encoded data with the URL parameters set above...
+				$params = array_merge($url, $this->data['Profile']);
+				$params = array_merge($params, array('searchtype' => $searchType));
+				// Do the (magical) redirect
+				$this->redirect($params);
+			}
 		}
 
 		// Set things up so the form values are set when the page reloads...
@@ -147,6 +153,10 @@ class ProfilesController extends AppController {
 			$searchType = $this->params['named']['searchtype'];
 			
 			switch($searchType){
+				case 'resetvalues':
+					unset($this->params['named']);
+					$this->simpleSearch();
+					break;
 				case 'simple':
 					$this->simpleSearch();
 					break;
@@ -159,18 +169,7 @@ class ProfilesController extends AppController {
 					break;
 			}
 		}
-/*
-        if(isset($this->params['form']['simplesearch'])) {
-            $this->simpleSearch();
-        }
-        if(isset($this->params['form']['searchbyprefs'])){
-            $this->searchBySavedPrefs();
-        }
-        if(isset($this->params['form']['savesearch'])) {
-            $this->saveSearchPreferences();
-            $this->simpleSearch();
-        }
-*/    }
+    }
 
     private function simpleSearch(){
 		$searchArgs = $this->params['named'];
