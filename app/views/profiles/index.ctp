@@ -1,3 +1,6 @@
+<?php
+    $html->script('sorting', false);
+?>
 
 <!--
 <div id='top-frame' class='frame'>

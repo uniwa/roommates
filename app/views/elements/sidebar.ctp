@@ -22,7 +22,7 @@
 
         <li>
             <?php
-                $house_id = $this->Auth->get("House.id");
+		$house_id = $this->Auth->get("House.id");	
                 if ($house_id != NULL) {
                     echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
                                                                 'action' => 'view', $house_id));
