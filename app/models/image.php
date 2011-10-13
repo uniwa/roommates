@@ -4,19 +4,17 @@ class Image extends AppModel {
 
     var $name = 'Image';
 
-var $belongsTo = array(
-		'House' => array(
-        'className' => 'House',
-        'foreignKey' => 'house_id',
-        'conditions' => '',
-        'fields' => '',
-        'order' => ''
-    )
-);
+    var $belongsTo = array(
+            'House' => array(
+            'className' => 'House',
+            'foreignKey' => 'house_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
+    );
 
-
-
-function saveImage($fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality) {
+    function saveImage($house_id, $fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality) {
 		App::import('Vendor','ccImageResize', array('file' => 'ccImageResize.class.php'));
 		$fileData['name'] = $this->getLocationName($fileData['name']);
 		$uploadedPath = WWW_ROOT . "img/uploads/original/" . $fileData['name'];
@@ -79,13 +77,5 @@ function saveImage($fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality) {
 			return $fileName;
 		}
 	}
-	        
-
-
-
-
-
-
-
 }
 ?>
