@@ -4,7 +4,6 @@
 <?php
  //if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
 if( ($this->Session->read( 'Auth.User.id') == $house['User']['id'] ) || ($this->Session->read('Auth.User.role') == 'admin') ){
-	pr( $house ); die();
   echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
   echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
  }
