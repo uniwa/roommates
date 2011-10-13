@@ -14,9 +14,16 @@ if( ($this->Session->read( 'Auth.User.id') == $house['User']['id'] ) || ($this->
  echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['id']}");
 ?>
 </div>
+
        <div class="defaultimage">
-        <?php echo $this->Html->image('uploads/thumbnails/' . $images[0]['Image']['location'], array('alt' => 'house image')); ?>
-</div>
+        <?php
+           if(isset($images[0]))
+           echo $this->Html->image('uploads/thumbnails/' . $images[0]['Image']['location'], array('alt' => 'house image'));
+else
+           echo $this->Html->image('homedefault.png', array('alt' => 'house image')); ?>
+
+
+       </div>
 
 <table class="info-block">
     <tr><th>Διεύθυνση:</th><td><?php echo $house['House']['address']?></td></tr>
