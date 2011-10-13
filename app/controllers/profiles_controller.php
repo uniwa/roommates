@@ -143,19 +143,21 @@ class ProfilesController extends AppController {
 
 		$this->getSortOrder(0);
 		
-		$searchtype = $this->params['named']['searchtype'];
-		
-		switch($searchtype){
-			case 'simple':
-				$this->simpleSearch();
-				break;
-			case 'byprefs':
-				$this->searchBySavedPrefs();
-				break;
-			case 'saveprefs':
-				$this->saveSearchPreferences();
-				$this->simpleSearch();
-				break;
+		if(isset($this->params['named']['searchtype'])){
+			$searchType = $this->params['named']['searchtype'];
+			
+			switch($searchType){
+				case 'simple':
+					$this->simpleSearch();
+					break;
+				case 'byprefs':
+					$this->searchBySavedPrefs();
+					break;
+				case 'saveprefs':
+					$this->saveSearchPreferences();
+					$this->simpleSearch();
+					break;
+			}
 		}
 /*
         if(isset($this->params['form']['simplesearch'])) {
