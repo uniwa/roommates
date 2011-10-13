@@ -62,8 +62,12 @@
         </td>
         <td>
             <?php echo 'Διαθέτει σπίτι '.$this->Form->checkbox( 'Preference.has_house',
-                                                                array(  'checked' => false,
+                                                                array(  'value' => 1,
+                                                                        'checked' => false,
                                                                         'hiddenField' => false));
+//                     echo 'Διαθέτει σπίτι '.$this->Form->input(  'Preference.has_house',
+//                                                                 array(  'label' => '',
+//                                                                         'type' => 'checkbox'));
             ?>
         </td>
     </tr>
@@ -107,7 +111,7 @@
     </tr>
     <tr>
         <td colspan=2>
-            <?php echo 'Προσβάσιμο από ΑΜΕΑ '.$this->Form->checkbox('furnitured',
+            <?php echo 'Προσβάσιμο από ΑΜΕΑ '.$this->Form->checkbox('accessibility',
                                                                     array(  'hiddenField' => false,
                                                                             'checked' => false  ));
             ?>
