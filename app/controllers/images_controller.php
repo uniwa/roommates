@@ -22,7 +22,7 @@ class ImagesController extends AppController {
 			
 			// how to ensure unique file names?
 			// TODO: Code to warn user about duplicate files
-			$newName = $this->Image->saveImage($this->params['data']['Image']['location'],100,"ht",80);
+			$newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
 			if(isset($newName))
 			{
 				$this->params['data']['Image']['location'] = $newName;
