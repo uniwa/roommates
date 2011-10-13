@@ -2,7 +2,7 @@
 class ImagesController extends AppController {
 
 	var $name = 'Images';
-    var $uses = array("Images", "House");
+    var $uses = array("Image", "House");
 	
 	function index() {
 		$this->Image->recursive = 0;
