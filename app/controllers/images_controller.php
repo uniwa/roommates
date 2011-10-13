@@ -10,12 +10,14 @@ class ImagesController extends AppController {
 	}
 
 	function add( $id ) {
-        if ( ! $this->hasAccess($id) ) {
-            $this->cakeError( 'error403' );
-        }
-        if ( $this->imageCount($id) >= 5 ) {
-            $this->Session->setFlash(__('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών'));
-            $this->redirect($this->referer());
+        if (empty($this->data)) {
+            if ( ! $this->hasAccess($id) ) {
+                $this->cakeError( 'error403' );
+            }
+            if ( $this->imageCount($id) >= 5 ) {
+                $this->Session->setFlash(__('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών'));
+                $this->redirect($this->referer());
+            }
         }
 		if(!empty($this->data)) {
 			$this->Image->create();
