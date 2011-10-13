@@ -11,12 +11,18 @@ $(function(){
 			var url = $.url('/profiles');
 		}else if($(this).hasClass('house-ord')){
 			var url = $.url('/houses');
-		}	
+		}
+		url = url + '/index'
 		postit(url, dataString);
 	});
 	
 	function postit(url, data){
-		$('body').append($('<form/>', {
+		var params = '';
+		$.each(data, function(index, value) {
+			params = params + '/' + index + ':' + value;
+		});
+		document.location.href = url+params;
+/*		$('body').append($('<form/>', {
 		  id: 'jQueryPostItForm',
 		  method: 'POST',
 		  action: url
@@ -31,5 +37,5 @@ $(function(){
 		}
 
 		$('#jQueryPostItForm').submit();
-	}
+*/	}
 })
