@@ -14,7 +14,7 @@ class Image extends AppModel {
         )
     );
 
-    function saveImage($fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality) {
+    function saveImage($house_id, $fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality) {
 		App::import('Vendor','ccImageResize', array('file' => 'ccImageResize.class.php'));
 		$fileData['name'] = $this->getLocationName($fileData['name']);
 		$uploadedPath = WWW_ROOT . "img/uploads/original/" . $fileData['name'];
