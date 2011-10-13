@@ -17,6 +17,15 @@ class ProfilesController extends AppController {
 
         }
 
+		if($this->data){
+			$profile = urlencode($profile);
+			// Merge our URL-encoded data with the URL parameters set above...
+			$params = array_merge($url, $this->data['Profile']);
+			$params = array_merge($params, array('searchtype' => $searchType));
+			// Do the (magical) redirect
+			$this->redirect($params);
+		}
+		
     	$genderLabels = Configure::read('GenderLabels');
     	$this->set('genderLabels', $genderLabels);
 
