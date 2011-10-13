@@ -2,6 +2,7 @@
 class ImagesController extends AppController {
 
 	var $name = 'Images';
+    var $uses = array("Images", "House");
 	
 	function index() {
 		$this->Image->recursive = 0;
@@ -9,7 +10,13 @@ class ImagesController extends AppController {
 	}
 
 	function add( $id ) {
-
+        if ( ! $this->hasAccess($id) ) {
+            $this->cakeError( 'error403' );
+        }
+        if ( $this->imageCount($id) >= 5 ) {
+            $this->Session->setFlash(__('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών'));
+            $this->redirect($this->referer();
+        }
 		if(!empty($this->data)) {
 			$this->Image->create();
 			
@@ -54,5 +61,24 @@ $this->set('house_id' , $id);
 		$this->Session->setFlash(__('Image was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+
+    private function hasAccess($id) {
+        /* check if user owns house with givven id */
+        $this->House->id = $id;
+        $this->House->read();
+        if ($this->Auth->user('id') == $this->House->user_id) {
+            return True;
+        }
+        else {
+            return False;
+        }
+    }
+
+    private function imageCount($id) {
+        /* return number of pictures associated with givven house id */
+        $this->House->id = $id;
+        $house = $this->House->read();
+        return count($house["Image"]);
+    }
 }
 ?>
