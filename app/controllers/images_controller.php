@@ -64,7 +64,7 @@ class ImagesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Session->setFlash(__('Η εικόνα δεν διαγραφηκε.', true));
-		$this->redirect(array('action' => 'index'));
+		$this->redirect(array($this->referer()));
 	}
 
     private function hasAccess($id) {
