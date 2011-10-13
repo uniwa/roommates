@@ -812,6 +812,9 @@ h1 {
     border-bottom: 1px solid black;
 
 }
+.houseProfile table td {
+   max-width:300px
+}
 
 .houseProfile table {
     color: #344E66;
@@ -826,7 +829,7 @@ h1 {
 }
 
 .profile {
-    height: 700px;
+    height: 710px;
 
 }
 
