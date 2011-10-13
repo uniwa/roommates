@@ -76,7 +76,7 @@ class ImagesController extends AppController {
     }
 
     private function imageCount($id) {
-        /* return number of pictures associated with givven house id */
+        /* return number of pictures associated with given house id */
         $this->House->id = $id;
         $house = $this->House->read();
         return count($house["Image"]);
