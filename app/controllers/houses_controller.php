@@ -198,5 +198,94 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
             $this->cakeError( 'error404' );
         }
     }
+
+    private function age_to_year($age) {
+        return date('Y') - $age;
+    }
+
+    function search () {
+        $municipalities = $this->House->Municipality->find('list');
+        $this->set('municipalities', $municipalities);
+        
+        if(isset($this->params['form']['simple_search'])) {
+
+            $options['joins'] = array(
+                array(  'table' => 'users',
+                        'alias' => 'User',
+                        'type'  => 'inner',
+                        'conditions' => array('House.user_id = User.id')
+                ),
+                array(  'table' => 'profiles',
+                        'alias' => 'Profile',
+                        'type'  => 'inner',
+                        'conditions' => $this->getMatesConditions()
+                )
+            );
+
+            $options['conditions'] = $this->getHouseConditions();
+            $this->House->recursive = -1;
+            $results = $this->House->find('all', $options);
+
+            $this->set('results', $results);
+        }
+    }
+
+    private function getHouseConditions() {
+        $house_prefs = $this->data['House'];
+
+        $house_conditions = array();
+        if(!empty($house_prefs['max_price'])) {
+            $house_conditions['House.price <='] = $house_prefs['max_price'];
+        }
+        if(!empty($house_prefs['min_area'])) {
+            $house_conditions['House.area >='] = $house_prefs['min_area'];
+        }
+        if(!empty($house_prefs['max_area'])) {
+            $house_conditions['House.area <='] = $house_prefs['max_area'];
+        }
+        if(!empty($house_prefs['municipality'])) {
+            $house_conditions['House.municipality_id'] = $house_prefs['municipality'];
+        }
+        if($house_prefs['furnitured'] < 2) {
+            $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
+        }
+        if(isset($this->data['House']['accessibility'])) {
+            $house_conditions['House.disability_facilities'] = 1;
+        }
+        $house_conditions['House.user_id !='] = $this->Auth->user('id');
+
+        return $house_conditions;
+    }
+
+    private function getMatesConditions() {
+        $mates_prefs = $this->data['Preference'];
+        $mates_conditions = array();
+        if(!empty($mates_prefs['min_age'])) {
+            $mates_conditions['Profile.dob <='] = $this->age_to_year($mates_prefs['min_age']);
+        }
+        if(!empty($mates_prefs['max_age'])) {
+            $mates_conditions['Profile.dob >='] = $this->age_to_year($mates_prefs['max_age']);
+        }
+        if($mates_prefs['gender'] < 2) {
+            $mates_conditions['Profile.gender'] = $mates_prefs['gender'];
+        }
+        if($mates_prefs['smoker'] < 2) {
+            $mates_conditions['Profile.smoker'] = $mates_prefs['smoker'];
+        }
+        if($mates_prefs['pet'] < 2) {
+            $mates_conditions['Profile.pet'] = $mates_prefs['pet'];
+        }
+        if($mates_prefs['child'] < 2) {
+            $mates_conditions['Profile.child'] = $mates_prefs['child'];
+        }
+        if($mates_prefs['couple'] < 2) {
+            $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
+        }
+        $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
+        // required condition for the inner join
+        array_push($mates_conditions, 'User.id = Profile.user_id');
+
+        return $mates_conditions;
+    }
 }
 ?>
