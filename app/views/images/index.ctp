@@ -29,6 +29,6 @@
     </div>
 	<?php endforeach; ?>
 
-<div id="actions">
+<div class="actions">
 <?php echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('action' => 'add')); ?>
 </div>

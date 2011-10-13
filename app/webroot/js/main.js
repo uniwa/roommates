@@ -1,4 +1,8 @@
 $(function(){
+
+
+    $("#fileupload").customFileInput();
+
 // fancybox
     $(".fancyImage").fancybox({
         'titleShow'    : false,
@@ -15,4 +19,4 @@ $(function(){
         function(){
             $(".imageactions").css("visibility", "hidden");
         });
-})
+});
