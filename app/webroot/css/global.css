@@ -487,13 +487,13 @@ select {
 }
 
 .cb1 {
-    background: url(../img/cb1.png) no-repeat left top;
-    padding: 7px 10px;
+    background: url(../img/checked.gif) no-repeat left;
+    padding: 0 10px;
 }
 
 .cb0 {
-    background: url(../img/cb0.png) no-repeat left top;
-    padding: 7px 10px;
+    background: url(../img/unchecked.gif) no-repeat left;
+    padding: 0 10px;
 
 }
 

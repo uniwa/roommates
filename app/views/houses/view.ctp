@@ -170,9 +170,9 @@ if( ($this->Session->read( 'Auth.User.id') != $house['User']['id'] ) || ($this->
  ?>
 
             <?php
-            //TODO remove this whole php tag
+            //TODO remove this whole php tag for map to go away
                 echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
-                echo $this->Html->image('map.png', array('alt' => 'house image', 'style' => 'width:330px;'));
+                echo $this->Html->image('map.png', array('alt' => 'house image', 'style' => 'width:330px;display:none'));
                 ?>
 
         </div>
