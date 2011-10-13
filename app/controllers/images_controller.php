@@ -41,11 +41,10 @@ class ImagesController extends AppController {
 				$this->redirect($this->referer());
 			} else {
 				$this->Session->setFlash(__('Η εικόνα ΔΕΝ αποθηκεύτηκε', true));
+				$this->redirect($this->referer());
 			}
 		}
-
-$this->set('house_id' , $id);
-
+        $this->set('house_id' , $id);
 	}
 
 	function delete($id = null) {
