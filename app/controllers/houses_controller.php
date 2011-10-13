@@ -16,6 +16,10 @@ class HousesController extends AppController {
             return $this->set(compact('houses'));
         }
 
+		$images = $this->House->Image->find('list', array('fields' => array('house_id', 'location')));
+		$this->set('images', $images);
+		
+
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
 
@@ -79,9 +83,9 @@ class HousesController extends AppController {
     function beforeFilter() {
         parent::beforeFilter();
         
-	if( $this->RequestHandler->isRss()){
-		$this->Auth->allow( 'index' );
-	}
+		if( $this->RequestHandler->isRss()){
+			$this->Auth->allow( 'index' );
+		}
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -91,18 +95,17 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
-	$this->checkExistance($id);
+		$this->checkExistance($id);
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-	$this->set('house', $house);
+		$this->set('house', $house);
 
-$images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+		$images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
-
     }
 
     function add() {
