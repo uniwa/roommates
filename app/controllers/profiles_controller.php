@@ -278,8 +278,8 @@ class ProfilesController extends AppController {
         $profile = $this->Profile->find('first', array('conditions' => array(
                                                        'Profile.user_id' => $this->Auth->user('id'))));
         $prefs = $profile['Preference'];
-		$this->data['Profile'] = $prefs;
-		unset($this->params['url']['Profile']);
+		unset($this->params['named']);
+		$this->params['named'] = $prefs;
 		$this->simpleSearch();
     }
 
