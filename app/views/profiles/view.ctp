@@ -41,7 +41,7 @@
 			</div>
 
             <div id='profile-edit'>
-                <div id="actions">
+                <div class="actions">
                     <?php
                         if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
                             echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));

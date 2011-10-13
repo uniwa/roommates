@@ -3,7 +3,7 @@
 <h2></h2><div class="profile houseProfile">
 
 
-    <div id="actions">
+    <div class="actions">
 <?php
  //if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
 if( ($this->Session->read( 'Auth.User.id') == $house['User']['id'] ) || ($this->Session->read('Auth.User.role') == 'admin') ){
@@ -110,7 +110,7 @@ else
     </div>
 	<?php endforeach; ?>
 
-<div id="actions">
+<div class="actions">
 
 
 <?php

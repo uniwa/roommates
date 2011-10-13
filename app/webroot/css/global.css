@@ -426,12 +426,12 @@ input[type=submit], input[type=reset] {
     border-width: 1px;
 }
 
-#actions {
+.actions {
     float: right;
     padding: 20px;
 }
 
-#actions a {
+.actions a {
 
     font-size: 13px;
     color: #333;
@@ -447,6 +447,15 @@ input[type=submit], input[type=reset] {
     box-shadow: inset 0 1px white, 0 1px #A7A7A7;
     -moz-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
     -webkit-box-shadow: inset 0 1px white, 0 1px #A7A7A7;
+}
+
+
+
+.actions a:hover{
+     background: #666;
+    background: -moz-linear-gradient(top, #666, #E2E2E2);
+    background: -o-linear-gradient(top, #666, #E2E2E2);
+    background: -webkit-gradient(linear, left top, left bottom, from(#E2E2E2), to(whitesmoke));
 }
 
 #HouseAddForm label, #HouseEditForm label {
