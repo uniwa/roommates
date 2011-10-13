@@ -40,7 +40,9 @@ class ImagesController extends AppController {
 			
 			if ($this->Image->save($this->data)) {
 				$this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
-				$this->redirect($this->referer());
+                /* IMPORTANT: $this->referer() in this redirect will break on 5th image
+                    upload due to max image count, redirect only on house view */
+                $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
 			} else {
 				$this->Session->setFlash(__('Η εικόνα ΔΕΝ αποθηκεύτηκε', true));
 				$this->redirect($this->referer());
