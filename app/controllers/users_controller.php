@@ -2,7 +2,7 @@
 class UsersController extends AppController{
 
 	var $name = "Users";
-    var $uses = array("Profile", "User");
+    var $uses = array("Profile", "User", "Preference");
 		
     function beforeFilter() {
 	parent::beforeFilter();
@@ -21,7 +21,8 @@ class UsersController extends AppController{
 
             /* if user does not have a profile, create one */
             if ( $user["Profile"]["id"] == NULL ) {
-                $this->create_profile($this->User->id);
+                $pref_id = $this->create_preferences();
+                $this->create_profile($this->User->id, $pref_id);
             }
             $this->redirect($this->Auth->redirect());
         }
@@ -34,7 +35,7 @@ class UsersController extends AppController{
 		$this->redirect( $this->Auth->logout() );
 	}
 
-    function create_profile($id) {
+    function create_profile($id, $pref_id) {
         $this->Profile->begin();
         $this->Profile->create();
 
@@ -48,12 +49,35 @@ class UsersController extends AppController{
         $profile["Profile"]["gender"] = 0;
         $profile["Profile"]["visible"] = 1;
         $profile["Profile"]["user_id"] = $id;
+        /* supplied by create_preferences() */
+        $profile["Profile"]["preference_id"] = $pref_id;
 
         if ( $this->Profile->save($profile) === False) {
             $this->Profile->rollback();
         }
         else {
             $this->Profile->commit();
+        }
+    }
+
+    function create_preferences() {
+        $this->Preference->begin();
+        $this->Preference->create();
+        $pref["Preference"]["age_min"] = NULL;
+        $pref["Preference"]["age_max"] = NULL;
+        $pref["Preference"]["pref_gender"] = 2;
+        $pref["Preference"]["pref_smoker"] = 2;
+        $pref["Preference"]["pref_pet"] = 2;
+        $pref["Preference"]["pref_child"] = 2;
+        $pref["Preference"]["pref_couple"] = 2;
+
+        if ( $this->Preference->save($pref) === False ) {
+            $this->Preferene->rollback();
+            return NULL;
+        }
+        else {
+            $this->Preference->commit();
+            return $this->Preference->id;
         }
     }
 }
