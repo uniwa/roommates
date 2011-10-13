@@ -96,17 +96,19 @@ class ProfilesController extends AppController {
 	//pr($uid); die();	
 
         $this->checkExistence($id);
-		$this->checkAccess( $id );
+	$this->checkAccess( $id );
         $this->Profile->id = $id;
 
         if (empty($this->data)) {
              $this->data = $this->Profile->read();
-        } else {
-            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
-                $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-                $this->redirect(array('action'=> "view/$uid"));
-            }
-        }
+	}
+        else {
+		if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){ 
+        		$this->Session->setFlash('Το προφίλ ενημερώθηκε.');
+       			$this->redirect(array('action'=> "view/$uid"));
+            		}
+		}
+       
 
         $dob = array();
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {

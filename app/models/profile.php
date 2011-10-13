@@ -72,16 +72,27 @@ class Profile extends AppModel {
 			'required' => false,
 			'allowEmpty' => true),
 
-		'we_are' => array(
-			'rule' => '/^[1-8]{1}$/i',
-			'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,8]', 
-			'required' => false,
-			'allowEmpty' => true),
+		'we_are' => array('coupleIsMinTwo'=>array(
+			'rule' => array('coupleIsMinTwo', 'couple'),
+			'message' => 'Με βάση το επιλεγμένο πεδίο Συζώ, επιβάλλεται η εισαγωγή 2 ή περισσότερων ατόμων'//,
+			//'required' => true,
+			//'allowEmpty' => false 
+			)),
 );
 
 	function isValidDate($check) {
 		$dob = (int)$check["dob"];
 		return $dob >= date('Y')-80 && $dob <= date('Y')-17;
+	}
+
+	function coupleIsMinTwo($weare, $iscouple){
+		$v1 = $weare["we_are"];
+		$v2 = $this->data[$this->name][$iscouple];
+
+		if( ($v2 == 1 && $v1 < 2) || ($v1 > 9 || $v1 == 0) )
+			return false;
+		
+		else return true;
 	}
 }
 
