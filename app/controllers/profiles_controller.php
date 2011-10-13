@@ -116,11 +116,15 @@ class ProfilesController extends AppController {
 		    // Set up the URL that we will redirect to
 		    $url = array('controller' => 'profiles', 'action' => 'search');
 		    // If we have parameters, loop through and URL encode them
+			if(!empty($this->data['hasHouse'])){
+				$this->data['Profile']['has_house'] = true;
+			}
 		    if(is_array($this->data['Profile'])){
 			  foreach($this->data['Profile'] as &$profile){
 				 $profile = urlencode($profile);
 			  }
 			}
+			
 		    // Set search type
 			if(isset($this->params['form']['simplesearch'])) {
 				$searchType = 'simple';
@@ -131,11 +135,15 @@ class ProfilesController extends AppController {
 			if(isset($this->params['form']['savesearch'])) {
 				$searchType = 'saveprefs';
 			}
-		   // Merge our URL-encoded data with the URL parameters set above...
-		   $params = array_merge($url, $this->data['Profile']);
-		   $params = array_merge($params, array('searchtype' => $searchType));
-		   // Do the (magical) redirect
-		   $this->redirect($params);
+			if(isset($this->params['form']['resetvalues'])) {
+				$searchType = 'resetvalues';
+			}else{
+				// Merge our URL-encoded data with the URL parameters set above...
+				$params = array_merge($url, $this->data['Profile']);
+				$params = array_merge($params, array('searchtype' => $searchType));
+				// Do the (magical) redirect
+				$this->redirect($params);
+			}
 		}
 
 		// Set things up so the form values are set when the page reloads...
@@ -147,6 +155,10 @@ class ProfilesController extends AppController {
 			$searchType = $this->params['named']['searchtype'];
 			
 			switch($searchType){
+				case 'resetvalues':
+					unset($this->params['named']);
+					$this->simpleSearch();
+					break;
 				case 'simple':
 					$this->simpleSearch();
 					break;
@@ -159,18 +171,7 @@ class ProfilesController extends AppController {
 					break;
 			}
 		}
-/*
-        if(isset($this->params['form']['simplesearch'])) {
-            $this->simpleSearch();
-        }
-        if(isset($this->params['form']['searchbyprefs'])){
-            $this->searchBySavedPrefs();
-        }
-        if(isset($this->params['form']['savesearch'])) {
-            $this->saveSearchPreferences();
-            $this->simpleSearch();
-        }
-*/    }
+    }
 
     private function simpleSearch(){
 		$searchArgs = $this->params['named'];
@@ -178,7 +179,8 @@ class ProfilesController extends AppController {
         // set the conditions
         $searchconditions = array('Profile.visible' => 1);
 
-		if(!empty($this->data['User']['hasHouse'])){
+		if(isset($searchArgs['has_house'])){
+//		if(!empty($this->data['hasHouse'])){
 			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
 			$ownerId = Set::extract($ownerId, '/House/user_id');
 			$searchconditions['Profile.user_id'] = $ownerId;
