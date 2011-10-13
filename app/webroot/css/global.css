@@ -68,6 +68,10 @@ body {
     background: url(../img/bgtile.jpg) repeat left top;
 }
 
+
+h2{
+    font-size: 16px;
+}
 .column {
     float: left;
     padding-top: 20px;
@@ -383,7 +387,7 @@ p {
     font-weight: bold;
     color: #21759B;
     line-height: 19px;
-    min-width: 60px;
+    min-width: 65px;
     display: inline-block;
 }
 
@@ -535,7 +539,8 @@ h1 {
 	border-style: solid;
 	border-width: 5px;
 	margin: 4px auto;
-	padding: 10px 10px 50px 10px;
+	/*padding: 10px 10px 50px 10px;*/
+	padding: 0.7em;
 	width: 680px;
 }
 
@@ -557,8 +562,8 @@ h1 {
     border: 8px solid #efefef;
     background-color: #999999;
     float: right;
-    width: 100px;
-    height: 100px;
+    /*width: 100px;*/
+    /*height: 100px;*/
     margin: 0px 0px 4px 0px;
 }
 
@@ -733,8 +738,88 @@ color: red;
 }
 
 .galleryimage{
-    padding-top: 30px;
+    padding: 25px 0 0 20px;
     text-align: center;
     width:130px;
     float: left;
+}
+
+#profile-edit {
+    float: right;
+    clear: right;
+}
+
+/* error messages */
+.error-message {
+    color: red;
+}
+
+/*Φορμα προσθηκης κατοικιας*/
+#HouseEditForm ,#HouseAddForm ,#ProfileEditForm, #ProfileAddForm{
+    border:solid 1px #aacfe4;
+
+    padding: 20px 0 20px 30px;
+
+  -moz-box-shadow: 5px 5px 5px #ccc;
+  -webkit-box-shadow: 5px 5px 5px #ccc;
+  box-shadow: 5px 5px 5px #ccc;
+    background-color: whiteSmoke;
+    background-image: -moz-linear-gradient(top,whiteSmoke,#E2E2E2);
+    background-image: -o-linear-gradient(top,whiteSmoke,#E2E2E2);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(whiteSmoke),to(#E2E2E2));
+    border-radius: 7px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+
+
+#agefields label {
+min-width:1px;
+}
+#agefields input[type="text"] {
+width:30px;
+    margin: 0 4px;
+}
+
+.agefrom{
+    float:left;
+}
+
+#labelspreferences label{
+    min-width:100px;
+}
+
+
+/*house profile*/
+
+.houseProfile table th{
+font-weight: 700;
+border-right: 1px solid #ccc;
+    /*background: #367889;*/
+    background: none;
+    /*color:white;*/
+    padding: 0 4px;
+    text-align: right;
+}
+
+.houseProfile table tr{
+
+border-bottom: 1px solid black;
+
+}
+.houseProfile table{
+    color: #344E66;
+background:  none;
+    border: none;
+    /*color:white;*/
+padding-bottom: 20px;
+}
+
+
+
+
+
+.defaultimage{
+    margin: 20px 0 20px 90px;/*TODO temp*/
 }

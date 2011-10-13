@@ -1,19 +1,12 @@
 <div id='top-frame' class='frame'>
 	<div class='frame-container'>
-		<div id='profile-edit'>
-			<div id="actions">
-				<?php
-					if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
-						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
-					}
-				?>
-			</div>
-		</div>
 		<div id='top-title' class='title'>
 			<h1>
 			<?php
 				$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
 				$age = $profile['Profile']['age'];
+				$email = $profile['Profile']['email'];
+				$phone = ($profile['Profile']['phone'])?$profile['Profile']['phone']:'-';
 				$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
 				$smoker = ($profile['Profile']['smoker'])?'ναι':'όχι';
 				$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
@@ -49,6 +42,16 @@
 				<img src='./img/profile_avatar.png' />
 			</div>
 
+            <div id='profile-edit'>
+                <div id="actions">
+                    <?php
+                        if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+                            echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
+                        }
+                    ?>
+                </div>
+            </div>
+
 			<span class='profile-strong'><?php echo $age; ?></span> ετών, 
 			<span class='profile-strong'><?php echo $gender; ?></span>
 			<br />
@@ -57,27 +60,35 @@
 				echoDetail('Κατοικίδιο', $pet);
 				echoDetail('Παιδί', $child);
 				echoDetail('Ζευγάρι', $couple);
-			?></span>
+			?>
 			
-			<?php if ($weare == 1)
-				echo 'Είμαι ' . $weare . ' άτομo';
-			      else
-				echo 'Είμαστε ' . $weare . ' άτομα';?>
-
+			<?php
+				if($weare == 1){
+					echo "Είμαι <span class='profile-strong'>".$weare."</span> άτομο";
+				}else{
+					echo "Είμαστε <span class='profile-strong'>".$weare."</span> άτομα";
+				}
+			?>
 			<br />
-
-			<?php if ($mates_wanted == 1)
-				echo 'Ζητείται ' . $mates_wanted . ' άτομο';
-			      else
-				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
+			<?php
+				if($mates_wanted == 1){
+					echo "Ζητείται <span class='profile-strong'>".$mates_wanted."</span> άτομο";
+				}else{
+					echo "Ζητούνται <span class='profile-strong'>".$mates_wanted."</span> άτομα";
+				}
+				echo '<br />';
+				echoDetail('Email', $email);
+				echoDetail('Τηλέφωνο', $phone);
+			?>
 			<br />
-
-			<?php if ($houseid != NULL){
-					//reads only the first users house
-					echo $this->Html->link($this->Html->image("home.png", array("alt" => "Το σπίτι μου")), 
-			           			       "/houses/view/$houseid", 
-				   			       array('escape'=>false));
-			      } ?>
+            <div class="my-house">
+                <?php if ($houseid != NULL){
+                        //reads only the first users house
+                        echo $this->Html->link($this->Html->image("home-small.png", array("alt" => "Το σπίτι μου", "title" => "Το σπίτι μου", "class" => "home-small")), 
+                                           "/houses/view/$houseid", 
+                                       array('escape'=>false));
+                      } ?>
+            </div>
 		</div>
 	</div>
 </div>
@@ -112,19 +123,24 @@
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
 				
-				if ($age_min == $age_max){?> 
-					<span class='profile-strong'><?php
-						echo $profile['Preference']['age_min'];
-				}
-				else{
-					if($age_min){
-				?>από <span class='profile-strong'><?php
-						echo $profile['Preference']['age_min']." ";
+				if(isset($age_min) && isset($age_max)){
+					if ($age_min == $age_max){?> 
+						<span class='profile-strong'><?php
+							echo $profile['Preference']['age_min'];
 					}
-					if($age_max){
-				?></span>μέχρι <span class='profile-strong'><?php
-						echo $profile['Preference']['age_max'];
+					else{
+						if($age_min){
+					?>από <span class='profile-strong'><?php
+							echo $profile['Preference']['age_min']." ";
+						}
+						if($age_max){
+					?></span>μέχρι <span class='profile-strong'><?php
+							echo $profile['Preference']['age_max'];
+						}
 					}
+				}else{
+					?><span class='profile-strong'><?php
+							echo 'αδιάφορο';
 				}
 			?></span><br />
 			<?php

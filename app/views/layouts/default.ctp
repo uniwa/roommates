@@ -4,8 +4,16 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<base href="<?php echo Router::url('/'); ?>" />
 
-    <?php echo $scripts_for_layout ?>
-    <?php echo $this->Html->css('global'); ?>
+    <?php
+    echo $this->Html->css('global');
+    echo $this->Html->script('jquery');
+    echo $this->Html->script('jquery.fancybox-1.3.4.pack');
+    echo $this->Html->script('jquery.easing-1.3.pack');
+    echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
+    echo $this->Html->script('main');
+    echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('media' => 'screen'));
+    echo $scripts_for_layout;
+    ?>
 </head>
 <body>
 <div id="container">
@@ -26,7 +34,7 @@
     <!-- /#logo -->
     <?php
         /* include navigation element */
-        if ($this->Session->read("Auth.User") != NULL) { 
+        if ($this->Session->read("Auth.User") != NULL) {
             echo $this->element('sidebar', array("userid" => $userid));
         }
     ?>

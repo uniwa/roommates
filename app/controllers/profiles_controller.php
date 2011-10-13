@@ -17,6 +17,15 @@ class ProfilesController extends AppController {
 
         }
 
+		if($this->data){
+			$profile = urlencode($profile);
+			// Merge our URL-encoded data with the URL parameters set above...
+			$params = array_merge($url, $this->data['Profile']);
+			$params = array_merge($params, array('searchtype' => $searchType));
+			// Do the (magical) redirect
+			$this->redirect($params);
+		}
+		
     	$genderLabels = Configure::read('GenderLabels');
     	$this->set('genderLabels', $genderLabels);
 
@@ -43,12 +52,12 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
 
-	$this->checkExistance($id);
+	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         /* get profile  contains:
                 Profile + Preference + User + House
-         */
+		*/
         $profile = $this->Profile->read();
         $this->set('profile', $profile);
         /* get house id of this user - NULL if he doesn't own one */
@@ -91,7 +100,11 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-        $this->checkExistance($id);
+
+	$uid = $this->Auth->user('id');
+	//pr($uid); die();	
+
+        $this->checkExistence($id);
 		$this->checkAccess( $id );
         $this->Profile->id = $id;
 
@@ -100,7 +113,7 @@ class ProfilesController extends AppController {
         } else {
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-                $this->redirect(array('action'=> 'index'));
+                $this->redirect(array('action'=> "view/$uid"));
             }
         }
 
@@ -112,38 +125,85 @@ class ProfilesController extends AppController {
      }
 
     function search() {
+		if($this->data){
+		    // Set up the URL that we will redirect to
+		    $url = array('controller' => 'profiles', 'action' => 'search');
+		    // If we have parameters, loop through and URL encode them
+			if(!empty($this->data['hasHouse'])){
+				$this->data['Profile']['has_house'] = true;
+			}
+		    if(is_array($this->data['Profile'])){
+			  foreach($this->data['Profile'] as &$profile){
+				 $profile = urlencode($profile);
+			  }
+			}
+			
+		    // Set search type
+			if(isset($this->params['form']['simplesearch'])) {
+				$searchType = 'simple';
+			}
+			if(isset($this->params['form']['searchbyprefs'])){
+				$searchType = 'byprefs';
+			}
+			if(isset($this->params['form']['savesearch'])) {
+				$searchType = 'saveprefs';
+			}
+			if(isset($this->params['form']['resetvalues'])) {
+				$searchType = 'resetvalues';
+			}else{
+				// Merge our URL-encoded data with the URL parameters set above...
+				$params = array_merge($url, $this->data['Profile']);
+				$params = array_merge($params, array('searchtype' => $searchType));
+				// Do the (magical) redirect
+				$this->redirect($params);
+			}
+		}
+
+		// Set things up so the form values are set when the page reloads...
+		$this->data['Profile'] = $this->params['named'];
+
 		$this->getSortOrder(0);
-        if(isset($this->params['form']['simplesearch'])) {
-            $this->simpleSearch();
-        }
-
-        if(isset($this->params['form']['searchbyprefs'])){
-            $this->searchBySavedPrefs();
-        }
-
-        if(isset($this->params['form']['savesearch'])) {
-            $this->saveSearchPreferences();
-            $this->simpleSearch();
-        }
+		
+		if(isset($this->params['named']['searchtype'])){
+			$searchType = $this->params['named']['searchtype'];
+			
+			switch($searchType){
+				case 'resetvalues':
+					unset($this->params['named']);
+					$this->simpleSearch();
+					break;
+				case 'simple':
+					$this->simpleSearch();
+					break;
+				case 'byprefs':
+					$this->searchBySavedPrefs();
+					break;
+				case 'saveprefs':
+					$this->saveSearchPreferences();
+					$this->simpleSearch();
+					break;
+			}
+		}
     }
 
-    private function simpleSearch() {
-        $searchArgs = $this->data['Profile'];
+    private function simpleSearch(){
+		$searchArgs = $this->params['named'];
 
         // set the conditions
         $searchconditions = array('Profile.visible' => 1);
 
-		if(!empty($this->data['User']['hasHouse'])){
+		if(isset($searchArgs['has_house'])){
+//		if(!empty($this->data['hasHouse'])){
 			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
 			$ownerId = Set::extract($ownerId, '/House/user_id');
 			$searchconditions['Profile.user_id'] = $ownerId;
 		};
 
-        if(!empty($searchArgs['age_min'])) {
+        if(isset($searchArgs['age_min'])) {
             $searchconditions['Profile.dob <='] = $this->age_to_year($searchArgs['age_min']);
         }
 
-        if(!empty($searchArgs['age_max'])) {
+        if(isset($searchArgs['age_max'])) {
             $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['age_max']);
         }
 
@@ -168,7 +228,7 @@ class ProfilesController extends AppController {
         }
         // exclude logged user's profile
         $searchconditions['Profile.user_id !='] = $this->Auth->user('id');
-		
+
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;
 		if(isset($searchArgs['orderby'])){
@@ -179,21 +239,22 @@ class ProfilesController extends AppController {
 		$this->paginate = array(
 				'conditions' => $searchconditions,
 				'limit' => 15,
-				'order' => $order,
-				'args' => $searchArgs
+				'contain' => '',
+				'order' => $order
 			);
 
         $profiles = $this->paginate('Profile');
+		$this->set('searchargs', $searchArgs);
         $this->set('profiles', $profiles);
-        $this->set('defaults', array(   'age_min' => $searchArgs['age_min'],
+/*        $this->set('defaults', array(   'age_min' => $searchArgs['age_min'],
                                         'age_max' => $searchArgs['age_max'],
-                                        'gender' => $searchArgs['pref_gender'],
-                                        'smoker' => $searchArgs['pref_smoker'],
-                                        'pet' => $searchArgs['pref_pet'],
-                                        'child' => $searchArgs['pref_child'],
-                                        'couple' => $searchArgs['pref_couple'],
+                                        'pref_gender' => $searchArgs['pref_gender'],
+                                        'pref_smoker' => $searchArgs['pref_smoker'],
+                                        'pref_pet' => $searchArgs['pref_pet'],
+                                        'pref_child' => $searchArgs['pref_child'],
+                                        'pref_couple' => $searchArgs['pref_couple'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
-    }
+*/    }
 
     private function age_to_year($age) {
         return date('Y') - $age;
@@ -202,18 +263,20 @@ class ProfilesController extends AppController {
     private function saveSearchPreferences() {
         $profile = $this->Profile->find('first', array('conditions' => array(
                                                        'Profile.user_id' => $this->Auth->user('id'))));
-        $search_args = $this->data['Profile'];
+        $search_args = $this->params['named'];
+		$ageMin = (isset($search_args['age_min']))?$search_args['age_min']:NULL;
+		$ageMax = (isset($search_args['age_max']))?$search_args['age_max']:NULL;
         $this->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
-                        'age_min' => $search_args['age_min'],
-                        'age_max' => $search_args['age_max'],
+                        'age_min' => $ageMin,
+                        'age_max' => $ageMax,
                         'pref_gender' => $search_args['pref_gender'],
                         'pref_smoker' => $search_args['pref_smoker'],
                         'pref_pet' => $search_args['pref_pet'],
                         'pref_child' => $search_args['pref_child'],
                         'pref_couple' => $search_args['pref_couple']
         ));
-        $this->set('defaults', array(   'age_min' => $search_args['age_min'],
+/*        $this->set('defaults', array(   'age_min' => $search_args['age_min'],
                                         'age_max' => $search_args['age_max'],
                                         'gender' => $search_args['pref_gender'],
                                         'smoker' => $search_args['pref_smoker'],
@@ -221,14 +284,15 @@ class ProfilesController extends AppController {
                                         'child' => $search_args['pref_child'],
                                         'couple' => $search_args['pref_couple'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
-        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
+*/        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
 
     private function searchBySavedPrefs() {
         $profile = $this->Profile->find('first', array('conditions' => array(
                                                        'Profile.user_id' => $this->Auth->user('id'))));
         $prefs = $profile['Preference'];
-		$this->data['Profile'] = $prefs;
+		unset($this->params['named']);
+		$this->params['named'] = $prefs;
 		$this->simpleSearch();
     }
 
@@ -278,8 +342,8 @@ class ProfilesController extends AppController {
 		return $order;
 	}
 
-	//check user's existance
-	private function checkExistance($profile_id){
+	//check user's existence
+	private function checkExistence($profile_id){
 		$this->Profile->id = $profile_id;
 		$profile = $this->Profile->read();
 		if( $profile == NULL ){

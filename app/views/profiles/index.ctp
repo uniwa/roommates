@@ -1,7 +1,7 @@
 <?php
-    $html->script('jquery-1.6.4.min', false);
-    $html->script('main', false);
+    $html->script('sorting', false);
 ?>
+
 <!--
 <div id='top-frame' class='frame'>
     <div id='top-title' class='title'>
@@ -78,6 +78,7 @@
                                     $gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
                                     echo $gender."<br />\n";
                                     echo "email: ".$profile['Profile']['email']."<br />\n";
+									echo "επιθυμητοί συγκάτοικοι: ".$profile['Profile']['max_roommates']."<br />\n";
                                 ?>
                             </div>
                             <div class='profile-house'>

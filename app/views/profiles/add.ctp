@@ -30,7 +30,6 @@
 	$gender_labels = array('άνδρας', 'γυναίκα', 'αδιάφορο');
 	$yni_options = array('όχι', 'ναι', 'αδιάφορο');
 
-
 	echo $this->Form->input('Preference.age_min', array('label' => 'Ηλικία από'));
 	echo $this->Form->input('Preference.age_max', array('label' => 'έως'));
 	echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $gender_labels, 'selected' => 2));

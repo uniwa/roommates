@@ -1,102 +1,90 @@
-<?php
 
- echo $this->Html->script('jquery');
-        echo $this->Html->script('jquery.fancybox-1.3.4.pack');
-        echo $this->Html->script('jquery.easing-1.3.pack');
-        echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
-        echo $this->Html->script('main');
-echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('media' => 'screen'));
-?>
+  
 <h2></h2><div class="profile houseProfile">
+
+
     <div id="actions">
 <?php
  //if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
- if( ($this->Session->read( 'Auth.User.id') == $userid) || ($this->Session->read('Auth.User.role') == 'admin') ){
+if( ($this->Session->read( 'Auth.User.id') == $house['User']['id'] ) || ($this->Session->read('Auth.User.role') == 'admin') ){
   echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
   echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
- }
+}
 
- echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/$userid");
+if( ($this->Session->read( 'Auth.User.id') != $house['User']['id'] ) || ($this->Session->read('Auth.User.role') == 'admin') ){
+
+	echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['Profile']['id']}");
+}
 ?>
 </div>
 
-   <li>
-        <div class="photo">
+       <div class="defaultimage">
+        <?php
+           if(isset($images[0]))
+           echo $this->Html->image('uploads/thumbnails/' . $images[0]['Image']['location'], array('alt' => 'house image'));
+else
+           echo $this->Html->image('homedefault.png', array('alt' => 'house image')); ?>
 
-</div>
-        <div class="photo">
-            <img src="<?php echo $this->webroot; ?>img/homedefault.png" alt="Home Picture" class="avatar"/>
 
-        </div>
+       </div>
 
-<div class="info-block">
-    <p><span class="bold">Διεύθυνση:</span> <?php echo $house['House']['address']?></p>
-    <p><span class="bold">Δήμος:</span> <?php echo $house['Municipality']['name']?></p>
-    <p><span class="bold">Τ.Κ.:</span> <?php echo $house['House']['postal_code']?></p>
-    <p><span class="bold">Τύπος:</span> <?php echo $house['HouseType']['type']?></p>
-    <p><span class="bold">Τετραγωνικά:</span> <?php echo $house['House']['area']?></p>
-    <p><span class="bold">Υπνοδωμάτια:</span> <?php echo $house['House']['bedroom_num']?></p>
-    <p><span class="bold">Μπάνια:</span> <?php echo $house['House']['bathroom_num']?></p>
-    <p><span class="bold">Όροφος:</span> <?php echo $house['Floor']['type']?></p>
-    <p><span class="bold">Έτος κατασκευής:</span> <?php echo $house['House']['construction_year']?></p>
-    <p><span class="bold">Θέρμανση:</span> <?php echo $house['HeatingType']['type']?></p>
-    <p><span class="bold">Τιμή:</span> <?php echo $house['House']['price']?>€</p>
-    <p><span class="bold">Διαθέσιμο από:</span> <?php echo $time->format($format = 'd / m / Y', $house['House']['availability_date'])?></p>
-    <p><span class="bold">Περίοδος ενοικίασης:</span> <?php echo ($house['House']['rent_period']) ? $house['House']['rent_period']." μήνες" : '-' ?></p>
-</div>
-<div class="info-block">
+<table class="info-block">
+    <tr><th>Διεύθυνση:</th><td><?php echo $house['House']['address']?></td></tr>
+    <tr><th>Δήμος:</th><td> <?php echo $house['Municipality']['name']?></td></tr>
+    <tr><th>Τ.Κ.:</th><td> <?php echo $house['House']['postal_code']?></td></tr>
+    <tr><th>Τύπος:</th><td> <?php echo $house['HouseType']['type']?></td></tr>
+    <tr><th>Τετραγωνικά:</th><td> <?php echo $house['House']['area']?></td></tr>
+    <tr><th>Υπνοδωμάτια:</th><td> <?php echo $house['House']['bedroom_num']?></td></tr>
+    <tr><th>Μπάνια:</th><td> <?php echo $house['House']['bathroom_num']?></td></tr>
+    <tr><th>Όροφος:</th><td> <?php echo $house['Floor']['type']?></td></tr>
+    <tr><th>Έτος κατασκευής:</th><td> <?php echo $house['House']['construction_year']?></td></tr>
+    <tr><th>Θέρμανση:</th><td> <?php echo $house['HeatingType']['type']?></td></tr>
+    <tr><th>Τιμή:</th><td> <?php echo $house['House']['price']?>€</td></tr>
+    <tr><th>Διαθέσιμο από:</th><td> <?php echo $time->format($format = 'd / m / Y', $house['House']['availability_date'])?></td></tr>
+    <tr><th>Περίοδος ενοικίασης:</th><td> <?php echo ($house['House']['rent_period']) ? $house['House']['rent_period']." μήνες" : '-' ?></td></tr>
+
+
+<!--   </table> <table class="info-block">     this line makes 2 tables into 1-->
     <!-- boolean fields -->
-    <p>
-        <span class="bold">Ηλιακός:</span>
-        <span class="checkbox cb<?php echo $house['House']['solar_heater']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Επιπλωμένο:</span>
-        <span class="checkbox cb<?php echo $house['House']['furnitured']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Κλιματισμός:</span>
-        <span class="checkbox cb<?php echo $house['House']['aircondition']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Κήπος:</span>
-        <span class="checkbox cb<?php echo $house['House']['garden']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Parking:</span>
-        <span class="checkbox cb<?php echo $house['House']['parking']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Κοινόχρηστα:</span>
-        <span class="checkbox cb<?php echo $house['House']['shared_pay']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Πόρτα ασφαλείας:</span>
-        <span class="checkbox cb<?php echo $house['House']['security_doors']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Προσβάσιμο από ΑΜΕΑ:</span>
-        <span class="checkbox cb<?php echo $house['House']['disability_facilities']?>">&nbsp;</span>
-    </p>
-    <p>
-        <span class="bold">Αποθήκη:</span>
-        <span class="checkbox cb<?php echo $house['House']['storeroom']?>">&nbsp;</span>
-    </p>
-</div>
-<div class="info-block">
-    <!-- free text description -->
-    <p><span class="bold">Περιγραφή:</span> <?php echo Sanitize::html($house['House']['description'])?></p>
-</div>
 
-<div class="info-block">
+        <tr><th>Ηλιακός:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['solar_heater']?>">&nbsp;</td></tr>
+
+        <tr><th>Επιπλωμένο:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['furnitured']?>">&nbsp;</td></tr>
+
+        <tr><th>Κλιματισμός:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['aircondition']?>">&nbsp;</td></tr>
+
+        <tr><th>Κήπος:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['garden']?>">&nbsp;</td></tr>
+
+        <tr><th>Parking:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['parking']?>">&nbsp;</td></tr>
+
+        <tr><th>Κοινόχρηστα:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['shared_pay']?>">&nbsp;</td></tr>
+
+        <tr><th>Πόρτα ασφαλείας:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['security_doors']?>">&nbsp;</td></tr>
+
+        <tr><th>Προσβάσιμο από ΑΜΕΑ:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['disability_facilities']?>">&nbsp;</td></tr>
+
+        <tr><th>Αποθήκη:</th><td>
+        <span class="checkbox cb<?php echo $house['House']['storeroom']?>">&nbsp;</td></tr>
+
+
+
+
     <!-- availability -->
-    <p><span class="bold">Διαμένουν:</span>
-	<?php echo Sanitize::html($house['House']['currently_hosting'])?> <?php echo $house['House']['currently_hosting'] == 1 ? 'άτομο' : 'άτομα'?></p>
-    <p><span class="bold">Μπορούν συνολικά να συγκατοικήσουν:</span>
-	<?php echo Sanitize::html($house['House']['total_places'])?> <?php echo $house['House']['total_places'] == 1 ? 'άτομο' : 'άτομα'?></p>
-</div>
+    <tr><th>Διαμένουν:</th><td>	<?php echo Sanitize::html($house['House']['currently_hosting'])?> <?php echo $house['House']['currently_hosting'] == 1 ? 'άτομο' : 'άτομα'?></td></tr>
+    <tr><th>Μπορούν συνολικά <br> να συγκατοικήσουν:</th><td>
+	<?php echo Sanitize::html($house['House']['total_places'])?> <?php echo $house['House']['total_places'] == 1 ? 'άτομο' : 'άτομα'?></td></tr>
 
+     <tr><th>Περιγραφή:</th><td> <?php echo Sanitize::html($house['House']['description'])?></td></tr>
 
+</table>
 </div>
 
 
@@ -130,7 +118,7 @@ echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('me
 
 <?php
 
- if( ($this->Session->read( 'Auth.User.id') == $userid) || ($this->Session->read('Auth.User.role') == 'admin') ){
+ if( ($this->Session->read( 'Auth.User.id') == $house['User']['id'] ) || ($this->Session->read('Auth.User.role') == 'admin') ){
     echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images' ,'action' => 'add', $house['House']['id'])); 
  }
 ?>

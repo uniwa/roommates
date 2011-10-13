@@ -11,27 +11,21 @@
                                                                'action' => 'index')); ?>
         </li>
         <li>
-            <?php echo $this->Html->link(' Το προφίλ μου', array(
+            <?php 
+                $profile_id = $this->Auth->get("Profile.id");
+                echo $this->Html->link(' Το προφίλ μου', array(
                                                                'controller' => 'profiles',
                                                                'action' => 'view',
-                                                               $userid,
+                                                               $profile_id,
                                                            )); ?>
         </li>
 
-        <?php $houseid = $this->Auth->get('House.id'); ?>
-        <li>
-            <?php echo $this->Html->link(' Το σπίτι μου', array(
-                                                               'controller' => 'houses',
-                                                               'action' => 'view',
-                                                               $houseid,
-                                                           )); ?>
-        </li>
         <li>
             <?php
-                $session_houseid = $this->Session->read("houseid");
-                if ($session_houseid != NULL) {
+		$house_id = $this->Auth->get("House.id");	
+                if ($house_id != NULL) {
                     echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
-                                                                'action' => 'view', $session_houseid));
+                                                                'action' => 'view', $house_id));
                 } else {
                     echo $this->Html->link('Προσθήκη σπιτιού', array('controller' => 'houses',
                                                                 'action' => 'add'));

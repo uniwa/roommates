@@ -1,7 +1,7 @@
 <?php
-    $html->script('jquery-1.6.4.min', false);
-    $html->script('main', false);
+    $html->script('sorting', false);
 ?>
+
 <!--
 <div id='top-frame' class='frame'>
 	<div id='top-title' class='title'>
@@ -79,7 +79,8 @@
                                 <?php
                                     echo "Δήμος " . $house['Municipality']['name'] . " <br />";
                                     echo $house['HouseType']['type'].", ".$house['House']['area']." τ.μ.<br />\n";
-                                    echo $house['Floor']['type']."<br />\n";
+                                    echo $house['Floor']['type'].", ".$house['House']['price']." ευρώ<br />\n";
+				    echo "Συνολικά φιλοξενεί " . $house['House']['total_places'] ." άτομα<br />\n";
                                 ?>
                             </div>
                             <div class='house-house'>

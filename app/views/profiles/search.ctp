@@ -7,18 +7,15 @@
 <?php
     echo "<div class='clear-both'></div>";
     echo $this->Form->create('Profile', array('action'=>'search'));
+	$defaults = $this->params['named'];
 	$ageminoptions = array( 'label' => 'Ηλικία από ',
                             'class' => 'short-textbox',
-                            'value' => isset($defaults) ? $defaults['age_min'] : '',
+                            'value' => (isset($defaults['age_min'])) ? $defaults['age_min'] : '',
                             'default' => '');
 	$agemaxoptions = array( 'label' => 'μέχρι ',
                             'class' => 'short-textbox',
-                            'value' => isset($defaults) ? $defaults['age_max'] : '',
+                            'value' => (isset($defaults['age_max'])) ? $defaults['age_max'] : '',
                             'default' => '');
-	/*$maxmatesoptions = array(   'label' => 'Ελάχιστοι επιθυμητοί συγκάτοικοι ',
-                                'class' => 'short-textbox',
-                                'value' => isset($defaults) ? $defaults['mates'] : '',
-                                'default' => '');*/
     $genderoptions = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
     $options = array('Όχι', 'Ναι', 'Αδιάφορο');
 ?>
@@ -30,8 +27,7 @@
 	echo $this->Form->input('age_min', $ageminoptions);
 	echo '</td><td>';
 	echo $this->Form->input('age_max', $agemaxoptions);
-    	echo '</td><td>';
-	//echo $this->Form->input('max_roommates', $maxmatesoptions);
+    echo '</td><td>';
 ?>
         </td>
     </tr>
@@ -41,18 +37,18 @@
 <?php
 	echo $this->Form->input('pref_gender', array('label' => 'Φύλο ',
                                                 'options' => $genderoptions,
-                                                'value' => isset($defaults) ? $defaults['gender'] : '2',
+                                                'value' => (isset($defaults['pref_gender'])) ? $defaults['pref_gender'] : '2',
                                                 'default' => '2'));
     echo '</td><td>';
 	echo $this->Form->input('pref_smoker', array('label' => 'Καπνιστής ',
                                             'options' => $options,
                                             'default' => '2',
-                                            'value' => isset($defaults) ? $defaults['smoker'] : '2'));
+                                            'value' => (isset($defaults['pref_smoker'])) ? $defaults['pref_smoker'] : '2'));
     echo '</td><td>';
     echo $this->Form->input('pref_pet', array(   'label' => 'Κατοικίδιο ',
                                             'options' => $options,
                                             'default' => '2',
-                                            'value' => isset($defaults) ? $defaults['pet'] : '2'));
+                                            'value' => (isset($defaults['pref_pet'])) ? $defaults['pref_pet'] : '2'));
 ?>
 		</td>
 	</tr>
@@ -63,15 +59,15 @@
 	echo $this->Form->input('pref_child', array( 'label' => 'Παιδί ',
                                             'options' => $options,
                                             'default' => '2',
-                                            'value' => isset($defaults) ? $defaults['child'] : '2'  ));
+                                            'value' => (isset($defaults['pref_child'])) ? $defaults['pref_child'] : '2'  ));
     echo '</td><td>';
     echo $this->Form->input('pref_couple', array('label' => 'Ζευγάρι ',
                                             'options' => $options,
                                             'default' => '2',
-                                            'value' => isset($defaults) ? $defaults['couple'] : '2' ));
+                                            'value' => (isset($defaults['pref_couple'])) ? $defaults['pref_couple'] : '2' ));
     echo '</td><td>';
-    echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse', array('value' => 1,
-                                                                        'checked' => isset($defaults) ? $defaults['has_house'] : false,
+    echo 'Διαθέτει σπίτι '.$this->Form->checkbox('has_house', array('value' => 1,
+                                                                        'checked' => isset($defaults['has_house']) ? $defaults['has_house'] : false,
                                                                         'hiddenField' => false));
 ?>
 		</td>
@@ -177,6 +173,7 @@
                                     $gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
                                     echo $gender."<br />\n";
                                     echo "email: ".$profile['Profile']['email']."<br />\n";
+									echo "επιθυμητοί συγκάτοικοι: ".$profile['Profile']['max_roommates']."<br />\n";
                                 ?>
                             </div>
                             <div class='profile-house'>
