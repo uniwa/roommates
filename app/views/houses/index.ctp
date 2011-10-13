@@ -67,6 +67,14 @@
                     <div class='card'>
                         <div class='card-inner'>
                             <div class='house-pic'>
+							<?php
+								$house_id = $house['House']['id'];
+								$house_image = 'house.gif';
+								if(isset($images[$house_id])){
+									$house_image = 'uploads/thumbnails/'.$images[$house_id];
+								}
+								echo $this->Html->image($house_image, array('alt' => 'house image', 'height' => 70));
+							?>
                             </div>
                         <div class='house-info'>
                             <div class='house-name'>

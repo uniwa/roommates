@@ -629,7 +629,7 @@ h1 {
 .profile-pic, .house-pic {
     float: left;
     background-repeat: no-repeat;
-    margin: 20px 10px 0px 50px;
+    margin: 20px 10px 0px 30px;
     width: 70px;
     height: 70px;
 }
@@ -656,8 +656,8 @@ h1 {
 }
 
 .house-info {
-    margin-left: 10px;
-    width: 280px;
+    margin-left: 45px;
+    width: 260px;
 }
 
 .profile-name, .house-name {

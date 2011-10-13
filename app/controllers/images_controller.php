@@ -10,21 +10,23 @@ class ImagesController extends AppController {
 	}
 
 	function add( $id ) {
-        if (empty($this->data)) {
-            if ( ! $this->hasAccess($id) ) {
-                $this->cakeError( 'error403' );
-            }
-            if ( $this->imageCount($id) >= 5 ) {
-                $this->Session->setFlash(__('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών'));
-                $this->redirect($this->referer());
-            }
+        if ( ! $this->hasAccess($id) ) {
+            $this->cakeError( 'error403' );
+        }
+        if ( $this->imageCount($id) >= 5 ) {
+            $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών');
+            $this->redirect($this->referer());
         }
 		if(!empty($this->data)) {
 			$this->Image->create();
 			
 			// how to ensure unique file names?
 			// TODO: Code to warn user about duplicate files
-			$newName = $this->Image->saveImage($this->params['data']['Image']['location'],100,"ht",80);
+			$newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
+            if (! $this->validType($newName)) {
+                $this->Session->setFlash('Επιτρέπονται αρχεία εικόνας τύπου png ή jpeg');
+                $this->redirect($this->referer());
+            }
 			if(isset($newName))
 			{
 				$this->params['data']['Image']['location'] = $newName;
@@ -38,14 +40,15 @@ class ImagesController extends AppController {
 			
 			if ($this->Image->save($this->data)) {
 				$this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
-				$this->redirect($this->referer());
+                /* IMPORTANT: $this->referer() in this redirect will break on 5th image
+                    upload due to max image count, redirect only on house view */
+                $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
 			} else {
 				$this->Session->setFlash(__('Η εικόνα ΔΕΝ αποθηκεύτηκε', true));
+				$this->redirect($this->referer());
 			}
 		}
-
-$this->set('house_id' , $id);
-
+        $this->set('house_id' , $id);
 	}
 
 	function delete($id = null) {
@@ -77,10 +80,21 @@ $this->set('house_id' , $id);
     }
 
     private function imageCount($id) {
-        /* return number of pictures associated with givven house id */
+        /* return number of pictures associated with given house id */
         $this->House->id = $id;
         $house = $this->House->read();
         return count($house["Image"]);
+    }
+
+    private function validType($buffer) {
+        /* check if uploaded image is a valid filetype */
+        $valid_types = array("png", "jpg", "jpeg");
+        $type = pathinfo($buffer, PATHINFO_EXTENSION);
+
+        if (in_array($type, $valid_types)) {
+            return True;
+        }
+        return False;
     }
 }
 ?>

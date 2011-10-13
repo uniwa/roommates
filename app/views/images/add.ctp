@@ -6,7 +6,7 @@
 
 <div>
 <?php // echo $this->Form->create('Image');?>
-<?php echo $this->Form->create('Image',array('type' => 'file')); ?>
+<?php echo $this->Form->create('Image',array('type' => 'file', 'action' => 'add/'.$house_id)); ?>
 	<fieldset class="file-upload ">
 	<?php
 		echo $this->Form->input('location', array('type' => 'file' , 'label' => 'παρακαλώ επιλέξτε...', "id" => "fileupload"));
