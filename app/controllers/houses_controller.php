@@ -119,7 +119,7 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('Το σπίτι αποθηκεύτηκε.');
+                $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.');
 		$hid = $this->House->id;
 		//pr($hid); die();
                 $this->redirect(array('action' => "view/$hid"));
@@ -132,7 +132,7 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
     function delete($id) {
         $this->checkAccess( $id );
         $this->House->delete( $id );
-        $this->Session->setFlash('Το σπίτι διαγράφηκε.');
+        $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.');
         $this->redirect(array('action'=>'index'));
     }
 
@@ -147,7 +147,7 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
         }
         else {
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('Το σπίτι ενημερώθηκε.');
+                $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.');
                 $this->redirect(array('action' => "view/$id"));
             }
         }

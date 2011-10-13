@@ -57,7 +57,7 @@ $this->set('house_id' , $id);
 		}
 		if ($this->Image->delete($id)) {
 			$this->Image->delImage($imageData['Image']['location']);
-			$this->Session->setFlash(__('Η εικόνα διαγραφήκε.', true));
+			$this->Session->setFlash(__('Η εικόνα διαγραφήκε με επιτυχία.', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->Session->setFlash(__('Η εικόνα δεν διαγραφηκε.', true));
