@@ -95,9 +95,7 @@ class HousesController extends AppController {
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-        $this->set('house', $house);
-        /* profile id of the house owner */
-        $this->set('userid', $house["User"]["Profile"]["id"]);
+	$this->set('house', $house);
 
 $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
         $this->House->Image->recursive = 0;
