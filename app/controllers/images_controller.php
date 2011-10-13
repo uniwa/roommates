@@ -23,6 +23,10 @@ class ImagesController extends AppController {
 			// how to ensure unique file names?
 			// TODO: Code to warn user about duplicate files
 			$newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
+            if (! $this->validType($newName)) {
+                $this->Session->setFlash('Επιτρέπονται αρχεία εικόνας τύπου png ή jpeg');
+                $this->redirect($this->referer());
+            }
 			if(isset($newName))
 			{
 				$this->params['data']['Image']['location'] = $newName;
@@ -78,6 +82,17 @@ class ImagesController extends AppController {
         $this->House->id = $id;
         $house = $this->House->read();
         return count($house["Image"]);
+    }
+
+    private function validType($buffer) {
+        /* check if uploaded image is a valid filetype */
+        $valid_types = array("png", "jpg", "jpeg");
+        $type = pathinfo($buffer, PATHINFO_EXTENSION);
+
+        if (in_array($type, $valid_types)) {
+            return True;
+        }
+        return False;
     }
 }
 ?>
