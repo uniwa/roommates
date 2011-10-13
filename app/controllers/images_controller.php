@@ -52,15 +52,15 @@ $this->set('house_id' , $id);
         $this->Image->id = $id;
 		$imageData = $this->Image->read();
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for image', true));
+			$this->Session->setFlash(__('Λαθος id', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Image->delete($id)) {
 			$this->Image->delImage($imageData['Image']['location']);
-			$this->Session->setFlash(__('Image deleted', true));
+			$this->Session->setFlash(__('Η εικόνα διαγραφήκε.', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Image was not deleted', true));
+		$this->Session->setFlash(__('Η εικόνα δεν διαγραφηκε.', true));
 		$this->redirect(array('action' => 'index'));
 	}
 
