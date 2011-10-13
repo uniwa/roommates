@@ -5,14 +5,14 @@
 	<base href="<?php echo Router::url('/'); ?>" />
 
     <?php
-    echo $scripts_for_layout;
     echo $this->Html->css('global');
-    echo $this->Html->script('jquery-1.6.4.min');
+    echo $this->Html->script('jquery');
     echo $this->Html->script('jquery.fancybox-1.3.4.pack');
     echo $this->Html->script('jquery.easing-1.3.pack');
     echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
     echo $this->Html->script('main');
     echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('media' => 'screen'));
+    echo $scripts_for_layout;
     ?>
 </head>
 <body>
