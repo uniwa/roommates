@@ -1,6 +1,7 @@
 <h2>Επεξεργασία Προφίλ</h2>
 <?php
-   echo $this->Form->create('Profile');
+
+echo $this->Form->create('Profile');
 
 echo $this->Form->input('firstname', array('label' => 'Όνομα'));
 echo $this->Form->input('lastname', array('label' => 'Επώνυμο'));
@@ -55,4 +56,3 @@ echo $this->Form->input('Profile.id', array('type' => 'hidden'));
 echo $this->Form->input('Preference.id', array('type' => 'hidden'));
 
 echo $this->Form->end('Υποβολή');
-?>
