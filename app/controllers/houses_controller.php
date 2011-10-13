@@ -69,7 +69,7 @@ class HousesController extends AppController {
 
         $this->paginate = array(
             'order' => $order,
-			'conditions' => 'House.user_id !=' => $this->Auth->user('id'),
+			'conditions' => array('House.user_id !=' => $this->Auth->user('id')),
 			'limit' => 15
         );
         $houses = $this->paginate('House');
