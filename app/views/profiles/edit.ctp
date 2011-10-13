@@ -43,11 +43,11 @@ echo '</div>';
 
 echo '<div id="labelspreferences">';
 
-echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $genderLabels));
-echo $this->Form->input('Preference.pref_smoker', array('label' => 'Είναι καπνιστής', 'type' => 'select', 'options' => $options));
-echo $this->Form->input('Preference.pref_pet', array('label' => 'Έχει κατοικίδιο', 'type' => 'select', 'options' => $options));
-echo $this->Form->input('Preference.pref_child', array('label' => 'Έχει παιδί', 'type' => 'select', 'options' => $options));
-echo $this->Form->input('Preference.pref_couple', array('label' => 'Συζεί', 'type' => 'select', 'options' => $options));
+echo $this->Form->input('Preference.pref_gender', array('label' => 'Φύλο', 'type' => 'select', 'options' => $genderLabels, 'default' => 2));
+echo $this->Form->input('Preference.pref_smoker', array('label' => 'Είναι καπνιστής', 'type' => 'select', 'options' => $options, 'default' => 2));
+echo $this->Form->input('Preference.pref_pet', array('label' => 'Έχει κατοικίδιο', 'type' => 'select', 'options' => $options, 'default' => 2));
+echo $this->Form->input('Preference.pref_child', array('label' => 'Έχει παιδί', 'type' => 'select', 'options' => $options, 'default' => 2));
+echo $this->Form->input('Preference.pref_couple', array('label' => 'Συζεί', 'type' => 'select', 'options' => $options, 'default' => 2));
 echo '</div>';
 
 
