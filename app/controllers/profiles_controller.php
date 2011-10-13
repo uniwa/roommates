@@ -91,6 +91,10 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
+
+	$uid = $this->Auth->user('id');
+	//pr($uid); die();	
+
         $this->checkExistence($id);
 		$this->checkAccess( $id );
         $this->Profile->id = $id;
@@ -100,7 +104,7 @@ class ProfilesController extends AppController {
         } else {
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-                $this->redirect(array('action'=> 'index'));
+                $this->redirect(array('action'=> "view/$uid"));
             }
         }
 
