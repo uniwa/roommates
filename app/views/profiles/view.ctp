@@ -6,7 +6,7 @@
 				$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
 				$age = $profile['Profile']['age'];
 				$email = $profile['Profile']['email'];
-				$phone = $profile['Profile']['phone'];
+				$phone = ($profile['Profile']['phone'])?$profile['Profile']['phone']:'-';
 				$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
 				$smoker = ($profile['Profile']['smoker'])?'ναι':'όχι';
 				$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
