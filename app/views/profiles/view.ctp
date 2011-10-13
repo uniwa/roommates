@@ -114,19 +114,24 @@
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
 				
-				if ($age_min == $age_max){?> 
-					<span class='profile-strong'><?php
-						echo $profile['Preference']['age_min'];
-				}
-				else{
-					if($age_min){
-				?>από <span class='profile-strong'><?php
-						echo $profile['Preference']['age_min']." ";
+				if(isset($age_min) && isset($age_max)){
+					if ($age_min == $age_max){?> 
+						<span class='profile-strong'><?php
+							echo $profile['Preference']['age_min'];
 					}
-					if($age_max){
-				?></span>μέχρι <span class='profile-strong'><?php
-						echo $profile['Preference']['age_max'];
+					else{
+						if($age_min){
+					?>από <span class='profile-strong'><?php
+							echo $profile['Preference']['age_min']." ";
+						}
+						if($age_max){
+					?></span>μέχρι <span class='profile-strong'><?php
+							echo $profile['Preference']['age_max'];
+						}
 					}
+				}else{
+					?><span class='profile-strong'><?php
+							echo 'αδιάφορο';
 				}
 			?></span><br />
 			<?php

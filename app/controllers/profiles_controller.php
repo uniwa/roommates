@@ -43,12 +43,12 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
 
-	$this->checkExistance($id);
+	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         /* get profile  contains:
                 Profile + Preference + User + House
-         */
+		*/
         $profile = $this->Profile->read();
         $this->set('profile', $profile);
         /* get house id of this user - NULL if he doesn't own one */
@@ -91,7 +91,7 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-        $this->checkExistance($id);
+        $this->checkExistence($id);
 		$this->checkAccess( $id );
         $this->Profile->id = $id;
 
@@ -329,8 +329,8 @@ class ProfilesController extends AppController {
 		return $order;
 	}
 
-	//check user's existance
-	private function checkExistance($profile_id){
+	//check user's existence
+	private function checkExistence($profile_id){
 		$this->Profile->id = $profile_id;
 		$profile = $this->Profile->read();
 		if( $profile == NULL ){
