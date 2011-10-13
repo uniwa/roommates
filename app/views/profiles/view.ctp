@@ -1,14 +1,5 @@
 <div id='top-frame' class='frame'>
 	<div class='frame-container'>
-		<div id='profile-edit'>
-			<div id="actions">
-				<?php
-					if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
-						echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
-					}
-				?>
-			</div>
-		</div>
 		<div id='top-title' class='title'>
 			<h1>
 			<?php
@@ -49,6 +40,16 @@
 				<img src='./img/profile_avatar.png' />
 			</div>
 
+            <div id='profile-edit'>
+                <div id="actions">
+                    <?php
+                        if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+                            echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
+                        }
+                    ?>
+                </div>
+            </div>
+
 			<span class='profile-strong'><?php echo $age; ?></span> ετών, 
 			<span class='profile-strong'><?php echo $gender; ?></span>
 			<br />
@@ -71,13 +72,14 @@
 			      else
 				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
 			<br />
-
-			<?php if ($houseid != NULL){
-					//reads only the first users house
-					echo $this->Html->link($this->Html->image("home.png", array("alt" => "Το σπίτι μου")), 
-			           			       "/houses/view/$houseid", 
-				   			       array('escape'=>false));
-			      } ?>
+            <div class="my-house">
+                <?php if ($houseid != NULL){
+                        //reads only the first users house
+                        echo $this->Html->link($this->Html->image("home-small.png", array("alt" => "Το σπίτι μου", "title" => "Το σπίτι μου", "class" => "home-small")), 
+                                           "/houses/view/$houseid", 
+                                       array('escape'=>false));
+                      } ?>
+            </div>
 		</div>
 	</div>
 </div>
@@ -130,9 +132,9 @@
 			<?php
 				echoDetail('Φύλο', $gender);
 				echoDetail('Καπνιστής', $smoker);
-				echoDetail('Κατοικίδιο', $smoker);
-				echoDetail('Παιδί', $smoker);
-				echoDetail('Ζευγάρι', $smoker);
+				echoDetail('Κατοικίδιο', $pet);
+				echoDetail('Παιδί', $child);
+				echoDetail('Ζευγάρι', $couple);
 			?></span>
 		</div>
 	</div>

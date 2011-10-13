@@ -1,7 +1,4 @@
-<?php
-    $html->script('jquery-1.6.4.min', false);
-    $html->script('main', false);
-?>
+
 <!--
 <div id='top-frame' class='frame'>
     <div id='top-title' class='title'>

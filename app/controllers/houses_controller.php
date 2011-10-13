@@ -121,7 +121,6 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
-                $this->Session->write("houseid", $this->House->id);
                 $this->redirect(array('action' => 'index'));
             }
         }
@@ -133,7 +132,6 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
         $this->checkAccess( $id );
         $this->House->delete( $id );
         $this->Session->setFlash('The house with id: '.$id.' has been deleted.');
-        $this->Session->write("houseid", NULL);
         $this->redirect(array('action'=>'index'));
     }
 
@@ -148,7 +146,6 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
         else {
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('The house has been updated.');
-                $this->Session->write("houseid", $this->House->id);
                 $this->redirect(array('action' => 'index'));
             }
         }
