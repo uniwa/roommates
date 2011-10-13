@@ -65,8 +65,8 @@ $this->set('house_id' , $id);
     private function hasAccess($id) {
         /* check if user owns house with givven id */
         $this->House->id = $id;
-        $this->House->read();
-        if ($this->Auth->user('id') == $this->House->user_id) {
+        $house = $this->House->read();
+        if ($this->Auth->user('id') == $house["House"]["user_id"]) {
             return True;
         }
         else {
