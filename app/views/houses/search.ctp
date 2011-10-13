@@ -60,16 +60,6 @@
                                                                         'default' => '2'    ));
             ?>
         </td>
-        <td>
-            <?php echo 'Διαθέτει σπίτι '.$this->Form->checkbox( 'Preference.has_house',
-                                                                array(  'value' => 1,
-                                                                        'checked' => false,
-                                                                        'hiddenField' => false));
-//                     echo 'Διαθέτει σπίτι '.$this->Form->input(  'Preference.has_house',
-//                                                                 array(  'label' => '',
-//                                                                         'type' => 'checkbox'));
-            ?>
-        </td>
     </tr>
 </table>
 
@@ -104,8 +94,11 @@
             ?>
         </td>
         <td>
-            <?php echo 'Επιπλομένο '.$this->Form->checkbox('furnitured', array( 'hiddenField' => false,
-                                                                                'checked' => false  ));
+            <?php   echo $this->Form->input('furnitured', array('label' => 'Επιπλομένο ',
+                                                                'options' => array( 'Όχι',
+                                                                                    'Ναι',
+                                                                                    'Αδιάφορο'),
+                                                                'default' => '2'    ));
             ?>
         </td>
     </tr>
@@ -127,7 +120,7 @@
             <?php echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search'));?>
         </td>
         <td>
-            <?php echo $this->Form->submit('καθαρισμός πεδίων', array(  'name' => 'reset_fields'    ));?>
+            <?php echo $this->Form->submit('καθαρισμός πεδίων', array('name' => 'reset_fields'));?>
         </td>
     </tr>
 </table>
