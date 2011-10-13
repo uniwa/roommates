@@ -8,7 +8,7 @@ if( ($this->Session->read( 'Auth.User.id') == $house['User']['id'] ) || ($this->
   echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
  }
 
- echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['id']}");
+ echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['Profile']['id']}");
 ?>
 </div>
 
