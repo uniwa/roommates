@@ -5,6 +5,8 @@
 			<?php
 				$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
 				$age = $profile['Profile']['age'];
+				$email = $profile['Profile']['email'];
+				$phone = ($profile['Profile']['phone'])?$profile['Profile']['phone']:'-';
 				$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
 				$smoker = ($profile['Profile']['smoker'])?'ναι':'όχι';
 				$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
@@ -58,19 +60,26 @@
 				echoDetail('Κατοικίδιο', $pet);
 				echoDetail('Παιδί', $child);
 				echoDetail('Ζευγάρι', $couple);
-			?></span>
+			?>
 			
-			<?php if ($weare == 1)
-				echo 'Είμαι ' . $weare . ' άτομo';
-			      else
-				echo 'Είμαστε ' . $weare . ' άτομα';?>
-
+			<?php
+				if($weare == 1){
+					echo "Είμαι <span class='profile-strong'>".$weare."</span> άτομο";
+				}else{
+					echo "Είμαστε <span class='profile-strong'>".$weare."</span> άτομα";
+				}
+			?>
 			<br />
-
-			<?php if ($mates_wanted == 1)
-				echo 'Ζητείται ' . $mates_wanted . ' άτομο';
-			      else
-				echo 'Ζητούνται ' . $mates_wanted . ' άτομα';?>
+			<?php
+				if($mates_wanted == 1){
+					echo "Ζητείται <span class='profile-strong'>".$mates_wanted."</span> άτομο";
+				}else{
+					echo "Ζητούνται <span class='profile-strong'>".$mates_wanted."</span> άτομα";
+				}
+				echo '<br />';
+				echoDetail('Email', $email);
+				echoDetail('Τηλέφωνο', $phone);
+			?>
 			<br />
             <div class="my-house">
                 <?php if ($houseid != NULL){
@@ -114,19 +123,24 @@
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
 				
-				if ($age_min == $age_max){?> 
-					<span class='profile-strong'><?php
-						echo $profile['Preference']['age_min'];
-				}
-				else{
-					if($age_min){
-				?>από <span class='profile-strong'><?php
-						echo $profile['Preference']['age_min']." ";
+				if(isset($age_min) && isset($age_max)){
+					if ($age_min == $age_max){?> 
+						<span class='profile-strong'><?php
+							echo $profile['Preference']['age_min'];
 					}
-					if($age_max){
-				?></span>μέχρι <span class='profile-strong'><?php
-						echo $profile['Preference']['age_max'];
+					else{
+						if($age_min){
+					?>από <span class='profile-strong'><?php
+							echo $profile['Preference']['age_min']." ";
+						}
+						if($age_max){
+					?></span>μέχρι <span class='profile-strong'><?php
+							echo $profile['Preference']['age_max'];
+						}
 					}
+				}else{
+					?><span class='profile-strong'><?php
+							echo 'αδιάφορο';
 				}
 			?></span><br />
 			<?php

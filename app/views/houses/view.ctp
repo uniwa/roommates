@@ -147,8 +147,10 @@
 
         </table>
 
+
     </div>
     <!--left collumn-->
+
 
 
     <div class="rightCol">
@@ -160,10 +162,12 @@
                     echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
                 }
 
-                echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['Profile']['id']}");
-                ?>
 
+if( ($this->Session->read( 'Auth.User.id') != $house['User']['id'] ) || ($this->Session->read('Auth.User.role') == 'admin') ){
 
+	echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['Profile']['id']}");
+}
+ ?>
 
             <?php
             //TODO remove this whole php tag

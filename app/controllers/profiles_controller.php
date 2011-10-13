@@ -17,6 +17,15 @@ class ProfilesController extends AppController {
 
         }
 
+		if($this->data){
+			$profile = urlencode($profile);
+			// Merge our URL-encoded data with the URL parameters set above...
+			$params = array_merge($url, $this->data['Profile']);
+			$params = array_merge($params, array('searchtype' => $searchType));
+			// Do the (magical) redirect
+			$this->redirect($params);
+		}
+		
     	$genderLabels = Configure::read('GenderLabels');
     	$this->set('genderLabels', $genderLabels);
 
@@ -43,12 +52,12 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
 
-	$this->checkExistance($id);
+	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         /* get profile  contains:
                 Profile + Preference + User + House
-         */
+		*/
         $profile = $this->Profile->read();
         $this->set('profile', $profile);
         /* get house id of this user - NULL if he doesn't own one */
@@ -91,7 +100,11 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-        $this->checkExistance($id);
+
+	$uid = $this->Auth->user('id');
+	//pr($uid); die();	
+
+        $this->checkExistence($id);
 		$this->checkAccess( $id );
         $this->Profile->id = $id;
 
@@ -100,7 +113,7 @@ class ProfilesController extends AppController {
         } else {
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-                $this->redirect(array('action'=> 'index'));
+                $this->redirect(array('action'=> "view/$uid"));
             }
         }
 
@@ -278,8 +291,8 @@ class ProfilesController extends AppController {
         $profile = $this->Profile->find('first', array('conditions' => array(
                                                        'Profile.user_id' => $this->Auth->user('id'))));
         $prefs = $profile['Preference'];
-		$this->data['Profile'] = $prefs;
-		unset($this->params['url']['Profile']);
+		unset($this->params['named']);
+		$this->params['named'] = $prefs;
 		$this->simpleSearch();
     }
 
@@ -329,8 +342,8 @@ class ProfilesController extends AppController {
 		return $order;
 	}
 
-	//check user's existance
-	private function checkExistance($profile_id){
+	//check user's existence
+	private function checkExistence($profile_id){
 		$this->Profile->id = $profile_id;
 		$profile = $this->Profile->read();
 		if( $profile == NULL ){

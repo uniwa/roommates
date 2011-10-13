@@ -105,6 +105,7 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
     }
 
     function add() {
+		
         /* if user already owns a house bail out */
         $conditions = array("user_id" => $this->Auth->user('id'));
         $res = $this->House->find('first', array('conditions' => $conditions));
@@ -119,7 +120,9 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Your house has been saved.');
-                $this->redirect(array('action' => 'index'));
+		$hid = $this->House->id;
+		//pr($hid); die();
+                $this->redirect(array('action' => "view/$hid"));
             }
         }
 
@@ -134,6 +137,7 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
     }
 
     function edit($id = null) {
+
 	$this->checkExistance($id);
 	$this->checkAccess( $id );
 	$this->House->id = $id;
@@ -144,7 +148,7 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
         else {
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('The house has been updated.');
-                $this->redirect(array('action' => 'index'));
+                $this->redirect(array('action' => "view/$id"));
             }
         }
 

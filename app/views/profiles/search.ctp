@@ -173,6 +173,7 @@
                                     $gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
                                     echo $gender."<br />\n";
                                     echo "email: ".$profile['Profile']['email']."<br />\n";
+									echo "επιθυμητοί συγκάτοικοι: ".$profile['Profile']['max_roommates']."<br />\n";
                                 ?>
                             </div>
                             <div class='profile-house'>
