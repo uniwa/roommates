@@ -211,7 +211,6 @@ class ProfilesController extends AppController {
         }
         // exclude logged user's profile
         $searchconditions['Profile.user_id !='] = $this->Auth->user('id');
-		var_dump($searchconditions);
 
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;
