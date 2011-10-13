@@ -19,8 +19,8 @@ class HousesController extends AppController {
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
 
-		if(isset($this->params['form']['selection'])){
-			$selectedOrder = $this->params['form']['selection'];
+		if(isset($this->params['named']['selection'])){
+			$selectedOrder = $this->params['named']['selection'];
 			$ascoptions = array('asc', 'desc');
 			$orderField = 'House.modified';
 			switch($selectedOrder){
@@ -68,11 +68,12 @@ class HousesController extends AppController {
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
-            'order' => $order, 'limit' => 15
+            'order' => $order,
+			'conditions' => array('House.user_id !=' => $this->Auth->user('id')),
+			'limit' => 15
         );
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
-        //$this->set('houses', $this->House->find('all'));
     }
 
     function beforeFilter() {
