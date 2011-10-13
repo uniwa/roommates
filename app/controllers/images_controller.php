@@ -15,7 +15,7 @@ class ImagesController extends AppController {
                 $this->cakeError( 'error403' );
             }
             if ( $this->imageCount($id) >= 5 ) {
-                $this->Session->setFlash(__('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών'));
+                $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών');
                 $this->redirect($this->referer());
             }
         }
