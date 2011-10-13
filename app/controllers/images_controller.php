@@ -15,7 +15,7 @@ class ImagesController extends AppController {
         }
         if ( $this->imageCount($id) >= 5 ) {
             $this->Session->setFlash(__('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών'));
-            $this->redirect($this->referer();
+            $this->redirect($this->referer());
         }
 		if(!empty($this->data)) {
 			$this->Image->create();
