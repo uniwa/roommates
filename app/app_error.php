@@ -16,8 +16,8 @@ class AppError extends ErrorHandler {
 	 */
 	function error403($params) {
 		          
-		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] ):$this->controller->set( 'title', 'Forbidden' );
-		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] ):$this->controller->set( 'name', 'Forbidden' );
+		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] ):$this->controller->set( 'title', 'Δεν επιτρέπεται η πρόσβαση' );
+		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] ):$this->controller->set( 'name', 'Δεν επιτρέπεται η πρόσβαση' );
 		$this->controller->set( 'url', $this->controller->here );
 		(isset( $params['message'] ) )?$this->controller->set( 'message', $params['message'] ):$this->controller->set( 'message', NULL );
 		$this->_outputMessage( 'error403');
