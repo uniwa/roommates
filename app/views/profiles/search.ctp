@@ -66,7 +66,7 @@
                                             'default' => '2',
                                             'value' => (isset($defaults['pref_couple'])) ? $defaults['pref_couple'] : '2' ));
     echo '</td><td>';
-    echo 'Διαθέτει σπίτι '.$this->Form->checkbox('User.hasHouse', array('value' => 1,
+    echo 'Διαθέτει σπίτι '.$this->Form->checkbox('has_house', array('value' => 1,
                                                                         'checked' => isset($defaults['has_house']) ? $defaults['has_house'] : false,
                                                                         'hiddenField' => false));
 ?>
