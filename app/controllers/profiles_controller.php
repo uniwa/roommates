@@ -97,25 +97,19 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-
-	$uid = $this->Auth->user('id');
-	//pr($uid); die();	
-
         $this->checkExistence($id);
-	$this->checkAccess( $id );
+    	$this->checkAccess( $id );
         $this->Profile->id = $id;
 
         if (empty($this->data)) {
              $this->data = $this->Profile->read();
 	}
         else {
-		if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){ 
-        		$this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-       			$this->redirect(array('action'=> "view/$uid"));
-            		}
+            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
+                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
+                    $this->redirect(array('action'=> "view", $id));
+            }
 		}
-       
-
         $dob = array();
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
