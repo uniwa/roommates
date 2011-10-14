@@ -179,12 +179,16 @@
 <ul class=ulimage>
         <li class="liimage">
             <?php echo $this->Html->link(
-            $this->Html->image('uploads/thumbnails/' . $image['Image']['location'], array('alt' => 'house image')),
+            $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),
             '/img/uploads/medium/' . $image['Image']['location'],
             array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
         ); ?>
             <div class="imageactions">
-                <?php echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images', 'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true))); ?>
+                <?php 
+                    if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
+                        echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images', 'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true)));
+                    }
+                ?>
             </div>
         </li>
         <?php endforeach; ?>
@@ -211,10 +215,10 @@
 </div>
 
 <div class="clear-both"></div>
-<div class="houseProfile">
-    <h2></h2>
+<!-- <div class="houseProfile">
+    <h2></h2> -->
         <?php
-
+/*
     $i = 0;
     foreach ($images as $image):
 
@@ -250,7 +254,7 @@
 
             if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
                 echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
-            }
+            }*/
             ?>
-    </div>
+<!--    </div> -->
 </div>
