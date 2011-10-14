@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS `roommates`.`heating_types` ;
 
 CREATE  TABLE IF NOT EXISTS `roommates`.`heating_types` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `type` VARCHAR(10) NOT NULL ,
+  `type` VARCHAR(20) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
