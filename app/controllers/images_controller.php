@@ -33,6 +33,7 @@ class ImagesController extends AppController {
 			else
 			{
 				$this->params['data']['Image']['location'] = null;
+                /* TODO: add error message */
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
 			}
 			
