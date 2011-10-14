@@ -68,14 +68,16 @@ class Image extends AppModel {
         return $new_name;
 	}
 
-	function delImage($filename)
+	function delImage($house_id, $filename)
 	{
-		// TODO: Code for condition where unlink fails
-		// TODO: Retrieve different pictures from root model
-		unlink(WWW_ROOT . "img/uploads/thumbnails/" . $filename);
-		unlink(WWW_ROOT . "img/uploads/medium/" . $filename);
-		unlink(WWW_ROOT . "img/uploads/large/" . $filename);
-		unlink(WWW_ROOT . "img/uploads/original/" . $filename);
+        $base_path = WWW_ROOT . "img/houses/$house_id/";
+        $original = $base_path . "orig_" . $filename;
+        $thumbnail = $base_path . "thumb_" . $filename;
+        $medium = $base_path . "_medium" . $filename;
+
+		if (! unlink($original)) return False;
+		if (! unlink($thumbnail)) return False;
+		if (! unlink($medium)) return False;
 		return true;
 	}
 

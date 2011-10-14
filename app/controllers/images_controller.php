@@ -65,7 +65,7 @@ class ImagesController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Image->delete($id)) {
-			$this->Image->delImage($imageData['Image']['location']);
+			$this->Image->delImage($house_id, $imageData['Image']['location']);
 			$this->Session->setFlash(__('Η εικόνα διαγραφήκε με επιτυχία.', true));
 			$this->redirect(array('action'=>'index'));
 		}
