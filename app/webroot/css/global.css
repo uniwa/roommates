@@ -50,6 +50,10 @@ q:before, q:after {
     outline: 0;
 }
 
+textarea {
+    resize: none;
+}
+
 /*! Reset css*/
 
 /*google web font*/
@@ -423,7 +427,7 @@ input[type=submit], input[type=reset] {
     border-radius: 11px;
     cursor: pointer;
     text-decoration: none;
-    margin-top: -3px;
+    margin-top: 10px;
     border-width: 1px;
 }
 
@@ -478,14 +482,23 @@ input[type=submit], input[type=reset] {
 
 }
 
+#HouseAddForm input[type=text],#HouseEditForm input[type=text]{
+    width:50px;
+    text-align: right;
+}
+
 select {
     background: #AACFE4;
     color: #21759B;
-    padding: 4px;
+
     cursor: pointer;
     border: solid 1px #21759B;
     background: #DFE4EE;
     max-width: 250px;
+ border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+
 }
 
 .cb1 {

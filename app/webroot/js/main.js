@@ -1,6 +1,8 @@
 $(function(){
 
 
+    $("textarea").autoGrow();
+
     $("#fileupload").customFileInput();
 
 // fancybox
