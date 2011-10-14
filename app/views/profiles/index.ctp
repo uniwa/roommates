@@ -18,7 +18,7 @@
         </div>
         <div id='bottom-subtitle' class='subtitle'>
             <?php
-                $count = count($profiles);
+				$count = $this->Paginator->counter(array('format' => '%count%'));//count($profiles);
                 if($count == 0){
                     $foundmessage = "Δεν βρέθηκαν προφίλ";
                 }else{

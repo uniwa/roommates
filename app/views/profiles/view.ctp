@@ -6,7 +6,7 @@
 				$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
 				$age = $profile['Profile']['age'];
 				$email = $profile['Profile']['email'];
-				$phone = $profile['Profile']['phone'];
+				$phone = ($profile['Profile']['phone'])?$profile['Profile']['phone']:'-';
 				$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
 				$smoker = ($profile['Profile']['smoker'])?'ναι':'όχι';
 				$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
@@ -43,7 +43,7 @@
 			</div>
 
             <div id='profile-edit'>
-                <div id="actions">
+                <div class="actions">
                     <?php
                         if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
                             echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
@@ -84,9 +84,16 @@
             <div class="my-house">
                 <?php if ($houseid != NULL){
                         //reads only the first users house
-                        echo $this->Html->link($this->Html->image("home-small.png", array("alt" => "Το σπίτι μου", "title" => "Το σπίτι μου", "class" => "home-small")), 
+                        echo $this->Html->link(
+                            $this->Html->image("homedefault.png",
+                                               array("alt" => "Το σπίτι μου",
+                                                    "title" => "Το σπίτι μου",
+                                                    "class" => "home-small",
+                                                   "style" => "height:30px"
+                                               )
+                            ). " Το σπίτι μου ",
                                            "/houses/view/$houseid", 
-                                       array('escape'=>false));
+                                       array('escape'=>false ));
                       } ?>
             </div>
 		</div>

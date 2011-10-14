@@ -16,11 +16,15 @@ class HousesController extends AppController {
             return $this->set(compact('houses'));
         }
 
+		$images = $this->House->Image->find('list', array('fields' => array('house_id', 'location')));
+		$this->set('images', $images);
+		
+
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
 
-		if(isset($this->params['form']['selection'])){
-			$selectedOrder = $this->params['form']['selection'];
+		if(isset($this->params['named']['selection'])){
+			$selectedOrder = $this->params['named']['selection'];
 			$ascoptions = array('asc', 'desc');
 			$orderField = 'House.modified';
 			switch($selectedOrder){
@@ -68,19 +72,20 @@ class HousesController extends AppController {
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
-            'order' => $order, 'limit' => 15
+            'order' => $order,
+			'conditions' => array('House.user_id !=' => $this->Auth->user('id')),
+			'limit' => 15
         );
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
-        //$this->set('houses', $this->House->find('all'));
     }
 
     function beforeFilter() {
         parent::beforeFilter();
         
-	if( $this->RequestHandler->isRss()){
-		$this->Auth->allow( 'index' );
-	}
+		if( $this->RequestHandler->isRss()){
+			$this->Auth->allow( 'index' );
+		}
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -90,21 +95,21 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
-	$this->checkExistance($id);
+		$this->checkExistance($id);
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-	$this->set('house', $house);
+		$this->set('house', $house);
 
-$images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+		$images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
-
     }
 
     function add() {
+		
         /* if user already owns a house bail out */
         $conditions = array("user_id" => $this->Auth->user('id'));
         $res = $this->House->find('first', array('conditions' => $conditions));
@@ -118,8 +123,10 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('Your house has been saved.');
-                $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.');
+		$hid = $this->House->id;
+		//pr($hid); die();
+                $this->redirect(array('action' => "view/$hid"));
             }
         }
 
@@ -129,11 +136,12 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
     function delete($id) {
         $this->checkAccess( $id );
         $this->House->delete( $id );
-        $this->Session->setFlash('The house with id: '.$id.' has been deleted.');
+        $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.');
         $this->redirect(array('action'=>'index'));
     }
 
     function edit($id = null) {
+
 	$this->checkExistance($id);
 	$this->checkAccess( $id );
 	$this->House->id = $id;
@@ -143,8 +151,8 @@ $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>
         }
         else {
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('The house has been updated.');
-                $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.');
+                $this->redirect(array('action' => "view/$id"));
             }
         }
 
