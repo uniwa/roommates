@@ -138,14 +138,28 @@ class HousesController extends AppController {
         $this->House->begin();
         /* delete associated images first */
         $conditions = array("house_id" => $id);
-        $this->House->Image->deleteAll($conditions);
-        /* remove from FS */
-        $this->House->Image->delete_all($id);
-
-        /* delete house */
-        $this->House->delete( $id );
+        if ( ! $this->House->Image->deleteAll($conditions) ) {
+            $this->House->rollback();
+            $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από την βάση.');
+            $this->redirect(array('action'=>'index'));
+        }
+        else {
+            /* remove from FS */
+            if (! $this->House->Image->delete_all($id) ) {
+                $this->House->rollback();
+                $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από το σύστημα αρχείων.');
+                $this->redirect(array('action'=>'index'));
+            }
+            else {
+                /* delete house */
+                if (! $this->House->delete( $id ) ) {
+                    $this->House->rollback();
+                    $this->Session->setFlash('Αδυναμία διαγραφής σπιτιού');
+                    $this->redirect(array('action'=>'index'));
+                }
+            }
+        }
         $this->House->commit();
-
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.');
         $this->redirect(array('action'=>'index'));
     }
