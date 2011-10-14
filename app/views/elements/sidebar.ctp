@@ -1,4 +1,4 @@
-
+<?php ?>
 
 <div id="navigation" class="column">
     <ul id="nav">
@@ -38,6 +38,11 @@
                                                                        'action' => 'search')); ?>
         </li>
 
+        <li>
+            <?php echo $this->Html->link('Αναζήτηση Σπιτιού', array(    'controller' => 'houses',
+                                                                        'action' => 'search')); ?>
+        </li>
+
         <?php if ($this->Session->read('Auth.User')) {
             echo '<li>';
             echo $this->Html->link('Αποσύνδεση ('.$this->Session->read("Auth.User.username").")", array('controller' => 'users',
@@ -45,7 +50,7 @@
             echo '</li>';
         }?>
         <li class="rss">
-            <a href="#" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rss.png"
+            <a href="/roommates/houses/index.rss" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rssIn.png"
                                                alt="RSS-feed"/></a>
         </li>
     </ul>

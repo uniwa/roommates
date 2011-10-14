@@ -36,7 +36,9 @@ class Profile extends AppModel {
 	
 		'phone' => array(
 			'rule' => '/^[0-9]{10}$/i',
-			'message' => 'Εισάγετε ένα έγκυρο δεκαψήφιο τηλέφωνο επικοινωνίας'),
+			'message' => 'Εισάγετε ένα έγκυρο δεκαψήφιο τηλέφωνο επικοινωνίας',
+			'required' => false, 
+			'allowEmpty' => true),
 			
 		'smoker' => array(
 			'rule' => '/^[0-1]$/',
@@ -64,7 +66,7 @@ class Profile extends AppModel {
 	
 		'max_roommates' => array(
 			'rule' => '/^[1-9]{1}$/i',
-			'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων [1,9]'),
+			'message' => 'Εισάγετε έναν έγκυρο αριθμό συγκατοίκων από 1 έως 9 για τον μέγιστο αριθμό συγκατοίκων της οικίας'),
 	
 		'visible' => array(
 			'rule' => '/^[0-1]$/',
@@ -72,12 +74,16 @@ class Profile extends AppModel {
 			'required' => false,
 			'allowEmpty' => true),
 
-		'we_are' => array('coupleIsMinTwo'=>array(
-			'rule' => array('coupleIsMinTwo', 'couple'),
-			'message' => 'Με βάση το επιλεγμένο πεδίο Συζώ, επιβάλλεται η εισαγωγή 2 ή περισσότερων ατόμων'//,
-			//'required' => true,
-			//'allowEmpty' => false 
-			)),
+		'we_are' => array(
+			
+			'rule1'=>array(	
+				'rule' => '/^[1-8]{1}$/i',
+				'message' => 'Εισάγετε έναν έγκυρο αριθμό από 1 έως 8 για το πόσα άτομα κατοικούν αυτή τη στιγμή στην οικία'),
+
+			'coupleIsMinTwo'=>array(
+				'rule' => array('coupleIsMinTwo', 'couple'),
+				'message' => 'Με βάση το επιλεγμένο πεδίο Συζώ, επιβάλλεται η εισαγωγή 2 ή περισσότερων ατόμων')
+		),
 );
 
 	function isValidDate($check) {
@@ -89,7 +95,7 @@ class Profile extends AppModel {
 		$v1 = $weare["we_are"];
 		$v2 = $this->data[$this->name][$iscouple];
 
-		if( ($v2 == 1 && $v1 < 2) || ($v1 > 9 || $v1 == 0) )
+		if( ($v2 == 1 && $v1 < 2) )
 			return false;
 		
 		else return true;
