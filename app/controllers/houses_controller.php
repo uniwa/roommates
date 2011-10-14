@@ -82,10 +82,9 @@ class HousesController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        
-		if( $this->RequestHandler->isRss()){
-			$this->Auth->allow( 'index' );
-		}
+        if( $this->RequestHandler->isRss()){
+            $this->Auth->allow( 'index' );
+        }
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -95,14 +94,15 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
-		$this->checkExistance($id);
+        $this->checkExistance($id);
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-		$this->set('house', $house);
+        $this->set('house', $house);
 
-		$images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+        $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
@@ -141,10 +141,9 @@ class HousesController extends AppController {
     }
 
     function edit($id = null) {
-
-	$this->checkExistance($id);
-	$this->checkAccess( $id );
-	$this->House->id = $id;
+        $this->checkExistance($id);
+        $this->checkAccess($id);
+        $this->House->id = $id;
 
         if (empty($this->data)) {
             $this->data = $this->House->read();
@@ -171,25 +170,25 @@ class HousesController extends AppController {
         }
         $this->set('available_constr_years', $entries);
 
-	$no_mates = array();
-	for ($i = 1; $i <= 9; $i++){
-		$no_mates[$i] = $i;
-	}
-	$this->set('places_availability', $no_mates);
+        $no_mates = array();
+        for ($i = 1; $i <= 9; $i++){
+            $no_mates[$i] = $i;
+        }
+        $this->set('places_availability', $no_mates);
     }
 
     private function checkAccess( $house_id ){
     	
-	$this->House->id = $house_id;
-	$house = $this->House->read();
-	$user_id = $house['User']['id'];
+        $this->House->id = $house_id;
+        $house = $this->House->read();
+        $user_id = $house['User']['id'];
 
-		
-	if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){	
-		/*
-		 * More info about params in app/app_error.php
-		 */
-		$this->cakeError( 'error403' );
+
+        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){
+            /*
+            * More info about params in app/app_error.php
+            */
+            $this->cakeError( 'error403' );
     	} 
     }
 
@@ -200,6 +199,100 @@ class HousesController extends AppController {
         if($house == NULL ){	
             $this->cakeError( 'error404' );
         }
+    }
+
+    private function age_to_year($age) {
+        return date('Y') - $age;
+    }
+
+    function search () {
+        $municipalities = $this->House->Municipality->find('list');
+        $this->set('municipalities', $municipalities);
+        
+        if(isset($this->params['url']['simple_search'])) {
+            
+            $options['joins'] = array(
+                array(  'table' => 'users',
+                        'alias' => 'User',
+                        'type'  => 'inner',
+                        'conditions' => array('House.user_id = User.id')
+                ),
+                array(  'table' => 'profiles',
+                        'alias' => 'Profile',
+                        'type'  => 'inner',
+                        'conditions' => $this->getMatesConditions()
+                )
+            );
+
+            $options['conditions'] = $this->getHouseConditions();
+            $options['limit'] = 15;
+            $options['contain'] = '';
+            $this->paginate = $options;
+            $this->House->recursive = -1;
+            $results = $this->paginate('House');
+
+            $this->set('results', $results);
+            $this->set('defaults', $this->params['url']);
+        }
+    }
+
+    private function getHouseConditions() {
+        $house_prefs = $this->params['url'];
+
+        $house_conditions = array();
+        if(!empty($house_prefs['max_price'])) {
+            $house_conditions['House.price <='] = $house_prefs['max_price'];
+        }
+        if(!empty($house_prefs['min_area'])) {
+            $house_conditions['House.area >='] = $house_prefs['min_area'];
+        }
+        if(!empty($house_prefs['max_area'])) {
+            $house_conditions['House.area <='] = $house_prefs['max_area'];
+        }
+        if(!empty($house_prefs['municipality'])) {
+            $house_conditions['House.municipality_id'] = $house_prefs['municipality'];
+        }
+        if($house_prefs['furnitured'] < 2) {
+            $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
+        }
+        if(isset($this->params['url']['accessibility'])) {
+            $house_conditions['House.disability_facilities'] = 1;
+        }
+        $house_conditions['House.user_id !='] = $this->Auth->user('id');
+
+        return $house_conditions;
+    }
+
+    private function getMatesConditions() {
+        $mates_prefs = $this->params['url'];
+
+        $mates_conditions = array();
+        if(!empty($mates_prefs['min_age'])) {
+            $mates_conditions['Profile.dob <='] = $this->age_to_year($mates_prefs['min_age']);
+        }
+        if(!empty($mates_prefs['max_age'])) {
+            $mates_conditions['Profile.dob >='] = $this->age_to_year($mates_prefs['max_age']);
+        }
+        if($mates_prefs['gender'] < 2) {
+            $mates_conditions['Profile.gender'] = $mates_prefs['gender'];
+        }
+        if($mates_prefs['smoker'] < 2) {
+            $mates_conditions['Profile.smoker'] = $mates_prefs['smoker'];
+        }
+        if($mates_prefs['pet'] < 2) {
+            $mates_conditions['Profile.pet'] = $mates_prefs['pet'];
+        }
+        if($mates_prefs['child'] < 2) {
+            $mates_conditions['Profile.child'] = $mates_prefs['child'];
+        }
+        if($mates_prefs['couple'] < 2) {
+            $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
+        }
+        $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
+        // required condition for the inner join
+        array_push($mates_conditions, 'User.id = Profile.user_id');
+
+        return $mates_conditions;
     }
 }
 ?>
