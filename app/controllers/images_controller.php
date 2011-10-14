@@ -88,7 +88,7 @@ class ImagesController extends AppController {
 
     private function validType($buffer) {
         /* check if uploaded image is a valid filetype */
-        $valid_types = array("png", "jpg", "jpeg");
+        $valid_types = array("png", "jpg", "jpeg", "gif");
         $type = pathinfo($buffer, PATHINFO_EXTENSION);
 
         if (in_array($type, $valid_types)) {
