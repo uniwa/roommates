@@ -85,11 +85,6 @@ class Profile extends AppModel {
 				'rule' => array('coupleIsMinTwo', 'couple'),
 				'message' => 'Με βάση το επιλεγμένο πεδίο Συζώ, επιβάλλεται η εισαγωγή 2 ή περισσότερων ατόμων'
 			)
-
-			/*'noMoreThanEight'=>array(
-				'rule' => '/^[1-8]{1}$/i',
-				'message' => 'Εισάγετε έναν έγκυρο αριθμό για το πόσα άτομα κατοικούν αυτή τη στιγμή στην οικία'	
-			)*/
 		),
 );
 
@@ -102,7 +97,7 @@ class Profile extends AppModel {
 		$v1 = $weare["we_are"];
 		$v2 = $this->data[$this->name][$iscouple];
 
-		if( ($v2 == 1 && $v1 < 2) /*|| ($v1 > 9 || $v1 <= 0)*/ )
+		if( ($v2 == 1 && $v1 < 2) )
 			return false;
 		
 		else return true;

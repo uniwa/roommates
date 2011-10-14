@@ -130,15 +130,16 @@
             <!-- availability -->
             <tr>
                 <th>Διαμένουν:</th>
-                <td>    <?php echo Sanitize::html($house['House']['currently_hosting'])?> <?php echo $house['House']['currently_hosting'] == 1
-                        ? 'άτομο' : 'άτομα'?></td>
+                <td>    
+			<?php echo Sanitize::html($house['House']['currently_hosting'])?> 
+			<?php echo $house['House']['currently_hosting'] == 1 ? 'άτομο' : 'άτομα'?>
+		</td>
             </tr>
-            <tr>
-                <th>Μπορούν συνολικά <br> να συγκατοικήσουν:</th>
-                <td><br>
-                    <?php echo Sanitize::html($house['House']['total_places'])?> <?php echo $house['House']['total_places'] == 1
-                        ? 'άτομο' : 'άτομα'?></td>
-            </tr>
+		
+	    <tr>
+		<th>Διαθέσιμες θέσεις</th>
+		<td> <?php echo Sanitize::html($house['House']['free_places'])?> από <?php echo Sanitize::html($house['House']['total_places'])?> συνολικά θέσεις </td>
+	    </tr>	
 
             <tr>
                 <th>Περιγραφή:</th>
