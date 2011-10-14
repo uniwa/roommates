@@ -70,7 +70,7 @@ class Image extends AppModel {
 
 	function delImage($house_id, $filename)
 	{
-        $base_path = WWW_ROOT . "img/houses/$house_id/";
+        $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
         $original = $base_path . "orig_" . $filename;
         $thumbnail = $base_path . "thumb_" . $filename;
         $medium = $base_path . "_medium" . $filename;
@@ -82,10 +82,11 @@ class Image extends AppModel {
 	}
 
     function delete_all($house_id) {
-        $base_path = WWW_ROOT . "img/houses/$house_id/";
+        $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
 
         # first delete directory contents
         $handle = opendir($base_path); // TODO: permission checks/exit on error
+        if ($handle === False) die('error'); // TODO reove die function, not pretty
         while ( false !== ($file = readdir($handle)) ) {
             unlink($file);
         }
