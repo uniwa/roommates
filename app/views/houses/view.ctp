@@ -6,7 +6,7 @@
         <div class="defaultimage">
             <?php
                        if (isset($images[0]))
-            echo $this->Html->image('uploads/thumbnails/' . $images[0]['Image']['location'], array('alt' => 'house image'));
+            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $images[0]['Image']['location'], array('alt' => 'house image'));
         else
             echo $this->Html->image('homedefault.png', array('alt' => 'house image')); ?>
 
@@ -194,8 +194,8 @@ if( ($this->Session->read( 'Auth.User.id') != $house['User']['id'] ) || ($this->
 
         <div class="galleryimage">
             <?php echo $this->Html->link(
-            $this->Html->image('uploads/thumbnails/' . $image['Image']['location'], array('alt' => 'house image')),
-            '/img/uploads/medium/' . $image['Image']['location'],
+            $this->Html->image("uploads/houses/" . $house['House']['id'] . "/thumb_"  . $image['Image']['location'], array('alt' => 'house image')),
+            '/img/uploads/houses/' . $house['House']['id'] . "/medium_" . $image['Image']['location'],
             array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
         ); ?>
 
