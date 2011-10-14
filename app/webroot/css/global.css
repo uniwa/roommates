@@ -815,7 +815,7 @@ h1 {
 
 }
 .houseProfile table td {
-   max-width:300px
+   max-width:275px;
 }
 
 .houseProfile table {
@@ -859,4 +859,29 @@ h1 {
 
 .required{
         background: url(../img/required.gif) left no-repeat;
+}
+
+
+
+
+
+
+/* gallery single view*/
+
+    .ulimage{
+        width:175px;
+    }
+
+    .liimage{
+        float:left;
+        padding: 10px 10px 0 10px;
+        max-width:130px;
+    }
+
+/* media query for big resolutions grid4 */
+@media screen and (min-width: 1100px) {
+
+    .ulimage{
+        width:320px;
+    }
 }

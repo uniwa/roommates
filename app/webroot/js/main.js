@@ -12,7 +12,7 @@ $(function(){
 
 
     $(".imageactions").css("visibility", "hidden");
-    $(".galleryimage").hover(
+    $(".liimage").hover(    
         function(){
             $(this).find('.imageactions').css("visibility", "visible");
         },
