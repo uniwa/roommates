@@ -81,6 +81,22 @@ class Image extends AppModel {
 		return true;
 	}
 
+    function delete_all($house_id) {
+        $base_path = WWW_ROOT . "img/houses/$house_id/";
+
+        # first delete directory contents
+        $handle = opendir($base_path); // TODO: permission checks/exit on error
+        while ( false !== ($file = readdir($handle)) ) {
+            unlink($file);
+        }
+        closedir($handle);
+
+        # remove directory
+        rmdir($base_path);
+
+        return True;
+    }
+
 	private function getLocationName($fileName) {
 		if(file_exists(WWW_ROOT . "img/uploads/original/" . $fileName))
 		{
