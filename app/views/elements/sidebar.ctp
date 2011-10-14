@@ -50,7 +50,7 @@
             echo '</li>';
         }?>
         <li class="rss">
-            <a href="#" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rss.png"
+            <a href="/roommates/houses/index.rss" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rssIn.png"
                                                alt="RSS-feed"/></a>
         </li>
     </ul>

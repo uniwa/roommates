@@ -63,7 +63,7 @@
             ?>
         </td>
         <td>
-            <?php   echo $this->Form->input('furnitured', array('label' => 'Επιπλομένο ',
+            <?php   echo $this->Form->input('furnitured', array('label' => 'Επιπλωμένο ',
                                                                 'options' => array( 'Όχι',
                                                                                     'Ναι',
                                                                                     'Αδιάφορο'),
@@ -205,7 +205,7 @@
                                     <div class='house-details'>
                                         <?php
                                             echo 'Τιμή '.$house['House']['price'].'€, Εμβαδό '.$house['House']['area'].' τ.μ. ';
-                                            echo $house['House']['furnitured'] ? 'Επιπλομένο<br/>' : 'Μη επιπλομένο<br/>';
+                                            echo $house['House']['furnitured'] ? 'Επιπλωμένο<br/>' : 'Μη επιπλωμένο<br/>';
                                             echo 'Δήμος '.$municipalities[$house['House']['municipality_id']].'<br/>';
                                             if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ';
                                         ?>
