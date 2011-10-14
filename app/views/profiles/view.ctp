@@ -89,11 +89,12 @@
                                                array("alt" => "Το σπίτι μου",
                                                     "title" => "Το σπίτι μου",
                                                     "class" => "home-small",
-                                                   "style" => "height:30px"
+                                                   "style" => "height:30px;vertical-align: bottom"
                                                )
                             ). " Το σπίτι μου ",
                                            "/houses/view/$houseid", 
-                                       array('escape'=>false ));
+                                       array('escape'=>false,
+                                               'style' => 'font-size:10px'));
                       } ?>
             </div>
 		</div>

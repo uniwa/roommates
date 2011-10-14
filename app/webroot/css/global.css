@@ -30,6 +30,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
     font-family: sans-serif;
+    min-width:935px;
 }
 
 ol, ul {
@@ -869,13 +870,8 @@ h1 {
 
 
 .required{
-        background: url(../img/required.gif) left no-repeat;
+        background: url(../img/required.gif) top left no-repeat;
 }
-
-
-
-
-
 
 /* gallery single view*/
 
