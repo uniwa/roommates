@@ -15,17 +15,16 @@ class ImagesController extends AppController {
         }
         if ( $this->imageCount($id) >= 5 ) {
             $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών');
-            $this->redirect($this->referer());
+            $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
         }
 		if(!empty($this->data)) {
 			$this->Image->create();
 			
-			// how to ensure unique file names?
 			// TODO: Code to warn user about duplicate files
 			$newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
             if (! $this->validType($newName)) {
                 $this->Session->setFlash('Επιτρέπονται αρχεία εικόνας τύπου png ή jpeg');
-                $this->redirect($this->referer());
+                $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
 			if(isset($newName))
 			{
@@ -34,8 +33,7 @@ class ImagesController extends AppController {
 			else
 			{
 				$this->params['data']['Image']['location'] = null;
-				// TODO: Write code to graciously exit if Photo::saveImage fails for now just die()
-				die("I am sorry to fail you my master but I could not save your photo");
+                $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
 			}
 			
 			if ($this->Image->save($this->data)) {
@@ -45,7 +43,7 @@ class ImagesController extends AppController {
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
 			} else {
 				$this->Session->setFlash(__('Η εικόνα ΔΕΝ αποθηκεύτηκε', true));
-				$this->redirect($this->referer());
+				$this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
 			}
 		}
         $this->set('house_id' , $id);
