@@ -31,7 +31,7 @@ class Image extends AppModel {
 		$original = $base_path . "orig_" . $new_name;
 		$thumbnail = $base_path . "thumb_" . $new_name;
 		$medium = $base_path . "medium_" . $new_name;
-		if (move_uploaded_file($fileData['tmp_name'], $upload_path)) {
+		if (move_uploaded_file($fileData['tmp_name'], $original)) {
 			$resizer = new ccImageResize;
 
 			if ($resizer->resizeImage($original, $thumbnail, $thumbSizeMax,$thumbSizeType,$thumbQuality)) {
