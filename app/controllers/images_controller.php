@@ -3,6 +3,7 @@ class ImagesController extends AppController {
 
 	var $name = 'Images';
     var $uses = array("Image", "House");
+    var $max_images = 4;
 	
 	function index() {
 		$this->Image->recursive = 0;
@@ -13,7 +14,7 @@ class ImagesController extends AppController {
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
-        if ( $this->imageCount($id) >= 5 ) {
+        if ( $this->imageCount($id) >= $this->max_images ) {
             $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών');
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
         }
