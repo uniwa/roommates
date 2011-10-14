@@ -4,7 +4,7 @@
  */
 class AuthHelper extends AppHelper{
 
-	private $user_id;
+    private $user_id;
 	private $profile_id;
 	private $house_id;
 
@@ -31,7 +31,7 @@ class AuthHelper extends AppHelper{
 
 		case 'User':
 			switch( $property ){
-			 case 'id':
+             case 'id':
 			  return $this->user_id;
 			  break;
 			}
