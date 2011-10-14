@@ -135,7 +135,17 @@ class HousesController extends AppController {
 
     function delete($id) {
         $this->checkAccess( $id );
+        $this->House->begin();
+        /* delete associated images first */
+        $conditions = array("house_id" => $id);
+        $this->House->Image->deleteAll($conditions);
+        /* remove from FS */
+        $this->House->Image->delete_all($id);
+
+        /* delete house */
         $this->House->delete( $id );
+        $this->House->commit();
+
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.');
         $this->redirect(array('action'=>'index'));
     }
