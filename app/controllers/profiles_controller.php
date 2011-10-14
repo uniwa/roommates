@@ -17,33 +17,30 @@ class ProfilesController extends AppController {
 
         }
 
-		if($this->data){
-			$profile = urlencode($profile);
-			// Merge our URL-encoded data with the URL parameters set above...
-			$params = array_merge($url, $this->data['Profile']);
-			$params = array_merge($params, array('searchtype' => $searchType));
-			// Do the (magical) redirect
-			$this->redirect($params);
-		}
-		
     	$genderLabels = Configure::read('GenderLabels');
     	$this->set('genderLabels', $genderLabels);
 
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;
-		if(isset($this->params['form']['selection'])){
-			$selectedOrder = $this->params['form']['selection'];
+		if(isset($this->params['named']['selection'])){
+			$selectedOrder = $this->params['named']['selection'];
 		}
 		
 		$order = $this->getSortOrder($selectedOrder);
 
         if ($this->Auth->user('role') != 'admin'){
             $this->paginate = array(
-                        'conditions' => array('Profile.visible' => 1),
+                        'conditions' => array(
+							'Profile.visible' => 1,
+							'Profile.user_id !=' => $this->Auth->user('id')
+							),
                         'order' => $order);
         }
         else {
-            $this->paginate = array('order' => $order);
+            $this->paginate = array(
+				'order' => $order,
+				'limit' => 15
+				);
         }
 
         $profiles = $this->paginate('Profile');
@@ -100,23 +97,19 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-
-	$uid = $this->Auth->user('id');
-	//pr($uid); die();	
-
         $this->checkExistence($id);
-		$this->checkAccess( $id );
+    	$this->checkAccess( $id );
         $this->Profile->id = $id;
 
         if (empty($this->data)) {
              $this->data = $this->Profile->read();
-        } else {
-            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
-                $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
-                $this->redirect(array('action'=> "view/$uid"));
+	}
+        else {
+            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
+                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
+                    $this->redirect(array('action'=> "view", $id));
             }
-        }
-
+		}
         $dob = array();
         foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
             $dob[$year] = $year;
@@ -193,7 +186,6 @@ class ProfilesController extends AppController {
         $searchconditions = array('Profile.visible' => 1);
 
 		if(isset($searchArgs['has_house'])){
-//		if(!empty($this->data['hasHouse'])){
 			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
 			$ownerId = Set::extract($ownerId, '/House/user_id');
 			$searchconditions['Profile.user_id'] = $ownerId;

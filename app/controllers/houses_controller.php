@@ -16,11 +16,15 @@ class HousesController extends AppController {
             return $this->set(compact('houses'));
         }
 
+		$images = $this->House->Image->find('list', array('fields' => array('house_id', 'location')));
+		$this->set('images', $images);
+		
+
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
 
-		if(isset($this->params['form']['selection'])){
-			$selectedOrder = $this->params['form']['selection'];
+		if(isset($this->params['named']['selection'])){
+			$selectedOrder = $this->params['named']['selection'];
 			$ascoptions = array('asc', 'desc');
 			$orderField = 'House.modified';
 			switch($selectedOrder){
@@ -53,31 +57,31 @@ class HousesController extends AppController {
 					$ascDesc = $ascoptions[1];
 					break;
 				case 7:
-					$orderField = 'House.currently_hosting';
+					$orderField = 'House.free_places';
 					$ascDesc = $ascoptions[0];
 					break;
 				case 8:
-					$orderField = 'House.currently_hosting';
+					$orderField = 'House.free_places';
 					$ascDesc = $ascoptions[1];
 					break;
 			}
 			$order = array($orderField => $ascDesc);
 		}
 
-        $orderOptions = array('τελευταία ενημέρωση', 'ενοίκιο αύξουσα', 'ενοίκιο φθίνουσα', 'δήμος αύξουσα', 'δήμος φθίνουσα', 'τετραγωνικά αύξουσα', 'τετραγωνικά φθίνουσα', 'ένοικοι αύξουσα', 'ένοικοι φθίνουσα');
+        $orderOptions = array('τελευταία ενημέρωση', 'ενοίκιο αύξουσα', 'ενοίκιο φθίνουσα', 'δήμος αύξουσα', 'δήμος φθίνουσα', 'τετραγωνικά αύξουσα', 'τετραγωνικά φθίνουσα', 'διαθέσιμες θέσεις αύξουσα', 'διαθέσιμες θέσεις φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
-            'order' => $order, 'limit' => 15
+            'order' => $order,
+			'conditions' => array('House.user_id !=' => $this->Auth->user('id')),
+			'limit' => 15
         );
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
-        //$this->set('houses', $this->House->find('all'));
     }
 
     function beforeFilter() {
         parent::beforeFilter();
-        
         if( $this->RequestHandler->isRss()){
             $this->Auth->allow( 'index' );
         }
@@ -98,10 +102,10 @@ class HousesController extends AppController {
         $this->set('house', $house);
 
         $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
-
     }
 
     function add() {
@@ -119,7 +123,7 @@ class HousesController extends AppController {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('Your house has been saved.');
+                $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.');
 		$hid = $this->House->id;
 		//pr($hid); die();
                 $this->redirect(array('action' => "view/$hid"));
@@ -132,7 +136,7 @@ class HousesController extends AppController {
     function delete($id) {
         $this->checkAccess( $id );
         $this->House->delete( $id );
-        $this->Session->setFlash('The house with id: '.$id.' has been deleted.');
+        $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.');
         $this->redirect(array('action'=>'index'));
     }
 
@@ -146,7 +150,7 @@ class HousesController extends AppController {
         }
         else {
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('The house has been updated.');
+                $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.');
                 $this->redirect(array('action' => "view/$id"));
             }
         }

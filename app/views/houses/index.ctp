@@ -67,6 +67,14 @@
                     <div class='card'>
                         <div class='card-inner'>
                             <div class='house-pic'>
+							<?php
+								$house_id = $house['House']['id'];
+								$house_image = 'house.gif';
+								if(isset($images[$house_id])){
+									$house_image = 'uploads/thumbnails/'.$images[$house_id];
+								}
+								echo $this->Html->image($house_image, array('alt' => 'house image', 'height' => 70));
+							?>
                             </div>
                         <div class='house-info'>
                             <div class='house-name'>
@@ -80,7 +88,7 @@
                                     echo "Δήμος " . $house['Municipality']['name'] . " <br />";
                                     echo $house['HouseType']['type'].", ".$house['House']['area']." τ.μ.<br />\n";
                                     echo $house['Floor']['type'].", ".$house['House']['price']." ευρώ<br />\n";
-				    echo "Συνολικά φιλοξενεί " . $house['House']['total_places'] ." άτομα<br />\n";
+				    echo "Διαθέσιμες θέσεις " . $house['House']['free_places'] ." <br />\n";
                                 ?>
                             </div>
                             <div class='house-house'>
