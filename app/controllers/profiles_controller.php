@@ -92,7 +92,7 @@ class ProfilesController extends AppController {
 
     function edit($id = null) {
         $this->checkExistence($id);
-		$this->checkAccess( $id );
+	$this->checkAccess( $id );
         $this->Profile->id = $id;
 
         if (empty($this->data)) {

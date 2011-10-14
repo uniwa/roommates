@@ -16,10 +16,19 @@ class AppError extends ErrorHandler {
 	 */
 	function error403($params) {
 		          
-		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] ):$this->controller->set( 'title', 'Forbidden' );
-		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] ):$this->controller->set( 'name', 'Forbidden' );
+		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] )
+			:$this->controller->set( 'title', 'Forbidden' );
+
+		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] )
+			:$this->controller->set( 'name', 'Forbidden' );
+
 		$this->controller->set( 'url', $this->controller->here );
-		(isset( $params['message'] ) )?$this->controller->set( 'message', $params['message'] ):$this->controller->set( 'message', NULL );
+
+		(isset( $params['message'] ) )?$this->controller->set( 'message', $params['message'] )
+			:$this->controller->set( 'message', NULL );
+		/*
+		 * This will define the view which will display
+		 */
 		$this->_outputMessage( 'error403');
 	}
 }
