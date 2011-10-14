@@ -138,7 +138,7 @@
 		
 	    <tr>
 		<th>Διαθέσιμες θέσεις</th>
-		<td> <?php echo Sanitize::html($house['House']['free_places'])?> από <?php echo Sanitize::html($house['House']['total_places'])?> συνολικά θέσεις </td>
+		<td> <?php echo Sanitize::html($house['House']['free_places'])?> (από <?php echo Sanitize::html($house['House']['total_places'])?> συνολικά θέσεις) </td>
 	    </tr>	
 
             <tr>
