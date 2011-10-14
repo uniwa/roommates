@@ -488,17 +488,15 @@ input[type=submit], input[type=reset] {
 }
 
 select {
-    background: #AACFE4;
-    color: #21759B;
-
-    cursor: pointer;
-    border: solid 1px #21759B;
-    background: #DFE4EE;
+    /*background: #AACFE4;*/
+    /*color: #21759B;*/
+    /*cursor: pointer;*/
+    /*border: solid 1px #21759B;*/
+    /*background: #DFE4EE;*/
+    /*border-radius: 3px;*/
+    /*-moz-border-radius: 3px;*/
+    /*-webkit-border-radius: 3px;*/
     max-width: 250px;
- border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-
 }
 
 .cb1 {
