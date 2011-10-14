@@ -16,19 +16,35 @@ class AppError extends ErrorHandler {
 	 */
 	function error403($params) {
 		          
-		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] ):$this->controller->set( 'title', 'Δεν επιτρέπεται η πρόσβαση' );
-		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] ):$this->controller->set( 'name', 'Δεν επιτρέπεται η πρόσβαση' );
+		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] )
+			:$this->controller->set( 'title', 'Δεν επιτρέπεται η πρόσβαση' );
+
+		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] )
+			:$this->controller->set( 'name', 'Δεν επιτρέπεται η πρόσβαση' );
+
 		$this->controller->set( 'url', $this->controller->here );
-		(isset( $params['message'] ) )?$this->controller->set( 'message', $params['message'] ):$this->controller->set( 'message', NULL );
+
+		(isset( $params['message'] ) )?$this->controller->set( 'message', $params['message'] )
+			:$this->controller->set( 'message', NULL );
+		/*
+		 * This will define the view which will display
+		 */
 		$this->_outputMessage( 'error403');
 	}
 
 	function error404($params) {
 		          
-		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] ):$this->controller->set( 'title', 'Η σελίδα δε βρέθηκε' );
-		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] ):$this->controller->set( 'name', 'Η σελίδα δε βρέθηκε' );
+		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] )
+			:$this->controller->set( 'title', 'Η σελίδα δε βρέθηκε' );
+
+		( isset( $params['name']  ) )?$this->controller->set( 'name', $params['name'] )
+			:$this->controller->set( 'name', 'Η σελίδα δε βρέθηκε' );
+
 		$this->controller->set( 'url', $this->controller->here );
-		(isset( $params['message'] ) )?$this->controller->set( 'message', $params['message'] ):$this->controller->set( 'message', NULL );
+
+		(isset( $params['message'] ) )?$this->controller->set( 'message', $params['message'] )
+			:$this->controller->set( 'message', NULL );
+
 		$this->_outputMessage( 'error404');
 	}
 }

@@ -1,4 +1,4 @@
-
+<?php ?>
 
 <div id="navigation" class="column">
     <ul id="nav">
@@ -36,6 +36,11 @@
             <?php echo $this->Html->link('Αναζήτηση Συγκατοίκου', array(
                                                                        'controller' => 'profiles',
                                                                        'action' => 'search')); ?>
+        </li>
+
+        <li>
+            <?php echo $this->Html->link('Αναζήτηση Σπιτιού', array(    'controller' => 'houses',
+                                                                        'action' => 'search')); ?>
         </li>
 
         <?php if ($this->Session->read('Auth.User')) {

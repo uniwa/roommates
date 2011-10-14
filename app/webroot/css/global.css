@@ -389,6 +389,7 @@ p {
     line-height: 19px;
     min-width: 65px;
     display: inline-block;
+    padding-left:10px;
 }
 
 #ProfileAddForm input[type=text], #ProfileEditForm input[type=text] {
@@ -463,6 +464,7 @@ input[type=submit], input[type=reset] {
     line-height: 19px;
     min-width: 120px;
     display: inline-block;
+    padding-left:10px;
 }
 
 #HouseAddForm input[type=text], #HouseAddForm textarea, #HouseEditForm input[type=text], #HouseEditForm textarea {
@@ -852,4 +854,9 @@ h1 {
     color: #00529B;
     background-color: #d3e3fa;
     background-image: url(../img/info.png);
+}
+
+
+.required{
+        background: url(../img/required.gif) left no-repeat;
 }

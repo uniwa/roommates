@@ -88,7 +88,7 @@
                                     echo "Δήμος " . $house['Municipality']['name'] . " <br />";
                                     echo $house['HouseType']['type'].", ".$house['House']['area']." τ.μ.<br />\n";
                                     echo $house['Floor']['type'].", ".$house['House']['price']." ευρώ<br />\n";
-				    echo "Συνολικά φιλοξενεί " . $house['House']['total_places'] ." άτομα<br />\n";
+				    echo "Διαθέσιμες θέσεις " . $house['House']['free_places'] ." <br />\n";
                                 ?>
                             </div>
                             <div class='house-house'>
