@@ -884,6 +884,10 @@ h1 {
         padding: 10px 10px 0 10px;
 
     }
+    .rssIcon{
+        margin-top:-47px;
+        margin-left:15px;
+    }
 
     .liimage img{
         width:130px;
