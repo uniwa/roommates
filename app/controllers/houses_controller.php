@@ -204,9 +204,11 @@ class HousesController extends AppController {
     function search () {
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
+
+        
         
         if(isset($this->params['url']['simple_search'])) {
-
+            
             $options['joins'] = array(
                 array(  'table' => 'users',
                         'alias' => 'User',
@@ -221,11 +223,16 @@ class HousesController extends AppController {
             );
 
             $options['conditions'] = $this->getHouseConditions();
+            $options['limit'] = 15;
+            $options['contain'] = '';
+            $this->paginate = $options;
             $this->House->recursive = -1;
-            $results = $this->House->find('all', $options);
+            //$results = $this->House->find('all', $options);
+            $results = $this->paginate('House');
 
             $this->set('results', $results);
             $this->set('defaults', $this->params['url']);
+            //pr($this->params); die();
         }
     }
 

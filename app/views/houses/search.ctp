@@ -16,6 +16,16 @@
                                 'class' => 'short-textbox',
                                 'value' => isset($defaults) ? $defaults['max_age'] : '');
 
+    // modify the URL for pagination
+    $get_vars = '';
+    $urls = $this->params['url'];
+    foreach($urls as $key => $value) {
+        if($key == 'url' || $key == 'ext') continue;
+
+        $get_vars .= urldecode($key).'='.urldecode($value).'&';
+    }
+    $get_vars = substr_replace($get_vars, '', -1); // remove the last &
+
     echo $this->Form->create('House', array('action' => 'search', 'type' => 'get'));
 
 ?>
@@ -153,6 +163,20 @@
                 }
             ?>
         </div>
+        <div class="pagination">
+            <ul>
+                <?php
+                    // set the URL
+                    $paginator->options(array('url' => array('?' => $get_vars)));
+                    /* show the previous link */
+                    echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                    /* show pages */
+                    echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' ', 'tag' => 'li'));
+                    /* Shows the next link */
+                    echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                ?>
+            </ul>
+        </div>
         <div id='results-houses' class='results'>
             <ul>
                 <?php foreach($results as $house): ?>
@@ -184,6 +208,18 @@
                         </div>
                     </li>
                 <?php endforeach; ?>
+            </ul>
+        </div>
+        <div class="pagination">
+            <ul>
+                <?php
+                    /* show the previous link */
+                    echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                    /* show pages */
+                    echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' ', 'tag' => 'li'));
+                    /* Shows the next link */
+                    echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+                ?>
             </ul>
         </div>
     </div>
