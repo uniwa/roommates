@@ -12,7 +12,7 @@
     $min_age_options = array('label' => 'Ηλικία από ', 'class' => 'short-textbox');
     $max_age_options = array( 'label' => 'μέχρι ', 'class' => 'short-textbox');
 
-    echo $this->Form->create('House', array('action' => 'search'));
+    echo $this->Form->create('House', array('action' => 'search', 'type' => 'get'));
 
 ?>
 

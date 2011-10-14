@@ -205,7 +205,7 @@ class HousesController extends AppController {
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
         
-        if(isset($this->params['form']['simple_search'])) {
+        if(isset($this->params['url']['simple_search'])) {
 
             $options['joins'] = array(
                 array(  'table' => 'users',
@@ -229,7 +229,7 @@ class HousesController extends AppController {
     }
 
     private function getHouseConditions() {
-        $house_prefs = $this->data['House'];
+        $house_prefs = $this->params['url'];
 
         $house_conditions = array();
         if(!empty($house_prefs['max_price'])) {
@@ -256,7 +256,8 @@ class HousesController extends AppController {
     }
 
     private function getMatesConditions() {
-        $mates_prefs = $this->data['Preference'];
+        $mates_prefs = $this->params['url'];
+
         $mates_conditions = array();
         if(!empty($mates_prefs['min_age'])) {
             $mates_conditions['Profile.dob <='] = $this->age_to_year($mates_prefs['min_age']);
