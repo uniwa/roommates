@@ -85,7 +85,7 @@ class Image extends AppModel {
         $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
 
         # exit gracefully if user did not upload photos
-        if (! is_dir($base_path)) return False
+        if (! is_dir($base_path)) return True;
 
         # delete directory contents
         $handle = opendir($base_path);
