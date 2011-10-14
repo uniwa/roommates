@@ -91,7 +91,7 @@ class Image extends AppModel {
         $handle = opendir($base_path);
         if ($handle === False) return False;
         while ( false !== ($file = readdir($handle)) ) {
-            if (! is_dir($file)) unlink($base_path . $file);
+            if (! is_dir($base_path . $file)) unlink($base_path . $file);
         }
         closedir($handle);
 
