@@ -96,7 +96,7 @@ class Image extends AppModel {
         closedir($handle);
 
         # remove directory
-        rmdir($base_path) ? return True : return False
+        return (rmdir($base_path) ? True : False);
     }
 
 	private function getLocationName($fileName) {
