@@ -84,8 +84,11 @@ class Image extends AppModel {
     function delete_all($house_id) {
         $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
 
-        # first delete directory contents
-        $handle = opendir($base_path); // TODO: permission checks/exit on error
+        # exit gracefully if user did not upload photos
+        if (! is_dir($base_path)) return False
+
+        # delete directory contents
+        $handle = opendir($base_path);
         if ($handle === False) return False;
         while ( false !== ($file = readdir($handle)) ) {
             if (! is_dir($file)) unlink($base_path . $file);
@@ -93,9 +96,7 @@ class Image extends AppModel {
         closedir($handle);
 
         # remove directory
-        rmdir($base_path);
-
-        return True;
+        rmdir($base_path) ? return True : return False
     }
 
 	private function getLocationName($fileName) {
