@@ -62,7 +62,7 @@ class Image extends AppModel {
 			return NULL;
 		}
 		//return $fileData['name'];
-        return $new_name
+        return $new_name;
 	}
 
 	function delImage($filename)
