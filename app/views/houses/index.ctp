@@ -18,7 +18,7 @@
         </div>
         <div id='bottom-subtitle' class='subtitle'>
             <?php
-                $count = count($houses);
+				$count = $this->Paginator->counter(array('format' => '%count%'));
                 if($count == 0){
                     $foundmessage = "Δεν βρέθηκαν σπίτια";
                 }else{
