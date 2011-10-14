@@ -62,15 +62,15 @@ class ImagesController extends AppController {
 
 		if (!$id) {
 			$this->Session->setFlash(__('Λαθος id', true));
-			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Image->delete($id)) {
 			$this->Image->delImage($house_id, $imageData['Image']['location']);
 			$this->Session->setFlash(__('Η εικόνα διαγραφήκε με επιτυχία.', true));
-			$this->redirect(array('action'=>'index'));
 		}
-		$this->Session->setFlash(__('Η εικόνα δεν διαγραφηκε.', true));
-		$this->redirect(array($this->referer()));
+        else {
+		    $this->Session->setFlash(__('Η εικόνα δεν διαγραφηκε.', true));
+        }
+		$this->redirect(array('controller' => 'houses', 'action'=>'view', $house_id));
 	}
 
     private function hasAccess($id) {
