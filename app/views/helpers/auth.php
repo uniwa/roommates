@@ -25,7 +25,7 @@ class AuthHelper extends AppHelper{
 	 */
 	function get( $choice ){
 
-		list( $model, $property ) = split(  "[.]" , $choice );
+		list( $model, $property ) = explode(  "." , $choice );
 
 		switch( $model ) {
 
