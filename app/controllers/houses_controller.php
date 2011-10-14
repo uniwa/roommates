@@ -225,6 +225,7 @@ class HousesController extends AppController {
             $results = $this->House->find('all', $options);
 
             $this->set('results', $results);
+            $this->set('defaults', $this->params['url']);
         }
     }
 
@@ -247,7 +248,7 @@ class HousesController extends AppController {
         if($house_prefs['furnitured'] < 2) {
             $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
         }
-        if($this->params['url']['accessibility']) {
+        if(isset($this->params['url']['accessibility'])) {
             $house_conditions['House.disability_facilities'] = 1;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
