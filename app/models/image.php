@@ -19,7 +19,7 @@ class Image extends AppModel {
 		$fileData['name'] = $this->getLocationName($fileData['name']);
 
         /* base path to store this file */
-        $base_path = WWW_ROOT . "img/uploads/house/$house_id/";
+        $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
 
         /* get extension */
         $ext = substr(strrchr($fileData['name'], '.'), 1);
