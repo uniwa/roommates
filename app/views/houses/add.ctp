@@ -5,13 +5,13 @@ echo $form->create('House');
 
 echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας', 'empty' => 'Επιλέξτε...'));
 echo $form->input('municipality_id', array('label' => 'Δήμος', 'empty' => 'Επιλέξτε...'));
-echo $form->input('address', array('label' => 'Διεύθυνση'));
+echo $form->input('address', array('label' => 'Διεύθυνση','type' => 'textarea',"rows" => "2"));
 echo $form->input('postal_code', array('label' => 'Τ.K.'));
-echo $form->input('area', array('label' => 'Εμβαδό'));
+echo $form->input('area', array('label' => 'Εμβαδό','after' => 'τ.μ.'));
 echo $form->input('floor_id', array('label' => 'Όροφος', 'empty' => 'Επιλέξτε...'));
 echo $form->input('bedroom_num', array('label' => 'Αριθμός δωματίων'));
 echo $form->input('bathroom_num', array('label' => 'Αριθμός μπάνιων'));
-echo $form->input('price', array('label' => 'Τιμή'));
+echo $form->input('price', array('label' => 'Τιμή','after' => '€'));
 echo $form->input('availability_date', array('label' => 'Διαθέσιμο από', /*'empty' => '---',*/
                     'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y') + 5 )  );
 echo $form->input('construction_year', array('label' => 'Έτος κατασκευής', 'type' => 'select', 
@@ -26,7 +26,7 @@ echo $form->input('shared_pay', array('label' => 'Κοινόχρηστα'));
 echo $form->input('security_doors', array('label' => 'Πόρτες ασφαλείας'));
 echo $form->input('disability_facilities', array('label' => 'Προσβάσιμο από ΑΜΕΑ'));
 echo $form->input('storeroom', array('label' => 'Αποθήκη'));
-echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης'));
+echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης','after' => 'μήνες'));
 echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 
 

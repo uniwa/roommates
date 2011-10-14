@@ -117,15 +117,13 @@ class HousesController extends AppController {
             $this->Session->setFlash('Έχετε ήδη ένα σπίτι αποθηκευμένο.');
             $this->redirect(array('action' => 'index'));
         }
-        //pr($res); die();
 
         if (!empty($this->data)) {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.');
-		$hid = $this->House->id;
-		//pr($hid); die();
+                $hid = $this->House->id;
                 $this->redirect(array('action' => "view/$hid"));
             }
         }
@@ -232,9 +230,18 @@ class HousesController extends AppController {
     function search () {
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
-        
+
+        $this->search_order_options = array('τελευταία ενημέρωση', 
+                                            'τιμή - αύξουσα', 
+                                            'τιμή - φθίνουσα', 
+                                            'εμβαδό - αύξουσα', 
+                                            'εμβαδό - φθίνουσα',
+                                            'δήμο - αύξουσα',
+                                            'δήμο - φθίνουσα');
+        $this->set('order_options', $this->search_order_options);
+
         if(isset($this->params['url']['simple_search'])) {
-            
+
             $options['joins'] = array(
                 array(  'table' => 'users',
                         'alias' => 'User',
@@ -251,6 +258,7 @@ class HousesController extends AppController {
             $options['conditions'] = $this->getHouseConditions();
             $options['limit'] = 15;
             $options['contain'] = '';
+            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
             $this->paginate = $options;
             $this->House->recursive = -1;
             $results = $this->paginate('House');
@@ -317,6 +325,35 @@ class HousesController extends AppController {
         array_push($mates_conditions, 'User.id = Profile.user_id');
 
         return $mates_conditions;
+    }
+
+    private function getOrderCondition($selected_order) {
+
+        switch($selected_order) {
+            case 0:
+                $order = array('House.modified' => 'desc');
+                break;
+            case 1:
+                $order = array('House.price' => 'asc');
+                break;
+            case 2:
+                $order = array('House.price' => 'desc');
+                break;
+            case 3:
+                $order = array('House.area' => 'asc');
+                break;
+            case 4:
+                $order = array('House.area' => 'desc');
+                break;
+            case 5:
+                $order = array('House.municipality_id' => 'asc');
+                break;
+            case 6:
+                $order = array('House.municipality_id' => 'desc');
+                break;
+        }
+
+        return $order;
     }
 }
 ?>

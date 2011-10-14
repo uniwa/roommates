@@ -89,11 +89,12 @@
                                                array("alt" => "Το σπίτι μου",
                                                     "title" => "Το σπίτι μου",
                                                     "class" => "home-small",
-                                                   "style" => "height:30px"
+                                                   "style" => "height:30px;vertical-align: bottom"
                                                )
                             ). " Το σπίτι μου ",
                                            "/houses/view/$houseid", 
-                                       array('escape'=>false ));
+                                       array('escape'=>false,
+                                               'style' => 'font-size:10px'));
                       } ?>
             </div>
 		</div>
@@ -104,8 +105,6 @@
 	<div class='frame-container'>
 		<div id='bottom-title' class='title'>
 			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
-		</div>
-		<div id='bottom-subtitle' class='subtitle'>
 		</div>
 		<div id='profile-preferences' class='options profile-big'>
 			<?php
@@ -125,7 +124,7 @@
 				$couple = getPrefValue($prefcouple, $ynioptions);
 				
 			?></span>
-			<br />Ηλικία: 
+			Ηλικία:
 			<?php
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];

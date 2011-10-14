@@ -30,6 +30,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
     font-family: sans-serif;
+    min-width:935px;
 }
 
 ol, ul {
@@ -48,6 +49,10 @@ q:before, q:after {
 
 :focus {
     outline: 0;
+}
+
+textarea {
+    resize: none;
 }
 
 /*! Reset css*/
@@ -423,7 +428,7 @@ input[type=submit], input[type=reset] {
     border-radius: 11px;
     cursor: pointer;
     text-decoration: none;
-    margin-top: -3px;
+    margin-top: 10px;
     border-width: 1px;
 }
 
@@ -478,13 +483,20 @@ input[type=submit], input[type=reset] {
 
 }
 
+#HouseAddForm input[type=text],#HouseEditForm input[type=text]{
+    width:50px;
+    text-align: right;
+}
+
 select {
-    background: #AACFE4;
-    color: #21759B;
-    padding: 4px;
-    cursor: pointer;
-    border: solid 1px #21759B;
-    background: #DFE4EE;
+    /*background: #AACFE4;*/
+    /*color: #21759B;*/
+    /*cursor: pointer;*/
+    /*border: solid 1px #21759B;*/
+    /*background: #DFE4EE;*/
+    /*border-radius: 3px;*/
+    /*-moz-border-radius: 3px;*/
+    /*-webkit-border-radius: 3px;*/
     max-width: 250px;
 }
 
@@ -597,7 +609,7 @@ h1 {
 }
 
 .profile-big {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     color: #555555;
 }
@@ -815,7 +827,7 @@ h1 {
 
 }
 .houseProfile table td {
-   max-width:300px
+   max-width:275px;
 }
 
 .houseProfile table {
@@ -858,5 +870,38 @@ h1 {
 
 
 .required{
-        background: url(../img/required.gif) left no-repeat;
+        background: url(../img/required.gif) top left no-repeat;
+}
+
+/* gallery single view*/
+
+    .ulimage{
+        width:175px;
+    }
+
+    .liimage{
+        float:left;
+        padding: 10px 10px 0 10px;
+
+    }
+    .rssIcon{
+        margin-top:-47px;
+        margin-left:15px;
+    }
+
+    .liimage img{
+        width:130px;
+        height:80px;
+
+    }
+
+
+
+
+/* media query for big resolutions grid4 */
+@media screen and (min-width: 1100px) {
+
+    .ulimage{
+        width:320px;
+    }
 }

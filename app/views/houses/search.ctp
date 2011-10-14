@@ -1,11 +1,12 @@
-<?php
+<div id='top-frame' class='frame'>
+    <div class='frame-container'>
+        <div id='top-title' class='title'>
+            <h1>Σύνθετη αναζήτηση</h1>
+        </div>
 
-    echo "<div id='top-frame' class='frame'>";
-    echo "<div class='frame-container'>";
-    echo "<div id='top-title' class='title'>";
-    echo "<h1>Σύνθετη αναζήτηση</h1>";
-    echo "</div>";
-    echo "<div class='clear-both'></div>";
+<div class='clear-both'></div>
+
+<?php
 
     $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
     $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
@@ -75,6 +76,14 @@
             <?php echo 'Προσβάσιμο από ΑΜΕΑ '.$this->Form->checkbox('accessibility',
                                                                     array(  'hiddenField' => false,
                                                                             'checked' => isset($defaults['accessibility'])  ));
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan=3>
+            <?php echo $this->Form->input('order_by', array('label' => 'Ταξινόμηση ανά: ',
+                                                            'options' => $order_options,
+                                                            'selected' => isset($defaults) ? $defaults['order_by'] : '0'   ));
             ?>
         </td>
     </tr>
@@ -153,7 +162,7 @@
         </div>
         <div id='bottom-subtitle' class='subtitle'>
             <?php
-                $count = count($results);
+                $count = $this->Paginator->counter(array('format' => '%count%'));
                 if($count == 0) {
                     echo 'Δεν βρέθηκαν σπίτια';
                 } else if($count == 1) {
@@ -196,7 +205,7 @@
                                     <div class='house-details'>
                                         <?php
                                             echo 'Τιμή '.$house['House']['price'].'€, Εμβαδό '.$house['House']['area'].' τ.μ. ';
-                                            echo $house['House']['furnitured'] ? 'Επιπλομένο<br/>' : 'Μη επιπλομένο<br/>';
+                                            echo $house['House']['furnitured'] ? 'Επιπλωμένο<br/>' : 'Μη επιπλωμένο<br/>';
                                             echo 'Δήμος '.$municipalities[$house['House']['municipality_id']].'<br/>';
                                             if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ';
                                         ?>
