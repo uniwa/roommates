@@ -88,7 +88,7 @@ class Image extends AppModel {
         $handle = opendir($base_path); // TODO: permission checks/exit on error
         if ($handle === False) die('error'); // TODO reove die function, not pretty
         while ( false !== ($file = readdir($handle)) ) {
-            unlink($file);
+            if (! is_dir($file)) unlink($base_path . $file);
         }
         closedir($handle);
 
