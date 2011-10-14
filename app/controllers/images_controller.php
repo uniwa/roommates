@@ -53,6 +53,13 @@ class ImagesController extends AppController {
 	function delete($id = null) {
         $this->Image->id = $id;
 		$imageData = $this->Image->read();
+
+        /* check if user owns house before removing images */
+        $house_id = $imageData['Image']['house_id'];
+        if (! $this->hasAccess($house_id)) {
+            $this->cakeError( 'error403' );
+        }
+
 		if (!$id) {
 			$this->Session->setFlash(__('Λαθος id', true));
 			$this->redirect(array('action'=>'index'));
