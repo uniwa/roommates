@@ -105,8 +105,6 @@
 		<div id='bottom-title' class='title'>
 			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
 		</div>
-		<div id='bottom-subtitle' class='subtitle'>
-		</div>
 		<div id='profile-preferences' class='options profile-big'>
 			<?php
 				$prefgender = $profile['Preference']['pref_gender'];
@@ -125,7 +123,7 @@
 				$couple = getPrefValue($prefcouple, $ynioptions);
 				
 			?></span>
-			<br />Ηλικία: 
+			Ηλικία:
 			<?php
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
