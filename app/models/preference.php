@@ -31,13 +31,6 @@ class Preference extends AppModel {
 		'required' => false,
 		'allowEmpty' => true),
 		
-
-	'mates_min' => array(
-		'rule' => '/^[1-9]{1}$/i',
-		'message' => 'Εισάγετε έγκυρo κάτω φράγμα συγκατοίκων [1,9]',
-		'required' => false,
-		'allowEmpty' => true),
-
 	'pref_smoker' => array(
 		'rule' => array('inList', array(0, 1, 2)),
 		'message' => 'Εισάγετε μία έγκυρη απάντηση',
