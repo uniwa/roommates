@@ -36,7 +36,9 @@ class Profile extends AppModel {
 	
 		'phone' => array(
 			'rule' => '/^[0-9]{10}$/i',
-			'message' => 'Εισάγετε ένα έγκυρο δεκαψήφιο τηλέφωνο επικοινωνίας'),
+			'message' => 'Εισάγετε ένα έγκυρο δεκαψήφιο τηλέφωνο επικοινωνίας',
+			'required' => false, 
+			'allowEmpty' => true),
 			
 		'smoker' => array(
 			'rule' => '/^[0-1]$/',
