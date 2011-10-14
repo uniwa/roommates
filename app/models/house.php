@@ -6,6 +6,10 @@ class House extends AppModel {
 
     var $hasMany = array ('Image');
 
+	var $virtualFields = array(
+		'free_places' => "House.total_places - House.currently_hosting"
+	);
+
     var $validate = array(
 
         'house_type_id' => array(
