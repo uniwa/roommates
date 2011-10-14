@@ -57,18 +57,18 @@ class HousesController extends AppController {
 					$ascDesc = $ascoptions[1];
 					break;
 				case 7:
-					$orderField = 'House.currently_hosting';
+					$orderField = 'House.free_places';
 					$ascDesc = $ascoptions[0];
 					break;
 				case 8:
-					$orderField = 'House.currently_hosting';
+					$orderField = 'House.free_places';
 					$ascDesc = $ascoptions[1];
 					break;
 			}
 			$order = array($orderField => $ascDesc);
 		}
 
-        $orderOptions = array('τελευταία ενημέρωση', 'ενοίκιο αύξουσα', 'ενοίκιο φθίνουσα', 'δήμος αύξουσα', 'δήμος φθίνουσα', 'τετραγωνικά αύξουσα', 'τετραγωνικά φθίνουσα', 'ένοικοι αύξουσα', 'ένοικοι φθίνουσα');
+        $orderOptions = array('τελευταία ενημέρωση', 'ενοίκιο αύξουσα', 'ενοίκιο φθίνουσα', 'δήμος αύξουσα', 'δήμος φθίνουσα', 'τετραγωνικά αύξουσα', 'τετραγωνικά φθίνουσα', 'διαθέσιμες θέσεις αύξουσα', 'διαθέσιμες θέσεις φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
