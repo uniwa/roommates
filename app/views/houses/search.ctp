@@ -62,7 +62,7 @@
             ?>
         </td>
         <td>
-            <?php   echo $this->Form->input('furnitured', array('label' => 'Επιπλομένο ',
+            <?php   echo $this->Form->input('furnitured', array('label' => 'Επιπλωμένο ',
                                                                 'options' => array( 'Όχι',
                                                                                     'Ναι',
                                                                                     'Αδιάφορο'),
