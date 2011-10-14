@@ -170,13 +170,41 @@ if( ($this->Session->read( 'Auth.User.id') != $house['User']['id'] ) || ($this->
 }
  ?>
 
-            <?php
-            //TODO remove this whole php tag for map to go away
-                echo "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
-                echo $this->Html->image('map.png', array('alt' => 'house image', 'style' => 'width:330px;display:none'));
-                ?>
 
         </div>
+
+<div class="gallery">
+
+<?php $i = 0; foreach ($images as $image): ?>
+<ul class=ulimage>
+        <li class="liimage">
+            <?php echo $this->Html->link(
+            $this->Html->image('uploads/thumbnails/' . $image['Image']['location'], array('alt' => 'house image')),
+            '/img/uploads/medium/' . $image['Image']['location'],
+            array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+        ); ?>
+            <div class="imageactions">
+                <?php echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images', 'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true))); ?>
+            </div>
+        </li>
+        <?php endforeach; ?>
+</ul>
+
+      <div class="actions">
+
+
+            <?php
+
+                if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
+                    echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
+                }
+                ?>
+    </div>
+
+
+</div>
+
+
     </div>
     <!--right column-->
 
@@ -217,4 +245,5 @@ if( ($this->Session->read( 'Auth.User.id') != $house['User']['id'] ) || ($this->
                     echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
                 }
                 ?>
+    </div>
     </div>
