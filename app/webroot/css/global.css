@@ -398,19 +398,22 @@ p {
 }
 
 #ProfileAddForm input[type=text], #ProfileEditForm input[type=text] {
-    padding: 4px;
-    border: solid 1px #C6C6C6;
-    border-bottom: solid 1px #E3E3E3;
-    color: #333;
-    -moz-box-shadow: inset 0 4px 6px #ccc;
-    -webkit-box-shadow: inset 0 4px 6px #ccc;
-    box-shadow: inset 0 4px 6px #ccc;
+    -moz-box-shadow: inset -3px 4px 6px #ccc;
+    -webkit-box-shadow: inset -3px 4px 6px #ccc;
+    box-shadow: inset -3px 4px 6px #ccc;
 
+    -webkit-appearance: none;
+border: 1px solid #ccc;
+-webkit-border-radius: 2px;
+-moz-border-radius: 2px;
+border-radius: 2px;
+padding: 0.3em;
+color: #889;
 }
 
-input:focus {
+#ProfileAddForm input[type=text]:focus , #ProfileEditForm input[type=text]:focus {
     outline: none;
-    border-color: #5d7ba8;
+    color: #444;
 }
 
 input[type=submit], input[type=reset] {
