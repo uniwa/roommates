@@ -180,7 +180,7 @@
         <li class="liimage">
             <?php echo $this->Html->link(
             $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),
-            '/img/uploads/medium/' . $image['Image']['location'],
+            '/img/uploads/houses/' . $house['House']['id'] . '/medium_'. $image['Image']['location'],
             array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
         ); ?>
             <div class="imageactions">
