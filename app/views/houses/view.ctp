@@ -30,7 +30,7 @@
             <td> <?php echo $house['HouseType']['type']?></td>
         </tr>
         <tr>
-            <th>Τετραγωνικά:</th>
+            <th>Εμβαδόν:</th>
             <td> <?php echo $house['House']['area']?> τ.μ.</td>
         </tr>
         <tr>
