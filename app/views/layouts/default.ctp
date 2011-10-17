@@ -1,3 +1,5 @@
+<!DOCTYPE HTML>
+
 <html>
 <head>
     <title><?php echo $title_for_layout?></title>
