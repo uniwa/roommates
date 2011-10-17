@@ -1,6 +1,5 @@
 <div class="profile houseProfile">
 
-
 <div class="leftCol">
 
         <div class="defaultimage">
