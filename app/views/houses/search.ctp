@@ -31,7 +31,7 @@
 
 ?>
 
-<h2>Προτιμήσεις σπιτιού</h2><br/>
+<h3>Προτιμήσεις σπιτιού</h3><br/>
 
 <table>
     <tr>
@@ -89,7 +89,7 @@
     </tr>
 </table>
 
-<br/><h2>Προτιμήσεις συγκατοίκων</h2><br/>
+<br/><h3>Προτιμήσεις συγκατοίκων</h3><br/>
 
 <table>
     <tr>
@@ -207,7 +207,8 @@
                                             echo 'Τιμή '.$house['House']['price'].'€, Εμβαδό '.$house['House']['area'].' τ.μ. ';
                                             echo $house['House']['furnitured'] ? 'Επιπλωμένο<br/>' : 'Μη επιπλωμένο<br/>';
                                             echo 'Δήμος '.$municipalities[$house['House']['municipality_id']].'<br/>';
-                                            if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ';
+                                            if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br/>';
+                                            echo 'Διαθέσιμες θέσεις '.$house['House']['free_places'].'<br/>';
                                         ?>
                                     </div>
                                     <div class='house-house'>
