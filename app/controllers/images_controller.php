@@ -14,19 +14,29 @@ class ImagesController extends AppController {
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
+
         if ( $this->imageCount($id) >= $this->max_images ) {
             $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών');
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
         }
-		if(!empty($this->data)) {
+
+        if(!empty($this->data)) {
+            /* check if image is uploaded */
+            if ( ! is_uploaded_file($this->data["Image"]["location"]["tmp_name"])) {
+                $this->Session->setFlash('Υπερβολικά μεγάλο μέγεθος εικόνας, η εικόνα δεν αποθηκεύτικε.');
+                $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
+            }
+
+            /* check file type */
+            if ( ! $this->validType($this->data["Image"]["location"]["tmp_name"]) ) {
+                $this->Session->setFlash('Επιτρέπονται μόνο αρχεία PNG και JPG.');
+                $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
+            }
+
 			$this->Image->create();
 			
 			// TODO: Code to warn user about duplicate files
 			$newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
-            if (! $this->validType($newName)) {
-                $this->Session->setFlash('Επιτρέπονται αρχεία εικόνας τύπου png ή jpeg');
-                $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
-            }
 			if(isset($newName))
 			{
 				$this->params['data']['Image']['location'] = $newName;
@@ -37,7 +47,6 @@ class ImagesController extends AppController {
                 /* TODO: add error message */
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
 			}
-			
 			if ($this->Image->save($this->data)) {
 				$this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
                 /* IMPORTANT: $this->referer() in this redirect will break on 5th image
@@ -95,12 +104,14 @@ class ImagesController extends AppController {
         return count($house["Image"]);
     }
 
-    private function validType($buffer) {
+    private function validType($file) {
         /* check if uploaded image is a valid filetype */
         $valid_types = array("png", "jpg", "jpeg", "gif", "PNG", "JPG", "JPEG", "GIF");
-        $type = pathinfo($buffer, PATHINFO_EXTENSION);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $file);
+        $mime_type = explode("/", $mime_type);
 
-        if (in_array($type, $valid_types)) {
+        if (in_array($mime_type[1], $valid_types)) {
             return True;
         }
         return False;
