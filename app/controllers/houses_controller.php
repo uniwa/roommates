@@ -68,7 +68,15 @@ class HousesController extends AppController {
 			$order = array($orderField => $ascDesc);
 		}
 
-        $orderOptions = array('τελευταία ενημέρωση', 'ενοίκιο αύξουσα', 'ενοίκιο φθίνουσα', 'δήμος αύξουσα', 'δήμος φθίνουσα', 'τετραγωνικά αύξουσα', 'τετραγωνικά φθίνουσα', 'διαθέσιμες θέσεις αύξουσα', 'διαθέσιμες θέσεις φθίνουσα');
+        $orderOptions = array(  'τελευταία ενημέρωση',
+                                'ενοίκιο αύξουσα',
+                                'ενοίκιο φθίνουσα',
+                                'δήμος αύξουσα',
+                                'δήμος φθίνουσα',
+                                'τετραγωνικά αύξουσα',
+                                'τετραγωνικά φθίνουσα',
+                                'διαθέσιμες θέσεις αύξουσα',
+                                'διαθέσιμες θέσεις φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         $this->paginate = array(
@@ -237,7 +245,9 @@ class HousesController extends AppController {
                                             'εμβαδό - αύξουσα', 
                                             'εμβαδό - φθίνουσα',
                                             'δήμο - αύξουσα',
-                                            'δήμο - φθίνουσα');
+                                            'δήμο - φθίνουσα',
+                                            'διαθέσιμες θέσεις - αύξουσα',
+                                            'διαθέσιμες θέσεις - φθίνουσα');
         $this->set('order_options', $this->search_order_options);
 
         if(isset($this->params['url']['simple_search'])) {
@@ -350,6 +360,12 @@ class HousesController extends AppController {
                 break;
             case 6:
                 $order = array('House.municipality_id' => 'desc');
+                break;
+            case 7:
+                $order = array('House.free_places' => 'asc');
+                break;
+            case 8:
+                $order = array('House.free_places' => 'desc');
                 break;
         }
 
