@@ -33,20 +33,16 @@ class ImagesController extends AppController {
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
 
-			$this->Image->create();
-			
-			// TODO: Code to warn user about duplicate files
-			$newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
-			if(isset($newName))
-			{
-				$this->params['data']['Image']['location'] = $newName;
-			}
-			else
-			{
-				$this->params['data']['Image']['location'] = null;
-                /* TODO: add error message */
+            $this->Image->create();
+            $newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
+
+
+            if ($newName == NULL) {
+                $this->Session->setFlash('Σφάλμα αποθήκευσης εικόνας, επικοινωνήστε με τον διαχειριστή.');
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
-			}
+            }
+
+            $this->params['data']['Image']['location'] = $newName;
 			if ($this->Image->save($this->data)) {
 				$this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
                 /* IMPORTANT: $this->referer() in this redirect will break on 5th image
