@@ -87,7 +87,6 @@ h2 {
     -webkit-box-shadow: 0 0 5px #424242;
     border-bottom-left-radius: 5px;
     -moz-border-radius-bottomleft: 5px;
-    -webkit-border-bottom-left-radius: 5px;
 
 }
 
@@ -233,10 +232,7 @@ table {
     border-spacing: 0;
     clear: both;
     margin: 0;
-    -moz-border-radius: 3px;
-    -khtml-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+
     font-size: 13px;
     color: #464646;
 
@@ -359,8 +355,8 @@ p {
     -ms-filter: 'progid:DXImageTransform.Microsoft.Gradient(startColorStr=#F0F0F0, endColorStr=#D9D9D9)';
     filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr = #F0F0F0, endColorStr = #D9D9D9);
 
-    -webkit-box-shadow: inset -10px 0px 7px #ccc;
-    -moz-box-shadow: inset -10px 0px 7px #ccc;
+    -webkit-box-shadow: inset -10px 0 7px #ccc;
+    -moz-box-shadow: inset -10px 0 7px #ccc;
 }
 
 .thelist li {
