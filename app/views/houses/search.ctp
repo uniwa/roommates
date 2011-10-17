@@ -138,7 +138,7 @@
 
 <br/>
 
-<table>
+<table class="tableactions">
     <tr>
         <td>
             <?php echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search'));?>

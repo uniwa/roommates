@@ -154,6 +154,7 @@ h3 {
     position: relative;
     z-index: 100;
     font-weight: bold;
+    font-size: 10px;
     color: #333333;
 }
 
@@ -935,3 +936,4 @@ input[type=submit]{
     outline:none;
 
 }
+

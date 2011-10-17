@@ -1,12 +1,5 @@
+<!--TODO rewrite this-->
 <style>
-/* HTML, BODY, GENERAL SETUP */
-
-#content {
-	/*background: #63bad8;*/
-	text-align: center;
-}
-
-
 
 .content{
 	width: 360px;
