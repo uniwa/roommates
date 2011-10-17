@@ -417,25 +417,25 @@ color: #889;
     outline: none;
     color: #444;
 }
-
-input[type=submit], input[type=reset] {
-    background: #7195AA;
-    color: white;
-    border-color: #13455B;
-    text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;
-    padding: 3px 10px;
-    border: none;
-    font-size: 13px;
-    border-style: solid;
-    -moz-border-radius: 11px;
-    -khtml-border-radius: 11px;
-    -webkit-border-radius: 11px;
-    border-radius: 11px;
-    cursor: pointer;
-    text-decoration: none;
-    margin-top: 10px;
-    border-width: 1px;
-}
+/*ugly rounded buttons*/
+/*input[type=submit], input[type=reset] {*/
+    /*background: #7195AA;*/
+    /*color: white;*/
+    /*border-color: #13455B;*/
+    /*text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;*/
+    /*padding: 3px 10px;*/
+    /*border: none;*/
+    /*font-size: 13px;*/
+    /*border-style: solid;*/
+    /*-moz-border-radius: 11px;*/
+    /*-khtml-border-radius: 11px;*/
+    /*-webkit-border-radius: 11px;*/
+    /*border-radius: 11px;*/
+    /*cursor: pointer;*/
+    /*text-decoration: none;*/
+    /*margin-top: 10px;*/
+    /*border-width: 1px;*/
+/*}*/
 
 .actions {
     float: right;
@@ -516,7 +516,7 @@ select {
 
 }
 
-.houseprofile {
+.houseProfile {
     /*TODO remove*/
     background-color: whiteSmoke;
     background-image: -moz-linear-gradient(top, whiteSmoke, #E2E2E2);
@@ -714,63 +714,59 @@ h1 {
     display: none;
 }
 
-.loginFrame {
-    border-style: solid;
-    border-width: 2px;
-    margin: 4px auto;
-    padding: 8px 10px 77px 1px;
-    width: 480px;
-    height: 130px;
-}
+/*.loginFrame {*/
+    /*border-style: solid;*/
+    /*border-width: 2px;*/
+    /*margin: 4px auto;*/
+    /*padding: 8px 10px 77px 1px;*/
+    /*width: 480px;*/
+    /*height: 130px;*/
+/*}*/
 
-.loginform {
-    margin: 0 auto;
-    width: 200px;
-    padding: 20px 0 0 110px;
-    font-size: 14px;
-}
+/*.loginform {*/
+    /*margin: 0 auto;*/
+    /*width: 200px;*/
+    /*padding: 20px 0 0 110px;*/
+    /*font-size: 14px;*/
+/*}*/
 
-.loginform input[type=submit] {
+/*.loginform input[type=submit] {*/
 
-    margin-top: 10px;
-}
+    /*margin-top: 10px;*/
+/*}*/
 
-.login-title {
-	margin: 0px 0px 0px 15px;
-}
+/*.login-title {*/
+	/*margin: 0px 0px 0px 15px;*/
+/*}*/
 
-#login-frame {
-    color: #6a6a6a;
-    background-image: url('../img/login-background.jpg');
-    background-repeat: no-repeat;
+/*#login-frame {*/
+    /*color: #6a6a6a;*/
+    /*background-image: url('../img/login-background.jpg');*/
+    /*background-repeat: no-repeat;*/
 
-}
+/*}*/
 
-#login-inner {
-    width: 369px;
-}
+/*#login-inner {*/
+    /*width: 369px;*/
+/*}*/
 
-#login-main {
-	margin: 0px auto 0px auto;
-	width: 80px;
-}
+/*#login-main {*/
+	/*margin: 0px auto 0px auto;*/
+	/*width: 80px;*/
+/*}*/
 
-.loginform label {
-    width: 80px;
-}
+/*.loginform label {*/
+    /*width: 80px;*/
+/*}*/
 
-#login-inner legend {
-}
+/*#login-inner legend {*/
+/*}*/
 
 .order-by {
     margin: 0px 0px 16px 32px;
 }
 
-#authMessage {
-    float: left;
-    padding-left: 120px;
-    color: red;
-}
+
 
 .galleryimage {
     padding: 25px 0 0 20px;
@@ -920,4 +916,22 @@ h1 {
     .ulimage{
         width:320px;
     }
+}
+
+
+input[type=submit]{
+    display:block;
+    margin-top:20px;
+    background-color:#92c97c;
+    border:1px solid #73b35a;
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    font-size:100%;
+    line-height:130%;
+    text-decoration:none;
+    font-weight:bold;
+    color:#e8f7df;
+    cursor:pointer;
+    padding:5px 10px 6px 7px; /* Links */
+    outline:none;
+
 }
