@@ -77,6 +77,12 @@ h2 {
     font-size: 16px;
 }
 
+h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4f6ca6;
+}
+
 .column {
     float: left;
     padding-top: 20px;
@@ -636,8 +642,8 @@ h1 {
     background-image: url('../img/card.png');
     background-repeat: no-repeat;
     margin: 0px auto 4px auto;
-    width: 420px;
-    height: 115px;
+    width: 600px;
+    height: 114px;
 }
 
 .card-inner {
@@ -647,7 +653,7 @@ h1 {
 .profile-pic, .house-pic {
     float: left;
     background-repeat: no-repeat;
-    margin: 20px 10px 0px 30px;
+    margin: 20px 10px 0px 60px;
     width: 70px;
     height: 70px;
 }
@@ -675,7 +681,7 @@ h1 {
 
 .house-info {
     margin-left: 45px;
-    width: 260px;
+    width: 400px;
 }
 
 .profile-name, .house-name {
