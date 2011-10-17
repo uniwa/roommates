@@ -207,7 +207,8 @@
                                             echo 'Τιμή '.$house['House']['price'].'€, Εμβαδό '.$house['House']['area'].' τ.μ. ';
                                             echo $house['House']['furnitured'] ? 'Επιπλωμένο<br/>' : 'Μη επιπλωμένο<br/>';
                                             echo 'Δήμος '.$municipalities[$house['House']['municipality_id']].'<br/>';
-                                            if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ';
+                                            if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br/>';
+                                            echo 'Διαθέσιμες θέσεις '.$house['House']['free_places'].'<br/>';
                                         ?>
                                     </div>
                                     <div class='house-house'>

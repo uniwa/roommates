@@ -17,47 +17,47 @@
             <h1>Kατάλογος Σπιτιών</h1>
         </div>
         <div id='bottom-subtitle' class='subtitle'>
-            <?php
-				$count = $this->Paginator->counter(array('format' => '%count%'));
-                if($count == 0){
-                    $foundmessage = "Δεν βρέθηκαν σπίτια";
-                }else{
-                    if($count == 1){
-                        $postfound = 'ε ';
-                        $posthomes = '';
-                    }else{
-                        $postfound = 'αν ';
-                        $posthomes = 'α';
-                    }
-                    $foundmessage = "Βρέθηκ".$postfound.$count." σπίτι".$posthomes."\n";
-                }
-                echo $foundmessage;
-            ?>
+<?php
+                $count = $this->Paginator->counter(array('format' => '%count%'));
+    if ($count == 0) {
+        $foundmessage = "Δεν βρέθηκαν σπίτια";
+    } else {
+        if ($count == 1) {
+            $postfound = 'ε ';
+            $posthomes = '';
+        } else {
+            $postfound = 'αν ';
+            $posthomes = 'α';
+        }
+        $foundmessage = "Βρέθηκ" . $postfound . $count . " σπίτι" . $posthomes . "\n";
+    }
+    echo $foundmessage;
+    ?>
         </div>
         <div class='order-by house-ord'>
-            <?php
+<?php
                 echo $this->Form->input('orderΒy', array(
-                    'label' => 'Ταξινόμηση με: ',
-                    'options' => $order_options['options'],
-					'selected' => $order_options['selected']));
-             ?>
+                                                        'label' => 'Ταξινόμηση με: ',
+                                                        'options' => $order_options['options'],
+                                                        'selected' => $order_options['selected']));
+    ?>
         </div>
         <div class="pagination">
             <ul>
-            <?php
+<?php
                 /* show first page */
-                //echo $paginator->first('⇤ Πρώτη ');
-                /* show the previous link */
-                echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
-                /* show pages */
-                echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => 4, 'separator' => ' ', 'tag' => 'li'));
-                /* Shows the next link */
-                echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
-                /* show last page */
-                //echo $paginator->last('Τελευτευταία ⇥');
-                /* prints X of Y, where X is current page and Y is number of pages */
-                //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
-            ?>
+    //echo $paginator->first('⇤ Πρώτη ');
+    /* show the previous link */
+    echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+    /* show pages */
+    echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => 4, 'separator' => ' ', 'tag' => 'li'));
+    /* Shows the next link */
+    echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+    /* show last page */
+    //echo $paginator->last('Τελευτευταία ⇥');
+    /* prints X of Y, where X is current page and Y is number of pages */
+    //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+    ?>
             </ul>
         </div>
         <div id='results-houses' class='results'>
@@ -67,56 +67,58 @@
                     <div class='card'>
                         <div class='card-inner'>
                             <div class='house-pic'>
-							<?php
-								$house_id = $house['House']['id'];
-								$house_image = 'house.gif';
-								if(isset($images[$house_id])){
-									$house_image = 'uploads/thumbnails/'.$images[$house_id];
-								}
-								echo $this->Html->image($house_image, array('alt' => 'house image', 'height' => 70));
-							?>
+
+                                <?php
+
+                                //               thumbnail icon if exists
+                                //                       if (isset($images[0]))
+                                //            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $images[0]['Image']['location'], array('alt' => 'house image'));
+                                //                        else
+                                echo $this->Html->image('house.gif', array('alt' => 'house image')); ?>
                             </div>
-                        <div class='house-info'>
-                            <div class='house-name'>
+
+
+                            <div class='house-info'>
+                                <div class='house-name'>
                                 <?php
                                     echo $this->Html->link($house['House']['address'],
-                                        array('controller' => 'houses', 'action' => 'view', $house['House']['id']));
-                                ?>
-                            </div>
-                            <div class='house-details'>
+                                                           array('controller' => 'houses', 'action' => 'view', $house['House']['id']));
+                                    ?>
+                                </div>
+                                <div class='house-details'>
                                 <?php
                                     echo "Δήμος " . $house['Municipality']['name'] . " <br />";
-                                    echo $house['HouseType']['type'].", ".$house['House']['area']." τ.μ.<br />\n";
-                                    echo $house['Floor']['type'].", ".$house['House']['price']." ευρώ<br />\n";
-				    echo "Διαθέσιμες θέσεις " . $house['House']['free_places'] ." <br />\n";
-                                ?>
+                                    echo $house['HouseType']['type'] . ", " . $house['House']['area'] . " τ.μ.<br />\n";
+                                    echo $house['Floor']['type'] . ", " . $house['House']['price'] . " ευρώ<br />\n";
+                                    echo "Διαθέσιμες θέσεις " . $house['House']['free_places'] . " <br />\n";
+                                    ?>
+                                </div>
+                                <div class='house-house'>
+                                </div>
                             </div>
-                            <div class='house-house'>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </li>
                 <?php endforeach; ?>
 
             </ul>
-        </div>	
+        </div>
         <div class="pagination">
             <ul>
-            <?php
+<?php
                 /* show first page */
-                //echo $paginator->first('⇤ Πρώτη ');
-                /* show the previous link */
-                echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
-                /* show pages */
-                echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => 4, 'separator' => ' ', 'tag' => 'li'));
-                /* Shows the next link */
-                echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
-                /* show last page */
-                //echo $paginator->last('Τελευτευταία ⇥');
-                /* prints X of Y, where X is current page and Y is number of pages */
-                //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
-            ?>
+    //echo $paginator->first('⇤ Πρώτη ');
+    /* show the previous link */
+    echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+    /* show pages */
+    echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => 4, 'separator' => ' ', 'tag' => 'li'));
+    /* Shows the next link */
+    echo $paginator->next(' Επόμενη » ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
+    /* show last page */
+    //echo $paginator->last('Τελευτευταία ⇥');
+    /* prints X of Y, where X is current page and Y is number of pages */
+    //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+    ?>
             </ul>
         </div>
     </div>

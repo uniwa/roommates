@@ -94,7 +94,7 @@
                             ). " Το σπίτι μου ",
                                            "/houses/view/$houseid", 
                                        array('escape'=>false,
-                                               'style' => 'font-size:10px'));
+                                               'style' => 'font-size:12px'));
                       } ?>
             </div>
 		</div>

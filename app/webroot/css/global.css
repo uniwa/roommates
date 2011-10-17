@@ -398,19 +398,22 @@ p {
 }
 
 #ProfileAddForm input[type=text], #ProfileEditForm input[type=text] {
-    padding: 4px;
-    border: solid 1px #C6C6C6;
-    border-bottom: solid 1px #E3E3E3;
-    color: #333;
-    -moz-box-shadow: inset 0 4px 6px #ccc;
-    -webkit-box-shadow: inset 0 4px 6px #ccc;
-    box-shadow: inset 0 4px 6px #ccc;
+    -moz-box-shadow: inset -3px 4px 6px #ccc;
+    -webkit-box-shadow: inset -3px 4px 6px #ccc;
+    box-shadow: inset -3px 4px 6px #ccc;
 
+    -webkit-appearance: none;
+border: 1px solid #ccc;
+-webkit-border-radius: 2px;
+-moz-border-radius: 2px;
+border-radius: 2px;
+padding: 0.3em;
+color: #889;
 }
 
-input:focus {
+#ProfileAddForm input[type=text]:focus , #ProfileEditForm input[type=text]:focus {
     outline: none;
-    border-color: #5d7ba8;
+    color: #444;
 }
 
 input[type=submit], input[type=reset] {
@@ -557,7 +560,7 @@ h1 {
 
 .frame {
     border-style: solid;
-    border-width: 5px;
+    border-width: 2px;
     margin: 4px auto;
     /*padding: 10px 10px 50px 10px;*/
     padding: 0.7em;
@@ -576,10 +579,11 @@ h1 {
 
 .frame-container {
     margin: 16px 32px 4px 32px;
+	padding: 0px 0px 20px 0px;
 }
 
 #top-photo {
-    border: 8px solid #efefef;
+    border: 4px solid #efefef;
     background-color: #999999;
     float: right;
     /*width: 100px;*/
@@ -609,7 +613,7 @@ h1 {
 }
 
 .profile-big {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
     color: #555555;
 }
@@ -710,7 +714,7 @@ h1 {
 
 .loginFrame {
     border-style: solid;
-    border-width: 5px;
+    border-width: 2px;
     margin: 4px auto;
     padding: 8px 10px 77px 1px;
     width: 480px;
