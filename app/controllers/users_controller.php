@@ -40,14 +40,14 @@ class UsersController extends AppController{
         $this->Profile->create();
 
         /* TODO: get this info from LDAP */
-        $profile["Profile"]["firstname"] = "dummyname";
-        $profile["Profile"]["lastname"] = "lname";
+        $profile["Profile"]["firstname"] = "firstname";
+        $profile["Profile"]["lastname"] = "lastname";
         $profile["Profile"]["email"] = "test@teiath.gr";
 
         /* dummy sane data - user will edit his profile after login */
         $profile["Profile"]["dob"] = date('Y') - 18;
         $profile["Profile"]["gender"] = 0;
-        $profile["Profile"]["visible"] = 1;
+        $profile["Profile"]["visible"] = 0;
         $profile["Profile"]["user_id"] = $id;
         /* supplied by create_preferences() */
         $profile["Profile"]["preference_id"] = $pref_id;
