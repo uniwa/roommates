@@ -732,6 +732,10 @@ h1 {
     margin-top: 10px;
 }
 
+.login-title {
+	margin: 0px 0px 0px 15px;
+}
+
 #login-frame {
     color: #6a6a6a;
     background-image: url('../img/login-background.jpg');
@@ -741,6 +745,11 @@ h1 {
 
 #login-inner {
     width: 369px;
+}
+
+#login-main {
+	margin: 0px auto 0px auto;
+	width: 80px;
 }
 
 .loginform label {
@@ -888,8 +897,9 @@ h1 {
 
     }
     .rssIcon{
-        margin-top:-47px;
-        margin-left:15px;
+		margin: -17px 0px -10px 10px;
+        /*margin-top:-25px;
+        margin-left:15px;*/
     }
 
     .liimage img{
