@@ -1,5 +1,5 @@
 <div id='login-frame' class='loginFrame'>
-    :q<h1 class="login-title">Είσοδος χρήστη</h1>
+    <h1 class="login-title">Είσοδος χρήστη</h1>
     <div id='login-inner'>
         <div id="login-main">
         <?php
