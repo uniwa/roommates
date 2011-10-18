@@ -646,6 +646,7 @@ h1 {
 
 .profile-pic, .house-pic {
     position: absolute;
+	background-position: 60px 0px;
     background-repeat: no-repeat;
 	top: 20px;
 	left: 30px;
