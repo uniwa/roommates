@@ -16,14 +16,14 @@ class ImagesController extends AppController {
         }
 
         if ( $this->imageCount($id) >= $this->max_images ) {
-            $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών');
+            $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών.');
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
         }
 
         if(!empty($this->data)) {
             /* check if image is uploaded */
             if ( ! is_uploaded_file($this->data["Image"]["location"]["tmp_name"])) {
-                $this->Session->setFlash('Υπερβολικά μεγάλο μέγεθος εικόνας, η εικόνα δεν αποθηκεύτικε.');
+                $this->Session->setFlash('Υπερβολικά μεγάλο μέγεθος εικόνας, η εικόνα δεν αποθηκεύτηκε.');
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
 
