@@ -8,6 +8,6 @@
 </style>
 
 <?php
-echo $this->Html->image("friends1.jpeg", array("alt" => "roommates","class" => "roommates"));
+echo $this->Html->image("IMG_0949.JPG", array("alt" => "roommates","class" => "roommates"));
 
 ?>
