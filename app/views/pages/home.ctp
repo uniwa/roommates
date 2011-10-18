@@ -4,6 +4,7 @@
 <style>
     .roommates{
         margin-left:150px;
+        width: 650px;
     }
 </style>
 

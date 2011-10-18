@@ -30,7 +30,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
     font-family: sans-serif;
-    min-width:935px;
+    min-width: 935px;
 }
 
 ol, ul {
@@ -393,7 +393,7 @@ p {
     line-height: 19px;
     min-width: 65px;
     display: inline-block;
-    padding-left:10px;
+    padding-left: 10px;
 }
 
 #ProfileAddForm input[type=text], #ProfileEditForm input[type=text] {
@@ -402,36 +402,37 @@ p {
     box-shadow: inset -3px 4px 6px #ccc;
 
     -webkit-appearance: none;
-border: 1px solid #ccc;
--webkit-border-radius: 2px;
--moz-border-radius: 2px;
-border-radius: 2px;
-padding: 0.3em;
-color: #889;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    padding: 0.3em;
+    color: #889;
 }
 
-#ProfileAddForm input[type=text]:focus , #ProfileEditForm input[type=text]:focus {
+#ProfileAddForm input[type=text]:focus, #ProfileEditForm input[type=text]:focus {
     outline: none;
     color: #444;
 }
+
 /*ugly rounded buttons*/
 /*input[type=submit], input[type=reset] {*/
-    /*background: #7195AA;*/
-    /*color: white;*/
-    /*border-color: #13455B;*/
-    /*text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;*/
-    /*padding: 3px 10px;*/
-    /*border: none;*/
-    /*font-size: 13px;*/
-    /*border-style: solid;*/
-    /*-moz-border-radius: 11px;*/
-    /*-khtml-border-radius: 11px;*/
-    /*-webkit-border-radius: 11px;*/
-    /*border-radius: 11px;*/
-    /*cursor: pointer;*/
-    /*text-decoration: none;*/
-    /*margin-top: 10px;*/
-    /*border-width: 1px;*/
+/*background: #7195AA;*/
+/*color: white;*/
+/*border-color: #13455B;*/
+/*text-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0;*/
+/*padding: 3px 10px;*/
+/*border: none;*/
+/*font-size: 13px;*/
+/*border-style: solid;*/
+/*-moz-border-radius: 11px;*/
+/*-khtml-border-radius: 11px;*/
+/*-webkit-border-radius: 11px;*/
+/*border-radius: 11px;*/
+/*cursor: pointer;*/
+/*text-decoration: none;*/
+/*margin-top: 10px;*/
+/*border-width: 1px;*/
 /*}*/
 
 .actions {
@@ -471,7 +472,7 @@ color: #889;
     line-height: 19px;
     min-width: 120px;
     display: inline-block;
-    padding-left:10px;
+    padding-left: 10px;
 }
 
 #HouseAddForm input[type=text], #HouseAddForm textarea, #HouseEditForm input[type=text], #HouseEditForm textarea {
@@ -485,8 +486,8 @@ color: #889;
 
 }
 
-#HouseAddForm input[type=text],#HouseEditForm input[type=text]{
-    width:50px;
+#HouseAddForm input[type=text], #HouseEditForm input[type=text] {
+    width: 50px;
     text-align: right;
 }
 
@@ -578,7 +579,7 @@ h1 {
 
 .frame-container {
     margin: 16px 32px 4px 32px;
-	padding: 0px 0px 20px 0px;
+    padding: 0px 0px 20px 0px;
 }
 
 #top-photo {
@@ -602,7 +603,7 @@ h1 {
     color: #6a6a6a;
 }
 
-#bottom-title h2{
+#bottom-title h2 {
     font-size: 20px;
 }
 
@@ -712,48 +713,48 @@ h1 {
 }
 
 /*.loginFrame {*/
-    /*border-style: solid;*/
-    /*border-width: 2px;*/
-    /*margin: 4px auto;*/
-    /*padding: 8px 10px 77px 1px;*/
-    /*width: 480px;*/
-    /*height: 130px;*/
+/*border-style: solid;*/
+/*border-width: 2px;*/
+/*margin: 4px auto;*/
+/*padding: 8px 10px 77px 1px;*/
+/*width: 480px;*/
+/*height: 130px;*/
 /*}*/
 
 /*.loginform {*/
-    /*margin: 0 auto;*/
-    /*width: 200px;*/
-    /*padding: 20px 0 0 110px;*/
-    /*font-size: 14px;*/
+/*margin: 0 auto;*/
+/*width: 200px;*/
+/*padding: 20px 0 0 110px;*/
+/*font-size: 14px;*/
 /*}*/
 
 /*.loginform input[type=submit] {*/
 
-    /*margin-top: 10px;*/
+/*margin-top: 10px;*/
 /*}*/
 
 /*.login-title {*/
-	/*margin: 0px 0px 0px 15px;*/
+/*margin: 0px 0px 0px 15px;*/
 /*}*/
 
 /*#login-frame {*/
-    /*color: #6a6a6a;*/
-    /*background-image: url('../img/login-background.jpg');*/
-    /*background-repeat: no-repeat;*/
+/*color: #6a6a6a;*/
+/*background-image: url('../img/login-background.jpg');*/
+/*background-repeat: no-repeat;*/
 
 /*}*/
 
 /*#login-inner {*/
-    /*width: 369px;*/
+/*width: 369px;*/
 /*}*/
 
 /*#login-main {*/
-	/*margin: 0px auto 0px auto;*/
-	/*width: 80px;*/
+/*margin: 0px auto 0px auto;*/
+/*width: 80px;*/
 /*}*/
 
 /*.loginform label {*/
-    /*width: 80px;*/
+/*width: 80px;*/
 /*}*/
 
 /*#login-inner legend {*/
@@ -762,8 +763,6 @@ h1 {
 .order-by {
     margin: 0px 0px 16px 32px;
 }
-
-
 
 .galleryimage {
     padding: 25px 0 0 20px;
@@ -834,8 +833,9 @@ h1 {
     border-bottom: 1px solid black;
 
 }
+
 .houseProfile table td {
-   max-width:275px;
+    max-width: 275px;
 }
 
 .houseProfile table {
@@ -864,7 +864,6 @@ h1 {
 
 }
 
-
 #flashMessage {
     border: 1px solid;
     margin: 10px 0;
@@ -876,67 +875,62 @@ h1 {
     background-image: url(../img/info.png);
 }
 
-
-.required{
-        background: url(../img/required.gif) top left no-repeat;
+.required {
+    background: url(../img/required.gif) top left no-repeat;
 }
 
 /* gallery single view*/
 
-    .ulimage{
-        width:175px;
-    }
+.ulimage {
+    width: 175px;
+}
 
-    .liimage{
-        float:left;
-        padding: 10px 10px 0 10px;
-border: 2px #ccc solid;
--moz-border-radius: 5px;
--webkit-border-radius: 5px;
-    }
+.liimage {
+    float: left;
+    padding: 10px 10px 0 10px;
+    border: 2px #ccc solid;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
 
-.liimage:hover{
+.liimage:hover {
     border-color: #667;
 }
 
-    .rssIcon{
-		margin: -17px 0px -10px 10px;
-        /*margin-top:-25px;
-        margin-left:15px;*/
-    }
+.rssIcon {
+    margin: -17px 0px -10px 10px;
+    /*margin-top:-25px;
+    margin-left:15px;*/
+}
 
-    .liimage img{
-        width:130px;
-        height:80px;
+.liimage img {
+    width: 130px;
+    height: 80px;
 
-    }
-
-
-
+}
 
 /* media query for big resolutions grid4 */
 @media screen and (min-width: 1100px) {
 
-    .ulimage{
-        width:320px;
+    .ulimage {
+        width: 320px;
     }
 }
 
-
-input[type=submit]{
-    display:block;
-    margin-top:20px;
-    background-color:#92c97c;
-    border:1px solid #73b35a;
-    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
-    font-size:100%;
-    line-height:130%;
-    text-decoration:none;
-    font-weight:bold;
-    color:#e8f7df;
-    cursor:pointer;
-    padding:5px 10px 6px 7px; /* Links */
-    outline:none;
+input[type=submit] {
+    display: block;
+    margin-top: 20px;
+    background-color: #92c97c;
+    border: 1px solid #73b35a;
+    font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    font-size: 100%;
+    line-height: 130%;
+    text-decoration: none;
+    font-weight: bold;
+    color: #e8f7df;
+    cursor: pointer;
+    padding: 5px 10px 6px 7px; /* Links */
+    outline: none;
 
 }
 
