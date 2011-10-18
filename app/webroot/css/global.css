@@ -891,29 +891,23 @@ h1 {
         padding: 10px 10px 0 10px;
 		cursor: url('zoomin.cur'), auto;
     }
+
+.liimage img{
+    		cursor: url('zoomin.cur'), auto;
+    border: 2px solid #ccc;
+    padding: 2px;
+}
+.liimage img:hover{
+    border-color: #667;
+}
+
+
+
     .rssIcon{
 		margin: -17px 0px -10px 10px;
         /*margin-top:-25px;
         margin-left:15px;*/
     }
-
-.liimage {
-    float: left;
-    padding: 10px 10px 0 10px;
-    border: 2px #ccc solid;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
-.liimage:hover {
-    border-color: #667;
-}
-
-.rssIcon {
-    margin: -17px 0px -10px 10px;
-    /*margin-top:-25px;
-    margin-left:15px;*/
-}
 
 .liimage img {
     width: 130px;
