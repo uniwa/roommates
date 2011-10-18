@@ -28,7 +28,7 @@ foreach ($houses as $house) {
 
     $bodyText = "<strong>Δήμος:</strong> {$house['Municipality']['name']}<br />
                  <strong>Διεύθυνση:</strong> {$house['House']['address']}<br />
-                 <strong>Τιμή:</strong> {$house['House']['price']}€<br />
+                 <strong>Ενοίκιο:</strong> {$house['House']['price']}€<br />
                  <strong>Διαθεσιμότητα:</strong> {$time->format(
                                     $format = 'd-m-Y',
                                     $house['House']['availability_date'])
