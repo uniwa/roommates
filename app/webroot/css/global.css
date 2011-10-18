@@ -16,7 +16,6 @@ time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
     font: inherit;
     vertical-align: baseline;
 }
@@ -400,8 +399,6 @@ p {
     -moz-box-shadow: inset -3px 4px 6px #ccc;
     -webkit-box-shadow: inset -3px 4px 6px #ccc;
     box-shadow: inset -3px 4px 6px #ccc;
-
-    -webkit-appearance: none;
     border: 1px solid #ccc;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -501,6 +498,7 @@ select {
     /*-moz-border-radius: 3px;*/
     /*-webkit-border-radius: 3px;*/
     max-width: 250px;
+    margin-left: 2px;
 }
 
 .cb1 {
@@ -551,7 +549,7 @@ h1 {
 
 .short-field {
     float: left;
-    margin: 0px 12px 0px 0px;
+    margin-right:12px;
 }
 
 .clear-both {
@@ -579,7 +577,7 @@ h1 {
 
 .frame-container {
     margin: 16px 32px 4px 32px;
-    padding: 0px 0px 20px 0px;
+    padding-bottom: 20px;
 }
 
 #top-photo {
@@ -588,15 +586,15 @@ h1 {
     float: right;
     /*width: 100px;*/
     /*height: 100px;*/
-    margin: 0px 0px 4px 0px;
+    margin-bottom: 4px;
 }
 
 .title {
     clear: both;
-    margin: 8px 0px 8px -10px;
+    margin: 8px 0 8px -10px;
     font-size: 20px;
     font-weight: bold;
-    text-shadow: #bbbbbb 1px 1px 0px;
+    text-shadow: #bbbbbb 1px 1px;
 }
 
 #top-title {
@@ -609,7 +607,7 @@ h1 {
 
 .options {
     clear: both;
-    margin: 0px 0px 0px 16px;
+    margin-left: 16px;
 }
 
 .profile-big {
@@ -623,7 +621,7 @@ h1 {
 }
 
 .subtitle {
-    margin: 0px 32px 20px 32px;
+    margin: 0 32px 20px 32px;
     font-size: 18px;
     font-style: italic;
     color: #999999;
@@ -633,9 +631,8 @@ h1 {
 }
 
 .card {
-    background-image: url('../img/card.png');
-    background-repeat: no-repeat;
-    margin: 0px auto 4px auto;
+    background: url('../img/card.png') no-repeat;
+    margin: 0 auto 4px auto;
     width: 600px;
     height: 114px;
 }
@@ -647,7 +644,7 @@ h1 {
 .profile-pic, .house-pic {
     float: left;
     background-repeat: no-repeat;
-    margin: 20px 10px 0px 60px;
+    margin: 20px 10px 0 60px;
     width: 70px;
     height: 70px;
 }
@@ -666,7 +663,7 @@ h1 {
 
 .profile-info, .house-info {
     float: left;
-    margin: 5px 0px 0px 0px;
+    margin-top: 5px;
 }
 
 .profile-info {
@@ -688,7 +685,7 @@ h1 {
 }
 
 .profile-details, .house-details {
-    margin: -4px 0px 20px 10px;
+    margin: -4px 0 20px 10px;
 }
 
 .profile-edit {
@@ -761,7 +758,7 @@ h1 {
 /*}*/
 
 .order-by {
-    margin: 0px 0px 16px 32px;
+    margin: 0 0 16px 32px;
 }
 
 .galleryimage {
@@ -889,13 +886,16 @@ h1 {
     .liimage{
         float:left;
         padding: 10px 10px 0 10px;
-		cursor: url('zoomin.cur'), auto;
     }
 
 .liimage img{
     		cursor: url('zoomin.cur'), auto;
     border: 2px solid #ccc;
     padding: 2px;
+    border-radius: 5px;
+    /*-moz-box-shadow: 2px 2px 5px #667;*/
+    /*-webkit-box-shadow: 2px 2px 5px #667;*/
+    /*box-shadow: 2px 2px 5px #667;*/
 }
 .liimage img:hover{
     border-color: #667;
@@ -904,7 +904,7 @@ h1 {
 
 
     .rssIcon{
-		margin: -17px 0px -10px 10px;
+		margin: -17px 0 -10px 10px;
         /*margin-top:-25px;
         margin-left:15px;*/
     }
@@ -945,7 +945,6 @@ input[type=submit] {
     margin-top: 20px;
         font-size: 10px;
         color: whiteSmoke;
-        padding: 5px 8px;
         background-color: #4F6CA6;
         border-color: #000066;
         -moz-border-radius: 2px;
