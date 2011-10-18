@@ -641,19 +641,20 @@ h1 {
 }
 
 .card-inner {
-    clear: both;
+	position: relative;
 }
 
 .profile-pic, .house-pic {
-    float: left;
+    position: absolute;
     background-repeat: no-repeat;
-    margin: 20px 10px 0px 60px;
-	padding: 2px;
-/*    width: 70px;
-    height: 70px;*/
+	top: 20px;
+	left: 60px;
+	width: 200px;
+	height: 70px;
 }
 
-.house-pic {
+.house-pic img{
+	margin: 0px auto;
 /*    background-image: url('../img/house.gif');*/
 }
 
@@ -666,17 +667,16 @@ h1 {
 }
 
 .profile-info, .house-info {
-    float: left;
+    position: absolute;
     margin: 5px 0px 0px 0px;
+    width: 300px;
+	left: 240px;
 }
 
 .profile-info {
-    width: 300px;
 }
 
 .house-info {
-    margin-left: 45px;
-    width: 300px;
 }
 
 .profile-name, .house-name {
