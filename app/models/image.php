@@ -22,7 +22,7 @@ class Image extends AppModel {
         $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
 
         /* create destination folder if it does not exist*/
-        if(!is_dir($base_path)) mkdir($base_path);
+        if(!is_dir($base_path)) mkdir($base_path, 0700, true);
 
         /* get extension */
         $ext = substr(strrchr($fileData['name'], '.'), 1);
