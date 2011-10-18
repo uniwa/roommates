@@ -648,8 +648,9 @@ h1 {
     float: left;
     background-repeat: no-repeat;
     margin: 20px 10px 0px 60px;
-    width: 70px;
-    height: 70px;
+	padding: 2px;
+/*    width: 70px;
+    height: 70px;*/
 }
 
 .house-pic {
@@ -670,12 +671,12 @@ h1 {
 }
 
 .profile-info {
-    width: 240px;
+    width: 360px;
 }
 
 .house-info {
     margin-left: 45px;
-    width: 400px;
+    width: 360px;
 }
 
 .profile-name, .house-name {
