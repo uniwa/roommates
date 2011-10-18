@@ -36,7 +36,7 @@
 <table>
     <tr>
         <td>
-            <?php echo $this->Form->input('max_price', array(   'label' => 'Τιμή μέχρι ',
+            <?php echo $this->Form->input('max_price', array(   'label' => 'Ενοίκιο μέχρι ',
                                                                 'class' => 'short-textbox',
                                                                 'value' => isset($defaults) ? $defaults['max_price'] : '' ));
             ?>
@@ -204,7 +204,7 @@
                                     </div>
                                     <div class='house-details'>
                                         <?php
-                                            echo 'Τιμή '.$house['House']['price'].'€, Εμβαδόν '.$house['House']['area'].' τ.μ. ';
+                                            echo 'Ενοίκιο '.$house['House']['price'].'€, Εμβαδόν '.$house['House']['area'].' τ.μ. ';
                                             echo $house['House']['furnitured'] ? 'Επιπλωμένο<br/>' : 'Μη επιπλωμένο<br/>';
                                             echo 'Δήμος '.$municipalities[$house['House']['municipality_id']].'<br/>';
                                             if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br/>';
