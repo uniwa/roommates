@@ -881,9 +881,21 @@ h1 {
 
 /* gallery single view*/
 
-.ulimage {
-    width: 175px;
-}
+
+    .ulimage{
+        width:175px;
+    }
+
+    .liimage{
+        float:left;
+        padding: 10px 10px 0 10px;
+		cursor: url('zoomin.cur'), auto;
+    }
+    .rssIcon{
+		margin: -17px 0px -10px 10px;
+        /*margin-top:-25px;
+        margin-left:15px;*/
+    }
 
 .liimage {
     float: left;
