@@ -890,7 +890,7 @@ h1 {
     .liimage{
         float:left;
         padding: 10px 10px 0 10px;
-
+		cursor: url('zoom.cur'), auto;
     }
     .rssIcon{
 		margin: -17px 0px -10px 10px;
