@@ -7,7 +7,7 @@
                        if (isset($images[0]))
             echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $images[0]['Image']['location'], array('alt' => 'house image'));
         else
-            echo $this->Html->image('homedefault.png', array('alt' => 'house image')); ?>
+            echo $this->Html->image('homedefault.png', array('alt' => 'house image','class' => 'defaultimg')); ?>
 
     </div>
 
@@ -173,9 +173,9 @@
     </div>
 
     <div class="gallery">
-
-        <?php $i = 0; foreach ($images as $image): ?>
 <ul class=ulimage>
+        <?php $i = 0; foreach ($images as $image): ?>
+
         <li class="liimage">
             <?php echo $this->Html->link(
             $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),

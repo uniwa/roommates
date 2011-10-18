@@ -894,8 +894,15 @@ h1 {
     .liimage{
         float:left;
         padding: 10px 10px 0 10px;
-
+border: 2px #ccc solid;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
     }
+
+.liimage:hover{
+    border-color: #667;
+}
+
     .rssIcon{
 		margin: -17px 0px -10px 10px;
         /*margin-top:-25px;
