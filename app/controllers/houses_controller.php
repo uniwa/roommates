@@ -17,9 +17,8 @@ class HousesController extends AppController {
         }
 
 		// TODO only find images in current page
-		$images = $this->House->Image->find('first', array('fields' => array('house_id', 'location')));
+		$images = $this->House->Image->find('list', array('fields' => array('house_id', 'location')));
 		$this->set('images', $images);
-        //pr($images);die();
 		
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
