@@ -13,5 +13,5 @@
 		//echo $form->input('location', array('type' => 'file'));
 		echo $this->Form->input('house_id', array('type' => 'hidden' , "value" => $house_id));
 	?>
-<?php echo $this->Form->end(__('Ανέβασμα φωτογραφίας', true));?>
+<?php echo $this->Form->end(__('Ανέβασμα εικόνας', true));?>
 </fieldset>
