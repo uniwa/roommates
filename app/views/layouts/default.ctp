@@ -5,6 +5,7 @@
     <title><?php echo $title_for_layout?></title>
     <meta charset="utf-8">
 	<base href="<?php echo Router::url('/'); ?>" />
+<?php echo $this->Html->meta(    'Σπίτια',    '/houses/index.rss',    array('type' => 'rss'));?>
 
     <?php
     echo $this->Html->css('global');
@@ -34,6 +35,7 @@
             ?>
         </div>
         <a href="#" title=""><img class="title" src="<?php echo $this->webroot; ?>img/logo.png" alt=""/></a>
+
     </div>
     <!-- /#logo -->
     <?php

@@ -12,24 +12,24 @@
         </li>
         <li>
             <?php 
-                $profile_id = $this->Auth->get("Profile.id");
-                echo $this->Html->link(' Το προφίλ μου', array(
-                                                               'controller' => 'profiles',
-                                                               'action' => 'view',
-                                                               $profile_id,
-                                                           )); ?>
+            $profile_id = $this->Auth->get("Profile.id");
+            echo $this->Html->link(' Το προφίλ μου', array(
+                                                          'controller' => 'profiles',
+                                                          'action' => 'view',
+                                                          $profile_id,
+                                                     )); ?>
         </li>
 
         <li>
             <?php
-		$house_id = $this->Auth->get("House.id");	
-                if ($house_id != NULL) {
-                    echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
-                                                                'action' => 'view', $house_id));
-                } else {
-                    echo $this->Html->link('Προσθήκη σπιτιού', array('controller' => 'houses',
+        $house_id = $this->Auth->get("House.id");
+            if ($house_id != NULL) {
+                echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
+                                                            'action' => 'view', $house_id));
+            } else {
+                echo $this->Html->link('Προσθήκη σπιτιού', array('controller' => 'houses',
                                                                 'action' => 'add'));
-                }
+            }
             ?>
         </li>
         <li>
@@ -39,19 +39,25 @@
         </li>
 
         <li>
-            <?php echo $this->Html->link('Αναζήτηση Σπιτιού', array(    'controller' => 'houses',
-                                                                        'action' => 'search')); ?>
+            <?php echo $this->Html->link('Αναζήτηση Σπιτιού', array('controller' => 'houses',
+                                                                   'action' => 'search')); ?>
         </li>
 
         <?php if ($this->Session->read('Auth.User')) {
-            echo '<li>';
-            echo $this->Html->link('Αποσύνδεση ('.$this->Session->read("Auth.User.username").")", array('controller' => 'users',
-                                                      'action' => 'logout'));
-            echo '</li>';
-        }?>
+        echo '<li>';
+        echo $this->Html->link('Αποσύνδεση (' . $this->Session->read("Auth.User.username") . ")", array('controller' => 'users',
+                                                                                                       'action' => 'logout'));
+        echo '</li>';
+    }?>
         <li class="rss">
-            <a href="/roommates/houses/index.rss" title="Subscribe"><img src="<?php echo $this->webroot; ?>img/rssIn.png"
-                                               alt="RSS-feed"/></a>
+            <?php
+            $userid = $this->Session->read('Auth.User.id');
+            echo $this->Html->link(
+                $this->Html->image("rssIn.png", array("alt" => "Subscribe to RSS.")),
+                "/houses/index.rss",
+                array('escape' => false)
+            );
+            ?>
         </li>
     </ul>
 </div>
