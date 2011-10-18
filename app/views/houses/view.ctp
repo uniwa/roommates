@@ -53,7 +53,7 @@
             <td> <?php echo $house['HeatingType']['type']?></td>
         </tr>
         <tr>
-            <th>Τιμή:</th>
+            <th>Ενοίκιο:</th>
             <td> <?php echo $house['House']['price']?>€</td>
         </tr>
         <tr>
