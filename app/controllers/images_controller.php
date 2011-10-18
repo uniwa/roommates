@@ -21,6 +21,11 @@ class ImagesController extends AppController {
         }
 
         if(!empty($this->data)) {
+            /* check if user pressed upload without image */
+            if ( empty($this->data["Image"]["location"]["name"]) ) {
+                $this->Session->setFlash('Παρακαλώ επιλέξτε εικόνα.');
+                $this->redirect(array('controller' => 'images', 'action' => 'add', $id));
+            }
             /* check if image is uploaded */
             if ( ! is_uploaded_file($this->data["Image"]["location"]["tmp_name"])) {
                 $this->Session->setFlash('Υπερβολικά μεγάλο μέγεθος εικόνας, η εικόνα δεν αποθηκεύτηκε.');
