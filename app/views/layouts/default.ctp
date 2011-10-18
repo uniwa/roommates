@@ -7,7 +7,7 @@
 
 	<base href="<?php echo Router::url('/'); ?>" />
 	<?php echo $this->Html->meta('Σπίτια', '/houses/index.rss', array('type' => 'rss')); ?>
-
+    <?php echo $this->Html->meta( 'favicon.ico', 'img/favicon.ico', array( 'type' => 'icon') );?>
     <?php
 		echo $this->Html->css('global');
 		echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('media' => 'screen'));
