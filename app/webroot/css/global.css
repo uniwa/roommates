@@ -917,20 +917,41 @@ h1 {
     }
 }
 
+/*input[type=submit] {*/
+    /*display: block;*/
+    /*margin-top: 20px;*/
+    /*background-color: #92c97c;*/
+    /*border: 1px solid #73b35a;*/
+    /*font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;*/
+    /*font-size: 100%;*/
+    /*line-height: 130%;*/
+    /*text-decoration: none;*/
+    /*font-weight: bold;*/
+    /*color: #e8f7df;*/
+    /*cursor: pointer;*/
+    /*padding: 5px 10px 6px 7px; *//* Links */
+    /*outline: none;*/
+
+/*}*/
+
+
 input[type=submit] {
-    display: block;
     margin-top: 20px;
-    background-color: #92c97c;
-    border: 1px solid #73b35a;
-    font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
-    font-size: 100%;
-    line-height: 130%;
-    text-decoration: none;
-    font-weight: bold;
-    color: #e8f7df;
-    cursor: pointer;
-    padding: 5px 10px 6px 7px; /* Links */
+        font-size: 10px;
+        color: whiteSmoke;
+        padding: 5px 8px;
+        background-color: #4F6CA6;
+        border-color: #000066;
+        -moz-border-radius: 2px;
+        -khtml-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+    padding: 5px 10px 6px 7px;
     outline: none;
 
-}
+    }
 
+input[type=submit]:hover{
+        cursor:pointer;
+            border-color: #21759B;
+}
