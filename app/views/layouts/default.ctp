@@ -6,7 +6,7 @@
 	<?php echo $this->Html->charset('utf-8'); ?> 
 
 	<base href="<?php echo Router::url('/'); ?>" />
-<?php echo $this->Html->meta(    'Σπίτια',    '/houses/index.rss',    array('type' => 'rss'));?>
+	<?php echo $this->Html->meta('Σπίτια', '/houses/index.rss', array('type' => 'rss')); ?>
 
     <?php
 		echo $this->Html->css('global');
