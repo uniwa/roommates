@@ -45,7 +45,8 @@
         <div class="pagination">
             <ul>
 <?php
-                /* show first page */
+print_r($images);
+	/* show first page */
     //echo $paginator->first('⇤ Πρώτη ');
     /* show the previous link */
     echo $paginator->prev('« Προηγούμενη ', array('tag' => 'li'), null, array('class' => 'disabled', 'tag' => 'li'));
@@ -67,14 +68,15 @@
                     <div class='card'>
                         <div class='card-inner'>
                             <div class='house-pic'>
-
                                 <?php
-
-                                //               thumbnail icon if exists
-                                //                       if (isset($images[0]))
-                                //            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $images[0]['Image']['location'], array('alt' => 'house image'));
-                                //                        else
-                                echo $this->Html->image('house.gif', array('alt' => 'house image')); ?>
+									// thumbnail icon if exists
+									$house_id = $house['House']['id'];
+									$house_image = 'house.gif';
+									if(isset($images[$house_id])){
+										$house_image = 'uploads/houses/'.$house_id.'/thumb_'.$images[$house_id];
+									}
+									echo $this->Html->image($house_image, array('alt' => 'εικόνα '.$house['House']['address'], 'height' => 70));
+								?>
                             </div>
 
 
