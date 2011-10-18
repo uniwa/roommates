@@ -16,10 +16,13 @@ class HousesController extends AppController {
             return $this->set(compact('houses'));
         }
 
-		$images = $this->House->Image->find('list', array('fields' => array('house_id', 'location')));
+		// TODO only find images in current page
+		$images = $this->House->Image->find('list', array(
+				'fields' => array('house_id', 'location'),
+				'order' => array('id desc')
+			));
 		$this->set('images', $images);
 		
-
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
 
@@ -236,6 +239,13 @@ class HousesController extends AppController {
     }
 
     function search () {
+		// TODO only find images in current page
+		$images = $this->House->Image->find('list', array(
+				'fields' => array('house_id', 'location'),
+				'order' => array('id desc')
+			));
+		$this->set('images', $images);
+		
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
 

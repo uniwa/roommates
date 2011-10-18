@@ -644,13 +644,20 @@ h1 {
 .profile-pic, .house-pic {
     float: left;
     background-repeat: no-repeat;
+<<<<<<< HEAD
     margin: 20px 10px 0 60px;
     width: 70px;
     height: 70px;
+=======
+    margin: 20px 10px 0px 60px;
+	padding: 2px;
+/*    width: 70px;
+    height: 70px;*/
+>>>>>>> adf9aa9e8e7417c9dc76a8810cb7b4da8c0bc3b9
 }
 
 .house-pic {
-    background-image: url('../img/house.gif');
+/*    background-image: url('../img/house.gif');*/
 }
 
 .male {
@@ -667,12 +674,12 @@ h1 {
 }
 
 .profile-info {
-    width: 240px;
+    width: 300px;
 }
 
 .house-info {
     margin-left: 45px;
-    width: 400px;
+    width: 300px;
 }
 
 .profile-name, .house-name {
