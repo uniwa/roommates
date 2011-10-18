@@ -45,7 +45,6 @@
         <div class="pagination">
             <ul>
 <?php
-print_r($images);
 	/* show first page */
     //echo $paginator->first('⇤ Πρώτη ');
     /* show the previous link */
