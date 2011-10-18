@@ -12,10 +12,11 @@
 }
 
 #darkbanner{
-	margin: -6px 0 20px -18px;
+	margin: -6px -18px 20px -18px;
 	padding: 8px 10px 10px 40px;
 	background: #424242;
 	position: relative;
+    box-shadow: 4px 3px 5px #667;
 }
 #darkbanner span{
 	padding-left: 35px;
