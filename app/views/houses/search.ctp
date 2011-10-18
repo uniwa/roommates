@@ -42,7 +42,7 @@
             ?>
         </td>
         <td>
-            <?php echo $this->Form->input('min_area', array('label' => 'Εμβαδό από ',
+            <?php echo $this->Form->input('min_area', array('label' => 'Εμβαδόν από ',
                                                             'class' => 'short-textbox',
                                                             'value' => isset($defaults) ? $defaults['min_area'] : '' ));
             ?>
@@ -138,7 +138,7 @@
 
 <br/>
 
-<table>
+<table class="tableactions">
     <tr>
         <td>
             <?php echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search'));?>
@@ -204,7 +204,7 @@
                                     </div>
                                     <div class='house-details'>
                                         <?php
-                                            echo 'Τιμή '.$house['House']['price'].'€, Εμβαδό '.$house['House']['area'].' τ.μ. ';
+                                            echo 'Τιμή '.$house['House']['price'].'€, Εμβαδόν '.$house['House']['area'].' τ.μ. ';
                                             echo $house['House']['furnitured'] ? 'Επιπλωμένο<br/>' : 'Μη επιπλωμένο<br/>';
                                             echo 'Δήμος '.$municipalities[$house['House']['municipality_id']].'<br/>';
                                             if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br/>';

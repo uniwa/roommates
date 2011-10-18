@@ -47,7 +47,7 @@ $.fn.customFileInput = function(){
 				.data('fileExt', fileExt) //store file extension for class removal on next change
 				.addClass('customfile-feedback-populated'); //add class to show populated state
 			//change text of button	
-			uploadButton.text('Change');	
+			uploadButton.text('Αλλαγή');
 		})
 		.click(function(){ //for IE and Opera, make sure change fires after choosing a file, using an async callback
 			fileInput.data('val', fileInput.val());

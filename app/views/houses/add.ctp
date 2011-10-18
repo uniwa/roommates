@@ -7,7 +7,7 @@ echo $form->input('house_type_id', array('label' => 'Τύπος κατοικία
 echo $form->input('municipality_id', array('label' => 'Δήμος', 'empty' => 'Επιλέξτε...'));
 echo $form->input('address', array('label' => 'Διεύθυνση','type' => 'textarea',"rows" => "2"));
 echo $form->input('postal_code', array('label' => 'Τ.K.'));
-echo $form->input('area', array('label' => 'Εμβαδό','after' => 'τ.μ.'));
+echo $form->input('area', array('label' => 'Εμβαδόν','after' => 'τ.μ.'));
 echo $form->input('floor_id', array('label' => 'Όροφος', 'empty' => 'Επιλέξτε...'));
 echo $form->input('bedroom_num', array('label' => 'Αριθμός δωματίων'));
 echo $form->input('bathroom_num', array('label' => 'Αριθμός μπάνιων'));
