@@ -72,7 +72,7 @@ class UsersController extends AppController{
         $pref["Preference"]["pref_couple"] = 2;
 
         if ( $this->Preference->save($pref) === False ) {
-            $this->Preferene->rollback();
+            $this->Preference->rollback();
             return NULL;
         }
         else {
