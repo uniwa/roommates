@@ -22,7 +22,8 @@ class UsersController extends AppController{
             /* if user does not have a profile, create one */
             if ( $user["Profile"]["id"] == NULL ) {
                 $pref_id = $this->create_preferences();
-                $this->create_profile($this->User->id, $pref_id);
+                $profile_id = $this->create_profile($this->User->id, $pref_id);
+                $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
             }
             $this->redirect($this->Auth->redirect());
         }
@@ -58,6 +59,7 @@ class UsersController extends AppController{
         else {
             $this->Profile->commit();
         }
+        return $this->Profile->id;
     }
 
     function create_preferences() {
