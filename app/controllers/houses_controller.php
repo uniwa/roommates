@@ -262,17 +262,31 @@ class HousesController extends AppController {
 
         if(isset($this->params['url']['simple_search'])) {
 
+// select A.id, C.id, count(D.id) as pics
+// from houses A
+// left join users B ON A.user_id = B.id
+// left join profiles C ON C.user_id = B.id
+// left join images D on D.house_id = A.id
+// where D.id > 0
+// group by A.id;
+
+
             $options['joins'] = array(
                 array(  'table' => 'users',
                         'alias' => 'User',
-                        'type'  => 'inner',
+                        'type'  => 'left',
                         'conditions' => array('House.user_id = User.id')
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
-                        'type'  => 'inner',
+                        'type'  => 'left',
                         'conditions' => $this->getMatesConditions()
-                )
+                )/*,
+                array(  'table' => 'images',
+                        'alias' => 'Image',
+                        'type'  => 'left',
+                        'conditions' => array('Image.house_id = 2')
+                )*/
             );
 
             $options['conditions'] = $this->getHouseConditions();
@@ -341,7 +355,7 @@ class HousesController extends AppController {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
         $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
-        // required condition for the inner join
+        // required condition for the left join
         array_push($mates_conditions, 'User.id = Profile.user_id');
 
         return $mates_conditions;
