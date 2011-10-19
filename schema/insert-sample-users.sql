@@ -18,4 +18,7 @@ INSERT INTO `roommates`.`users` (`username`, `password`, `role`)
 VALUES('user6', '8f9bc2b8007a93584efdf303b83619f1fc147016', 'user');
 
 INSERT INTO `roommates`.`users` (`username`, `password`, `role`) 
+VALUES('usertest', '082452cad32b998963d58dfca76a1679b5b9badf', 'user');
+
+INSERT INTO `roommates`.`users` (`username`, `password`, `role`) 
 VALUES('admin', '8f9bc2b8007a93584efdf303b83619f1fc147016', 'admin');

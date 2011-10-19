@@ -8,7 +8,7 @@ class  AppController extends Controller{
 	function beforeFilter(){
 
 		$this->Auth->loginError = "Δώστε έγκυρο όνομα χρήστη και συνθηματικό.";
-		$this->Auth->authError = "Δώστε έγκυρο όνομα χρήστη και συνθηματικό.";
+		$this->Auth->authError = " ";
 	}
 
 	/*
