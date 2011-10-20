@@ -52,6 +52,7 @@ class UsersController extends AppController{
         $profile["Profile"]["user_id"] = $id;
         /* supplied by create_preferences() */
         $profile["Profile"]["preference_id"] = $pref_id;
+        $profile["Profile"]["token"] = $this->generate_token($id);
 
         if ( $this->Profile->save($profile) === False) {
             $this->Profile->rollback();
