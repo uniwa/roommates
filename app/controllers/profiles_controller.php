@@ -339,5 +339,52 @@ class ProfilesController extends AppController {
             $this->cakeError('error404');
         }
     }
+
+    private function set_ban_status($id, $status) {
+        /* sets ban status for user with the given profile id */
+        $this->Profile->id = $id;
+        $profile = $this->Profile->read();
+
+        $user["User"] = $profile["User"];
+        $user["User"]["banned"] = $status;
+
+        $this->User->begin();
+        $this->User->id = $profile["Profile"]["user_id"];
+        if ($this->User->save($user, array('validate'=>'first'))) {
+            $this->User->commit();
+            return True;
+        } else {
+            $this->User->rollback();
+            return False;
+        }
+
+    }
+
+    function ban($id) {
+        if ($this->Auth->user('role') != 'admin') {
+            $this->errorError('error403');
+        }
+        $success = $this->set_ban_status($id, 1);
+        if ($success) {
+            $this->Session->setFlash("Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.");
+        } else {
+            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+        }
+        $this->redirect(array('action'=> "view", $id));
+    }
+
+    function unban($id) {
+        if ($this->Auth->user('role') != 'admin') {
+            $this->errorError('error403');
+        }
+        $success = $this->set_ban_status($id, 0);
+        if ($success) {
+            $this->Session->setFlash("Ο λογαριασμός χρήστη ενεργοποιήθηκε με επιτυχία.");
+        } else {
+            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+        }
+        $this->redirect(array('action'=> "view", $id));
+
+    }
 }
 ?>
