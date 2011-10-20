@@ -180,6 +180,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `we_are` INT(11)  NULL ,
   `max_roommates` TINYINT NULL ,
   `visible` TINYINT(1)  NULL ,
+  `token` VARCHAR(40) NULL,
   `created` DATETIME DEFAULT NULL ,
   `modified` DATETIME DEFAULT NULL ,
   `preference_id` INT DEFAULT NULL ,
