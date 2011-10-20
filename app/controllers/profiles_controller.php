@@ -293,11 +293,8 @@ class ProfilesController extends AppController {
         $this->Profile->id = $profile_id;
         $profile = $this->Profile->read();
         $user_id = $profile['User']['id'];
-        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin') ){
-            /*
-             * More info aboute params in app/app_error.php
-             */
-            $this->cakeError('error403'/*, array()*/ );
+        if( $this->Auth->user('id') != $user_id){
+            $this->cakeError('error403');
         }
     }
 
