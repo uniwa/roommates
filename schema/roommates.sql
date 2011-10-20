@@ -135,14 +135,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `username` VARCHAR(50) NOT NULL ,
   `password` VARCHAR(40) NOT NULL ,
   `role` VARCHAR(40),
---  `profile_id` INT NOT NULL ,
   PRIMARY KEY (`id`) 
---  INDEX `fk_users_profiles1` (`profile_id` ASC) ,
---  CONSTRAINT `fk_users_profiles1`
---    FOREIGN KEY (`profile_id` )
---    REFERENCES `roommates`.`profiles` (`id` )
---    ON DELETE NO ACTION
---    ON UPDATE NO ACTION)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
