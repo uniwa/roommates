@@ -42,15 +42,19 @@ class UsersController extends AppController{
 
         $this->layout = 'terms';
         $data = $this->data;
-        if( !empty( $data['User']['accept'] ) ){
+        if( !empty( $data ) ){
 
             if( $data['User']['accept'] == 1 ){
-                
-                $this->redirect( $this->Auth->login() );
+                $this->User->id = $this->Auth->user('id');
+                $pref_id = $this->create_preferences();
+                $profile_id = $this->create_profile($this->User->id, $pref_id);
+                $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id)); 
+            } else {
+
+                $this->redirect ( array( 'controller' => 'users', 'action' => 'logout') );
             }
 
         }
-
     }
 
  private function create_profile($id, $pref_id) {
