@@ -59,5 +59,11 @@
             );
             ?>
         </li>
+        <li>
+            <?php
+				echo " Ενεργά προφίλ χρηστών: ".$active['profiles']."<br />\n";
+				echo " Καταχωρημένα σπίτια: ".$active['houses']."<br />\n";
+			?>
+        </li>
     </ul>
 </div>

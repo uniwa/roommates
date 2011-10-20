@@ -3,12 +3,16 @@ class  AppController extends Controller{
 
 	var $components = array('Auth', 'Session');
 	var $helpers  = Array('Html', 'Form', 'Session','Auth');
-	var $uses = array('User');
+	var $uses = array('User', 'Profile');
 
 	function beforeFilter(){
-
 		$this->Auth->loginError = "Δώστε έγκυρο όνομα χρήστη και συνθηματικό.";
 		$this->Auth->authError = " ";
+		
+		// Define variables for active profiles and houses
+		$active['houses'] = $this->Profile->find('count');//, array('conditions' => array('House.visible' => '1')));
+		$active['profiles'] = $this->Profile->find('count', array('conditions' => array('Profile.visible' => '1')));
+		$this->set('active', $active);
 	}
 
 	/*
