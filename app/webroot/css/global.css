@@ -1000,3 +1000,10 @@ input[type="button"]:active {
 .terms p{
     font-weight: bold;
 }
+
+.banned-msg {
+    font-weight: bold;
+    border: 1px solid #000000;
+    background-color: #EEA2A4;
+    margin-bottom: 1em;
+}
