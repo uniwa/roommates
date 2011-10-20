@@ -384,8 +384,7 @@ p {
 .info {
     float: left;
 }
-
-#ProfileAddForm label, #ProfileEditForm label {
+.profileframe label {
     font-size: 12px;
     font-weight: bold;
     color: #21759B;
@@ -741,9 +740,9 @@ h1 {
 }
 
 /*Φορμα προσθηκης κατοικιας*/
-#HouseEditForm, #HouseAddForm, #ProfileEditForm, #ProfileAddForm {
+#HouseEditForm, #HouseAddForm, .profileframe {
     border: solid 1px #aacfe4;
-
+margin-bottom:8px;
     padding: 20px 0 20px 30px;
 
     -moz-box-shadow: 5px 5px 5px #ccc;
