@@ -239,12 +239,6 @@ class HousesController extends AppController {
     }
 
     function search () {
-		// TODO only find images in current page
-		$images = $this->House->Image->find('list', array(
-				'fields' => array('house_id', 'location'),
-				'order' => array('id desc')
-			));
-		$this->set('images', $images);
 		
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
@@ -265,8 +259,9 @@ class HousesController extends AppController {
             // The following SQL query is implemented
             // mates conditions are added to the inner join with profiles table
             // house conditions are added to the 'where' statement
+            // results contain the image location if it exists
             // ----------------------------------------------------------------
-            // SELECT House.*, COUNT(Image.id)
+            // SELECT House.*, COUNT(Image.id), Image.location
             // FROM houses House
             // LEFT JOIN users User ON House.user_id = User.id
             // INNER JOIN profiles Profile ON Profile.user_id = User.id
@@ -274,7 +269,7 @@ class HousesController extends AppController {
             // WHERE Image.id > 0
             // GROUP BY House.id;
             
-            $options['fields'] = array('House.*', 'count(Image.id)');
+            $options['fields'] = array('House.*', 'count(Image.id)', 'Image.location');
 
             $options['joins'] = array(
                 array(  'table' => 'users',

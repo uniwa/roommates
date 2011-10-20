@@ -205,9 +205,12 @@
 										// thumbnail icon if exists
 										$house_id = $house['House']['id'];
 										$house_image = 'house.gif';
-										if(isset($images[$house_id])){
-											$house_image = 'uploads/houses/'.$house_id.'/thumb_'.$images[$house_id];
-										}
+                                        if(!empty($house['Image']['location'])) {
+                                            $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
+                                        }
+// 										if(isset($images[$house_id])){
+// 											$house_image = 'uploads/houses/'.$house_id.'/thumb_'.$images[$house_id];
+// 										}
 										echo $this->Html->image($house_image, array('alt' => 'εικόνα '.$house['House']['address'], 'height' => 70));
 									?>
                                 </div>
