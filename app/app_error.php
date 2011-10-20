@@ -8,6 +8,14 @@
  */
 class AppError extends ErrorHandler {
 
+	// Explicitly call AppController's beforeFilter() in case of error
+	class AppError extends ErrorHandler {
+		function _outputMessage($template) {
+			$this->controller->beforeFilter();
+			parent::_outputMessage($template);
+		}
+	}
+	
 	/*
 	 * params:
 	 * <<message>> set your message if you want change the default

@@ -62,8 +62,10 @@
         <li>
 			<div id='active-info'>
             <?php
-				echo "Ενεργά προφίλ χρηστών: ".$active['profiles']."<br />\n";
-				echo "Καταχωρημένα σπίτια: ".$active['houses']."<br />\n";
+				if(isset($active)){
+					echo "Ενεργά προφίλ χρηστών: ".$active['profiles']."<br />\n";
+					echo "Καταχωρημένα σπίτια: ".$active['houses']."<br />\n";
+				}
 			?>
 			</div>
         </li>
