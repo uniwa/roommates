@@ -7,8 +7,8 @@ class TokenComponent extends Object {
 
     function to_id($token) {
         /* return _profile_ id associated with given token */
-        $this->Profile =& ClassRegistry::init('Profile');
-        $id = $this->Profile->find('first', array(
+        $profile =& ClassRegistry::init('Profile');
+        $id = $profile->find('first', array(
             'fields' => array('id'),
             'conditions' => array('token' => $token)
         ));
