@@ -4,7 +4,7 @@ App::import('Sanitize');
 class ProfilesController extends AppController {
 
     var $name = 'Profiles';
-    var $components = array('RequestHandler');
+    var $components = array('RequestHandler', 'Email');
     var $paginate = array('limit' => 15);
     var $uses = array("Profile", "House");
 
@@ -367,6 +367,7 @@ class ProfilesController extends AppController {
         $success = $this->set_ban_status($id, 1);
         if ($success) {
             $this->Session->setFlash("Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.");
+            $this->email_banned_user($id);
         } else {
             $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
         }
@@ -385,6 +386,19 @@ class ProfilesController extends AppController {
         }
         $this->redirect(array('action'=> "view", $id));
 
+    }
+
+    private function email_banned_user($id) {
+        /* TODO: make more abstract to use in other use cases */
+        $this->Profile->id = $id;
+        $profile = $this->Profile->read();
+        $this->Email->to = $profile["Profile"]["email"];
+        $this->Email->subject = 'Απενεργοποίηση λογαριασμού της υπηρεσίας roommates ΤΕΙ Αθήνας';
+        //$this->Email->replyTo = 'support@example.com';
+        $this->Email->from = 'admin@roommates.edu.teiath.gr';
+        $body = "Σας ενημερώνουμε ότι ο λογαριασμός σας στην υπηρεσία Roommates του\
+ ΤΕΙ Αθήνας έχει απενεργοποιηθεί προσωρινά λόγο παραβίασης των όρων χρήσης.";
+        $this->Email->send($body);
     }
 }
 ?>
