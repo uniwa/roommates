@@ -77,7 +77,8 @@
 					echo "Ζητούνται <span class='profile-strong'>".$mates_wanted."</span> άτομα";
 				}
 				echo '<br />';
-				echoDetail('Email', $email);
+				$emailUrl = $this->Html->link($email, 'mailto:'.$email);
+				echoDetail('Email', $emailUrl);
 				echoDetail('Τηλέφωνο', $phone);
 			?>
 			<br />

@@ -213,7 +213,9 @@ border-color: #B9BBBF;
                                                         echo $profile['Profile']['age'] . ", ";
                         $gender = ($profile['Profile']['gender']) ? 'γυναίκα' : 'άνδρας';
                         echo $gender . "<br />\n";
-                        echo "email: " . $profile['Profile']['email'] . "<br />\n";
+						$email = $profile['Profile']['email'];
+						$emailUrl = $this->Html->link($email, 'mailto:'.$email);
+						echo "email: ".$emailUrl."<br />\n";
                         echo "επιθυμητοί συγκάτοικοι: " . $profile['Profile']['max_roommates'] . "<br />\n";
                         ?>
                     </div>
