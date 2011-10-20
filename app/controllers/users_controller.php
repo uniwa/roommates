@@ -3,6 +3,7 @@ class UsersController extends AppController{
 
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference");
+    var $components = array('Token');
 		
     function beforeFilter() {
         parent::beforeFilter();
@@ -52,7 +53,7 @@ class UsersController extends AppController{
         $profile["Profile"]["user_id"] = $id;
         /* supplied by create_preferences() */
         $profile["Profile"]["preference_id"] = $pref_id;
-        $profile["Profile"]["token"] = $this->generate_token($id);
+        $profile["Profile"]["token"] = $this->Token->generate($id);
 
         if ( $this->Profile->save($profile) === False) {
             $this->Profile->rollback();
@@ -82,11 +83,6 @@ class UsersController extends AppController{
             $this->Preference->commit();
             return $this->Preference->id;
         }
-    }
-
-    function generate_token($entropy = "") {
-        /* return a 40 chars unique id */
-        return sha1(uniqid($entropy, true));
     }
 }
 ?>
