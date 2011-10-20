@@ -14,7 +14,7 @@
 <div id='bottom-frame' class='frame'>
     <div class='frame-container'>
         <div id='bottom-title' class='title'>
-            <h1>Kατάλογος Σπιτιών</h1>
+            <h1>Όλα τα σπίτια</h1>
         </div>
         <div id='bottom-subtitle' class='subtitle'>
 <?php

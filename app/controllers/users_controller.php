@@ -3,9 +3,10 @@ class UsersController extends AppController{
 
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference");
+    var $components = array('Token');
 		
     function beforeFilter() {
-	parent::beforeFilter();
+        parent::beforeFilter();
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
     }
@@ -23,7 +24,8 @@ class UsersController extends AppController{
             if ( $user["Profile"]["id"] == NULL ) {
                 $this->redirect( array('controller' => 'users', 'action' => 'terms' ) );
                 $pref_id = $this->create_preferences();
-                $this->create_profile($this->User->id, $pref_id);
+                $profile_id = $this->create_profile($this->User->id, $pref_id);
+                $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
             }
             $this->redirect($this->Auth->redirect());
         }
@@ -67,6 +69,7 @@ class UsersController extends AppController{
         $profile["Profile"]["user_id"] = $id;
         /* supplied by create_preferences() */
         $profile["Profile"]["preference_id"] = $pref_id;
+        $profile["Profile"]["token"] = $this->Token->generate($id);
 
         if ( $this->Profile->save($profile) === False) {
             $this->Profile->rollback();
@@ -74,6 +77,7 @@ class UsersController extends AppController{
         else {
             $this->Profile->commit();
         }
+        return $this->Profile->id;
     }
 
     private function create_preferences() {
@@ -88,7 +92,7 @@ class UsersController extends AppController{
         $pref["Preference"]["pref_couple"] = 2;
 
         if ( $this->Preference->save($pref) === False ) {
-            $this->Preferene->rollback();
+            $this->Preference->rollback();
             return NULL;
         }
         else {

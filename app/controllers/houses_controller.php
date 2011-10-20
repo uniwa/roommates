@@ -211,18 +211,14 @@ class HousesController extends AppController {
     }
 
     private function checkAccess( $house_id ){
-    	
         $this->House->id = $house_id;
         $house = $this->House->read();
         $user_id = $house['User']['id'];
 
 
-        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){
-            /*
-            * More info about params in app/app_error.php
-            */
+        if($this->Auth->user('id') != $user_id) {
             $this->cakeError( 'error403' );
-    	} 
+        }
     }
 
     //check houses existance
@@ -262,28 +258,51 @@ class HousesController extends AppController {
 
         if(isset($this->params['url']['simple_search'])) {
 
+            // The following SQL query is implemented
+            // mates conditions are added to the inner join with profiles table
+            // house conditions are added to the 'where' statement
+            // ----------------------------------------------------------------
+            // SELECT House.*, COUNT(Image.id)
+            // FROM houses House
+            // LEFT JOIN users User ON House.user_id = User.id
+            // INNER JOIN profiles Profile ON Profile.user_id = User.id
+            // LEFT JOIN images Image ON Image.house_id = House.id
+            // WHERE Image.id > 0
+            // GROUP BY House.id;
+            
+            $options['fields'] = array('House.*', 'count(Image.id)');
+
             $options['joins'] = array(
                 array(  'table' => 'users',
                         'alias' => 'User',
-                        'type'  => 'inner',
+                        'type'  => 'left',
                         'conditions' => array('House.user_id = User.id')
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
                         'type'  => 'inner',
                         'conditions' => $this->getMatesConditions()
+                ),
+                array(  'table' => 'images',
+                        'alias' => 'Image',
+                        'type'  => 'left',
+                        'conditions' => array('Image.house_id = House.id')
                 )
             );
 
             $options['conditions'] = $this->getHouseConditions();
-            $options['limit'] = 15;
-            $options['contain'] = '';
+            $options['group'] = 'House.id';
             $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
+            // pagination options
+            $options['limit'] = 15;
+            $options['contain'] = '';            
             $this->paginate = $options;
+            // required recursive value for joins 
             $this->House->recursive = -1;
             $results = $this->paginate('House');
 
             $this->set('results', $results);
+            // store user's input
             $this->set('defaults', $this->params['url']);
         }
     }
@@ -309,6 +328,9 @@ class HousesController extends AppController {
         }
         if(isset($this->params['url']['accessibility'])) {
             $house_conditions['House.disability_facilities'] = 1;
+        }
+        if(isset($this->params['url']['has_photo'])) {
+            $house_conditions['Image.id >'] = 0;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
 
@@ -341,7 +363,7 @@ class HousesController extends AppController {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
         $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
-        // required condition for the inner join
+        // required condition for the left join
         array_push($mates_conditions, 'User.id = Profile.user_id');
 
         return $mates_conditions;

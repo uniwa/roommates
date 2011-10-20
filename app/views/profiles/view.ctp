@@ -45,7 +45,7 @@
             <div id='profile-edit'>
                 <div class="actions">
                     <?php
-                        if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+                        if ($this->Session->read('Auth.User.id') == $profile['User']['id']) {
                             echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
                         }
                     ?>
@@ -77,7 +77,8 @@
 					echo "Ζητούνται <span class='profile-strong'>".$mates_wanted."</span> άτομα";
 				}
 				echo '<br />';
-				echoDetail('Email', $email);
+				$emailUrl = $this->Html->link($email, 'mailto:'.$email);
+				echoDetail('Email', $emailUrl);
 				echoDetail('Τηλέφωνο', $phone);
 			?>
 			<br />

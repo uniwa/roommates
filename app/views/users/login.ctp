@@ -120,7 +120,7 @@ body#login .form button{
     _margin-left: 42px;
 }
 
-input[type=submit]{
+.submit input[type=submit]{
     display:block;
     margin:0 7px 0 160px;
     background-color:#92c97c;
@@ -132,8 +132,12 @@ input[type=submit]{
     font-weight:bold;
     color:#e8f7df;
     cursor:pointer;
-    padding:5px 10px 6px 7px; /* Links */
+    padding:5px 10px 6px 7px;  Links
     outline:none;
+background-image: none;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    text-shadow: none;
 
 }
 
