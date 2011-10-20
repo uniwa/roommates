@@ -5,7 +5,7 @@ class UsersController extends AppController{
     var $uses = array("Profile", "User", "Preference");
 		
     function beforeFilter() {
-	parent::beforeFilter();
+        parent::beforeFilter();
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
     }
