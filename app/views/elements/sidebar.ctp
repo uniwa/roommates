@@ -6,7 +6,7 @@
             <a href="#"><span>Αρχική</span></a>
         </li>
         <li>
-            <?php echo $this->Html->link('Ολα τα σπίτια', array(
+            <?php echo $this->Html->link('Όλα τα σπίτια', array(
                                                                'controller' => 'houses',
                                                                'action' => 'index')); ?>
         </li>
@@ -33,13 +33,13 @@
             ?>
         </li>
         <li>
-            <?php echo $this->Html->link('Αναζήτηση Συγκατοίκου', array(
+            <?php echo $this->Html->link('Αναζήτηση συγκατοίκων', array(
                                                                        'controller' => 'profiles',
                                                                        'action' => 'search')); ?>
         </li>
 
         <li>
-            <?php echo $this->Html->link('Αναζήτηση Σπιτιού', array('controller' => 'houses',
+            <?php echo $this->Html->link('Σύνθετη αναζήτηση', array('controller' => 'houses',
                                                                    'action' => 'search')); ?>
         </li>
 
