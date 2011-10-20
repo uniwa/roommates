@@ -51,9 +51,11 @@
                         if ($this->Session->read('Auth.User.role') == 'admin') {
                             if ($profile['User']['banned'] == 0) {
                                 $flash = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαρισμό αυτού του χρήστη;";
-                                echo $html->link('Ban', array('action' => 'ban', $profile['Profile']['id']), null, $flash);
+                                echo $html->link('Ban', array('action' => 'ban', $profile['Profile']['id']), 
+                                            array('class' => 'ban-button'), $flash);
                             } else {
-                                echo $html->link('Unban', array('action' => 'unban', $profile['Profile']['id']));
+                                echo $html->link('Unban', array('action' => 'unban', $profile['Profile']['id']),
+                                            array('class' => 'unban-button'));
                             }
                         }
                     ?>
