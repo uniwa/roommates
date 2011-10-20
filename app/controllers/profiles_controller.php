@@ -396,9 +396,9 @@ class ProfilesController extends AppController {
         $this->Email->subject = 'Απενεργοποίηση λογαριασμού της υπηρεσίας roommates ΤΕΙ Αθήνας';
         //$this->Email->replyTo = 'support@example.com';
         $this->Email->from = 'admin@roommates.edu.teiath.gr';
-        $body = "Σας ενημερώνουμε ότι ο λογαριασμός σας στην υπηρεσία Roommates του\
- ΤΕΙ Αθήνας έχει απενεργοποιηθεί προσωρινά λόγο παραβίασης των όρων χρήσης.";
-        $this->Email->send($body);
+        $this->Email->template = 'banned';
+        $this->Email->sendAs = 'both';
+        $this->Email->send();
     }
 }
 ?>
