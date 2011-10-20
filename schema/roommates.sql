@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `pref_storeroom` TINYINT(1) NULL DEFAULT NULL,
   `availability_date_min` DATE NOT NULL COMMENT '',
   `rent_period_min` TINYINT NULL DEFAULT NULL COMMENT '',
-  `floor_id` INT NOT NULL,
+  `floor_id_min` INT NOT NULL,
   `pref_house_type_id` INT NOT NULL,
   `pref_heating_type_id` INT NOT NULL,
   PRIMARY KEY (`id`))
