@@ -72,10 +72,18 @@
         </td>
     </tr>
     <tr>
-        <td colspan=2>
+        <td colspan=3>
             <?php echo 'Προσβάσιμο από ΑΜΕΑ '.$this->Form->checkbox('accessibility',
                                                                     array(  'hiddenField' => false,
                                                                             'checked' => isset($defaults['accessibility'])  ));
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan=3>
+            <?php echo 'Διαθέτει φωτογραφία '.$this->Form->checkbox('has_photo',
+                                                                    array(  'hiddenField' => false,
+                                                                            'checked' => isset($defaults['has_photo'])  ));
             ?>
         </td>
     </tr>
