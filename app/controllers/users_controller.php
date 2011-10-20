@@ -21,6 +21,7 @@ class UsersController extends AppController{
 
             /* if user does not have a profile, create one */
             if ( $user["Profile"]["id"] == NULL ) {
+                $this->redirect( array('controller' => 'users', 'action' => 'terms' ) );
                 $pref_id = $this->create_preferences();
                 $this->create_profile($this->User->id, $pref_id);
             }
@@ -35,7 +36,22 @@ class UsersController extends AppController{
 		$this->redirect( $this->Auth->logout() );
 	}
 
-    function create_profile($id, $pref_id) {
+    function terms(){
+
+        $this->layout = 'terms';
+        $data = $this->data;
+        if( !empty( $data['User']['accept'] ) ){
+
+            if( $data['User']['accept'] == 1 ){
+                
+                $this->redirect( $this->Auth->login() );
+            }
+
+        }
+
+    }
+
+ private function create_profile($id, $pref_id) {
         $this->Profile->begin();
         $this->Profile->create();
 
@@ -60,7 +76,7 @@ class UsersController extends AppController{
         }
     }
 
-    function create_preferences() {
+    private function create_preferences() {
         $this->Preference->begin();
         $this->Preference->create();
         $pref["Preference"]["age_min"] = NULL;
@@ -80,5 +96,6 @@ class UsersController extends AppController{
             return $this->Preference->id;
         }
     }
+
 }
 ?>

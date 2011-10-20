@@ -965,3 +965,19 @@ input[type=submit]:hover{
         cursor:pointer;
             border-color: #21759B;
 }
+
+.terms{
+    padding: 15px;
+}
+
+.terms ul{
+    list-style-type:square;
+}
+
+.terms ul li{
+    padding-bottom: 5px;
+}
+
+.terms p{
+    font-weight: bold;
+}
