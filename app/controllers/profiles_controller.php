@@ -27,12 +27,12 @@ class ProfilesController extends AppController {
 		}
 		
 		$order = $this->getSortOrder($selectedOrder);
-
         if ($this->Auth->user('role') != 'admin'){
             $this->paginate = array(
                         'conditions' => array(
 							'Profile.visible' => 1,
-							'Profile.user_id !=' => $this->Auth->user('id')
+							'Profile.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0
 							),
                         'order' => $order);
         }
