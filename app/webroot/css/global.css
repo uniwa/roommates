@@ -1036,3 +1036,25 @@ div.admin .banned table, th, td {
     padding: 1em;
     text-align: center !important;
 }
+
+
+/*terms of use*/
+       .terms{
+            width: 842px;
+            border: 1px solid white;
+            padding: 45px;
+            background: white;
+            margin: 30px auto;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            -moz-box-shadow: -6px 4px 30px #667;
+            -webkit-box-shadow: -6px 4px 30px #667;
+            box-shadow: -6px 4px 30px #667;
+            background: url("../img/diagonal-noise.png");
+           text-align: justify;
+    }
+
+        .terms li{
+            padding: 5px 0;
+        }
