@@ -91,6 +91,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `total_places` INT NOT NULL,
   `user_id` INT DEFAULT NULL ,
   `municipality_id` INT DEFAULT NULL ,
+  `visible` TINYINT(1)  NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
   INDEX `fk_house_house_type1` (`house_type_id` ASC) ,
