@@ -105,7 +105,7 @@ class ImagesController extends AppController {
         if ( ! $this->hasAccess($house_id) ) {
             $this->cakeError( 'error403' );
         }
-        $ret = $this->set_default_image($house_id, $this->params['url'['img']);
+        $ret = $this->set_default_image($house_id, $this->params['url']['img']);
         if ($ret == False) {
             $this->Session->setFlash(__('Σφάλμα αποθήκευσης προεπιλεγμένης εικόνας.', true));
         }
