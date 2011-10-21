@@ -96,6 +96,25 @@ class ImagesController extends AppController {
         $this->redirect(array('controller' => 'houses', 'action'=>'view', $house_id));
     }
 
+    function set_default($house_id) {
+        /* handle authorization - calls private function to set default image */
+        if (! isset($this->params['url']['img'])) {
+            $this->Session->setFlash(__('Λάθος επιλεγμένη εικόνα.', true));
+            $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
+        }
+        if ( ! $this->hasAccess($house_id) ) {
+            $this->cakeError( 'error403' );
+        }
+        $ret = $this->set_default_image($house_id, $this->params['url'['img']);
+        if ($ret == False) {
+            $this->Session->setFlash(__('Σφάλμα αποθήκευσης προεπιλεγμένης εικόνας.', true));
+        }
+        else {
+            $this->Session->setFlash(__('Η νέα προεπιλεγμένη εικόνα αποθηκεύτικε.', true));
+        }
+        $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
+    }
+
     private function hasAccess($id) {
         /* check if user owns house with givven id */
         $this->House->id = $id;
