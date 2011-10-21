@@ -341,6 +341,7 @@ class HousesController extends AppController {
             $house_conditions['House.id'] = $pics;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
+        $house_conditions['User.banned !='] = 1;
 
         return $house_conditions;
     }
