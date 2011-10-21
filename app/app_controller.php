@@ -12,8 +12,19 @@ class  AppController extends Controller{
 		// Define variables for active profiles and houses
 		$active['houses'] = $this->Profile->find('count');//, array('conditions' => array('House.visible' => '1')));
 		$active['profiles'] = $this->Profile->find('count', array('conditions' => array('Profile.visible' => '1')));
-		$this->set('active', $active);
-	}
+        $this->set('active', $active);
+
+        /*
+         * Check if user is logged in and hits some action, except Users controller actions.
+         * If logged in user is not accepted terms redirect him. This snippet executed in 
+         * case logged in user try to avoid terms of use.
+         */
+        if( $this->params['action'] !='terms' && $this->params['action'] != 'logout' && 
+                $this->Auth->user() !=null  && $this->Auth->user('terms_accepted') === "0" ){
+
+                  $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
+              }
+    }
 
 	/*
 	 * Insert into $this->data the Auth array. This Auth will be extracted 
