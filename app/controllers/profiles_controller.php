@@ -362,7 +362,7 @@ class ProfilesController extends AppController {
 
     function ban($id) {
         if ($this->Auth->user('role') != 'admin') {
-            $this->errorError('error403');
+            $this->cakeError('error403');
         }
         $success = $this->set_ban_status($id, 1);
         if ($success) {
@@ -376,7 +376,7 @@ class ProfilesController extends AppController {
 
     function unban($id) {
         if ($this->Auth->user('role') != 'admin') {
-            $this->errorError('error403');
+            $this->cakeError('error403');
         }
         $success = $this->set_ban_status($id, 0);
         if ($success) {
