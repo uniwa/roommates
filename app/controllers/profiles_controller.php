@@ -55,6 +55,7 @@ class ProfilesController extends AppController {
                 Profile + Preference + User + House
 		*/
         $profile = $this->Profile->read();
+        if ($profile["User"]["banned"] == 1) $this->cakeError('error404');
         $this->set('profile', $profile);
         /* get house id of this user - NULL if he doesn't own one */
         if ( isset($profile["User"]["House"][0]["id"]) ) {
