@@ -83,6 +83,11 @@ class HousesController extends AppController {
                                 'διαθέσιμες θέσεις φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
+        /* using the banned condition here means that even admin cannot view
+            the houses of the banned users in the index - admin has his own
+            banned users view in /admin/banned
+        */
+
         if($this->Auth->User('role') == 'admin') {
             $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
                             'User.banned' => 0);
@@ -357,6 +362,7 @@ class HousesController extends AppController {
         if($this->Auth->User('role') != 'admin') {
             $house_conditions['House.visible'] = 1;
         }
+        $house_conditions['User.banned !='] = 1;
 
         return $house_conditions;
     }

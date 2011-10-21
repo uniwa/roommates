@@ -151,19 +151,40 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `roommates`.`preferences` ;
 
-CREATE  TABLE IF NOT EXISTS `roommates`.`preferences` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `age_min` TINYINT(4) NULL DEFAULT NULL ,
-  `age_max` TINYINT(4) NULL DEFAULT NULL ,
-  `pref_gender` TINYINT(2) NULL DEFAULT NULL ,
-  `pref_smoker` TINYINT(2) NULL DEFAULT NULL ,
-  `pref_pet` TINYINT(2) NULL DEFAULT NULL ,
-  `pref_child` TINYINT(2) NULL DEFAULT NULL ,
-  `pref_couple` TINYINT(2) NULL DEFAULT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
+CREATE TABLE IF NOT EXISTS `preferences` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `age_min` TINYINT(4) DEFAULT NULL,
+  `age_max` TINYINT(4) DEFAULT NULL,
+  `pref_gender` TINYINT(2) DEFAULT NULL,
+  `pref_smoker` TINYINT(2)  NULL,
+  `pref_pet` TINYINT(2)  NULL,
+  `pref_child` TINYINT(2)  NULL,
+  `pref_couple` TINYINT(2)  NULL,
+  `price_min` TINYINT(4) NULL,
+  `price_max` TINYINT(4) NULL,
+  `area_min` TINYINT(4) NULL,
+  `area_max` TINYINT(4) NULL, 
+  `pref_municipality` INT NULL,
+  `bedroom_num_min` TINYINT NULL,
+  `bathroom_num_min` TINYINT NULL DEFAULT NULL,
+  `construction_year_min` INT NULL DEFAULT NULL,
+  `pref_solar_heater` TINYINT(1) NULL DEFAULT NULL,
+  `pref_furnitured` TINYINT(1) NULL DEFAULT NULL,
+  `pref_aircondition` TINYINT(1) NULL DEFAULT NULL,
+  `pref_garden` TINYINT(1) NULL DEFAULT NULL,
+  `pref_parking` TINYINT(1) NULL DEFAULT NULL,
+  `pref_shared_pay` TINYINT(1) NULL DEFAULT NULL,
+  `pref_security_doors` TINYINT(1) NULL DEFAULT NULL,
+  `pref_disability_facilities` TINYINT(1) NULL DEFAULT NULL,
+  `pref_storeroom` TINYINT(1) NULL DEFAULT NULL,
+  `availability_date_min` DATE NOT NULL COMMENT '',
+  `rent_period_min` TINYINT NULL DEFAULT NULL COMMENT '',
+  `floor_id_min` INT NOT NULL,
+  `pref_house_type_id` INT NOT NULL,
+  `pref_heating_type_id` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8;
 
 -- -----------------------------------------------------
 -- Table `roommates`.`profiles`
