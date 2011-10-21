@@ -26,7 +26,8 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									`currently_hosting`,
 									`total_places`,
 									`user_id`,
-									`municipality_id`	)
+									`municipality_id`,
+									`visible`	)
 
 						VALUES	(	'address 1',
 									'11111',
@@ -55,7 +56,8 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									1,
 									2,
 									1,
-									11	);
+									11,
+									1	);
 
 -- house 2
 INSERT INTO `roommates`.`houses` (	`address`,
@@ -85,7 +87,8 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									`currently_hosting`,
 									`total_places`,
 									`user_id`,
-									`municipality_id`	)
+									`municipality_id`,
+									`visible`	)
 
 						VALUES	(	'address 2',
 									'11111',
@@ -114,7 +117,8 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									1,
 									3,
 									2,
-									22	);
+									22,	
+									0	);
 
 -- house 3
 INSERT INTO `roommates`.`houses` (	`address`,
@@ -144,7 +148,8 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									`currently_hosting`,
 									`total_places`,
 									`user_id`,
-									`municipality_id`	)
+									`municipality_id`,
+									`visible`	)
 
 						VALUES	(	'address 2',
 									'11111',
@@ -173,4 +178,5 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									1,
 									3,
 									3,
-									33	);
+									33,
+									1	);
