@@ -85,8 +85,9 @@ class HousesController extends AppController {
 
         $this->paginate = array(
             'order' => $order,
-			'conditions' => array('House.user_id !=' => $this->Auth->user('id'),
-                                  'User.banned' => 0),
+			'conditions' => array(  'House.user_id !=' => $this->Auth->user('id'),
+                                    'User.banned' => 0,
+                                    'House.visible' => 1),
 			'limit' => 15
         );
         $houses = $this->paginate('House');
@@ -113,7 +114,8 @@ class HousesController extends AppController {
         $house = $this->House->read();
 
         if ($this->Auth->User('role') != 'admin') {
-            if ($house["User"]["banned"] == 1) $this->cakeError('error404');
+            if ($house["User"]["banned"] == 1 || $house['House']['visible'] == 0)
+                $this->cakeError('error404');
         }
 
         $this->set('house', $house);

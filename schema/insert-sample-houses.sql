@@ -151,7 +151,7 @@ INSERT INTO `roommates`.`houses` (	`address`,
 									`municipality_id`,
 									`visible`	)
 
-						VALUES	(	'address 2',
+						VALUES	(	'address 3',
 									'11111',
 									35,
 									2,
