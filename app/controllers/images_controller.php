@@ -140,5 +140,28 @@ class ImagesController extends AppController {
             return False;
         }
     }
+
+    private function is_default_image($image_id) {
+        $conditions = array('House.default_image_id' => $image_id);
+        $house = $this->House->find('all', array('conditions' => $conditions));
+        if ( count($house) == 0) {
+            return False;
+        }
+        return True;
+    }
+
+    private function get_next_image($house_id) {
+        /* get next available image associated with house_id
+            we do not really care which one, return NULL if we don't find any
+            Note: run this after deleting an image to avoid getting
+            the same image
+        */
+        $conditions = array('Image.house_id' => $house_id);
+        $img = $this->Image->find('first', array('conditions' => $conditions));
+        if (isset($img["Image"]["id"])) {
+            return $img["Image"]["id"];
+        }
+        return NULL;
+    }
 }
 ?>
