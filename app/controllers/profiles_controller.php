@@ -183,7 +183,7 @@ class ProfilesController extends AppController {
 		$searchArgs = $this->params['named'];
 
         // set the conditions
-        $searchconditions = array('Profile.visible' => 1);
+        $searchconditions = array('Profile.visible' => 1, 'User.banned' => 0);
 
 		if(isset($searchArgs['has_house'])){
 			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
