@@ -9,13 +9,12 @@ class ProfilesController extends AppController {
     var $uses = array("Profile", "House");
 
     function index() {
-        if ($this->RequestHandler->isRss()) {
+        /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1), 
 				    			  'limit' => 20, 
 				    			  'order' => 'Profile.modified.DESC'));
             return $this->set(compact('profiles'));
-
-        }
+        }*/
 
     	$genderLabels = Configure::read('GenderLabels');
     	$this->set('genderLabels', $genderLabels);
