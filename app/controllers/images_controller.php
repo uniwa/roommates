@@ -14,8 +14,8 @@ class ImagesController extends AppController {
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
-
-        if ( $this->imageCount($id) >= $this->max_images ) {
+        $image_count = $this->imageCount($id);
+        if ( $image_count >= $this->max_images ) {
             $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών.');
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
         }
@@ -49,6 +49,10 @@ class ImagesController extends AppController {
 
             $this->params['data']['Image']['location'] = $newName;
             if ($this->Image->save($this->data)) {
+                /* set 1st image as default */
+                if ($image_count == 0) {
+                    $this->set_default_image($id, $this->Image->id); //TODO: check success/fail
+                }
                 $this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
                 /* IMPORTANT: $this->referer() in this redirect will break on 5th image
                     upload due to max image count, redirect only on house view */
@@ -117,6 +121,24 @@ class ImagesController extends AppController {
             return True;
         }
         return False;
+    }
+
+    private function set_default_image($house_id, $image_id) {
+        $this->House->id = $house_id;
+        $house = $this->House->read();
+
+        $new["House"] = $house["House"];
+        $new["House"]["default_image_id"] = $image_id;
+
+        $this->House->begin();
+        if ($this->House->save($new)) {
+            $this->House->commit();
+            return True;
+        }
+        else {
+            $this->House->rollback();
+            return False;
+        }
     }
 }
 ?>
