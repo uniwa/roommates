@@ -235,12 +235,6 @@ class HousesController extends AppController {
     }
 
     function search () {
-		// TODO only find images in current page
-		$images = $this->House->Image->find('list', array(
-				'fields' => array('house_id', 'location'),
-				'order' => array('id desc')
-			));
-		$this->set('images', $images);
 		
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
@@ -262,15 +256,11 @@ class HousesController extends AppController {
             // mates conditions are added to the inner join with profiles table
             // house conditions are added to the 'where' statement
             // ----------------------------------------------------------------
-            // SELECT House.*, COUNT(Image.id)
-            // FROM houses House
+            // SELECT House.* FROM houses House
             // LEFT JOIN users User ON House.user_id = User.id
-            // INNER JOIN profiles Profile ON Profile.user_id = User.id
-            // LEFT JOIN images Image ON Image.house_id = House.id
-            // WHERE Image.id > 0
-            // GROUP BY House.id;
-            
-            $options['fields'] = array('House.*', 'count(Image.id)');
+            // LEFT JOIN profiles Profile ON Profile.user_id = User.id;
+
+//             $options['fields'] = array('House.*', 'Image.location');
 
             $options['joins'] = array(
                 array(  'table' => 'users',
@@ -280,22 +270,21 @@ class HousesController extends AppController {
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
-                        'type'  => 'inner',
+                        'type'  => 'left',
                         'conditions' => $this->getMatesConditions()
-                ),
+                )/*,
                 array(  'table' => 'images',
                         'alias' => 'Image',
                         'type'  => 'left',
                         'conditions' => array('Image.house_id = House.id')
-                )
+                )*/
             );
 
             $options['conditions'] = $this->getHouseConditions();
-            $options['group'] = 'House.id';
             $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
             // pagination options
-            $options['limit'] = 15;
-            $options['contain'] = '';            
+            $options['limit'] = 5;
+            //$options['contain'] = '';
             $this->paginate = $options;
             // required recursive value for joins 
             $this->House->recursive = -1;
@@ -304,10 +293,23 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
+
+            $images = $this->House->Image->find('list', array(
+                'fields' => array('house_id', 'location'),
+                'order' => array('id desc')
+            ));
+
+            $this->set('images', $images);
         }
     }
 
     private function getHouseConditions() {
+        $pics = $this->House->Image->find('all', array('DISTINCT house_id'));
+//         $pics = $this->House->Image->find('all', array( 'fields' => array('house_id', 'location'),
+//                                                         'order' => array('id' => 'desc'),
+//                                                         'group' => 'house_id'));
+        $pics = Set::extract($pics, '/Image/house_id');
+        //pr($pics); die();
         $house_prefs = $this->params['url'];
 
         $house_conditions = array();
@@ -330,7 +332,7 @@ class HousesController extends AppController {
             $house_conditions['House.disability_facilities'] = 1;
         }
         if(isset($this->params['url']['has_photo'])) {
-            $house_conditions['Image.id >'] = 0;
+            $house_conditions['House.id'] = $pics;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
 
@@ -373,7 +375,7 @@ class HousesController extends AppController {
 
         switch($selected_order) {
             case 0:
-                $order = array('House.modified' => 'desc');
+                $order = array('House.modified' => 'desc', 'House.id' => 'asc');
                 break;
             case 1:
                 $order = array('House.price' => 'asc');
