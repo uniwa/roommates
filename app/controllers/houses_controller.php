@@ -282,9 +282,10 @@ class HousesController extends AppController {
             // ----------------------------------------------------------------
             // SELECT House.* FROM houses House
             // LEFT JOIN users User ON House.user_id = User.id
-            // LEFT JOIN profiles Profile ON Profile.user_id = User.id;
+            // INNER JOIN profiles Profile ON Profile.user_id = User.id
+            // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
-//             $options['fields'] = array('House.*', 'Image.location');
+            $options['fields'] = array('House.*', 'Image.location');
 
             $options['joins'] = array(
                 array(  'table' => 'users',
@@ -294,21 +295,20 @@ class HousesController extends AppController {
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
-                        'type'  => 'left',
+                        'type'  => 'inner',
                         'conditions' => $this->getMatesConditions()
-                )/*,
+                ),
                 array(  'table' => 'images',
                         'alias' => 'Image',
                         'type'  => 'left',
-                        'conditions' => array('Image.house_id = House.id')
-                )*/
+                        'conditions' => array('Image.id = House.default_image_id')
+                )
             );
 
             $options['conditions'] = $this->getHouseConditions();
             $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
             // pagination options
-            $options['limit'] = 5;
-            //$options['contain'] = '';
+            $options['limit'] = 15;
             $this->paginate = $options;
             // required recursive value for joins 
             $this->House->recursive = -1;
@@ -317,23 +317,10 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
-
-            $images = $this->House->Image->find('list', array(
-                'fields' => array('house_id', 'location'),
-                'order' => array('id desc')
-            ));
-
-            $this->set('images', $images);
         }
     }
 
     private function getHouseConditions() {
-        $pics = $this->House->Image->find('all', array('DISTINCT house_id'));
-//         $pics = $this->House->Image->find('all', array( 'fields' => array('house_id', 'location'),
-//                                                         'order' => array('id' => 'desc'),
-//                                                         'group' => 'house_id'));
-        $pics = Set::extract($pics, '/Image/house_id');
-        //pr($pics); die();
         $house_prefs = $this->params['url'];
 
         $house_conditions = array();
@@ -356,7 +343,7 @@ class HousesController extends AppController {
             $house_conditions['House.disability_facilities'] = 1;
         }
         if(isset($this->params['url']['has_photo'])) {
-            $house_conditions['House.id'] = $pics;
+            $house_conditions['House.default_image_id !='] = null;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
