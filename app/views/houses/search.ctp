@@ -159,6 +159,7 @@
 
 <?php
     echo $this->Form->end();
+    if(isset($defaults)) {
 ?>
 </div></div>
 
@@ -250,3 +251,5 @@
         </div>
     </div>
 </div>
+
+<?php } ?>
