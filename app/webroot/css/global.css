@@ -793,7 +793,7 @@ margin-bottom:8px;
 }
 
 .houseProfile table td {
-    max-width: 275px;
+    max-width: 225px;
 }
 
 .houseProfile table {
@@ -809,7 +809,7 @@ margin-bottom:8px;
 }
 
 .profile {
-    height: 710px;
+    height: 730px;
 
 }
 
@@ -1026,11 +1026,12 @@ input[type="button"]:active {
     background-color: #EEA2A4;
     margin-bottom: 1em;
 }
-
+/*
 div.admin table {
     border-collapse:collapse !important;
 }
-
+*/
+/*
 div.admin .banned table, th, td {
     border: 1px solid black;
     padding: 1em;

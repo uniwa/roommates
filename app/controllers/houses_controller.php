@@ -11,6 +11,7 @@ class HousesController extends AppController {
 
     function index() {
         if ($this->RequestHandler->isRss()) {
+            $conditions = array("User.banned" => 0);
             $houses = $this->House->find('all',
                         array('limit' => 20, 'order' => 'House.modified DESC'));
             return $this->set(compact('houses'));
@@ -82,9 +83,23 @@ class HousesController extends AppController {
                                 'διαθέσιμες θέσεις φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
+        /* using the banned condition here means that even admin cannot view
+            the houses of the banned users in the index - admin has his own
+            banned users view in /admin/banned
+        */
+
+        if($this->Auth->User('role') == 'admin') {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0);
+        } else {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0,
+                            'House.visible' => 1);
+        }
+
         $this->paginate = array(
             'order' => $order,
-			'conditions' => array('House.user_id !=' => $this->Auth->user('id')),
+			'conditions' => $conds,
 			'limit' => 15
         );
         $houses = $this->paginate('House');
@@ -109,6 +124,15 @@ class HousesController extends AppController {
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
+
+        if ($this->Auth->User('role') != 'admin') {
+            if (    $house["User"]["banned"] == 1 ||
+                    (   $house['House']['visible'] == 0 &&
+                        $house['House']['user_id'] != $this->Auth->User('id')
+                    )
+            )
+                $this->cakeError('error404');
+        }
 
         $this->set('house', $house);
 
@@ -335,6 +359,10 @@ class HousesController extends AppController {
             $house_conditions['House.id'] = $pics;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
+        if($this->Auth->User('role') != 'admin') {
+            $house_conditions['House.visible'] = 1;
+        }
+        $house_conditions['User.banned !='] = 1;
 
         return $house_conditions;
     }
