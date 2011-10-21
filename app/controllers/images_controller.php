@@ -81,6 +81,13 @@ class ImagesController extends AppController {
         else {
             if ($this->Image->delete($id)) {
                 $this->Image->delImage($house_id, $imageData['Image']['location']);
+
+                /* set new default image */
+                if ($this->is_default_image($id) {
+                    $new_img_id = $this->get_next_image($house_id);
+                    $this->set_default_image($house_id, $new_img_id);
+                }
+
                 $this->Session->setFlash(__('Η εικόνα διαγραφήκε με επιτυχία.', true));
             }
             else {
