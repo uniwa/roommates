@@ -31,7 +31,7 @@ echo $form->input('description', array('label' => 'Περιγραφή','type'=>'
 
 echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type' => 'select', 'options' => $places_availability));
 echo $form->input('total_places', array('label' => 'Μπορούν συνολικά να συγκατοικήσουν','type' => 'select', 'options' => $places_availability));
-
+echo $this->Form->input('visible', array('label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
 
 echo $form->input('id', array('type' => 'hidden'));
 

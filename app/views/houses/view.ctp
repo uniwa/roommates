@@ -142,6 +142,21 @@
         </tr>
 
         <tr>
+            <th>Ορατότητα:</th>
+            <td>
+                <?php
+                    if($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                        if($house['House']['visible']) {
+                            echo 'Είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
+                        } else {
+                            echo 'Δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
+                        }
+                    }
+                ?>
+            </td>
+        </tr>
+
+        <tr>
             <th>Περιγραφή:</th>
             <td> <?php echo Sanitize::html($house['House']['description'])?></td>
         </tr>

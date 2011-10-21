@@ -83,11 +83,18 @@ class HousesController extends AppController {
                                 'διαθέσιμες θέσεις φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
+        if($this->Auth->User('role') == 'admin') {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0);
+        } else {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0,
+                            'House.visible' => 1);
+        }
+
         $this->paginate = array(
             'order' => $order,
-			'conditions' => array(  'House.user_id !=' => $this->Auth->user('id'),
-                                    'User.banned' => 0,
-                                    'House.visible' => 1),
+			'conditions' => $conds,
 			'limit' => 15
         );
         $houses = $this->paginate('House');
@@ -114,7 +121,11 @@ class HousesController extends AppController {
         $house = $this->House->read();
 
         if ($this->Auth->User('role') != 'admin') {
-            if ($house["User"]["banned"] == 1 || $house['House']['visible'] == 0)
+            if (    $house["User"]["banned"] == 1 ||
+                    (   $house['House']['visible'] == 0 &&
+                        $house['House']['user_id'] != $this->Auth->User('id')
+                    )
+            )
                 $this->cakeError('error404');
         }
 
@@ -343,6 +354,9 @@ class HousesController extends AppController {
             $house_conditions['House.id'] = $pics;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
+        if($this->Auth->User('role') != 'admin') {
+            $house_conditions['House.visible'] = 1;
+        }
 
         return $house_conditions;
     }
