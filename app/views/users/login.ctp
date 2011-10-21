@@ -168,7 +168,7 @@ a{outline:none}
 		</style>
 
 
-
+<?php echo $this->Session->flash();?>
 		<div id="wrappertop"></div>
 			<div id="wrapper">
 					<div class="content">
