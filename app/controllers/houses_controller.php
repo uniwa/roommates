@@ -87,10 +87,19 @@ class HousesController extends AppController {
             the houses of the banned users in the index - admin has his own
             banned users view in /admin/banned
         */
+
+        if($this->Auth->User('role') == 'admin') {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0);
+        } else {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0,
+                            'House.visible' => 1);
+        }
+
         $this->paginate = array(
             'order' => $order,
-			'conditions' => array('House.user_id !=' => $this->Auth->user('id'),
-                                  'User.banned' => 0),
+			'conditions' => $conds,
 			'limit' => 15
         );
         $houses = $this->paginate('House');
@@ -117,7 +126,12 @@ class HousesController extends AppController {
         $house = $this->House->read();
 
         if ($this->Auth->User('role') != 'admin') {
-            if ($house["User"]["banned"] == 1) $this->cakeError('error404');
+            if (    $house["User"]["banned"] == 1 ||
+                    (   $house['House']['visible'] == 0 &&
+                        $house['House']['user_id'] != $this->Auth->User('id')
+                    )
+            )
+                $this->cakeError('error404');
         }
 
         $this->set('house', $house);
@@ -345,6 +359,9 @@ class HousesController extends AppController {
             $house_conditions['House.id'] = $pics;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
+        if($this->Auth->User('role') != 'admin') {
+            $house_conditions['House.visible'] = 1;
+        }
         $house_conditions['User.banned !='] = 1;
 
         return $house_conditions;
