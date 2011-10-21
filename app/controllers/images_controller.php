@@ -96,21 +96,28 @@ class ImagesController extends AppController {
         $this->redirect(array('controller' => 'houses', 'action'=>'view', $house_id));
     }
 
-    function set_default($house_id) {
+    function set_default($id = NULL) {
         /* handle authorization - calls private function to set default image */
-        if (! isset($this->params['url']['img'])) {
-            $this->Session->setFlash(__('Λάθος επιλεγμένη εικόνα.', true));
-            $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
-        }
+        $this->Image->id = $id;
+        $imageData = $this->Image->read();
+
+        /* check if user owns house before setting the default on */
+        $house_id = $imageData['Image']['house_id'];
         if ( ! $this->hasAccess($house_id) ) {
             $this->cakeError( 'error403' );
         }
-        $ret = $this->set_default_image($house_id, $this->params['url']['img']);
-        if ($ret == False) {
-            $this->Session->setFlash(__('Σφάλμα αποθήκευσης προεπιλεγμένης εικόνας.', true));
+
+        if (!$id) {
+            $this->Session->setFlash(__('Λαθος id', true));
         }
         else {
-            $this->Session->setFlash(__('Η νέα προεπιλεγμένη εικόνα αποθηκεύτικε.', true));
+            $ret = $this->set_default_image($house_id, $id);
+            if ($ret == False) {
+                $this->Session->setFlash(__('Σφάλμα αποθήκευσης προεπιλεγμένης εικόνας.', true));
+            }
+            else {
+                $this->Session->setFlash(__('Η νέα προεπιλεγμένη εικόνα αποθηκεύτικε.', true));
+            }
         }
         $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
     }
