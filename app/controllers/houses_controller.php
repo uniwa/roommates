@@ -308,7 +308,7 @@ class HousesController extends AppController {
             $options['conditions'] = $this->getHouseConditions();
             $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
             // pagination options
-            $options['limit'] = 15;
+            $options['limit'] = 5;
             $this->paginate = $options;
             // required recursive value for joins 
             $this->House->recursive = -1;
