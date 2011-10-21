@@ -4,18 +4,17 @@ App::import('Sanitize');
 class ProfilesController extends AppController {
 
     var $name = 'Profiles';
-    var $components = array('RequestHandler');
+    var $components = array('RequestHandler', 'Email');
     var $paginate = array('limit' => 15);
     var $uses = array("Profile", "House");
 
     function index() {
-        if ($this->RequestHandler->isRss()) {
+        /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1), 
 				    			  'limit' => 20, 
 				    			  'order' => 'Profile.modified.DESC'));
             return $this->set(compact('profiles'));
-
-        }
+        }*/
 
     	$genderLabels = Configure::read('GenderLabels');
     	$this->set('genderLabels', $genderLabels);
@@ -27,12 +26,12 @@ class ProfilesController extends AppController {
 		}
 		
 		$order = $this->getSortOrder($selectedOrder);
-
         if ($this->Auth->user('role') != 'admin'){
             $this->paginate = array(
                         'conditions' => array(
 							'Profile.visible' => 1,
-							'Profile.user_id !=' => $this->Auth->user('id')
+							'Profile.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0
 							),
                         'order' => $order);
         }
@@ -56,6 +55,12 @@ class ProfilesController extends AppController {
                 Profile + Preference + User + House
 		*/
         $profile = $this->Profile->read();
+        /* hide banned users unless we are admin */
+        if ($this->Auth->User('role') != 'admin') {
+            if ($profile["User"]["banned"] == 1) {
+                $this->cakeError('error404');
+            }
+        }
         $this->set('profile', $profile);
         /* get house id of this user - NULL if he doesn't own one */
         if ( isset($profile["User"]["House"][0]["id"]) ) {
@@ -183,7 +188,7 @@ class ProfilesController extends AppController {
 		$searchArgs = $this->params['named'];
 
         // set the conditions
-        $searchconditions = array('Profile.visible' => 1);
+        $searchconditions = array('Profile.visible' => 1, 'User.banned' => 0);
 
 		if(isset($searchArgs['has_house'])){
 			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
@@ -338,6 +343,67 @@ class ProfilesController extends AppController {
 		if( $profile == NULL ){
             $this->cakeError('error404');
         }
+    }
+
+    private function set_ban_status($id, $status) {
+        /* sets ban status for user with the given profile id */
+        $this->Profile->id = $id;
+        $profile = $this->Profile->read();
+
+        $user["User"] = $profile["User"];
+        $user["User"]["banned"] = $status;
+
+        $this->User->begin();
+        $this->User->id = $profile["Profile"]["user_id"];
+        if ($this->User->save($user, array('validate'=>'first'))) {
+            $this->User->commit();
+            return True;
+        } else {
+            $this->User->rollback();
+            return False;
+        }
+
+    }
+
+    function ban($id) {
+        if ($this->Auth->user('role') != 'admin') {
+            $this->cakeError('error403');
+        }
+        $success = $this->set_ban_status($id, 1);
+        if ($success) {
+            $this->Session->setFlash("Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.");
+            $this->email_banned_user($id);
+        } else {
+            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+        }
+        $this->redirect(array('action'=> "view", $id));
+    }
+
+    function unban($id) {
+        if ($this->Auth->user('role') != 'admin') {
+            $this->cakeError('error403');
+        }
+        $success = $this->set_ban_status($id, 0);
+        if ($success) {
+            $this->Session->setFlash("Ο λογαριασμός χρήστη ενεργοποιήθηκε με επιτυχία.");
+        } else {
+            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+        }
+        $this->redirect(array('action'=> "view", $id));
+
+    }
+
+    private function email_banned_user($id) {
+        /* TODO: make more abstract to use in other use cases */
+        $this->Profile->id = $id;
+        $profile = $this->Profile->read();
+        $this->Email->to = $profile["Profile"]["email"];
+        $this->Email->subject = 'Απενεργοποίηση λογαριασμού της υπηρεσίας roommates ΤΕΙ Αθήνας';
+        //$this->Email->replyTo = 'support@example.com';
+        $this->Email->from = 'admin@roommates.edu.teiath.gr';
+        $this->Email->template = 'banned';
+        $this->Email->sendAs = 'both';
+        $this->Email->send();
     }
 }
 ?>

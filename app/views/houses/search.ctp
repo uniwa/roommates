@@ -1,4 +1,4 @@
-<div id='top-frame' class='frame'>
+<?php?><div id='top-frame' class='frame'>
     <div class='frame-container'>
         <div id='top-title' class='title'>
             <h1>Σύνθετη αναζήτηση</h1>
@@ -205,6 +205,9 @@
 										// thumbnail icon if exists
 										$house_id = $house['House']['id'];
 										$house_image = 'house.gif';
+//                                         if(!empty($house['Image']['location'])) {
+//                                             $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
+//                                         }
 										if(isset($images[$house_id])){
 											$house_image = 'uploads/houses/'.$house_id.'/thumb_'.$images[$house_id];
 										}
