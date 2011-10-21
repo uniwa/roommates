@@ -11,6 +11,7 @@ class HousesController extends AppController {
 
     function index() {
         if ($this->RequestHandler->isRss()) {
+            $conditions = array("User.banned" => 0);
             $houses = $this->House->find('all',
                         array('limit' => 20, 'order' => 'House.modified DESC'));
             return $this->set(compact('houses'));
@@ -84,7 +85,8 @@ class HousesController extends AppController {
 
         $this->paginate = array(
             'order' => $order,
-			'conditions' => array('House.user_id !=' => $this->Auth->user('id')),
+			'conditions' => array('House.user_id !=' => $this->Auth->user('id'),
+                                  'User.banned' => 0),
 			'limit' => 15
         );
         $houses = $this->paginate('House');
@@ -109,6 +111,10 @@ class HousesController extends AppController {
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
+
+        if ($this->Auth->User('role') != 'admin') {
+            if ($house["User"]["banned"] == 1) $this->cakeError('error404');
+        }
 
         $this->set('house', $house);
 

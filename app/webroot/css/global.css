@@ -984,32 +984,26 @@ input[type="button"]:active {
   box-shadow: inset rgba(0, 0, 0, 0.25) 0 1px 2px 0;
   border-color: #999999 #bbbbbb #dddddd;
 }
-.banned-msg {
-    font-weight: bold;
-    border: 1px solid #000000;
-    background-color: #EEA2A4;
-    margin-bottom: 1em;
-}
+
 .actions .ban-button{
-
-background: #f21;
+    background: #f21;
     color:white;
     text-shadow: none;
 }
-.actions .ban-button:hover{
-
-background: #f00;
+.actions .ban-button:hover {
+    background: #f00;
 }
+
 .actions .unban-button{
-
-background: #2f4;
+    background: #2f4;
     color:white;
     text-shadow: none;
 }
-.actions .unban-button:hover{
 
-background: #2f1;
+.actions .unban-button:hover {
+    background: #2f1;
 }
+
 .terms{
     padding: 15px;
 }
@@ -1026,3 +1020,21 @@ background: #2f1;
     font-weight: bold;
 }
 
+.banned-msg {
+    font-weight: bold;
+    border: 1px solid #000000;
+    background-color: #EEA2A4;
+    margin-bottom: 1em;
+}
+/*
+div.admin table {
+    border-collapse:collapse !important;
+}
+*/
+/*
+div.admin .banned table, th, td {
+    border: 1px solid black;
+    padding: 1em;
+    text-align: center !important;
+}
+*/
