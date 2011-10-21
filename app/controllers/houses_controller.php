@@ -112,7 +112,9 @@ class HousesController extends AppController {
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-        if ($house["User"]["banned"] == 1) $this->cakeError('error404');
+        if ($this->Auth->User('role') != 'admin') {
+            if ($house["User"]["banned"] == 1) $this->cakeError('error404');
+        }
 
         $this->set('house', $house);
 
