@@ -79,15 +79,14 @@ class ImagesController extends AppController {
             $this->Session->setFlash(__('Λαθος id', true));
         }
         else {
+            /* set new default image */
+            if ($this->is_default_image($id)) {
+                $new_img_id = $this->get_next_image($house_id, $id);
+                $this->set_default_image($house_id, $new_img_id);
+            }
+
             if ($this->Image->delete($id)) {
                 $this->Image->delImage($house_id, $imageData['Image']['location']);
-
-                /* set new default image */
-                if ($this->is_default_image($id) {
-                    $new_img_id = $this->get_next_image($house_id);
-                    $this->set_default_image($house_id, $new_img_id);
-                }
-
                 $this->Session->setFlash(__('Η εικόνα διαγραφήκε με επιτυχία.', true));
             }
             else {
@@ -157,13 +156,14 @@ class ImagesController extends AppController {
         return True;
     }
 
-    private function get_next_image($house_id) {
+    private function get_next_image($house_id, $image_id) {
         /* get next available image associated with house_id
             we do not really care which one, return NULL if we don't find any
             Note: run this after deleting an image to avoid getting
             the same image
         */
-        $conditions = array('Image.house_id' => $house_id);
+        $conditions = array('Image.house_id' => $house_id,
+                            'Image.id !=' => $image_id);
         $img = $this->Image->find('first', array('conditions' => $conditions));
         if (isset($img["Image"]["id"])) {
             return $img["Image"]["id"];
