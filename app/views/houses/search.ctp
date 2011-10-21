@@ -1,4 +1,4 @@
-<div id='top-frame' class='frame'>
+<?php?><div id='top-frame' class='frame'>
     <div class='frame-container'>
         <div id='top-title' class='title'>
             <h1>Σύνθετη αναζήτηση</h1>
