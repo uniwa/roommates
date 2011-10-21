@@ -91,8 +91,7 @@ class ImagesController extends AppController {
         $this->House->id = $id;
         $house = $this->House->read();
 
-        if ( $this->Auth->user('id') == $house["User"]["id"] 
-            || $this->Auth->user('role') == 'admin' ) {
+        if ( $this->Auth->user('id') == $house["User"]["id"] ) {
             return True;
         }
         else {

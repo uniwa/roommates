@@ -59,5 +59,15 @@
             );
             ?>
         </li>
+        <li>
+			<div id='active-info'>
+            <?php
+				if(isset($active)){
+					echo "Ενεργά προφίλ χρηστών: ".$active['profiles']."<br />\n";
+					echo "Καταχωρημένα σπίτια: ".$active['houses']."<br />\n";
+				}
+			?>
+			</div>
+        </li>
     </ul>
 </div>

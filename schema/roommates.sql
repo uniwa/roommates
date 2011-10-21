@@ -135,7 +135,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `username` VARCHAR(50) NOT NULL ,
   `password` VARCHAR(40) NOT NULL ,
   `role` VARCHAR(40),
-  PRIMARY KEY (`id`) 
+  `banned` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8

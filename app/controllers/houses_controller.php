@@ -211,18 +211,14 @@ class HousesController extends AppController {
     }
 
     private function checkAccess( $house_id ){
-    	
         $this->House->id = $house_id;
         $house = $this->House->read();
         $user_id = $house['User']['id'];
 
 
-        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){
-            /*
-            * More info about params in app/app_error.php
-            */
+        if($this->Auth->user('id') != $user_id) {
             $this->cakeError( 'error403' );
-    	} 
+        }
     }
 
     //check houses existance

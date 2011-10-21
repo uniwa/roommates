@@ -45,8 +45,18 @@
             <div id='profile-edit'>
                 <div class="actions">
                     <?php
-                        if( ($this->Session->read('Auth.User.id') == $profile['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
+                        if ($this->Session->read('Auth.User.id') == $profile['User']['id']) {
                             echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
+                        }
+                        if ($this->Session->read('Auth.User.role') == 'admin') {
+                            if ($profile['User']['banned'] == 0) {
+                                $flash = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαρισμό αυτού του χρήστη;";
+                                echo $html->link('Ban', array('action' => 'ban', $profile['Profile']['id']), 
+                                            array('class' => 'ban-button'), $flash);
+                            } else {
+                                echo $html->link('Unban', array('action' => 'unban', $profile['Profile']['id']),
+                                            array('class' => 'unban-button'));
+                            }
                         }
                     ?>
                 </div>
@@ -77,7 +87,8 @@
 					echo "Ζητούνται <span class='profile-strong'>".$mates_wanted."</span> άτομα";
 				}
 				echo '<br />';
-				echoDetail('Email', $email);
+				$emailUrl = $this->Html->link($email, 'mailto:'.$email);
+				echoDetail('Email', $emailUrl);
 				echoDetail('Τηλέφωνο', $phone);
 			?>
 			<br />
