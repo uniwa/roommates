@@ -125,7 +125,8 @@ class HousesController extends AppController {
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-        if ($this->Auth->User('role') != 'admin') {
+        if ($this->Auth->User('role') != 'admin' &&
+            $this->Auth->User('id') != $house['House']['user_id']) {
             if (    $house["User"]["banned"] == 1 ||
                     (   $house['House']['visible'] == 0 &&
                         $house['House']['user_id'] != $this->Auth->User('id')
