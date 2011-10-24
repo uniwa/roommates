@@ -350,7 +350,6 @@ class HousesController extends AppController {
             // required recursive value for joins 
             $this->House->recursive = -1;
             $results = $this->paginate('House');
-            pr($results); die();
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
