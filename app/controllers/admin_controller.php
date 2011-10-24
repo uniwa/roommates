@@ -4,6 +4,12 @@ class AdminController extends AppController
 {
     var $name = 'Admin';
     var $uses = array();
+    var $paginate = array( 
+        'fields' => array( 'User.username', 'User.banned', 
+        'Profile.id', 'Profile.firstname', 'Profile.lastname',
+        'Profile.email'),
+        'limit' => 5 
+    );
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -26,22 +32,44 @@ class AdminController extends AppController
 
     function search(){
 
-        if( isset($this->data) ){
-            App::import( 'Model', 'User' );
-            $user = new User();
-            var_dump( $this->data );
-            $searchQuery = $this->data;
+        App::import( 'Model', 'User' );
+        $user = new User();
 
-            $conditions = array('OR'=>array( 
-                'User.username LIKE' =>"%".$searchQuery['Admin']['name']."%",
-                'Profile.lastname LIKE' => "%".$searchQuery['Admin']['name']."%",
-                'Profile.firstname LIKE ' => "%".$searchQuery['Admin']['name']."%" )
-             );
-            $results = $user->find( 'all', array( 'conditions' => $conditions ) );
-        
-//            pr( $results ); die();
+        if( isset( $this->params['url']['name'] ) || isset( $this->params['url']['banned'] ) ){
+
+            $parameters = $this->params['url'];
+
+            if( $parameters['banned'] != 1 ){
+
+                $conditions = array(
+
+                    'OR'=>array( 
+                        'User.username LIKE' =>"%".$parameters['name']."%",
+                        'Profile.lastname LIKE' => "%".$parameters['name']."%",
+                        'Profile.firstname LIKE ' => "%".$parameters['name']."%")
+                    );
+
+            } else {
+
+                   $conditions['banned'] = 1;
+            }
+
+
+            $results = $this->paginate( 'User', $conditions  );
+            pr( $results ); die();
+            if( $results == null ) {
+
+                $this->Session->setFlash( 'Δεν βρέθηκαν χρήστες' );
+            }
+            $this->set( 'results', $results );
+
+        } else {
+
+            $results = $this->paginate( 'User' );
             $this->set( 'results', $results );
         }
+
+
     }
 
 }
