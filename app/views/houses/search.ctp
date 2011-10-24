@@ -1,7 +1,7 @@
 <div id='top-frame' class='frame'>
     <div class='frame-container'>
         <div id='top-title' class='title'>
-            <h1>Σύνθετη αναζήτηση</h1>
+            <h1>Αναζήτηση σπιτιών</h1>
         </div>
 
 <div class='clear-both'></div>

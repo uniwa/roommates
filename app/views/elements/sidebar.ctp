@@ -39,7 +39,7 @@
         </li>
 
         <li>
-            <?php echo $this->Html->link('Σύνθετη αναζήτηση', array('controller' => 'houses',
+            <?php echo $this->Html->link('Αναζήτηση σπιτιών', array('controller' => 'houses',
                                                                    'action' => 'search')); ?>
         </li>
         <li>
