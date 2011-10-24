@@ -1,4 +1,4 @@
-<?php?><div id='top-frame' class='frame'>
+<div id='top-frame' class='frame'>
     <div class='frame-container'>
         <div id='top-title' class='title'>
             <h1>Σύνθετη αναζήτηση</h1>
@@ -152,14 +152,17 @@
             <?php echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search'));?>
         </td>
         <td>
-            <?php echo $this->Form->submit('καθαρισμός πεδίων', array('name' => 'reset_fields'));?>
+            <?php echo $this->Form->submit('αποθήκευση', array('name' => 'save_search'));?>
+        </td>
+        <td>
+            <?php echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields'));?>
         </td>
     </tr>
 </table>
 
 <?php
     echo $this->Form->end();
-    if(isset($defaults)) {
+    if(isset($results)) {
 ?>
 </div></div>
 

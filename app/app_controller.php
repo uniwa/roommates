@@ -1,26 +1,30 @@
 <?php
 class  AppController extends Controller{
 
-	var $components = array('Auth', 'Session');
+	var $components = array('Auth', 'Session', 'RequestHandler');
 	var $helpers  = Array('Html', 'Form', 'Session','Auth');
 	var $uses = array('User', 'Profile');
 
 	function beforeFilter(){
 		$this->Auth->loginError = "Δώστε έγκυρο όνομα χρήστη και συνθηματικό.";
 		$this->Auth->authError = " ";
-		
+
+        $this->Auth->allow('publicTerms');
 		// Define variables for active profiles and houses
 		$active['houses'] = $this->Profile->find('count');//, array('conditions' => array('House.visible' => '1')));
 		$active['profiles'] = $this->Profile->find('count', array('conditions' => array('Profile.visible' => '1')));
         $this->set('active', $active);
 
         /*
-         * Check if user is logged in and hits some action, except Users controller actions.
-         * If logged in user is not accepted terms redirect him. This snippet executed in 
-         * case logged in user try to avoid terms of use.
+         * Redirects if:
+         * 1) is not users actions
+         * 2) is not rss file extension in /houses/index action
+         * 3) user is alredy logged in and terms has not accepted from him
          */
-        if( $this->params['action'] !='terms' && $this->params['action'] != 'logout' && 
-                $this->Auth->user() !=null  && $this->Auth->user('terms_accepted') === "0" ){
+        if( $this->params['controller'] != 'users'   
+            && !( $this->params['controller'] == 'houses' && $this->params['action'] == 'index'
+                     && $this->RequestHandler->isRss() ) && 
+            ( $this->Auth->user() != null && $this->Auth->user('terms_accepted') === "0" )  ){
 
                   $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
               }

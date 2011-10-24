@@ -1056,6 +1056,13 @@ div.admin .banned table, th, td {
     text-align: justify;
 }
 
-.terms li{
-    padding: 5px 0;
+
+        .terms li{
+            padding: 5px 0;
+        }
+
+.termsloginlink{
+    float:right;
+    margin-top:  -22px;
+    padding-right:110px;
 }
