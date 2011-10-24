@@ -224,7 +224,9 @@
     				echoDetail('Δήμος', $municipality);
     			}
 				echoDetail('Επιπλωμένο', $furnished);
-				echoDetail('Προσβάσιμο από ΑΜΕΑ', $accessibility);
+			    if($prefAccessibility){?>
+                    <span class='profile-strong'>Προσβάσιμο από ΑΜΕΑ</span><br />
+    			<?php }
 			?></span>		
 		</div>
 	</div>

@@ -1,9 +1,10 @@
 <div class="admin banned-table">
     <table>
     <thead>
-    <th><?php echo $this->Paginator->sort('Username', 'User.username'); ?></th>
-    <th><?php echo $this->Paginator->sort('Όνομα', 'Profile.firstname'); ?></th>
-    <th><?php echo $this->Paginator->sort('Επίθετο', 'Profile.lastname'); ?></th>
+
+    <th><?php //echo $this->Paginator->sort('Username', 'User.username'); ?></th>
+    <th><?php //echo $this->Paginator->sort('Όνομα', 'Profile.firstname'); ?></th>
+    <th><?php //echo $this->Paginator->sort('Επίθετο', 'Profile.lastname'); ?></th>
         <th>email</th>
         <th>#σπίτια</th>
         <th>Σύνδεσμος Προφίλ</th>
