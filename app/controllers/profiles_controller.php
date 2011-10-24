@@ -353,7 +353,7 @@ class ProfilesController extends AppController {
 
         /* exit if this profile belongs to another admin */
         if ($profile["User"]["role"] == "admin") {
-            $this->Session->setFlash("Ο διαχειριστής δεν μπορεί να μποκάρει άλλο διαχειριστεί.");
+            $this->Session->setFlash("Ο διαχειριστής δεν μπορεί να μπλοκάρει άλλο διαχειριστή.");
             $this->redirect(array("action" => "view", $id));
         }
 
