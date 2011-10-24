@@ -5,7 +5,7 @@
         <div class="defaultimage">
             <?php
                        if (isset($images[0]))
-            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $images[0]['Image']['location'], array('alt' => 'house image'));
+            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $default_image_location/*$images[0]['Image']['location']*/, array('alt' => 'house image'));
         else
             echo $this->Html->image('homedefault.png', array('alt' => 'house image','class' => 'defaultimg')); ?>
 
