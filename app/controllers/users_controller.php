@@ -83,6 +83,15 @@ class UsersController extends AppController{
         
     }
 
+       function publicTerms(){
+
+        // $this->layout = 'terms';
+        $data = $this->data;
+        }
+
+
+
+
  private function create_profile($id, $pref_id) {
         $this->Profile->begin();
         $this->Profile->create();
