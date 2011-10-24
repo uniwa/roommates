@@ -8,7 +8,8 @@ class  AppController extends Controller{
 	function beforeFilter(){
 		$this->Auth->loginError = "Δώστε έγκυρο όνομα χρήστη και συνθηματικό.";
 		$this->Auth->authError = " ";
-		
+
+        $this->Auth->allow('publicTerms');
 		// Define variables for active profiles and houses
 		$active['houses'] = $this->Profile->find('count');//, array('conditions' => array('House.visible' => '1')));
 		$active['profiles'] = $this->Profile->find('count', array('conditions' => array('Profile.visible' => '1')));

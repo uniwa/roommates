@@ -368,4 +368,4 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     NOW(),  --
                                     NOW(), -- These are handled by cakephp
                                     LAST_INSERT_ID(),
-                                    7);
+                                    9);
