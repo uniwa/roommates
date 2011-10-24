@@ -19,10 +19,10 @@ echo $this->Form->end();
 <?php
 
 echo $this->Session->flash();
-if( isset($users) ){
+if( isset($results) ){
     $count = 0;
 
-    foreach( $users as $user ){
+    foreach( $results as $user ){
         ++$count;
         echo '<tr>';
         echo "<td> {$count} </td>";
