@@ -48,7 +48,8 @@
                         if ($this->Session->read('Auth.User.id') == $profile['User']['id']) {
                             echo $html->link('Επεξεργασία', array('action' => 'edit', $profile['Profile']['id']));
                         }
-                        if ($this->Session->read('Auth.User.role') == 'admin') {
+                        if ($this->Session->read('Auth.User.role') == 'admin' &&
+                            $profile['Profile']['user_id'] != $this->Session->read('User.id')) {
                             if ($profile['User']['banned'] == 0) {
                                 $flash = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαρισμό αυτού του χρήστη;";
                                 echo $html->link('Ban', array('action' => 'ban', $profile['Profile']['id']), 
