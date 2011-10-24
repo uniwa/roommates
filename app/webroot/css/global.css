@@ -546,7 +546,7 @@ h1 {
 }
 
 .title {
-    clear: both;
+    clear: left;
     margin: 8px 0 8px -10px;
     font-size: 20px;
     font-weight: bold;
@@ -1065,4 +1065,14 @@ div.admin .banned table, th, td {
     float:right;
     margin-top:  -22px;
     padding-right:110px;
+}
+
+
+.personalized-rss {
+    float: right;
+    background: url("../img/rss-feed-small.png") no-repeat scroll 5px 50% #FFFFFF;
+    padding: 6px 10px 4px 25px;
+    border: 1px solid #4F6CA6;
+    border-radius: 3px;
+    text-decoration: none;
 }

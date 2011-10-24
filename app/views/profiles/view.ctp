@@ -1,5 +1,17 @@
 <div id='top-frame' class='frame'>
 	<div class='frame-container'>
+        <div class="personalized-rss">
+            <?php
+                echo $this->Html->link(
+                    'Προσωποποιημένο RSS',
+                    array(
+                        'controller' => 'houses',
+                        'action' => 'search.rss',
+                        '?' => array('token' => $profile["Profile"]["token"])
+                    )
+                );
+            ?>
+        </div>
 		<div id='top-title' class='title'>
 			<h1>
 			<?php
