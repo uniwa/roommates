@@ -113,10 +113,10 @@ class ImagesController extends AppController {
         else {
             $ret = $this->set_default_image($house_id, $id);
             if ($ret == False) {
-                $this->Session->setFlash(__('Σφάλμα αποθήκευσης προεπιλεγμένης εικόνας.', true));
+                $this->Session->setFlash(__('Σφάλμα ανάθεσης προεπιλεγμένης εικόνας.', true));
             }
             else {
-                $this->Session->setFlash(__('Η νέα προεπιλεγμένη εικόνα αποθηκεύτικε.', true));
+                $this->Session->setFlash(__('Η νέα προεπιλεγμένη εικόνα ορίστικε με επιτυχία.', true));
             }
         }
         $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
