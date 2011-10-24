@@ -6,7 +6,7 @@ class ProfilesController extends AppController {
     var $name = 'Profiles';
     var $components = array('RequestHandler', 'Email');
     var $paginate = array('limit' => 15);
-    var $uses = array("Profile", "House");
+    var $uses = array("Profile", "House", "Municipality");
 
     function index() {
         /*if ($this->RequestHandler->isRss()) {
@@ -48,7 +48,7 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
 
-	$this->checkExistence($id);
+    	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         /* get profile  contains:
@@ -63,6 +63,15 @@ class ProfilesController extends AppController {
             }
         }
         $this->set('profile', $profile);
+
+            $pref_municipality = $profile['Preference']['pref_municipality'];
+        if(isset($pref_municipality)){
+            $options['fields'] = array('Municipality.name');
+            $options['conditions'] = array('Municipality.id = '.$pref_municipality);
+            $municipality = $this->Municipality->find('list', $options);
+            $municipality = $municipality[$pref_municipality];
+            $this->set('municipality', $municipality);
+        }
         /* get house id of this user - NULL if he doesn't own one */
         if ( isset($profile["User"]["House"][0]["id"]) ) {
             $houseid = $profile["User"]["House"][0]["id"];
