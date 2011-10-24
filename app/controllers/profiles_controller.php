@@ -351,6 +351,12 @@ class ProfilesController extends AppController {
         $this->Profile->id = $id;
         $profile = $this->Profile->read();
 
+        /* exit if this profile belongs to another admin */
+        if ($profile["User"]["role"] == "admin") {
+            $this->Session->setFlash("Ο διαχειριστής δεν μπορεί να μποκάρει άλλο διαχειριστεί.");
+            $this->redirect(array("action" => "view", $id));
+        }
+
         $user["User"] = $profile["User"];
         $user["User"]["banned"] = $status;
 
