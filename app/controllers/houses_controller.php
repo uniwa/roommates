@@ -275,6 +275,10 @@ class HousesController extends AppController {
                                             'διαθέσιμες θέσεις - φθίνουσα');
         $this->set('order_options', $this->search_order_options);
 
+        if(isset($this->params['url']['save_search'])) {
+            $this->saveSearchPreferences();
+        }
+        
         if(isset($this->params['url']['simple_search'])) {
 
             // The following SQL query is implemented
@@ -321,6 +325,64 @@ class HousesController extends AppController {
         }
     }
 
+    private function saveSearchPreferences() {
+        // Get logged user's Profile.id
+        $profile = $this->Profile->find('first', array('conditions' => array(
+                                                       'Profile.user_id' => $this->Auth->user('id'))));
+        $search_args = $this->params['url'];
+        //Profile preferences
+		$ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
+		$ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
+        // House preferences
+//		$priceMin = (isset($search_args['price_min']))?$search_args['price_min']:NULL;
+		$priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
+		$areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
+		$areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
+//		$bedroomNumMin = (isset($search_args['bedroom_num_min']))?$search_args['bedroom_num_min']:NULL;
+//		$bathroomNumMin = (isset($search_args['bathroom_num_min']))?$search_args['bathroom_num_min']:NULL;
+//		$constructionYearMin = (isset($search_args['construction_year_min']))?$search_args['construction_year_min']:NULL;
+//		$availabilityDateMin = (isset($search_args['availability_date_min']))?$search_args['availability_date_min']:NULL;
+//		$rentPeriodMin = (isset($search_args['rent_period_min']))?$search_args['rent_period_min']:NULL;
+//		$floorIdMin = (isset($search_args['floor_id_min']))?$search_args['floor_id_min']:NULL;
+        $this->House->User->Profile->Preference->save(array(
+                        'id' => $profile['Preference']['id'],
+                        // House
+//                        'price_min' => $priceMin,
+                        'price_max' => $priceMax,
+                        'area_min' => $areaMin,
+                        'area_max' => $areaMax,
+//                        'bedroom_num_min' => $bedroomNumMin,
+//                        'bathroom_num_min' => $bathroomNumMin,
+//                        'construction_year_min' => $constructionYearMin,
+//                        'availability_date_min' => $availabilityDateMin,
+//                        'rent_period_min' => $rentPeriodMin,
+//                        'floor_id_min' => $floorIdMin,
+                        'pref_municipality' => $search_args['municipality'],
+//                        'pref_solar_heater' => $search_args['pref_solar_heater'],
+                        'pref_furnitured' => $search_args['furnitured'],
+//                        'pref_aircondition' => $search_args['pref_aircondition'],
+//                        'pref_garden' => $search_args['pref_garden'],
+//                        'pref_parking' => $search_args['pref_parking'],
+//                        'pref_shared_pay' => $search_args['pref_shared_pay'],
+//                        'pref_security_doors' => $search_args['pref_security_doors'],
+                        'pref_disability_facilities' => !empty($search_args['accessibility']),
+//                        'pref_storerooms' => $search_args['pref_storeroom'],
+//                        'pref_house_type_id' => $search_args['pref_house_type_id'],
+//                        'pref_heating_type_id' => $search_args['pref_heating_type_id'],
+                        // Profile
+                        'age_min' => $ageMin,
+                        'age_max' => $ageMax,
+                        'pref_gender' => $search_args['gender'],
+                        'pref_smoker' => $search_args['smoker'],
+                        'pref_pet' => $search_args['pet'],
+                        'pref_child' => $search_args['child'],
+                        'pref_couple' => $search_args['couple']
+        ));
+        // store user's input
+        $this->set('defaults', $this->params['url']);
+        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
+    }
+
     private function getHouseConditions() {
         $house_prefs = $this->params['url'];
 
@@ -340,7 +402,7 @@ class HousesController extends AppController {
         if($house_prefs['furnitured'] < 2) {
             $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
         }
-        if(isset($this->params['url']['accessibility'])) {
+        if(isset($house_prefs['accessibility'])) {
             $house_conditions['House.disability_facilities'] = 1;
         }
         if(isset($this->params['url']['has_photo'])) {
