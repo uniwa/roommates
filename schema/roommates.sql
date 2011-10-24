@@ -110,12 +110,15 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `total_places` INT NOT NULL ,
   `user_id` INT NULL DEFAULT NULL ,
   `municipality_id` INT NULL DEFAULT NULL ,
+  `default_image_id` INT NULL DEFAULT NULL ,
+  `visible` TINYINT(1) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
   INDEX `fk_house_house_type1` (`house_type_id` ASC) ,
   INDEX `fk_house_heating1` (`heating_type_id` ASC) ,
   INDEX `fk_house_user` (`user_id` ASC) ,
   INDEX `fk_house_municipality` (`municipality_id` ASC) ,
+  INDEX `fk_default_image` (`default_image_id` ASC),
   CONSTRAINT `fk_house_floor`
     FOREIGN KEY (`floor_id` )
     REFERENCES `roommates`.`floors` (`id` )
@@ -139,6 +142,11 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   CONSTRAINT `fk_house_minicipality`
     FOREIGN KEY (`municipality_id` )
     REFERENCES `roommates`.`municipalities` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_default_image`
+    FOREIGN KEY (`default_image_id`)
+    REFERENCES `roommates`.`images` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

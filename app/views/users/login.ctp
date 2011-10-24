@@ -122,7 +122,7 @@ body#login .form button{
 
 .submit input[type=submit]{
     display:block;
-    margin:0 7px 0 160px;
+    margin:0 7px 0 110px;
     background-color:#92c97c;
     border:1px solid #73b35a;
     font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
@@ -189,6 +189,10 @@ a{outline:none}
             echo $this->Form->input('password', array('label' => 'Συνθηματικό:' ) );
             echo $this->Form->end('Είσοδος');
         ?>
+
+          <div class="termsloginlink">
+            <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
+          </div>
         </div>
 
 					</div>

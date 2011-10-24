@@ -142,6 +142,21 @@
         </tr>
 
         <tr>
+            <th>Ορατότητα:</th>
+            <td>
+                <?php
+                    if($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                        if($house['House']['visible']) {
+                            echo 'Είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
+                        } else {
+                            echo 'Δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
+                        }
+                    }
+                ?>
+            </td>
+        </tr>
+
+        <tr>
             <th>Περιγραφή:</th>
             <td> <?php echo Sanitize::html($house['House']['description'])?></td>
         </tr>
@@ -183,6 +198,9 @@
                 <?php 
                     if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                         echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images', 'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true)));
+                        echo $this->Html->link('Προεπιλεγμένη',
+                                array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
+                                array('class' => 'thumb_img_action'), null);
                     }
                 ?>
             </div>

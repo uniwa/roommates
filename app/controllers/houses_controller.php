@@ -87,10 +87,19 @@ class HousesController extends AppController {
             the houses of the banned users in the index - admin has his own
             banned users view in /admin/banned
         */
+
+        if($this->Auth->User('role') == 'admin') {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0);
+        } else {
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0,
+                            'House.visible' => 1);
+        }
+
         $this->paginate = array(
             'order' => $order,
-			'conditions' => array('House.user_id !=' => $this->Auth->user('id'),
-                                  'User.banned' => 0),
+			'conditions' => $conds,
 			'limit' => 15
         );
         $houses = $this->paginate('House');
@@ -116,8 +125,14 @@ class HousesController extends AppController {
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-        if ($this->Auth->User('role') != 'admin') {
-            if ($house["User"]["banned"] == 1) $this->cakeError('error404');
+        if ($this->Auth->User('role') != 'admin' &&
+            $this->Auth->User('id') != $house['House']['user_id']) {
+            if (    $house["User"]["banned"] == 1 ||
+                    (   $house['House']['visible'] == 0 &&
+                        $house['House']['user_id'] != $this->Auth->User('id')
+                    )
+            )
+                $this->cakeError('error404');
         }
 
         $this->set('house', $house);
@@ -268,9 +283,10 @@ class HousesController extends AppController {
             // ----------------------------------------------------------------
             // SELECT House.* FROM houses House
             // LEFT JOIN users User ON House.user_id = User.id
-            // LEFT JOIN profiles Profile ON Profile.user_id = User.id;
+            // INNER JOIN profiles Profile ON Profile.user_id = User.id
+            // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
-//             $options['fields'] = array('House.*', 'Image.location');
+            $options['fields'] = array('House.*', 'Image.location');
 
             $options['joins'] = array(
                 array(  'table' => 'users',
@@ -280,21 +296,20 @@ class HousesController extends AppController {
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
-                        'type'  => 'left',
+                        'type'  => 'inner',
                         'conditions' => $this->getMatesConditions()
-                )/*,
+                ),
                 array(  'table' => 'images',
                         'alias' => 'Image',
                         'type'  => 'left',
-                        'conditions' => array('Image.house_id = House.id')
-                )*/
+                        'conditions' => array('Image.id = House.default_image_id')
+                )
             );
 
             $options['conditions'] = $this->getHouseConditions();
             $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
             // pagination options
             $options['limit'] = 5;
-            //$options['contain'] = '';
             $this->paginate = $options;
             // required recursive value for joins 
             $this->House->recursive = -1;
@@ -303,23 +318,10 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
-
-            $images = $this->House->Image->find('list', array(
-                'fields' => array('house_id', 'location'),
-                'order' => array('id desc')
-            ));
-
-            $this->set('images', $images);
         }
     }
 
     private function getHouseConditions() {
-        $pics = $this->House->Image->find('all', array('DISTINCT house_id'));
-//         $pics = $this->House->Image->find('all', array( 'fields' => array('house_id', 'location'),
-//                                                         'order' => array('id' => 'desc'),
-//                                                         'group' => 'house_id'));
-        $pics = Set::extract($pics, '/Image/house_id');
-        //pr($pics); die();
         $house_prefs = $this->params['url'];
 
         $house_conditions = array();
@@ -342,9 +344,12 @@ class HousesController extends AppController {
             $house_conditions['House.disability_facilities'] = 1;
         }
         if(isset($this->params['url']['has_photo'])) {
-            $house_conditions['House.id'] = $pics;
+            $house_conditions['House.default_image_id !='] = null;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
+        if($this->Auth->User('role') != 'admin') {
+            $house_conditions['House.visible'] = 1;
+        }
         $house_conditions['User.banned !='] = 1;
 
         return $house_conditions;

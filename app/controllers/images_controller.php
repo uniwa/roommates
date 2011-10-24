@@ -14,8 +14,8 @@ class ImagesController extends AppController {
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
-
-        if ( $this->imageCount($id) >= $this->max_images ) {
+        $image_count = $this->imageCount($id);
+        if ( $image_count >= $this->max_images ) {
             $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών.');
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
         }
@@ -49,6 +49,10 @@ class ImagesController extends AppController {
 
             $this->params['data']['Image']['location'] = $newName;
             if ($this->Image->save($this->data)) {
+                /* set 1st image as default */
+                if ($image_count == 0) {
+                    $this->set_default_image($id, $this->Image->id); //TODO: check success/fail
+                }
                 $this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
                 /* IMPORTANT: $this->referer() in this redirect will break on 5th image
                     upload due to max image count, redirect only on house view */
@@ -75,6 +79,12 @@ class ImagesController extends AppController {
             $this->Session->setFlash(__('Λαθος id', true));
         }
         else {
+            /* set new default image */
+            if ($this->is_default_image($id)) {
+                $new_img_id = $this->get_next_image($house_id, $id);
+                $this->set_default_image($house_id, $new_img_id);
+            }
+
             if ($this->Image->delete($id)) {
                 $this->Image->delImage($house_id, $imageData['Image']['location']);
                 $this->Session->setFlash(__('Η εικόνα διαγραφήκε με επιτυχία.', true));
@@ -84,6 +94,32 @@ class ImagesController extends AppController {
             }
         }
         $this->redirect(array('controller' => 'houses', 'action'=>'view', $house_id));
+    }
+
+    function set_default($id = NULL) {
+        /* handle authorization - calls private function to set default image */
+        $this->Image->id = $id;
+        $imageData = $this->Image->read();
+
+        /* check if user owns house before setting the default on */
+        $house_id = $imageData['Image']['house_id'];
+        if ( ! $this->hasAccess($house_id) ) {
+            $this->cakeError( 'error403' );
+        }
+
+        if (!$id) {
+            $this->Session->setFlash(__('Λαθος id', true));
+        }
+        else {
+            $ret = $this->set_default_image($house_id, $id);
+            if ($ret == False) {
+                $this->Session->setFlash(__('Σφάλμα ανάθεσης προεπιλεγμένης εικόνας.', true));
+            }
+            else {
+                $this->Session->setFlash(__('Η νέα προεπιλεγμένη εικόνα ορίστικε με επιτυχία.', true));
+            }
+        }
+        $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
     }
 
     private function hasAccess($id) {
@@ -117,6 +153,48 @@ class ImagesController extends AppController {
             return True;
         }
         return False;
+    }
+
+    private function set_default_image($house_id, $image_id) {
+        $this->House->id = $house_id;
+        $house = $this->House->read();
+
+        $new["House"] = $house["House"];
+        $new["House"]["default_image_id"] = $image_id;
+
+        $this->House->begin();
+        if ($this->House->save($new)) {
+            $this->House->commit();
+            return True;
+        }
+        else {
+            $this->House->rollback();
+            return False;
+        }
+    }
+
+    private function is_default_image($image_id) {
+        $conditions = array('House.default_image_id' => $image_id);
+        $house = $this->House->find('all', array('conditions' => $conditions));
+        if ( count($house) == 0) {
+            return False;
+        }
+        return True;
+    }
+
+    private function get_next_image($house_id, $image_id) {
+        /* get next available image associated with house_id
+            we do not really care which one, return NULL if we don't find any
+            Note: run this after deleting an image to avoid getting
+            the same image
+        */
+        $conditions = array('Image.house_id' => $house_id,
+                            'Image.id !=' => $image_id);
+        $img = $this->Image->find('first', array('conditions' => $conditions));
+        if (isset($img["Image"]["id"])) {
+            return $img["Image"]["id"];
+        }
+        return NULL;
     }
 }
 ?>
