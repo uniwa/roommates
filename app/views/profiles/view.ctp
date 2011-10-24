@@ -118,7 +118,7 @@
 
 <div id='bottom-frame' class='frame'>
 	<div class='frame-container'>
-		<div id='bottom-title' class='title'>
+		<div class='title'>
 			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
 		</div>
 		<div id='profile-preferences' class='options profile-big'>
@@ -171,6 +171,61 @@
 				echoDetail('Παιδί', $child);
 				echoDetail('Ζευγάρι', $couple);
 			?></span>
+		</div>
+		<div class='title'>
+			<h2>Κριτήρια επιλογής σπιτιού</h2>
+		</div>
+		<div id='house-preferences' class='options profile-big'>
+			<?php
+				$prefFurnished = $profile['Preference']['pref_furnitured'];
+				$prefAccessibility = $profile['Preference']['pref_disability_facilities'];
+
+				$ynioptions = array('όχι', 'ναι', 'αδιάφορο');
+
+				$furnished = getPrefValue($prefFurnished, $ynioptions);
+				$accessibility = ($prefAccessibility)?$ynioptions[1]:$ynioptions[2];
+				
+			?></span>
+			<?php
+				$price_max = $profile['Preference']['price_max'];
+				
+				if(isset($price_max)){?>
+        			Τιμή: μέχρι 
+					<span class='profile-strong'><?php
+						echo $profile['Preference']['price_max']."<br />\n";
+				}
+			?></span>
+			<?php
+				$area_min = $profile['Preference']['area_min'];
+				$area_max = $profile['Preference']['area_max'];
+				
+				if(isset($area_min) || isset($area_max)){?>
+    			Εμβαδόν:
+				<?php
+					if ($area_min == $area_max){?> 
+						<span class='profile-strong'><?php
+							echo $profile['Preference']['area_min'];
+					}
+					else{
+						if($area_min){
+					?>από <span class='profile-strong'><?php
+							echo $profile['Preference']['area_min']." ";
+						}
+						if($area_max){
+					?></span> τ.μ. μέχρι <span class='profile-strong'><?php
+							echo $profile['Preference']['area_max'];
+						}
+					}
+					echo "</span> τ.μ.<br />\n";
+				}
+			?>
+			<?php
+			    if(isset($municipality)){
+    				echoDetail('Δήμος', $municipality);
+    			}
+				echoDetail('Επιπλωμένο', $furnished);
+				echoDetail('Προσβάσιμο από ΑΜΕΑ', $accessibility);
+			?></span>		
 		</div>
 	</div>
 </div>
