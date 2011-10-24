@@ -42,6 +42,10 @@
             <?php echo $this->Html->link('Σύνθετη αναζήτηση', array('controller' => 'houses',
                                                                    'action' => 'search')); ?>
         </li>
+        <li>
+            <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
+
+        </li>
 
         <?php if ($this->Session->read('Auth.User')) {
         echo '<li>';
@@ -69,5 +73,6 @@
 			?>
 			</div>
         </li>
+
     </ul>
 </div>
