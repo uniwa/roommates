@@ -24,5 +24,25 @@ class AdminController extends AppController
         $this->set('banned', $banned);
     }
 
+    function search(){
+
+        if( isset($this->data) ){
+            App::import( 'Model', 'User' );
+            $user = new User();
+            var_dump( $this->data );
+            $searchQuery = $this->data;
+
+            $conditions = array('OR'=>array( 
+                'User.username LIKE' =>"%".$searchQuery['Admin']['name']."%",
+                'Profile.lastname LIKE' => "%".$searchQuery['Admin']['name']."%",
+                'Profile.firstname LIKE ' => "%".$searchQuery['Admin']['name']."%" )
+             );
+            $results = $user->find( 'all', array( 'conditions' => $conditions ) );
+        
+//            pr( $results ); die();
+            $this->set( 'results', $results );
+        }
+    }
+
 }
 ?>
