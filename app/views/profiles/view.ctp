@@ -4,6 +4,9 @@
 			<h1>
 			<?php
 				$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
+                if ( $this->Session->read("Auth.User.role") == 'admin') {
+                    $name = $name . " (" . $profile['User']['username'] . ")";
+                }
 				$age = $profile['Profile']['age'];
 				$email = $profile['Profile']['email'];
 				$phone = ($profile['Profile']['phone'])?$profile['Profile']['phone']:'-';
