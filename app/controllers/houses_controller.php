@@ -365,7 +365,7 @@ class HousesController extends AppController {
 //                        'pref_parking' => $search_args['pref_parking'],
 //                        'pref_shared_pay' => $search_args['pref_shared_pay'],
 //                        'pref_security_doors' => $search_args['pref_security_doors'],
-                        'pref_disability_facilities' => !empty($this->data['accessibility']),
+                        'pref_disability_facilities' => !empty($search_args['accessibility']),
 //                        'pref_storerooms' => $search_args['pref_storeroom'],
 //                        'pref_house_type_id' => $search_args['pref_house_type_id'],
 //                        'pref_heating_type_id' => $search_args['pref_heating_type_id'],
@@ -402,7 +402,7 @@ class HousesController extends AppController {
         if($house_prefs['furnitured'] < 2) {
             $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
         }
-        if(isset($this->params['url']['accessibility'])) {
+        if(isset($house_prefs['accessibility'])) {
             $house_conditions['House.disability_facilities'] = 1;
         }
         if(isset($this->params['url']['has_photo'])) {
