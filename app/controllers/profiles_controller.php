@@ -56,7 +56,8 @@ class ProfilesController extends AppController {
 		*/
         $profile = $this->Profile->read();
         /* hide banned users unless we are admin */
-        if ($this->Auth->User('role') != 'admin') {
+        if ($this->Auth->User('role') != 'admin' &&
+            $this->Auth->User('id') != $profile['Profile']['user_id']) {
             if ($profile["User"]["banned"] == 1) {
                 $this->cakeError('error404');
             }
@@ -349,6 +350,12 @@ class ProfilesController extends AppController {
         /* sets ban status for user with the given profile id */
         $this->Profile->id = $id;
         $profile = $this->Profile->read();
+
+        /* exit if this profile belongs to another admin */
+        if ($profile["User"]["role"] == "admin") {
+            $this->Session->setFlash("Ο διαχειριστής δεν μπορεί να μπλοκάρει άλλο διαχειριστή.");
+            $this->redirect(array("action" => "view", $id));
+        }
 
         $user["User"] = $profile["User"];
         $user["User"]["banned"] = $status;
