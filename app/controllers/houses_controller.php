@@ -16,13 +16,6 @@ class HousesController extends AppController {
                         array('limit' => 20, 'order' => 'House.modified DESC'));
             return $this->set(compact('houses'));
         }
-
-		// TODO only find images in current page
-		$images = $this->House->Image->find('list', array(
-				'fields' => array('house_id', 'location'),
-				'order' => array('id desc')
-			));
-		$this->set('images', $images);
 		
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
@@ -89,19 +82,53 @@ class HousesController extends AppController {
         */
 
         if($this->Auth->User('role') == 'admin') {
-            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
-                            'User.banned' => 0);
+            $conds = array( 'House.user_id !=' => $this->Auth->user('id'));
         } else {
             $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
-                            'User.banned' => 0,
                             'House.visible' => 1);
         }
 
+        // manually join all the required tables
+        // in order to get only the default
+        // image for each house with only
+        // one query
+
         $this->paginate = array(
+            'fields' => array( 'House.*, Image.location,
+                                Municipality.name, Floor.type,
+                                HouseType.type'),
             'order' => $order,
 			'conditions' => $conds,
-			'limit' => 15
+			'limit' => 15,
+            'joins' => array(
+                array(  'table' => 'images',
+                        'alias' => 'Image',
+                        'type'  => 'left',
+                        'conditions' => array('House.default_image_id = Image.id')
+                ),
+                array(  'table' => 'users',
+                        'alias' => 'User',
+                        'type'  => 'left',
+                        'conditions' => array('User.id = House.user_id', 'User.banned = 0')
+                ),
+                array(  'table' => 'municipalities',
+                        'alias' => 'Municipality',
+                        'type'  => 'left',
+                        'conditions' => array('House.municipality_id = Municipality.id')
+                ),
+                array(  'table' => 'floors',
+                        'alias' => 'Floor',
+                        'type'  => 'left',
+                        'conditions' => array('House.floor_id = Floor.id')
+                ),
+                array(  'table' => 'house_types',
+                        'alias' => 'HouseType',
+                        'type'  => 'left',
+                        'conditions' => array('House.house_type_id = HouseType.id')
+                )
+            )
         );
+        $this->House->recursive = -1;
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
     }
@@ -138,6 +165,11 @@ class HousesController extends AppController {
         $this->set('house', $house);
 
         $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+
+        foreach ($images as $image) {
+            if ($image['Image']['id'] == $house['House']['default_image_id'])
+                $this->set('default_image_location', $image['Image']['location']);
+        }
 
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
@@ -314,7 +346,7 @@ class HousesController extends AppController {
             // required recursive value for joins 
             $this->House->recursive = -1;
             $results = $this->paginate('House');
-
+            pr($results); die();
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
