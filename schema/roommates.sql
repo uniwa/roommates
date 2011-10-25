@@ -189,6 +189,7 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `floor_id_min` INT NOT NULL,
   `pref_house_type_id` INT NOT NULL,
   `pref_heating_type_id` INT NOT NULL,
+  `pref_has_photo` TINYINT(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8;

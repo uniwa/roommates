@@ -179,6 +179,7 @@
 			<?php
 				$prefFurnished = $profile['Preference']['pref_furnitured'];
 				$prefAccessibility = $profile['Preference']['pref_disability_facilities'];
+                $prefHousePhoto = $profile['Preference']['pref_has_photo'];
 
 				$ynioptions = array('όχι', 'ναι', 'αδιάφορο');
 
@@ -229,6 +230,9 @@
 			    if($prefAccessibility){?>
                     <span class='profile-strong'>Προσβάσιμο από ΑΜΕΑ</span><br />
     			<?php }
+                if($prefHousePhoto){?>
+                    <span class='profile-strong'>Να διαθέτει φωτογραφία</span><br />
+                <?php }
 			?></span>
 		</div>
 	</div>

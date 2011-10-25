@@ -321,21 +321,20 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
-//             pr($this->params['url']); die();
         }
 
         if(isset($this->params['url']['load_prefs'])) {
             $prefs = $this->loadSavedPreferences();
-            $results = $this->simpleSearch( $prefs['house_prefs'],
-                                            $prefs['mates_prefs'],
-                                            $this->getOrderCondition($this->params['url']['order_by'])
-                                          );
 
-            $this->set('results', $results);
-            $this->set('defaults', $prefs['defaults']);
-//             pr($prefs['house_prefs']); pr($prefs['mates_prefs']);
+//          search manuall or automatically with saved preferences?
+//          for now search manually (== press search button as well)
+//             $results = $this->simpleSearch( $prefs['house_prefs'],
+//                                             $prefs['mates_prefs'],
+//                                             $this->getOrderCondition($this->params['url']['order_by'])
+//                                           );
 //
-//             die();
+//             $this->set('results', $results);
+            $this->set('defaults', $prefs['defaults']);
         }
     }
 
@@ -423,6 +422,10 @@ class HousesController extends AppController {
         if ($prefs['pref_disability_facilities'] == 1) {
             $house_prefs['House.disability_facilities'] = 1;
             $defaults['accessibility'] = 1;
+        }
+        if ($prefs['pref_has_photo'] == 1) {
+            $house_prefs['House.default_image_id !='] = null;
+            $defaults['has_photo'] = 1;
         }
         $house_prefs['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
@@ -513,6 +516,7 @@ class HousesController extends AppController {
 //                        'pref_storerooms' => $search_args['pref_storeroom'],
 //                        'pref_house_type_id' => $search_args['pref_house_type_id'],
 //                        'pref_heating_type_id' => $search_args['pref_heating_type_id'],
+                        'pref_has_photo' => !empty($search_args['has_photo']),
                         // Profile
                         'age_min' => $ageMin,
                         'age_max' => $ageMax,
@@ -547,7 +551,7 @@ class HousesController extends AppController {
         if(isset($house_prefs['accessibility'])) {
             $house_conditions['House.disability_facilities'] = 1;
         }
-        if(isset($this->params['url']['has_photo'])) {
+        if(isset($house_prefs['has_photo'])) {
             $house_conditions['House.default_image_id !='] = null;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
