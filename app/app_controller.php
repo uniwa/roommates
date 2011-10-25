@@ -21,9 +21,9 @@ class  AppController extends Controller{
          * 2) is not rss file extension in /houses/index action
          * 3) user is alredy logged in and terms has not accepted from him
          */
-        if( $this->params['controller'] != 'users'   
+        if( $this->params['controller'] != 'users'
             && !( $this->params['controller'] == 'houses' && $this->params['action'] == 'index'
-                     && $this->RequestHandler->isRss() ) && 
+                     && $this->RequestHandler->isRss() ) &&
             ( $this->Auth->user() != null && $this->Auth->user('terms_accepted') === "0" )  ){
 
                   $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
@@ -31,8 +31,8 @@ class  AppController extends Controller{
     }
 
 	/*
-	 * Insert into $this->data the Auth array. This Auth will be extracted 
-	 * from custom helper class AuthHelper, to render this data in view 
+	 * Insert into $this->data the Auth array. This Auth will be extracted
+	 * from custom helper class AuthHelper, to render this data in view
 	 */
 	function beforeRender(){
 
@@ -43,12 +43,12 @@ class  AppController extends Controller{
 	 * Return basic info about logged in user
 	 * Contains: Users id, Profile id and House id info
 	 * More info will be in included shortly
-	 */ 
+	 */
 	//TODO: Rename to authArray and change protected to private
 	protected function getAuthUserIds(){
 
 		$user_id = $this->Auth->user('id');
-		
+
 		$this->loadModel('User');
 
 		$this->User->id = $user_id;
@@ -56,12 +56,12 @@ class  AppController extends Controller{
 		$user = $this->User->read();
 
 
-		return array(  	'User' => array( 'id' => $user['User']['id'] ), 
+		return array(  	'User' => array( 'id' => $user['User']['id'] ),
 
 				'Profile' =>array( 'id' => $user['Profile']['id'] ),
 
-				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ) );	
-	
+				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ) );
+
 	}
 }
 ?>

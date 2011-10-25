@@ -23,20 +23,20 @@ class Preference extends AppModel {
 		'rule' => array('range', 17, 100 ),
 		'message' => 'Εισάγετε ηλικία μεταξύ 18 και 99',
 		'required' => false,
-		'allowEmpty' => true),		
+		'allowEmpty' => true),
 
 	'pref_gender' => array(
 		'rule' => array('inList', array(0, 1, 2)),
 		'message' => 'Εισάγετε ένα έγκυρο φύλο',
 		'required' => false,
 		'allowEmpty' => true),
-		
+
 	'pref_smoker' => array(
 		'rule' => array('inList', array(0, 1, 2)),
 		'message' => 'Εισάγετε μία έγκυρη απάντηση',
 		'required' => false,
 		'allowEmpty' => true),
- 
+
 	'pref_pet' => array(
 		'rule' => array('inList', array(0, 1, 2)),
 		'message' => 'Εισάγετε μία έγκυρη απάντηση',
@@ -46,7 +46,7 @@ class Preference extends AppModel {
 	'pref_child' => array(
 		'rule' => array('inList', array(0, 1, 2)),
 		'message' => 'Εισάγετε μία έγκυρη απάντηση',
-		'required' => false, 
+		'required' => false,
 		'allowEmpty' => true),
 
 	'pref_couple' => array(

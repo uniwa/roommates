@@ -1,5 +1,5 @@
 <?php
-	define('NUM_USERS', 123);
+	define('NUM_USERS', 128);
 	define('SAMPLE_PREFIX', 'insert-extra-');
 	define('SAMPLE_EXTENTION', '.sql');
 	$sampleField = array('users', 'profiles', 'houses');
@@ -59,14 +59,36 @@
 		$accessible = rand(0,1);
 		$construction = rand(1900, 2011);
 		
-		$insertUser = "INSERT INTO `roommates`.`users` (`id`, `username`, `password`, `role`)\n";			
-		$insertUser .= "VALUES ('{$uid}', '{$uname}', '{$passwd}', 'user');\n\n";
-		$insertProfile = "INSERT INTO `roommates`.`profiles` (`id`,`firstname`,`lastname`, `email`, `dob`, `gender`,`phone`,`smoker`,`pet`, `child`, `couple`,`we_are`,`max_roommates`,`visible`,`created`,`modified`,`preference_id`,`user_id`)\n";
-		$insertProfile .= "VALUES ('{$pid}', '{$fname}', '{$lname}', '{$email}', '{$dob}', '{$gender}', '{$phone}', '{$smoker}', '{$pet}', '{$child}', '{$couple}', '{$weare}', '{$maxmates}', '{$visible}',NOW(),NOW(),'{$prefid}', '{$uid}');\n\n";
-		$insertPreference = "INSERT INTO `roommates`.`preferences` (`id`,`age_min`,`age_max`,`pref_gender`,`pref_smoker`,`pref_pet`,`pref_child`,`pref_couple`)\n";
-		$insertPreference .= "VALUES ('{$prefid}', '{$agemin}', '{$agemax}', '{$prefgender}', '{$prefsmoker}', '{$prefpet}', '{$prefchild}', '{$prefcouple}');\n\n";
-		$insertHouse = "INSERT INTO `roommates`.`houses` (`id`,`address`,`postal_code`,`area`,`bedroom_num`,`bathroom_num`,`price`,`construction_year`,`solar_heater`,`furnitured`,`aircondition`,`garden`,`parking`,`shared_pay`,`security_doors`,`disability_facilities`,`storeroom`,`availability_date`,`rent_period`,`description`,`created`,`modified`,`floor_id`,`house_type_id`,`heating_type_id`,`currently_hosting`,`total_places`,`user_id`,`municipality_id`)\n";
-		$insertHouse .= "VALUES ('{$hid}', '{$address}', '{$postal}', '{$area}', '{$beds}', '{$baths}', '{$price}','{$construction}',1,1,1,0,0,1,0,'{$accessible}',0,'2011-11-05',NULL,'',NOW(),NOW(),3,2,2,'{$weare}', '{$totalplaces}', '{$uid}', '{$munid}');\n\n";
+		$insertUser = "INSERT INTO `roommates`.`users` (`id`, `username`, `password`, `role`, `banned`, `terms_accepted`)\n";			
+		$insertUser .= "VALUES ('{$uid}', '{$uname}', '{$passwd}', 'user', 0, 1);\n\n";
+		$insertProfile = "INSERT INTO `roommates`.`profiles` (
+		    `id`,`firstname`,`lastname`,`email`, `dob`, `gender`,`phone`,`smoker`,`pet`,
+		    `child`, `couple`,`we_are`,`max_roommates`,`visible`,`created`,`modified`,
+		    `preference_id`,`user_id`)\n";
+		$insertProfile .= "VALUES ('{$pid}', '{$fname}', '{$lname}', '{$email}',
+		    '{$dob}', '{$gender}', '{$phone}', '{$smoker}', '{$pet}', '{$child}', '{$couple}',
+		    '{$weare}', '{$maxmates}', '{$visible}',NOW(),NOW(),'{$prefid}', '{$uid}');\n\n";
+		$insertPreference = "INSERT INTO `roommates`.`preferences` (
+		    `id`,`age_min`,`age_max`,`pref_gender`,`pref_smoker`,`pref_pet`,
+		    `pref_child`,`pref_couple`, `price_min`, `price_max`, `area_min`,
+		    `area_max`, `pref_municipality`, `bedroom_num_min`, `bathroom_num_min`,
+		    `construction_year_min`, `pref_solar_heater`, `pref_furnitured`,
+		    `pref_aircondition`, `pref_garden`, `pref_parking`, `pref_shared_pay`,
+		    `pref_security_doors`, `pref_disability_facilities`, `pref_storeroom`,
+		    `availability_date_min`, `rent_period_min`, `floor_id_min`, 
+		    `pref_house_type_id`, `pref_heating_type_id`)\n";
+		$insertPreference .= "VALUES ('{$prefid}', '{$agemin}', '{$agemax}', '{$prefgender}', '{$prefsmoker}', '{$prefpet}', '{$prefchild}', '{$prefcouple}',
+		    0, 9999, 0, 9999, '', 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 0, 0, 0, 0);\n\n";
+		$insertHouse = "INSERT INTO `roommates`.`houses` (
+		    `id`,`address`,`postal_code`,`area`,`bedroom_num`,`bathroom_num`,`price`,
+		    `construction_year`,`solar_heater`,`furnitured`,`aircondition`,`garden`,
+		    `parking`,`shared_pay`,`security_doors`,`disability_facilities`,`storeroom`,
+		    `availability_date`,`rent_period`,`description`,`created`,`modified`,
+		    `floor_id`,`house_type_id`,`heating_type_id`,`currently_hosting`,
+		    `total_places`,`user_id`,`municipality_id`,`visible`)\n";
+		$insertHouse .= "VALUES ('{$hid}', '{$address}', '{$postal}', '{$area}', '{$beds}',
+		    '{$baths}', '{$price}','{$construction}',1,1,1,0,0,1,0,'{$accessible}', 0,'2011-11-05',
+		    NULL,'',NOW(),NOW(),3,2,2,'{$weare}', '{$totalplaces}', '{$uid}', '{$munid}',1);\n\n";
 		
 		writeFile($fu, $insertUser);
 		writeFile($fp, $insertPreference.$insertProfile);

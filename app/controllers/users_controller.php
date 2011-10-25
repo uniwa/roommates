@@ -4,7 +4,7 @@ class UsersController extends AppController{
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference");
     var $components = array('Token');
-		
+
     function beforeFilter() {
         parent::beforeFilter();
         /* dont redirect automatically, needed for login() to work */
@@ -13,10 +13,10 @@ class UsersController extends AppController{
     }
 
     function login() {
-        /*In case user try to login with some credentials  
+        /*In case user try to login with some credentials
          *and terms has not accepted redirect him in terms action.
          *If rules has accepted redirect him to main page
-         */ 
+         */
 
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
             var_dump($this->Auth->user() );
@@ -32,21 +32,21 @@ class UsersController extends AppController{
 
 
 	function logout(){
-		//Provides a quick way to de-authenticate someone, 
+		//Provides a quick way to de-authenticate someone,
 		//and redirect them to where they need to go
 		$this->redirect( $this->Auth->logout() );
 	}
 
     function terms(){
 
-        /*When login or before filter snippet redirect to terms action 
+        /*When login or before filter snippet redirect to terms action
          *user by default takes a form with terms. if accept the terms
          *then terms action creates profile for new user else redirect
          *him to hell*/
 
         /*Checks if user has accepted the terms*/
         if( $this->Auth->user( "terms_accepted") === "1" ) {
-            
+
 
             $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default' );
             $this->redirect( $this->referer() );
@@ -62,17 +62,17 @@ class UsersController extends AppController{
                 $user = $this->User->read();
                 /* Update user field which determines that user accepted the terms*/
                 $this->User->set(  'terms_accepted', "1"  );
-                $this->User->save(); 
+                $this->User->save();
                 /*refresh session for this field*/
                 $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
-                
+
 
                 if( $user["Profile"]["id"] == null ) {
                     $pref_id = $this->create_preferences();
                     $profile_id = $this->create_profile($this->User->id, $pref_id);
                     $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
                 }
-             
+
             } else {
 
                 $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default' );
@@ -80,7 +80,7 @@ class UsersController extends AppController{
             }
 
         }
-        
+
     }
 
        function publicTerms(){

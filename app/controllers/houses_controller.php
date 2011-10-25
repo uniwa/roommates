@@ -11,11 +11,17 @@ class HousesController extends AppController {
 
     function index() {
         if ($this->RequestHandler->isRss()) {
-            $conditions = array("User.banned" => 0);
             $houses = $this->House->find('all',
-                        array('limit' => 50, 'order' => 'House.modified DESC'));
+                        array('limit' => 20, 'order' => 'House.modified DESC'));
             return $this->set(compact('houses'));
         }
+
+		// TODO only find images in current page
+		$images = $this->House->Image->find('list', array(
+				'fields' => array('house_id', 'location'),
+				'order' => array('id desc')
+			));
+		$this->set('images', $images);
 		
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
@@ -76,59 +82,11 @@ class HousesController extends AppController {
                                 'διαθέσιμες θέσεις φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
-        /* using the banned condition here means that even admin cannot view
-            the houses of the banned users in the index - admin has his own
-            banned users view in /admin/banned
-        */
-
-        if($this->Auth->User('role') == 'admin') {
-            $conds = array( 'House.user_id !=' => $this->Auth->user('id'));
-        } else {
-            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
-                            'House.visible' => 1);
-        }
-
-        // manually join all the required tables
-        // in order to get only the default
-        // image for each house with only
-        // one query
-
         $this->paginate = array(
-            'fields' => array( 'House.*, Image.location,
-                                Municipality.name, Floor.type,
-                                HouseType.type'),
             'order' => $order,
-			'conditions' => $conds,
-			'limit' => 15,
-            'joins' => array(
-                array(  'table' => 'images',
-                        'alias' => 'Image',
-                        'type'  => 'left',
-                        'conditions' => array('House.default_image_id = Image.id')
-                ),
-                array(  'table' => 'users',
-                        'alias' => 'User',
-                        'type'  => 'left',
-                        'conditions' => array('User.id = House.user_id', 'User.banned = 0')
-                ),
-                array(  'table' => 'municipalities',
-                        'alias' => 'Municipality',
-                        'type'  => 'left',
-                        'conditions' => array('House.municipality_id = Municipality.id')
-                ),
-                array(  'table' => 'floors',
-                        'alias' => 'Floor',
-                        'type'  => 'left',
-                        'conditions' => array('House.floor_id = Floor.id')
-                ),
-                array(  'table' => 'house_types',
-                        'alias' => 'HouseType',
-                        'type'  => 'left',
-                        'conditions' => array('House.house_type_id = HouseType.id')
-                )
-            )
+			'conditions' => array('House.user_id !=' => $this->Auth->user('id')),
+			'limit' => 15
         );
-        $this->House->recursive = -1;
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
     }
@@ -152,24 +110,9 @@ class HousesController extends AppController {
         $this->House->recursive = 2;
         $house = $this->House->read();
 
-        if ($this->Auth->User('role') != 'admin' &&
-            $this->Auth->User('id') != $house['House']['user_id']) {
-            if (    $house["User"]["banned"] == 1 ||
-                    (   $house['House']['visible'] == 0 &&
-                        $house['House']['user_id'] != $this->Auth->User('id')
-                    )
-            )
-                $this->cakeError('error404');
-        }
-
         $this->set('house', $house);
 
         $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
-
-        foreach ($images as $image) {
-            if ($image['Image']['id'] == $house['House']['default_image_id'])
-                $this->set('default_image_location', $image['Image']['location']);
-        }
 
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
@@ -268,14 +211,18 @@ class HousesController extends AppController {
     }
 
     private function checkAccess( $house_id ){
+    	
         $this->House->id = $house_id;
         $house = $this->House->read();
         $user_id = $house['User']['id'];
 
 
-        if($this->Auth->user('id') != $user_id) {
+        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin')){
+            /*
+            * More info about params in app/app_error.php
+            */
             $this->cakeError( 'error403' );
-        }
+    	} 
     }
 
     //check houses existance
@@ -292,9 +239,14 @@ class HousesController extends AppController {
     }
 
     function search () {
-		
+	// TODO only find images in current page
+	$images = $this->House->Image->find('list', array('fields' => array('house_id', 'location'),
+							   'order' => array('id desc')
+			));
+	$this->set('images', $images);
+	
         $municipalities = $this->House->Municipality->find('list');
-        $this->set('municipalities', $municipalities);
+	$this->set('municipalities', $municipalities);
 
         $this->search_order_options = array('τελευταία ενημέρωση', 
                                             'τιμή - αύξουσα', 
@@ -307,111 +259,91 @@ class HousesController extends AppController {
                                             'διαθέσιμες θέσεις - φθίνουσα');
         $this->set('order_options', $this->search_order_options);
 
-        if(isset($this->params['url']['save_search'])) {
-            $this->saveSearchPreferences();
-        }
-        
         if(isset($this->params['url']['simple_search'])) {
-
-            // The following SQL query is implemented
-            // mates conditions are added to the inner join with profiles table
-            // house conditions are added to the 'where' statement
-            // ----------------------------------------------------------------
-            // SELECT House.* FROM houses House
-            // LEFT JOIN users User ON House.user_id = User.id
-            // INNER JOIN profiles Profile ON Profile.user_id = User.id
-            // LEFT JOIN images Image ON Image.id = House.default_image_id;
-
-            $options['fields'] = array('House.*', 'Image.location');
 
             $options['joins'] = array(
                 array(  'table' => 'users',
                         'alias' => 'User',
-                        'type'  => 'left',
+                        'type'  => 'inner',
                         'conditions' => array('House.user_id = User.id')
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
                         'type'  => 'inner',
                         'conditions' => $this->getMatesConditions()
-                ),
-                array(  'table' => 'images',
-                        'alias' => 'Image',
-                        'type'  => 'left',
-                        'conditions' => array('Image.id = House.default_image_id')
                 )
             );
 
             $options['conditions'] = $this->getHouseConditions();
+	    $options['limit'] = 15;
+            $options['contain'] = '';
             $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
-            // pagination options
-            $options['limit'] = 5;
             $this->paginate = $options;
-            // required recursive value for joins 
             $this->House->recursive = -1;
             $results = $this->paginate('House');
             $this->set('results', $results);
-            // store user's input
             $this->set('defaults', $this->params['url']);
         }
     }
 
-    private function saveSearchPreferences() {
-        // Get logged user's Profile.id
-        $profile = $this->Profile->find('first', array('conditions' => array(
-                                                       'Profile.user_id' => $this->Auth->user('id'))));
-        $search_args = $this->params['url'];
-        //Profile preferences
-		$ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
-		$ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
-        // House preferences
-//		$priceMin = (isset($search_args['price_min']))?$search_args['price_min']:NULL;
-		$priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
-		$areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
-		$areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
-//		$bedroomNumMin = (isset($search_args['bedroom_num_min']))?$search_args['bedroom_num_min']:NULL;
-//		$bathroomNumMin = (isset($search_args['bathroom_num_min']))?$search_args['bathroom_num_min']:NULL;
-//		$constructionYearMin = (isset($search_args['construction_year_min']))?$search_args['construction_year_min']:NULL;
-//		$availabilityDateMin = (isset($search_args['availability_date_min']))?$search_args['availability_date_min']:NULL;
-//		$rentPeriodMin = (isset($search_args['rent_period_min']))?$search_args['rent_period_min']:NULL;
-//		$floorIdMin = (isset($search_args['floor_id_min']))?$search_args['floor_id_min']:NULL;
-        $this->House->User->Profile->Preference->save(array(
-                        'id' => $profile['Preference']['id'],
-                        // House
-//                        'price_min' => $priceMin,
-                        'price_max' => $priceMax,
-                        'area_min' => $areaMin,
-                        'area_max' => $areaMax,
-//                        'bedroom_num_min' => $bedroomNumMin,
-//                        'bathroom_num_min' => $bathroomNumMin,
-//                        'construction_year_min' => $constructionYearMin,
-//                        'availability_date_min' => $availabilityDateMin,
-//                        'rent_period_min' => $rentPeriodMin,
-//                        'floor_id_min' => $floorIdMin,
-                        'pref_municipality' => $search_args['municipality'],
-//                        'pref_solar_heater' => $search_args['pref_solar_heater'],
-                        'pref_furnitured' => $search_args['furnitured'],
-//                        'pref_aircondition' => $search_args['pref_aircondition'],
-//                        'pref_garden' => $search_args['pref_garden'],
-//                        'pref_parking' => $search_args['pref_parking'],
-//                        'pref_shared_pay' => $search_args['pref_shared_pay'],
-//                        'pref_security_doors' => $search_args['pref_security_doors'],
-                        'pref_disability_facilities' => !empty($search_args['accessibility']),
-//                        'pref_storerooms' => $search_args['pref_storeroom'],
-//                        'pref_house_type_id' => $search_args['pref_house_type_id'],
-//                        'pref_heating_type_id' => $search_args['pref_heating_type_id'],
-                        // Profile
-                        'age_min' => $ageMin,
-                        'age_max' => $ageMax,
-                        'pref_gender' => $search_args['gender'],
-                        'pref_smoker' => $search_args['smoker'],
-                        'pref_pet' => $search_args['pet'],
-                        'pref_child' => $search_args['child'],
-                        'pref_couple' => $search_args['couple']
-        ));
-        // store user's input
-        $this->set('defaults', $this->params['url']);
-        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
+
+
+    function advanced_search () {
+ 
+	//---------------------drop down menus options--------------------//
+	$this->set('house_type_options', $this->House->HouseType->find('list', array('fields' => array('type'))));
+        $this->set('heating_type_options', $this->House->HeatingType->find('list', array('fields' => array('type'))));
+        $this->set('municipality_options', $this->House->Municipality->find('list', array('fields' => array('name'))));
+	$this->set('floor_options', $this->House->Floor->find('list', array('fields' => array('type'))));
+
+        $entries = array();
+        for($i = 1950; $i <= date('Y'); $i++) {
+            $entries[$i] = $i;
+        }
+        $this->set('construction_year_options', $entries);
+
+        $this->search_order_options = array('τελευταία ενημέρωση', 
+                                            'τιμή - αύξουσα', 
+                                            'τιμή - φθίνουσα', 
+                                            'εμβαδό - αύξουσα', 
+                                            'εμβαδό - φθίνουσα',
+                                            'δήμο - αύξουσα',
+                                            'δήμο - φθίνουσα',
+                                            'διαθέσιμες θέσεις - αύξουσα',
+                                            'διαθέσιμες θέσεις - φθίνουσα');
+        $this->set('search_order_options', $this->search_order_options);
+	//--------------------------------------------------------------------//
+        if(isset($this->params['url']['advanced_search'])) {
+
+            $options['joins'] = array(
+                array(  'table' => 'users',
+                        'alias' => 'User',
+                        'type'  => 'inner',
+                        'conditions' => array('House.user_id = User.id')
+                ),
+                array(  'table' => 'profiles',
+                        'alias' => 'Profile',
+                        'type'  => 'inner',
+                        'conditions' => $this->getMatesConditions()
+                )
+            );
+
+	    $cond = $this->getHouseConditions();
+            $adv_cond =  $this->getHouseAdvancedConditions();
+	    $options['conditions'] = array_merge($cond, $adv_cond);	    
+	    $options['limit'] = 15;
+            $options['contain'] = '';
+            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
+            $this->paginate = $options;
+            $this->House->recursive = -1;
+            $results = $this->paginate('House');
+//		pr($results);die();
+
+            $this->set('results', $results);
+            $this->set('defaults', $this->params['url']);
+	//pr($this->params['url']); die();
+//		echo '<pre>'; print_r( $this->params['url']); echo '</pre>';die();
+       }
     }
 
     private function getHouseConditions() {
@@ -433,20 +365,75 @@ class HousesController extends AppController {
         if($house_prefs['furnitured'] < 2) {
             $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
         }
-        if(isset($house_prefs['accessibility'])) {
+        if(isset($this->params['url']['accessibility'])) {
             $house_conditions['House.disability_facilities'] = 1;
         }
-        if(isset($this->params['url']['has_photo'])) {
-            $house_conditions['House.default_image_id !='] = null;
-        }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
-        if($this->Auth->User('role') != 'admin') {
-            $house_conditions['House.visible'] = 1;
-        }
-        $house_conditions['User.banned !='] = 1;
-
+ 
         return $house_conditions;
     }
+
+
+  private function getHouseAdvancedConditions(){
+
+	$house_adv_prefs = $this->params['url'];
+	$house_adv_conditions = array();
+	if(!empty($house_adv_prefs['house_type'])){
+		$house_adv_conditions['House.house_type_id'] = $house_adv_prefs['house_type'];
+	}
+	if(!empty($house_adv_prefs['heating_type'])){
+		$house_adv_conditions['House.heating_type_id'] = $house_adv_prefs['heating_type'];
+	}
+	if(!empty($house_adv_prefs['bedroom_num'])){
+		$house_adv_conditions['House.bedroom_num >='] = $house_adv_prefs['bedroom_num'];
+	}
+	if(!empty($house_adv_prefs['bathroom_num'])){
+		$house_adv_conditions['House.bathroom_num >='] = $house_adv_prefs['bathroom_num'];
+	}
+	if(!empty($house_adv_prefs['construction_year'])){
+		$house_adv_conditions['House.construction_year >='] = $house_adv_prefs['construction_year'];
+	}
+	if(!empty($house_adv_prefs['floor'])){
+		$house_adv_conditions['House.floor_id >='] = $house_adv_prefs['floor'];
+	}
+	if(!empty($house_adv_prefs['rent_period'])){
+		$house_adv_conditions['House.rent_period >='] = $house_adv_prefs['rent_period'];
+	}
+	if(isset($this->params['url']['solar_heater'])){
+		$house_adv_conditions['House.solar_heater'] = 1;
+	}
+	if(isset($this->params['url']['aircondition'])){
+		$house_adv_conditions['House.aircondition'] = 1;
+	}
+	if(isset($this->params['url']['garden'])){
+		$house_adv_conditions['House.garden'] = 1;
+	}
+	if(isset($this->params['url']['parking'])){
+		$house_adv_conditions['House.parking'] = 1;
+	}
+	if(isset($this->params['url']['no_shared_pay'])){
+		$house_adv_conditions['House.shared_pay'] = 0;
+	}
+	if(isset($this->params['url']['security_doors'])){
+		$house_adv_conditions['House.security_doors'] = 1;
+	}
+	if(isset($this->params['url']['storeroom'])){
+		$house_adv_conditions['House.storeroom'] = 1;
+	}
+	if(!empty($house_adv_prefs['available_from'])){
+	//	pr($house_adv_prefs['available_from']);die();
+		$year = $house_adv_prefs['available_from']['year'];
+		$month = $house_adv_prefs['available_from']['month'];
+		$day = $house_adv_prefs['available_from']['day'];
+		$str_date = $year . '-' . $month . '-' . $day;
+		//pr($str_date);die();
+
+		$house_adv_conditions['House.availability_date <='] = $str_date;
+	}
+	//	pr($house_adv_conditions);
+	return $house_adv_conditions;
+  }
+
 
     private function getMatesConditions() {
         $mates_prefs = $this->params['url'];
@@ -474,7 +461,7 @@ class HousesController extends AppController {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
         $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
-        // required condition for the left join
+        // required condition for the inner join
         array_push($mates_conditions, 'User.id = Profile.user_id');
 
         return $mates_conditions;
@@ -484,7 +471,7 @@ class HousesController extends AppController {
 
         switch($selected_order) {
             case 0:
-                $order = array('House.modified' => 'desc', 'House.id' => 'asc');
+                $order = array('House.modified' => 'desc');
                 break;
             case 1:
                 $order = array('House.price' => 'asc');
