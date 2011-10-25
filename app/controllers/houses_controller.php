@@ -309,14 +309,38 @@ class HousesController extends AppController {
 
         if(isset($this->params['url']['save_search'])) {
             $this->saveSearchPreferences();
+            // store user's input
+            $this->set('defaults', $this->params['url']);
         }
 
         if(isset($this->params['url']['simple_search'])) {
-            $this->simpleSearch();
+            $results = $this->simpleSearch( $this->getHouseConditions(),
+                                            $this->getMatesConditions(),
+                                            $this->getOrderCondition($this->params['url']['order_by'])
+                                          );
+            $this->set('results', $results);
+            // store user's input
+            $this->set('defaults', $this->params['url']);
+//             pr($this->params['url']); die();
+        }
+
+        if(isset($this->params['url']['load_prefs'])) {
+            $prefs = $this->loadSavedPreferences();
+            $results = $this->simpleSearch( $prefs['house_prefs'],
+                                            $prefs['mates_prefs'],
+                                            $this->getOrderCondition($this->params['url']['order_by'])
+                                          );
+
+            $this->set('results', $results);
+            $this->set('defaults', $prefs['defaults']);
+//             pr($prefs['house_prefs']); pr($prefs['mates_prefs']);
+//
+//             die();
         }
     }
 
-    private function simpleSearch($pagination = true) {
+    private function simpleSearch(  $houseConditions, $matesConditions,
+                                    $orderBy = null, $pagination = true ) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -338,7 +362,8 @@ class HousesController extends AppController {
             array(  'table' => 'profiles',
                     'alias' => 'Profile',
                     'type'  => 'inner',
-                    'conditions' => $this->getMatesConditions()
+//                     'conditions' => $this->getMatesConditions()
+                    'conditions' => $matesConditions
             ),
             array(  'table' => 'images',
                     'alias' => 'Image',
@@ -347,8 +372,11 @@ class HousesController extends AppController {
             )
         );
 
-        $options['conditions'] = $this->getHouseConditions();
-        $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
+//         $options['conditions'] = $this->getHouseConditions();
+        $options['conditions'] = $houseConditions;
+        if ($orderBy != null) {
+            $options['order'] = $orderBy;/*$this->getOrderCondition($this->params['url']['order_by']);*/
+        }
         // required recursive value for joins
         $this->House->recursive = -1;
         // pagination options
@@ -359,9 +387,86 @@ class HousesController extends AppController {
         } else {
             $results = $this->House->find('all', $options);
         }
-        $this->set('results', $results);
-        // store user's input
-        $this->set('defaults', $this->params['url']);
+        return $results;
+    }
+
+    private function loadSavedPreferences() {
+        // Get logged user's Profile.id
+        $profile = $this->Profile->find('first',
+                                        array(  'conditions' => array(
+                                                'Profile.user_id' => $this->Auth->user('id'))));
+        $prefs = $profile['Preference'];
+        $defaults = array();
+
+        // house preferences
+        $house_prefs = array();
+        if (!empty($prefs['price_max'])) {
+            $house_prefs['House.price <='] = $prefs['price_max'];
+            $defaults['max_price'] = $prefs['price_max'];
+        }
+        if (!empty($prefs['area_min'])) {
+            $house_prefs['House.area >='] = $prefs['area_min'];
+            $defaults['min_area'] = $prefs['area_min'];
+        }
+        if (!empty($prefs['area_max'])) {
+            $house_prefs['House.area <='] = $prefs['area_max'];
+            $defaults['max_area'] = $prefs['area_max'];
+        }
+        if (!empty($prefs['pref_municipality'])) {
+            $house_prefs['House.municipality_id'] = $prefs['pref_municipality'];
+            $defaults['municipality'] = $prefs['pref_municipality'];
+        }
+        if ($prefs['pref_furnitured'] != null && $prefs['pref_furnitured'] < 2) {
+            $house_prefs['House.furnitured'] = $prefs['pref_furnitured'];
+            $defaults['furnitured'] = $prefs['pref_furnitured'];
+        }
+        if ($prefs['pref_disability_facilities'] == 1) {
+            $house_prefs['House.disability_facilities'] = 1;
+            $defaults['accessibility'] = 1;
+        }
+        $house_prefs['House.user_id !='] = $this->Auth->user('id');
+        if($this->Auth->User('role') != 'admin') {
+            $house_prefs['House.visible'] = 1;
+        }
+        $house_prefs['User.banned !='] = 1;
+
+        // mates preferences
+        $mates_prefs = array();
+        if (!empty($prefs['age_min'])) {
+            $mates_prefs['Profile.dob <='] = $this->age_to_year($prefs['age_min']);
+            $defaults['min_age'] = $prefs['age_min'];
+        }
+        if (!empty($prefs['age_max'])) {
+            $mates_prefs['Profile.dob >='] = $this->age_to_year($prefs['age_max']);
+            $defaults['max_age'] = $prefs['age_max'];
+        }
+        if ($prefs['pref_gender'] != null && $prefs['pref_gender'] < 2) {
+            $mates_prefs['Profile.gender'] = $prefs['pref_gender'];
+            $defaults['gender'] = $prefs['pref_gender'];
+        }
+        if ($prefs['pref_smoker'] != null && $prefs['pref_smoker'] < 2) {
+            $mates_prefs['Profile.smoker'] = $prefs['pref_smoker'];
+            $defaults['smoker'] = $prefs['pref_smoker'];
+        }
+        if ($prefs['pref_pet'] != null && $prefs['pref_pet'] < 2) {
+            $mates_prefs['Profile.pet'] = $prefs['pref_pet'];
+            $defaults['pet'] = $prefs['pref_pet'];
+        }
+        if ($prefs['pref_child'] != null && $prefs['pref_child'] < 2) {
+            $mates_prefs['Profile.child'] = $prefs['pref_child'];
+            $defaults['child'] = $prefs['pref_child'];
+        }
+        if ($prefs['pref_couple'] != null && $prefs['pref_couple'] < 2) {
+            $mates_prefs['Profile.couple'] = $prefs['pref_couple'];
+            $defaults['child'] = $prefs['pref_couple'];
+        }
+        $mates_prefs['Profile.user_id !='] = $this->Auth->user('id');
+        // required for the joins
+        array_push($mates_prefs, 'User.id = Profile.user_id');
+
+        return array(   'house_prefs' => $house_prefs,
+                        'mates_prefs' => $mates_prefs,
+                        'defaults'    => $defaults  );
     }
 
     private function saveSearchPreferences() {
@@ -417,8 +522,6 @@ class HousesController extends AppController {
                         'pref_child' => $search_args['child'],
                         'pref_couple' => $search_args['couple']
         ));
-        // store user's input
-        $this->set('defaults', $this->params['url']);
         $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
     }
 
@@ -438,7 +541,7 @@ class HousesController extends AppController {
         if(!empty($house_prefs['municipality'])) {
             $house_conditions['House.municipality_id'] = $house_prefs['municipality'];
         }
-        if($house_prefs['furnitured'] < 2) {
+        if($house_prefs['furnitured'] < 2 && $house_prefs['furnitured'] != null) {
             $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
         }
         if(isset($house_prefs['accessibility'])) {
@@ -466,19 +569,19 @@ class HousesController extends AppController {
         if(!empty($mates_prefs['max_age'])) {
             $mates_conditions['Profile.dob >='] = $this->age_to_year($mates_prefs['max_age']);
         }
-        if($mates_prefs['gender'] < 2) {
+        if($mates_prefs['gender'] < 2 && $mates_prefs['gender'] != null) {
             $mates_conditions['Profile.gender'] = $mates_prefs['gender'];
         }
-        if($mates_prefs['smoker'] < 2) {
+        if($mates_prefs['smoker'] < 2 && $mates_prefs['smoker'] != null) {
             $mates_conditions['Profile.smoker'] = $mates_prefs['smoker'];
         }
-        if($mates_prefs['pet'] < 2) {
+        if($mates_prefs['pet'] < 2 && $mates_prefs['pet'] != null) {
             $mates_conditions['Profile.pet'] = $mates_prefs['pet'];
         }
-        if($mates_prefs['child'] < 2) {
+        if($mates_prefs['child'] < 2 && $mates_prefs['child'] != null) {
             $mates_conditions['Profile.child'] = $mates_prefs['child'];
         }
-        if($mates_prefs['couple'] < 2) {
+        if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
         $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
