@@ -67,7 +67,7 @@
 		    `id`,`age_min`,`age_max`,`pref_gender`,`pref_smoker`,`pref_pet`,
 		    `pref_child`,`pref_couple`, `price_min`, `price_max`, `area_min`,
 		    `area_max`, `pref_municipality`, `bedroom_num_min`, `bathroom_num_min`,
-		    `construction_year`, `pref_solar_heater`, `pref_furnitured`,
+		    `construction_year_min`, `pref_solar_heater`, `pref_furnitured`,
 		    `pref_aircondition`, `pref_garden`, `pref_parking`, `pref_shared_pay`,
 		    `pref_security_doors`, `pref_disability_facilities`, `pref_storeroom`,
 		    `availability_date_min`, `rent_period_min`, `floor_id_min`, 
