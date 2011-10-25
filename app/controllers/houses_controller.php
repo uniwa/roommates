@@ -397,11 +397,21 @@ class HousesController extends AppController {
         return $results;
     }
 
-    private function loadSavedPreferences() {
-        // Get logged user's Profile.id
-        $profile = $this->Profile->find('first',
-                                        array(  'conditions' => array(
+    private function loadSavedPreferences($profile_id = NULL) {
+        /*
+         * get preferences for user with supplied profile id
+         * if none supplied get use user id from Auth component
+         */
+        if ($profile_id == NULL) {
+            // Get logged user's Profile.id
+            $profile = $this->Profile->find('first',
+                                            array(  'conditions' => array(
                                                 'Profile.user_id' => $this->Auth->user('id'))));
+        }
+        else {
+            $this->Profile->id = $profile_id;
+            $profile = $this->Profile->read();
+        }
         $prefs = $profile['Preference'];
         $defaults = array();
 
