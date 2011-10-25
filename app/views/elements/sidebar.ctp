@@ -46,6 +46,13 @@
             <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
 
         </li>
+        <li>
+                <?php 
+                    if( $this->Session->read('Auth.User.role') === 'admin' ){ 
+                        echo $this->Html->link('Αναζήτηση χρήστη', array( 'controller' => 'admin', 'action' => 'search') ); 
+                    }
+                ?>
+        </li>
 
         <?php if ($this->Session->read('Auth.User')) {
         echo '<li>';
