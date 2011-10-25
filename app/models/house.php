@@ -193,7 +193,7 @@ class House extends AppModel {
             'required' => false,
             'allowEmpty' => true
         ),
-	
+
 	'currently_hosting' => array(
 	    'rule' => '/^[1-9]{1}$/i',
 	    'message' =>'Παρακαλώ εισάγετε τον τρέχοντα αριθμό κατοίκων της οικίας'

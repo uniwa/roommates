@@ -39,8 +39,12 @@
         </li>
 
         <li>
-            <?php echo $this->Html->link('Αναζήτηση σπιτιού', array('controller' => 'houses',
+            <?php echo $this->Html->link('Αναζήτηση σπιτιών', array('controller' => 'houses',
                                                                    'action' => 'search')); ?>
+        </li>
+        <li>
+            <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
+
         </li>
 
 
@@ -65,5 +69,16 @@
             );
             ?>
         </li>
+        <li>
+			<div id='active-info'>
+            <?php
+				if(isset($active)){
+					echo "Ενεργά προφίλ χρηστών: ".$active['profiles']."<br />\n";
+					echo "Καταχωρημένα σπίτια: ".$active['houses']."<br />\n";
+				}
+			?>
+			</div>
+        </li>
+
     </ul>
 </div>

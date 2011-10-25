@@ -1,7 +1,7 @@
 <div id='top-frame' class='frame'>
     <div class='frame-container'>
         <div id='top-title' class='title'>
-            <h1>Αναζήτηση σπιτιού</h1>
+            <h1>Αναζήτηση σπιτιών</h1>
         </div>
 
 <div class='clear-both'></div>
@@ -10,12 +10,12 @@
 
     $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
     $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-    $min_age_options = array(   'label' => 'Ηλικία από ', 
+    $min_age_options = array(   'label' => 'Ηλικία από ',
                                 'class' => 'short-textbox',
-                                'value' => isset($defaults) ? $defaults['min_age'] : '');
-    $max_age_options = array(   'label' => 'μέχρι ', 
+                                'value' => isset($defaults['min_age']) ? $defaults['min_age'] : '');
+    $max_age_options = array(   'label' => 'μέχρι ',
                                 'class' => 'short-textbox',
-                                'value' => isset($defaults) ? $defaults['max_age'] : '');
+                                'value' => isset($defaults['max_age']) ? $defaults['max_age'] : '');
 
     // modify the URL for pagination
     $get_vars = '';
@@ -38,19 +38,19 @@
         <td>
             <?php echo $this->Form->input('max_price', array(   'label' => 'Ενοίκιο μέχρι ',
                                                                 'class' => 'short-textbox',
-                                                                'value' => isset($defaults) ? $defaults['max_price'] : '' ));
+                                                                'value' => isset($defaults['max_price']) ? $defaults['max_price'] : '' ));
             ?>
         </td>
         <td>
             <?php echo $this->Form->input('min_area', array('label' => 'Εμβαδόν από ',
                                                             'class' => 'short-textbox',
-                                                            'value' => isset($defaults) ? $defaults['min_area'] : '' ));
+                                                            'value' => isset($defaults['min_area']) ? $defaults['min_area'] : '' ));
             ?>
         </td>
         <td>
             <?php echo $this->Form->input('max_area', array('label' => ' μέχρι ',
                                                             'class' => 'short-textbox',
-                                                            'value' => isset($defaults) ? $defaults['max_area'] : '' ));
+                                                            'value' => isset($defaults['max_area']) ? $defaults['max_area'] : '' ));
             ?>
         </td>
     </tr>
@@ -58,7 +58,7 @@
         <td colspan=2>
             <?php echo $this->Form->input('municipality', array('label' => 'Δήμος ',
                                                                 'options' => $municipalities,
-                                                                'value' => isset($defaults) ? $defaults['municipality'] : '',
+                                                                'value' => isset($defaults['municipality']) ? $defaults['municipality'] : '',
                                                                 'empty' => 'Αδιάφορο'  ));
             ?>
         </td>
@@ -67,12 +67,12 @@
                                                                 'options' => array( 'Όχι',
                                                                                     'Ναι',
                                                                                     'Αδιάφορο'),
-                                                                'value' => isset($defaults) ? $defaults['furnitured'] : '2'   ));
+                                                                'value' => isset($defaults['furnitured']) ? $defaults['furnitured'] : '2'   ));
             ?>
         </td>
     </tr>
     <tr>
-        <td colspan=2>
+        <td colspan=3>
             <?php echo 'Προσβάσιμο από ΑΜΕΑ '.$this->Form->checkbox('accessibility',
                                                                     array(  'hiddenField' => false,
                                                                             'checked' => isset($defaults['accessibility'])  ));
@@ -81,9 +81,17 @@
     </tr>
     <tr>
         <td colspan=3>
+            <?php echo 'Διαθέτει φωτογραφία '.$this->Form->checkbox('has_photo',
+                                                                    array(  'hiddenField' => false,
+                                                                            'checked' => isset($defaults['has_photo'])  ));
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan=3>
             <?php echo $this->Form->input('order_by', array('label' => 'Ταξινόμηση ανά: ',
                                                             'options' => $order_options,
-                                                            'selected' => isset($defaults) ? $defaults['order_by'] : '0'   ));
+                                                            'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0'   ));
             ?>
         </td>
     </tr>
@@ -104,19 +112,19 @@
         <td>
             <?php echo $this->Form->input('gender', array(   'label' => 'Φύλο ',
                                                                         'options' => $gender_options,
-                                                                        'value' => isset($defaults) ? $defaults['gender'] : '2'    ));
+                                                                        'value' => isset($defaults['gender']) ? $defaults['gender'] : '2'    ));
             ?>
         </td>
         <td>
             <?php echo $this->Form->input('smoker', array(   'label' => 'Καπνιστής ',
                                                                         'options' => $select_options,
-                                                                        'value' => isset($defaults) ? $defaults['smoker'] : '2'    ));
+                                                                        'value' => isset($defaults['smoker']) ? $defaults['smoker'] : '2'    ));
             ?>
         </td>
         <td>
             <?php echo $this->Form->input('pet', array( 'label' => 'Κατοικίδιο ',
                                                                     'options' => $select_options,
-                                                                    'value' => isset($defaults) ? $defaults['pet'] : '2'    ));
+                                                                    'value' => isset($defaults['pet']) ? $defaults['pet'] : '2'    ));
             ?>
         </td>
     </tr>
@@ -124,13 +132,13 @@
         <td>
             <?php echo $this->Form->input('child', array('label' => 'Παιδί ',
                                                                     'options' => $select_options,
-                                                                    'value' => isset($defaults) ? $defaults['child'] : '2'    ));
+                                                                    'value' => isset($defaults['child']) ? $defaults['child'] : '2'    ));
             ?>
         </td>
         <td>
             <?php echo $this->Form->input('couple', array(   'label' => 'Ζευγάρι ',
                                                                         'options' => $select_options,
-                                                                        'value' => isset($defaults) ? $defaults['couple'] : '2'    ));
+                                                                        'value' => isset($defaults['couple']) ? $defaults['couple'] : '2'    ));
             ?>
         </td>
     </tr>
@@ -144,14 +152,20 @@
             <?php echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search'));?>
         </td>
         <td>
-            <?php echo $this->Form->submit('καθαρισμός πεδίων', array('name' => 'reset_fields'));?>
+            <?php echo $this->Form->submit('αποθήκευση', array('name' => 'save_search'));?>
+        </td>
+        <td>
+            <?php echo $this->Form->submit('φόρτωση προτιμήσεων', array('name' => 'load_prefs')); ?>
+        </td>
+        <td>
+            <?php echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields'));?>
         </td>
     </tr>
 </table>
 
 <?php
     echo $this->Form->end();
-    if(isset($results)){
+    if(isset($results)) {
 ?>
 </div></div>
 
@@ -197,9 +211,9 @@
 										// thumbnail icon if exists
 										$house_id = $house['House']['id'];
 										$house_image = 'house.gif';
-										if(isset($images[$house_id])){
-											$house_image = 'uploads/houses/'.$house_id.'/thumb_'.$images[$house_id];
-										}
+                                        if(!empty($house['Image']['location'])) {
+                                            $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
+                                        }
 										echo $this->Html->image($house_image, array('alt' => 'εικόνα '.$house['House']['address'], 'height' => 70));
 									?>
                                 </div>
@@ -244,4 +258,4 @@
     </div>
 </div>
 
-<?php } // end if(isset($results)) ?>
+<?php } ?>

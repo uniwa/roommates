@@ -50,7 +50,6 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     NOW(),
                                     LAST_INSERT_ID(),
                                     1); -- These are normally handled by cakephp
- 
 
 
 INSERT INTO `roommates`.`preferences` ( `age_min`,
@@ -369,4 +368,4 @@ INSERT INTO `roommates`.`profiles` (`firstname`,
                                     NOW(),  --
                                     NOW(), -- These are handled by cakephp
                                     LAST_INSERT_ID(),
-                                    7);
+                                    9);

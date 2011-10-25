@@ -3,40 +3,96 @@ class UsersController extends AppController{
 
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference");
-		
+    var $components = array('Token');
+
     function beforeFilter() {
-	parent::beforeFilter();
+        parent::beforeFilter();
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
+
     }
 
-	function login() {
-        if( !(empty($this->data)) && $this->Auth->user() ) {
-            /* get login id */
-            $login =  $this->Auth->user();
-            $this->User->id = $login["User"]["id"];
+    function login() {
+        /*In case user try to login with some credentials
+         *and terms has not accepted redirect him in terms action.
+         *If rules has accepted redirect him to main page
+         */
 
-            /* load user model */
-            $user = $this->User->read();
+        if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
+            var_dump($this->Auth->user() );
 
-            /* if user does not have a profile, create one */
-            if ( $user["Profile"]["id"] == NULL ) {
-                $pref_id = $this->create_preferences();
-                $profile_id = $this->create_profile($this->User->id, $pref_id);
-                $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
-            }
-            $this->redirect($this->Auth->redirect());
+            $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
+
+        } else if( $this->Auth->user( 'terms_accepted' === "1" ) ) {
+
+            $this->redirect( '/' );
         }
-	}
+
+    }
 
 
 	function logout(){
-		//Provides a quick way to de-authenticate someone, 
+		//Provides a quick way to de-authenticate someone,
 		//and redirect them to where they need to go
 		$this->redirect( $this->Auth->logout() );
 	}
 
-    function create_profile($id, $pref_id) {
+    function terms(){
+
+        /*When login or before filter snippet redirect to terms action
+         *user by default takes a form with terms. if accept the terms
+         *then terms action creates profile for new user else redirect
+         *him to hell*/
+
+        /*Checks if user has accepted the terms*/
+        if( $this->Auth->user( "terms_accepted") === "1" ) {
+
+
+            $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default' );
+            $this->redirect( $this->referer() );
+        }
+
+        $this->layout = 'terms';
+        $data = $this->data;
+        if( !empty( $data ) ){
+
+            if( $data['User']['accept'] == 1 ){
+
+                $this->User->id = $this->Auth->user('id');
+                $user = $this->User->read();
+                /* Update user field which determines that user accepted the terms*/
+                $this->User->set(  'terms_accepted', "1"  );
+                $this->User->save();
+                /*refresh session for this field*/
+                $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
+
+
+                if( $user["Profile"]["id"] == null ) {
+                    $pref_id = $this->create_preferences();
+                    $profile_id = $this->create_profile($this->User->id, $pref_id);
+                    $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
+                }
+
+            } else {
+
+                $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default' );
+                $this->redirect ( array( 'controller' => 'users', 'action' => 'logout') );
+            }
+
+        }
+
+    }
+
+       function publicTerms(){
+
+        // $this->layout = 'terms';
+        $data = $this->data;
+        }
+
+
+
+
+ private function create_profile($id, $pref_id) {
         $this->Profile->begin();
         $this->Profile->create();
 
@@ -52,6 +108,7 @@ class UsersController extends AppController{
         $profile["Profile"]["user_id"] = $id;
         /* supplied by create_preferences() */
         $profile["Profile"]["preference_id"] = $pref_id;
+        $profile["Profile"]["token"] = $this->Token->generate($id);
 
         if ( $this->Profile->save($profile) === False) {
             $this->Profile->rollback();
@@ -62,7 +119,7 @@ class UsersController extends AppController{
         return $this->Profile->id;
     }
 
-    function create_preferences() {
+    private function create_preferences() {
         $this->Preference->begin();
         $this->Preference->create();
         $pref["Preference"]["age_min"] = NULL;
@@ -82,5 +139,6 @@ class UsersController extends AppController{
             return $this->Preference->id;
         }
     }
+
 }
 ?>

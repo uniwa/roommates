@@ -14,7 +14,7 @@ echo $form->input('bathroom_num', array('label' => 'Αριθμός μπάνιω�
 echo $form->input('price', array('label' => 'Ενοίκιο','after' => '€'));
 echo $form->input('availability_date', array('label' => 'Διαθέσιμο από', 'empty' => '---',
                     'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y') + 5));
-echo $form->input('construction_year', array('label' => 'Έτος κατασκευής', 'type' => 'select', 
+echo $form->input('construction_year', array('label' => 'Έτος κατασκευής', 'type' => 'select',
                     'options' => $available_constr_years, 'empty' => 'Άγνωστο'));
 echo $form->input('solar_heater', array('label' => 'Ηλιακός θερμοσίφωνας'));
 echo $form->input('furnitured', array('label' => 'Επιπλωμένο'));
@@ -31,7 +31,7 @@ echo $form->input('description', array('label' => 'Περιγραφή','type'=>'
 
 echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type' => 'select', 'options' => $places_availability));
 echo $form->input('total_places', array('label' => 'Μπορούν συνολικά να συγκατοικήσουν','type' => 'select', 'options' => $places_availability));
-
+echo $this->Form->input('visible', array('label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
 
 echo $form->input('id', array('type' => 'hidden'));
 

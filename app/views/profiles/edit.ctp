@@ -1,4 +1,5 @@
-<h2>Επεξεργασία Προφίλ</h2>
+
+   <div class="profileframe"><h2>Επεξεργασία Προφίλ</h2>
 <?php
 
 echo $this->Form->create('Profile');
@@ -26,6 +27,8 @@ echo $this->Form->input('Profile.max_roommates', array('label' => 'Ζητούν�
 echo $this->Form->input('Profile.visible', array('label' => 'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
 
 ?>
+
+</div><div class="profileframe">
 
 <h2>Κριτήρια Επιλογής Συγκατοίκου</h2>
 
@@ -56,3 +59,5 @@ echo $this->Form->input('Profile.id', array('type' => 'hidden'));
 echo $this->Form->input('Preference.id', array('type' => 'hidden'));
 
 echo $this->Form->end('Υποβολή');
+?>
+</div>
