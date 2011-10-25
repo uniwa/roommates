@@ -16,7 +16,7 @@ class HousesController extends AppController {
                         array('limit' => 50, 'order' => 'House.modified DESC'));
             return $this->set(compact('houses'));
         }
-		
+
 		$order = array('House.modified' => 'desc');
 		$selectedOrder = 0;
 
@@ -177,7 +177,7 @@ class HousesController extends AppController {
     }
 
     function add() {
-		
+
         /* if user already owns a house bail out */
         $conditions = array("user_id" => $this->Auth->user('id'));
         $res = $this->House->find('first', array('conditions' => $conditions));
@@ -282,7 +282,7 @@ class HousesController extends AppController {
     private function checkExistance( $house_id ){
         $this->House->id = $house_id;
         $house = $this->House->read();
-        if($house == NULL ){	
+        if($house == NULL ){
             $this->cakeError( 'error404' );
         }
     }
@@ -292,14 +292,14 @@ class HousesController extends AppController {
     }
 
     function search () {
-		
+
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
 
-        $this->search_order_options = array('τελευταία ενημέρωση', 
-                                            'τιμή - αύξουσα', 
-                                            'τιμή - φθίνουσα', 
-                                            'εμβαδό - αύξουσα', 
+        $this->search_order_options = array('τελευταία ενημέρωση',
+                                            'τιμή - αύξουσα',
+                                            'τιμή - φθίνουσα',
+                                            'εμβαδό - αύξουσα',
                                             'εμβαδό - φθίνουσα',
                                             'δήμο - αύξουσα',
                                             'δήμο - φθίνουσα',
@@ -310,7 +310,7 @@ class HousesController extends AppController {
         if(isset($this->params['url']['save_search'])) {
             $this->saveSearchPreferences();
         }
-        
+
         if(isset($this->params['url']['simple_search'])) {
 
             // The following SQL query is implemented
@@ -347,7 +347,7 @@ class HousesController extends AppController {
             // pagination options
             $options['limit'] = 5;
             $this->paginate = $options;
-            // required recursive value for joins 
+            // required recursive value for joins
             $this->House->recursive = -1;
             $results = $this->paginate('House');
             $this->set('results', $results);

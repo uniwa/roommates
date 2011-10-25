@@ -10,10 +10,10 @@
 
     $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
     $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-    $min_age_options = array(   'label' => 'Ηλικία από ', 
+    $min_age_options = array(   'label' => 'Ηλικία από ',
                                 'class' => 'short-textbox',
                                 'value' => isset($defaults) ? $defaults['min_age'] : '');
-    $max_age_options = array(   'label' => 'μέχρι ', 
+    $max_age_options = array(   'label' => 'μέχρι ',
                                 'class' => 'short-textbox',
                                 'value' => isset($defaults) ? $defaults['max_age'] : '');
 
