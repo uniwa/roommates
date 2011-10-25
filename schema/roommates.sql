@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `bathroom_num_min` TINYINT NULL DEFAULT NULL,
   `construction_year_min` INT NULL DEFAULT NULL,
   `pref_solar_heater` TINYINT(1) NULL DEFAULT NULL,
-  `pref_furnitured` TINYINT(1) NULL DEFAULT NULL,
+  `pref_furnitured` TINYINT(2) NULL DEFAULT NULL,
   `pref_aircondition` TINYINT(1) NULL DEFAULT NULL,
   `pref_garden` TINYINT(1) NULL DEFAULT NULL,
   `pref_parking` TINYINT(1) NULL DEFAULT NULL,

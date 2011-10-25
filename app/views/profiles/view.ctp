@@ -223,7 +223,9 @@
 			    if(isset($municipality)){
     				echoDetail('Δήμος', $municipality);
     			}
-				echoDetail('Επιπλωμένο', $furnished);
+                if($prefFurnished < '2') {
+				    echoDetail('Επιπλωμένο', $furnished);
+                }
 			    if($prefAccessibility){?>
                     <span class='profile-strong'>Προσβάσιμο από ΑΜΕΑ</span><br />
     			<?php }
