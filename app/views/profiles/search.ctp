@@ -131,17 +131,17 @@ border-color: #B9BBBF;
     <tr>
         <td>
             <?php
-                          echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
+                echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
                 echo '</td><td>';
-                echo $this->Form->submit('αναζήτηση βάση προτιμήσεων', array('name' => 'searchbyprefs'));
+                echo $this->Form->submit('αποθήκευση', array('name' => 'savesearch'));
                 ?>
         </td>
 
         <td>
             <?php
-                          echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues'));
+                echo $this->Form->submit('φόρτωση προτιμήσεων', array('name' => 'searchbyprefs'));
                 echo '</td><td>';
-                echo $this->Form->submit('αποθήκευση κριτηρίων', array('name' => 'savesearch'));
+                echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues'));
                 ?>
         </td>
     </tr>
@@ -354,15 +354,15 @@ border-color: #B9BBBF;
         <?php
             echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
             echo '</td><td>';
-            echo $this->Form->submit('αναζήτηση βάση προτιμήσεων', array('name' => 'searchbyprefs'));
+            echo $this->Form->submit('αποθήκευση', array('name' => 'savesearch'));
             ?>
                 </td>
 
                 <td>
         <?php
-            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues'));
+            echo $this->Form->submit('φόρτωση προτιμήσεων', array('name' => 'searchbyprefs'));
             echo '</td><td>';
-            echo $this->Form->submit('αποθήκευση κριτηρίων', array('name' => 'savesearch'));
+            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues'));
             ?>
                 </td>
             </tr>
