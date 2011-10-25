@@ -239,15 +239,14 @@ class HousesController extends AppController {
     }
 
     function search () {
-		// TODO only find images in current page
-		$images = $this->House->Image->find('list', array(
-				'fields' => array('house_id', 'location'),
-				'order' => array('id desc')
+	// TODO only find images in current page
+	$images = $this->House->Image->find('list', array('fields' => array('house_id', 'location'),
+							   'order' => array('id desc')
 			));
-		$this->set('images', $images);
-		
+	$this->set('images', $images);
+	
         $municipalities = $this->House->Municipality->find('list');
-        $this->set('municipalities', $municipalities);
+	$this->set('municipalities', $municipalities);
 
         $this->search_order_options = array('τελευταία ενημέρωση', 
                                             'τιμή - αύξουσα', 
@@ -276,16 +275,75 @@ class HousesController extends AppController {
             );
 
             $options['conditions'] = $this->getHouseConditions();
-            $options['limit'] = 15;
+	    $options['limit'] = 15;
             $options['contain'] = '';
             $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
             $this->paginate = $options;
             $this->House->recursive = -1;
             $results = $this->paginate('House');
-
             $this->set('results', $results);
             $this->set('defaults', $this->params['url']);
         }
+    }
+
+
+
+    function advanced_search () {
+ 
+	//---------------------drop down menus options--------------------//
+	$this->set('house_type_options', $this->House->HouseType->find('list', array('fields' => array('type'))));
+        $this->set('heating_type_options', $this->House->HeatingType->find('list', array('fields' => array('type'))));
+        $this->set('municipality_options', $this->House->Municipality->find('list', array('fields' => array('name'))));
+	$this->set('floor_options', $this->House->Floor->find('list', array('fields' => array('type'))));
+
+        $entries = array();
+        for($i = 1950; $i <= date('Y'); $i++) {
+            $entries[$i] = $i;
+        }
+        $this->set('construction_year_options', $entries);
+
+        $this->search_order_options = array('τελευταία ενημέρωση', 
+                                            'τιμή - αύξουσα', 
+                                            'τιμή - φθίνουσα', 
+                                            'εμβαδό - αύξουσα', 
+                                            'εμβαδό - φθίνουσα',
+                                            'δήμο - αύξουσα',
+                                            'δήμο - φθίνουσα',
+                                            'διαθέσιμες θέσεις - αύξουσα',
+                                            'διαθέσιμες θέσεις - φθίνουσα');
+        $this->set('search_order_options', $this->search_order_options);
+	//--------------------------------------------------------------------//
+        if(isset($this->params['url']['advanced_search'])) {
+
+            $options['joins'] = array(
+                array(  'table' => 'users',
+                        'alias' => 'User',
+                        'type'  => 'inner',
+                        'conditions' => array('House.user_id = User.id')
+                ),
+                array(  'table' => 'profiles',
+                        'alias' => 'Profile',
+                        'type'  => 'inner',
+                        'conditions' => $this->getMatesConditions()
+                )
+            );
+
+	    $cond = $this->getHouseConditions();
+            $adv_cond =  $this->getHouseAdvancedConditions();
+	    $options['conditions'] = array_merge($cond, $adv_cond);	    
+	    $options['limit'] = 15;
+            $options['contain'] = '';
+            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
+            $this->paginate = $options;
+            $this->House->recursive = -1;
+            $results = $this->paginate('House');
+//		pr($results);die();
+
+            $this->set('results', $results);
+            $this->set('defaults', $this->params['url']);
+	//pr($this->params['url']); die();
+//		echo '<pre>'; print_r( $this->params['url']); echo '</pre>';die();
+       }
     }
 
     private function getHouseConditions() {
@@ -311,9 +369,71 @@ class HousesController extends AppController {
             $house_conditions['House.disability_facilities'] = 1;
         }
         $house_conditions['House.user_id !='] = $this->Auth->user('id');
-
+ 
         return $house_conditions;
     }
+
+
+  private function getHouseAdvancedConditions(){
+
+	$house_adv_prefs = $this->params['url'];
+	$house_adv_conditions = array();
+	if(!empty($house_adv_prefs['house_type'])){
+		$house_adv_conditions['House.house_type_id'] = $house_adv_prefs['house_type'];
+	}
+	if(!empty($house_adv_prefs['heating_type'])){
+		$house_adv_conditions['House.heating_type_id'] = $house_adv_prefs['heating_type'];
+	}
+	if(!empty($house_adv_prefs['bedroom_num'])){
+		$house_adv_conditions['House.bedroom_num >='] = $house_adv_prefs['bedroom_num'];
+	}
+	if(!empty($house_adv_prefs['bathroom_num'])){
+		$house_adv_conditions['House.bathroom_num >='] = $house_adv_prefs['bathroom_num'];
+	}
+	if(!empty($house_adv_prefs['construction_year'])){
+		$house_adv_conditions['House.construction_year >='] = $house_adv_prefs['construction_year'];
+	}
+	if(!empty($house_adv_prefs['floor'])){
+		$house_adv_conditions['House.floor_id >='] = $house_adv_prefs['floor'];
+	}
+	if(!empty($house_adv_prefs['rent_period'])){
+		$house_adv_conditions['House.rent_period >='] = $house_adv_prefs['rent_period'];
+	}
+	if(isset($this->params['url']['solar_heater'])){
+		$house_adv_conditions['House.solar_heater'] = 1;
+	}
+	if(isset($this->params['url']['aircondition'])){
+		$house_adv_conditions['House.aircondition'] = 1;
+	}
+	if(isset($this->params['url']['garden'])){
+		$house_adv_conditions['House.garden'] = 1;
+	}
+	if(isset($this->params['url']['parking'])){
+		$house_adv_conditions['House.parking'] = 1;
+	}
+	if(isset($this->params['url']['no_shared_pay'])){
+		$house_adv_conditions['House.shared_pay'] = 0;
+	}
+	if(isset($this->params['url']['security_doors'])){
+		$house_adv_conditions['House.security_doors'] = 1;
+	}
+	if(isset($this->params['url']['storeroom'])){
+		$house_adv_conditions['House.storeroom'] = 1;
+	}
+	if(!empty($house_adv_prefs['available_from'])){
+	//	pr($house_adv_prefs['available_from']);die();
+		$year = $house_adv_prefs['available_from']['year'];
+		$month = $house_adv_prefs['available_from']['month'];
+		$day = $house_adv_prefs['available_from']['day'];
+		$str_date = $year . '-' . $month . '-' . $day;
+		//pr($str_date);die();
+
+		$house_adv_conditions['House.availability_date <='] = $str_date;
+	}
+	//	pr($house_adv_conditions);
+	return $house_adv_conditions;
+  }
+
 
     private function getMatesConditions() {
         $mates_prefs = $this->params['url'];

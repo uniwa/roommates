@@ -43,6 +43,12 @@
                                                                    'action' => 'search')); ?>
         </li>
 
+
+        <li>
+            <?php echo $this->Html->link('Σύνθετη Αναζήτηση', array('controller' => 'houses',
+                                                                   'action' => 'advanced_search')); ?>
+	</li>
+
         <?php if ($this->Session->read('Auth.User')) {
         echo '<li>';
         echo $this->Html->link('Αποσύνδεση (' . $this->Session->read("Auth.User.username") . ")", array('controller' => 'users',
