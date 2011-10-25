@@ -8,7 +8,7 @@ class AdminController extends AppController
         'fields' => array( 'User.username', 'User.banned', 
         'Profile.id', 'Profile.firstname', 'Profile.lastname',
         'Profile.email'),
-        'limit' => 5 
+        'limit' => 5
     );
 
     function beforeFilter() {
@@ -34,8 +34,11 @@ class AdminController extends AppController
 
         App::import( 'Model', 'User' );
         $user = new User();
+        $this->set( 'limit', $this->paginate[ 'limit' ] );
 
         if( isset( $this->params['url']['name'] ) || isset( $this->params['url']['banned'] ) ){
+//            var_dump( $this->params['url']);
+
 
             $parameters = $this->params['url'];
 
@@ -62,7 +65,10 @@ class AdminController extends AppController
             }
             $this->set( 'results', $results );
 
+
         } else {
+
+           var_dump( $this->params['url'] );
 
             $results = $this->paginate( 'User' );
             $this->set( 'results', $results );

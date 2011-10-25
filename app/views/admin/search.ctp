@@ -21,11 +21,23 @@ echo $this->Form->end();
 <?php
 
 echo $this->Session->flash();
-if( isset($results) ){
-    $count = 0;
+
+if( $results != array() ){
+
+    /*records per page*/
+    $current_recs = $this->Paginator->counter( array( 'format' => '%count%' ) ); 
+    /*change type from String to int*/
+    settype( $current_recs, "integer");
+
+    $page_num = $this->Paginator->counter( array( 'format' => '%pages%' ) );
+    settype( $page_num, "integer" );
+
+    $page = $this->Paginator->current();
+    $count = ($page-1)*$limit;
 
     foreach( $results as $user ){
-        ++$count;
+
+        $count++;
         echo '<tr>';
         echo "<td> {$count} </td>";
         echo "<td>".$this->Html->link( $user['User']['username'], 
@@ -48,14 +60,28 @@ if( isset($results) ){
     }?>
 <div class = "admpaginator" >
 <?php
-    /* pagination anv*/
-    echo $paginator->prev('« Προηγούμενη ',null, null, array( 'class' => 'disabled' ) );
+    if( $page_num > 1 ){
+
+        /*
+         *Pass params in paginator options in case form is submited
+         *so as to hold params in new page
+         */
+        if(isset( $this->params['url']['name'] ) || isset( $this->params['url']['banned'] ) ) {
+
+            $queryString = "name={$this->params['url']['name']}&banned={$this->params['url']['banned']}";
+            $options = array( 'url'=>array( 'controller' => 'admin', 'action' => 'search',
+                    '?' => $queryString ) );
+            $this->Paginator->options( $options );
+       }
+        /* pagination anv*/
+        echo $paginator->prev('« Προηγούμενη ',null, null, array( 'class' => 'disabled' ) );
 
         /* show pages */
-    echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' '));
+        echo $paginator->numbers(array('first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' '));
 
         /* Shows the next link */
-    echo $paginator->next(' Επόμενη » ', null, null, array('class' => 'disabled' ) );
+        echo $paginator->next(' Επόμενη » ', null, null, array('class' => 'disabled' ) );
+   }
 
 }
 ?>
