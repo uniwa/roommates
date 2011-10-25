@@ -1,8 +1,10 @@
+<div class = "admpanel"> 
 <?php
 echo $this->Form->create( 'Admin' ,array( 'type' => 'get',  'url' => '/admin/search' ) );
-echo $this->Form->label( 'Αναζήτηση Χρήστη' );
+echo $this->Form->label( 'Αναζήτηση Χρήστη: ' );
 echo $this->Form->text( 'name' );
 echo $this->Form->checkbox( 'banned' );
+echo $this->Form->label( 'Banned' );
 echo $this->Form->button('Αναζήτηση', array('type'=>'submit'));
 echo $this->Form->end();
 ?>
@@ -13,7 +15,7 @@ echo $this->Form->end();
         <th><?php echo $this->Paginator->sort('Όνομα', 'Profile.firstname'); ?></th>
         <th><?php echo $this->Paginator->sort('Επίθετο', 'Profile.lastname'); ?></th>
         <th>email</th>
-        <th>Banned Χρήστες </th>
+        <th class="banhead">Banned Χρήστες</th>
     </tr
 <tbody>
 <?php
@@ -33,7 +35,7 @@ if( isset($results) ){
         echo "<td> {$user['Profile']['lastname']} </td>";
         echo "<td>" . $user["Profile"]["email"] . "</td>";
 
-        echo "<td>".( ($user['User']['banned'])?$this->Html->link('unban',
+        echo "<td class= \"banned\">".( ($user['User']['banned'])?$this->Html->link('unban',
                                                     array("controller" => "profiles", "action" => "unban",
                                                     $user["Profile"]["id"])):
                                                     
@@ -43,7 +45,9 @@ if( isset($results) ){
         echo "</tr>";
 
 
-    }
+    }?>
+<div class = "admpaginator" >
+<?php
     /* pagination anv*/
     echo $paginator->prev('« Προηγούμενη ',null, null, array( 'class' => 'disabled' ) );
 
@@ -55,5 +59,7 @@ if( isset($results) ){
 
 }
 ?>
+</div>
 </tbody>
 </table>
+</div>
