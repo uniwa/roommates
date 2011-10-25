@@ -5,7 +5,7 @@ App::import('Sanitize');
 class HousesController extends AppController {
 
     var $name = 'Houses';
-    var $components = array('RequestHandler');
+    var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time');
     var $paginate = array('limit' => 15);
 
@@ -292,7 +292,14 @@ class HousesController extends AppController {
     }
 
     function search () {
-		
+        if ($this->RequestHandler->isRss()) {
+            $token = $this->params['url']['token'];
+            if ($token == "") return;
+
+            $profile_id = $this->Token->to_id($token);
+            if ($profile_id == NULL) return;
+
+        }
         $municipalities = $this->House->Municipality->find('list');
         $this->set('municipalities', $municipalities);
 
@@ -310,7 +317,7 @@ class HousesController extends AppController {
         if(isset($this->params['url']['save_search'])) {
             $this->saveSearchPreferences();
         }
-        
+
         if(isset($this->params['url']['simple_search'])) {
 
             // The following SQL query is implemented
