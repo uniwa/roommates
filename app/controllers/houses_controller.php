@@ -312,48 +312,56 @@ class HousesController extends AppController {
         }
 
         if(isset($this->params['url']['simple_search'])) {
-
-            // The following SQL query is implemented
-            // mates conditions are added to the inner join with profiles table
-            // house conditions are added to the 'where' statement
-            // ----------------------------------------------------------------
-            // SELECT House.* FROM houses House
-            // LEFT JOIN users User ON House.user_id = User.id
-            // INNER JOIN profiles Profile ON Profile.user_id = User.id
-            // LEFT JOIN images Image ON Image.id = House.default_image_id;
-
-            $options['fields'] = array('House.*', 'Image.location');
-
-            $options['joins'] = array(
-                array(  'table' => 'users',
-                        'alias' => 'User',
-                        'type'  => 'left',
-                        'conditions' => array('House.user_id = User.id')
-                ),
-                array(  'table' => 'profiles',
-                        'alias' => 'Profile',
-                        'type'  => 'inner',
-                        'conditions' => $this->getMatesConditions()
-                ),
-                array(  'table' => 'images',
-                        'alias' => 'Image',
-                        'type'  => 'left',
-                        'conditions' => array('Image.id = House.default_image_id')
-                )
-            );
-
-            $options['conditions'] = $this->getHouseConditions();
-            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
-            // pagination options
-            $options['limit'] = 5;
-            $this->paginate = $options;
-            // required recursive value for joins
-            $this->House->recursive = -1;
-            $results = $this->paginate('House');
-            $this->set('results', $results);
-            // store user's input
-            $this->set('defaults', $this->params['url']);
+            $this->simpleSearch();
         }
+    }
+
+    private function simpleSearch($pagination = true) {
+
+        // The following SQL query is implemented
+        // mates conditions are added to the inner join with profiles table
+        // house conditions are added to the 'where' statement
+        // ----------------------------------------------------------------
+        // SELECT House.* FROM houses House
+        // LEFT JOIN users User ON House.user_id = User.id
+        // INNER JOIN profiles Profile ON Profile.user_id = User.id
+        // LEFT JOIN images Image ON Image.id = House.default_image_id;
+
+        $options['fields'] = array('House.*', 'Image.location');
+
+        $options['joins'] = array(
+            array(  'table' => 'users',
+                    'alias' => 'User',
+                    'type'  => 'left',
+                    'conditions' => array('House.user_id = User.id')
+            ),
+            array(  'table' => 'profiles',
+                    'alias' => 'Profile',
+                    'type'  => 'inner',
+                    'conditions' => $this->getMatesConditions()
+            ),
+            array(  'table' => 'images',
+                    'alias' => 'Image',
+                    'type'  => 'left',
+                    'conditions' => array('Image.id = House.default_image_id')
+            )
+        );
+
+        $options['conditions'] = $this->getHouseConditions();
+        $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
+        // required recursive value for joins
+        $this->House->recursive = -1;
+        // pagination options
+        if($pagination) {
+            $options['limit'] = 15;
+            $this->paginate = $options;
+            $results = $this->paginate('House');
+        } else {
+            $results = $this->House->find('all', $options);
+        }
+        $this->set('results', $results);
+        // store user's input
+        $this->set('defaults', $this->params['url']);
     }
 
     private function saveSearchPreferences() {
