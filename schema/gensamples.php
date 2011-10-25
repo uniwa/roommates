@@ -59,8 +59,8 @@
 		$accessible = rand(0,1);
 		$construction = rand(1900, 2011);
 		
-		$insertUser = "INSERT INTO `roommates`.`users` (`id`, `username`, `password`, `role`)\n";			
-		$insertUser .= "VALUES ('{$uid}', '{$uname}', '{$passwd}', 'user');\n\n";
+		$insertUser = "INSERT INTO `roommates`.`users` (`id`, `username`, `password`, `role`, `banned`, `terms_accepted`)\n";			
+		$insertUser .= "VALUES ('{$uid}', '{$uname}', '{$passwd}', 'user', 0, 1);\n\n";
 		$insertProfile = "INSERT INTO `roommates`.`profiles` (`id`,`firstname`,`lastname`, `email`, `dob`, `gender`,`phone`,`smoker`,`pet`, `child`, `couple`,`we_are`,`max_roommates`,`visible`,`created`,`modified`,`preference_id`,`user_id`)\n";
 		$insertProfile .= "VALUES ('{$pid}', '{$fname}', '{$lname}', '{$email}', '{$dob}', '{$gender}', '{$phone}', '{$smoker}', '{$pet}', '{$child}', '{$couple}', '{$weare}', '{$maxmates}', '{$visible}',NOW(),NOW(),'{$prefid}', '{$uid}');\n\n";
 		$insertPreference = "INSERT INTO `roommates`.`preferences` (
