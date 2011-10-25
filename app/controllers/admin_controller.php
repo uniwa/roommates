@@ -56,7 +56,6 @@ class AdminController extends AppController
 
 
             $results = $this->paginate( 'User', $conditions  );
-            pr( $results ); die();
             if( $results == null ) {
 
                 $this->Session->setFlash( 'Δεν βρέθηκαν χρήστες' );
