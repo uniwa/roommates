@@ -293,12 +293,18 @@ class HousesController extends AppController {
 
     function search () {
         if ($this->RequestHandler->isRss()) {
+            /*
+             *  personalized rss feed
+             */
+            // extract token from url
             $token = $this->params['url']['token'];
             if ($token == "") return;
 
             $profile_id = $this->Token->to_id($token);
             if ($profile_id == NULL) return;
 
+            // get user preferences
+            $prefs = $this->loadSavedPreferences($profile_id);
         }
 
         $municipalities = $this->House->Municipality->find('list');
