@@ -8,7 +8,7 @@
 
 </head>
     <body>
-        <div class="terms">
+        <div class="terms" style="width:845px;">
 
         <?php
             echo $this->element('terms');

@@ -4,11 +4,11 @@ class AdminController extends AppController
 {
     var $name = 'Admin';
     var $uses = array();
-    var $paginate = array( 
-        'fields' => array( 'User.username', 'User.banned', 
+    var $paginate = array(
+        'fields' => array( 'User.username', 'User.banned',
         'Profile.id', 'Profile.firstname', 'Profile.lastname',
         'Profile.email'),
-        'limit' => 5 
+        'limit' => 5
     );
 
     function beforeFilter() {
@@ -43,7 +43,7 @@ class AdminController extends AppController
 
                 $conditions = array(
 
-                    'OR'=>array( 
+                    'OR'=>array(
                         'User.username LIKE' =>"%".$parameters['name']."%",
                         'Profile.lastname LIKE' => "%".$parameters['name']."%",
                         'Profile.firstname LIKE ' => "%".$parameters['name']."%")
@@ -56,7 +56,6 @@ class AdminController extends AppController
 
 
             $results = $this->paginate( 'User', $conditions  );
-            pr( $results ); die();
             if( $results == null ) {
 
                 $this->Session->setFlash( 'Δεν βρέθηκαν χρήστες' );

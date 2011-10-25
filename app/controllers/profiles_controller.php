@@ -10,8 +10,8 @@ class ProfilesController extends AppController {
 
     function index() {
         /*if ($this->RequestHandler->isRss()) {
-            $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1), 
-				    			  'limit' => 20, 
+            $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
+				    			  'limit' => 20,
 				    			  'order' => 'Profile.modified.DESC'));
             return $this->set(compact('profiles'));
         }*/
@@ -24,7 +24,7 @@ class ProfilesController extends AppController {
 		if(isset($this->params['named']['selection'])){
 			$selectedOrder = $this->params['named']['selection'];
 		}
-		
+
 		$order = $this->getSortOrder($selectedOrder);
         if ($this->Auth->user('role') != 'admin'){
             $this->paginate = array(
@@ -84,7 +84,7 @@ class ProfilesController extends AppController {
 /*
     function add(){
     	if (!empty($this->data)) {
-             //var_dump($this->data); die();     
+             //var_dump($this->data); die();
 
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                  $this->Session->setFlash('Το προφίλ προστέθηκε.');
@@ -99,7 +99,7 @@ class ProfilesController extends AppController {
 		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
-    }	
+    }
 
 
     function delete($id) {
@@ -145,7 +145,7 @@ class ProfilesController extends AppController {
 				 $profile = urlencode($profile);
 			  }
 			}
-			
+
 		    // Set search type
 			if(isset($this->params['form']['simplesearch'])) {
 				$searchType = 'simple';
@@ -171,10 +171,10 @@ class ProfilesController extends AppController {
 		$this->data['Profile'] = $this->params['named'];
 
 		$this->getSortOrder(0);
-		
+
 		if(isset($this->params['named']['searchtype'])){
 			$searchType = $this->params['named']['searchtype'];
-			
+
 			switch($searchType){
 				case 'resetvalues':
 					unset($this->params['named']);
@@ -241,7 +241,7 @@ class ProfilesController extends AppController {
 		if(isset($searchArgs['orderby'])){
 			$selectedOrder = $searchArgs['orderby'];
 		}
-		
+
 		$order = $this->getSortOrder($selectedOrder);
 		$this->paginate = array(
 				'conditions' => $searchconditions,
@@ -342,7 +342,7 @@ class ProfilesController extends AppController {
 
         $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
-		
+
 		return $order;
 	}
 

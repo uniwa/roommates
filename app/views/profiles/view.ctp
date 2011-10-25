@@ -31,22 +31,22 @@
 				$mates_wanted = $profile['Profile']['max_roommates'];
 
 				//$koko = count($profile['House']);
-				//echo '<pre>'; print_r($koko); echo '</pre>'; die();	
+				//echo '<pre>'; print_r($koko); echo '</pre>'; die();
 
 				echo Sanitize::html($name, array('remove' => true));
-				
+
 				function echoDetail($title, $option){
 					$span = array("open" => "<span class='profile-strong'>", "close" => "</span>");
 					echo $title.': '.$span['open'].$option.$span['close']."<br \>\n";
 				}
-				
+
 				function getPrefValue($preference, $values){
 					if($preference < 2){
 						$preference = ($preference)?$values[1]:$values[0];
 					}else{
 						$preference = $values[2];
 					}
-					
+
 					return $preference;
 				}
 			?>
@@ -67,7 +67,7 @@
                             $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')) {
                             if ($profile['User']['banned'] == 0) {
                                 $flash = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαρισμό αυτού του χρήστη;";
-                                echo $html->link('Ban', array('action' => 'ban', $profile['Profile']['id']), 
+                                echo $html->link('Ban', array('action' => 'ban', $profile['Profile']['id']),
                                             array('class' => 'ban-button'), $flash);
                             } else {
                                 echo $html->link('Unban', array('action' => 'unban', $profile['Profile']['id']),
@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-			<span class='profile-strong'><?php echo $age; ?></span> ετών, 
+			<span class='profile-strong'><?php echo $age; ?></span> ετών,
 			<span class='profile-strong'><?php echo $gender; ?></span>
 			<br />
 			<?php
@@ -87,7 +87,7 @@
 				echoDetail('Παιδί', $child);
 				echoDetail('Ζευγάρι', $couple);
 			?>
-			
+
 			<?php
 				if($weare == 1){
 					echo "Είμαι <span class='profile-strong'>".$weare."</span> άτομο";
@@ -119,7 +119,7 @@
                                                    "style" => "height:30px;vertical-align: bottom"
                                                )
                             ). " Το σπίτι μου ",
-                                           "/houses/view/$houseid", 
+                                           "/houses/view/$houseid",
                                        array('escape'=>false,
                                                'style' => 'font-size:12px'));
                       } ?>
@@ -149,15 +149,15 @@
 				$pet = getPrefValue($prefpet, $ynioptions);
 				$child = getPrefValue($prefchild, $ynioptions);
 				$couple = getPrefValue($prefcouple, $ynioptions);
-				
+
 			?></span>
 			Ηλικία:
 			<?php
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
-				
+
 				if(isset($age_min) && isset($age_max)){
-					if ($age_min == $age_max){?> 
+					if ($age_min == $age_max){?>
 						<span class='profile-strong'><?php
 							echo $profile['Preference']['age_min'];
 					}
@@ -191,18 +191,19 @@
 			<?php
 				$prefFurnished = $profile['Preference']['pref_furnitured'];
 				$prefAccessibility = $profile['Preference']['pref_disability_facilities'];
+                $prefHousePhoto = $profile['Preference']['pref_has_photo'];
 
 				$ynioptions = array('όχι', 'ναι', 'αδιάφορο');
 
 				$furnished = getPrefValue($prefFurnished, $ynioptions);
 				$accessibility = ($prefAccessibility)?$ynioptions[1]:$ynioptions[2];
-				
+
 			?></span>
 			<?php
 				$price_max = $profile['Preference']['price_max'];
-				
+
 				if(isset($price_max)){?>
-        			Τιμή: μέχρι 
+        			Τιμή: μέχρι
 					<span class='profile-strong'><?php
 						echo $profile['Preference']['price_max']."<br />\n";
 				}
@@ -210,11 +211,11 @@
 			<?php
 				$area_min = $profile['Preference']['area_min'];
 				$area_max = $profile['Preference']['area_max'];
-				
+
 				if(isset($area_min) || isset($area_max)){?>
     			Εμβαδόν:
 				<?php
-					if ($area_min == $area_max){?> 
+					if ($area_min == $area_max){?>
 						<span class='profile-strong'><?php
 							echo $profile['Preference']['area_min'];
 					}
@@ -235,9 +236,16 @@
 			    if(isset($municipality)){
     				echoDetail('Δήμος', $municipality);
     			}
-				echoDetail('Επιπλωμένο', $furnished);
-				echoDetail('Προσβάσιμο από ΑΜΕΑ', $accessibility);
-			?></span>		
+                if($prefFurnished < '2') {
+				    echoDetail('Επιπλωμένο', $furnished);
+                }
+			    if($prefAccessibility){?>
+                    <span class='profile-strong'>Προσβάσιμο από ΑΜΕΑ</span><br />
+    			<?php }
+                if($prefHousePhoto){?>
+                    <span class='profile-strong'>Να διαθέτει φωτογραφία</span><br />
+                <?php }
+			?></span>
 		</div>
 	</div>
 </div>

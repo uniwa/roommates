@@ -91,7 +91,7 @@
                 </li>
                 <?php endforeach; ?>
             </ul>
-        </div>    
+        </div>
         <div class="pagination">
             <ul>
             <?php
