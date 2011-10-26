@@ -144,6 +144,8 @@ class HousesController extends AppController {
 
         $this->L10n = new L10n();
         $this->L10n->get('gr');
+        // not sure for this solution
+        $_SESSION['Config']['language'] = 'gr';
     }
 
     function view($id = null) {
