@@ -74,8 +74,17 @@
 		    `pref_house_type_id`, `pref_heating_type_id`)\n";
 		$insertPreference .= "VALUES ('{$prefid}', '{$agemin}', '{$agemax}', '{$prefgender}', '{$prefsmoker}', '{$prefpet}', '{$prefchild}', '{$prefcouple}',
 		    0, 9999, 0, 9999, '', 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 0, 0, 0, 0);\n\n";
-		$insertHouse = "INSERT INTO `roommates`.`houses` (`id`,`address`,`postal_code`,`area`,`bedroom_num`,`bathroom_num`,`price`,`construction_year`,`solar_heater`,`furnitured`,`aircondition`,`garden`,`parking`,`shared_pay`,`security_doors`,`disability_facilities`,`storeroom`,`availability_date`,`rent_period`,`description`,`created`,`modified`,`floor_id`,`house_type_id`,`heating_type_id`,`currently_hosting`,`total_places`,`user_id`,`municipality_id`)\n";
-		$insertHouse .= "VALUES ('{$hid}', '{$address}', '{$postal}', '{$area}', '{$beds}', '{$baths}', '{$price}','{$construction}',1,1,1,0,0,1,0,'{$accessible}',0,'2011-11-05',NULL,'',NOW(),NOW(),3,2,2,'{$weare}', '{$totalplaces}', '{$uid}', '{$munid}');\n\n";
+		$insertHouse = "INSERT INTO `roommates`.`houses`(
+    		`id`,`address`,`postal_code`,`area`,`bedroom_num`,`bathroom_num`,`price`,
+            `construction_year`,`solar_heater`,`furnitured`,`aircondition`,`garden`,
+            `parking`,`shared_pay`,`security_doors`,`disability_facilities`,`storeroom`,
+            `availability_date`,`rent_period`,`description`,`created`,`modified`,`floor_id`,
+            `house_type_id`,`heating_type_id`,`currently_hosting`,`total_places`,
+            `user_id`,`municipality_id`,`visible`)\n";
+		$insertHouse .= "VALUES ('{$hid}', '{$address}', '{$postal}', '{$area}',
+		'{$beds}', '{$baths}', '{$price}','{$construction}',1,1,1,0,0,1,0,
+		'{$accessible}',0,'2011-11-05',NULL,'',NOW(),NOW(),3,2,2,'{$weare}',
+		'{$totalplaces}', '{$uid}', '{$munid}',1);\n\n";
 		
 		writeFile($fu, $insertUser);
 		writeFile($fp, $insertPreference.$insertProfile);
