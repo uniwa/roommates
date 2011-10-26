@@ -62,7 +62,8 @@ class HousesController extends AppController {
 					$ascDesc = $ascoptions[1];
 					break;
 			}
-			$order = array($orderField => $ascDesc);
+			//$order = array($orderField => $ascDesc);
+            $options['order'] = array($orderField => $ascDesc);
 		}
 
         $orderOptions = array(  'τελευταία ενημέρωση',
@@ -81,26 +82,19 @@ class HousesController extends AppController {
             banned users view in /admin/banned
         */
 
-        if($this->Auth->User('role') == 'admin') {
-            $conds = array( 'House.user_id !=' => $this->Auth->user('id'));
-        } else {
-            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
-                            'House.visible' => 1);
-        }
+        if ($this->Auth->User('role') != 'admin')
+            $options['conditions'] = array('House.visible' => 1);
+
+        $options['fields'] = array( 'House.*, Image.location,
+                                    Municipality.name, Floor.type,
+                                    HouseType.type' );
 
         // manually join all the required tables
         // in order to get only the default
         // image for each house with only
         // one query
 
-        $this->paginate = array(
-            'fields' => array( 'House.*, Image.location,
-                                Municipality.name, Floor.type,
-                                HouseType.type'),
-            'order' => $order,
-			'conditions' => $conds,
-			'limit' => 15,
-            'joins' => array(
+        $options['joins'] = array(
                 array(  'table' => 'images',
                         'alias' => 'Image',
                         'type'  => 'left',
@@ -126,8 +120,11 @@ class HousesController extends AppController {
                         'type'  => 'left',
                         'conditions' => array('House.house_type_id = HouseType.id')
                 )
-            )
-        );
+            );
+
+        $options['limit'] = 15;
+
+        $this->paginate = $options;
         $this->House->recursive = -1;
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
@@ -144,6 +141,8 @@ class HousesController extends AppController {
 
         $this->L10n = new L10n();
         $this->L10n->get('gr');
+        // not sure for this solution
+        $_SESSION['Config']['language'] = 'gr';
     }
 
     function view($id = null) {
@@ -164,7 +163,7 @@ class HousesController extends AppController {
 
         $this->set('house', $house);
 
-        $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
 
         foreach ($images as $image) {
             if ($image['Image']['id'] == $house['House']['default_image_id'])
@@ -308,7 +307,7 @@ class HousesController extends AppController {
         }
 
         $municipalities = $this->House->Municipality->find('list');
-	$this->set('municipalities', $municipalities);
+        $this->set('municipalities', $municipalities);
 
         $this->search_order_options = array('τελευταία ενημέρωση',
                                             'τιμή - αύξουσα',
@@ -351,12 +350,7 @@ class HousesController extends AppController {
             $this->set('defaults', $prefs['defaults']);
         }
     }
-/*
-            $options['conditions'] = $this->getHouseConditions();
-	    $options['limit'] = 15;
-            $options['contain'] = '';
-            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
-*/
+
     private function simpleSearch(  $houseConditions, $matesConditions,
                                     $orderBy = null, $pagination = true ) {
 
@@ -380,7 +374,6 @@ class HousesController extends AppController {
             array(  'table' => 'profiles',
                     'alias' => 'Profile',
                     'type'  => 'inner',
-//                     'conditions' => $this->getMatesConditions()
                     'conditions' => $matesConditions
             ),
             array(  'table' => 'images',
@@ -390,10 +383,9 @@ class HousesController extends AppController {
             )
         );
 
-//         $options['conditions'] = $this->getHouseConditions();
         $options['conditions'] = $houseConditions;
         if ($orderBy != null) {
-            $options['order'] = $orderBy;/*$this->getOrderCondition($this->params['url']['order_by']);*/
+            $options['order'] = $orderBy;
         }
         // required recursive value for joins
         $this->House->recursive = -1;
@@ -456,7 +448,7 @@ class HousesController extends AppController {
             $house_prefs['House.default_image_id !='] = null;
             $defaults['has_photo'] = 1;
         }
-        $house_prefs['House.user_id !='] = $this->Auth->user('id');
+        //$house_prefs['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
             $house_prefs['House.visible'] = 1;
         }
@@ -492,7 +484,7 @@ class HousesController extends AppController {
             $mates_prefs['Profile.couple'] = $prefs['pref_couple'];
             $defaults['child'] = $prefs['pref_couple'];
         }
-        $mates_prefs['Profile.user_id !='] = $this->Auth->user('id');
+        //$mates_prefs['Profile.user_id !='] = $this->Auth->user('id');
         // required for the joins
         array_push($mates_prefs, 'User.id = Profile.user_id');
 
@@ -589,28 +581,34 @@ class HousesController extends AppController {
             $options['joins'] = array(
                 array(  'table' => 'users',
                         'alias' => 'User',
-                        'type'  => 'inner',
+                        'type'  => 'left',
                         'conditions' => array('House.user_id = User.id')
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
                         'type'  => 'inner',
                         'conditions' => $this->getMatesConditions()
+                ),
+                array(  'table' => 'images',
+                        'alias' => 'Image',
+                        'type'  => 'left',
+                        'conditions' => array('Image.id = House.default_image_id')
                 )
             );
 
 	    $cond = $this->getHouseConditions();
-            $adv_cond =  $this->getHouseAdvancedConditions();
-	    $options['conditions'] = array_merge($cond, $adv_cond);	    
-	    $options['limit'] = 15;
-            $options['contain'] = '';
-            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
-            $this->paginate = $options;
-            $this->House->recursive = -1;
-            $results = $this->paginate('House');
+        $adv_cond =  $this->getHouseAdvancedConditions();
+        $options['fields'] = array('House.*', 'Image.location');
+        $options['conditions'] = array_merge($cond, $adv_cond);	
+        $options['limit'] = 15;
+        $options['contain'] = '';
+        $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
+        $this->paginate = $options;
+        $this->House->recursive = -1;
+        $results = $this->paginate('House');
 
-            $this->set('results', $results);
-            $this->set('defaults', $this->params['url']);
+        $this->set('results', $results);
+        $this->set('defaults', $this->params['url']);
        }
     }
 
@@ -639,7 +637,7 @@ class HousesController extends AppController {
         if(isset($house_prefs['has_photo'])) {
             $house_conditions['House.default_image_id !='] = null;
         }
-        $house_conditions['House.user_id !='] = $this->Auth->user('id');
+        //$house_conditions['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
             $house_conditions['House.visible'] = 1;
         }
@@ -735,7 +733,7 @@ class HousesController extends AppController {
         if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
-        $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
+        //$mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
         // required condition for the left join
         array_push($mates_conditions, 'User.id = Profile.user_id');
 
