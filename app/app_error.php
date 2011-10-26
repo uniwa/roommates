@@ -8,14 +8,20 @@
  */
 class AppError extends ErrorHandler {
 
+	// Explicitly call AppController's beforeFilter() in case of error
+	function _outputMessage($template){
+		$this->controller->beforeFilter();
+		parent::_outputMessage($template);
+	}
+
 	/*
 	 * params:
 	 * <<message>> set your message if you want change the default
-	 * <<title>> html title 
+	 * <<title>> html title
 	 * <<name>> heading title
 	 */
 	function error403($params) {
-		          
+
 		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] )
 			:$this->controller->set( 'title', 'Δεν επιτρέπεται η πρόσβαση' );
 
@@ -33,7 +39,7 @@ class AppError extends ErrorHandler {
 	}
 
 	function error404($params) {
-		          
+
 		( isset( $params['title']  ) )?$this->controller->set( 'title', $params['title'] )
 			:$this->controller->set( 'title', 'Η σελίδα δε βρέθηκε' );
 

@@ -384,8 +384,7 @@ p {
 .info {
     float: left;
 }
-
-#ProfileAddForm label, #ProfileEditForm label {
+.profileframe label {
     font-size: 12px;
     font-weight: bold;
     color: #21759B;
@@ -547,7 +546,7 @@ h1 {
 }
 
 .title {
-    clear: both;
+    clear: left;
     margin: 8px 0 8px -10px;
     font-size: 20px;
     font-weight: bold;
@@ -741,9 +740,9 @@ h1 {
 }
 
 /*Φορμα προσθηκης κατοικιας*/
-#HouseEditForm, #HouseAddForm, #ProfileEditForm, #ProfileAddForm {
+#HouseEditForm, #HouseAddForm, .profileframe {
     border: solid 1px #aacfe4;
-
+margin-bottom:8px;
     padding: 20px 0 20px 30px;
 
     -moz-box-shadow: 5px 5px 5px #ccc;
@@ -794,7 +793,7 @@ h1 {
 }
 
 .houseProfile table td {
-    max-width: 275px;
+    max-width: 225px;
 }
 
 .houseProfile table {
@@ -810,7 +809,7 @@ h1 {
 }
 
 .profile {
-    height: 710px;
+    height: 730px;
 
 }
 
@@ -936,7 +935,7 @@ input[type="button"] {
   -ms-background-clip: padding-box;
   -khtml-background-clip: padding-box;
   background-clip: padding-box;
-  background: #dddddd url('../images/button.png') repeat-x;
+  background: #dddddd;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dddddd));
   background-image: -webkit-linear-gradient(#ffffff, #dddddd);
   background-image: -moz-linear-gradient(#ffffff, #dddddd);
@@ -984,4 +983,95 @@ input[type="button"]:active {
   -o-box-shadow: inset rgba(0, 0, 0, 0.25) 0 1px 2px 0;
   box-shadow: inset rgba(0, 0, 0, 0.25) 0 1px 2px 0;
   border-color: #999999 #bbbbbb #dddddd;
+}
+
+.actions .ban-button{
+    background: #f21;
+    color:white;
+    text-shadow: none;
+}
+.actions .ban-button:hover {
+    background: #f00;
+}
+
+.actions .unban-button{
+    background: #2f4;
+    color:white;
+    text-shadow: none;
+}
+
+.actions .unban-button:hover {
+    background: #2f1;
+}
+
+.terms{
+    padding: 15px;
+}
+
+.terms ul{
+    list-style-type:square;
+}
+
+.terms ul li{
+    padding-bottom: 5px;
+}
+
+.terms p{
+    font-weight: bold;
+}
+
+.banned-msg {
+    font-weight: bold;
+    border: 1px solid #000000;
+    background-color: #EEA2A4;
+    margin-bottom: 1em;
+}
+/*
+div.admin table {
+    border-collapse:collapse !important;
+}
+*/
+/*
+div.admin .banned table, th, td {
+    border: 1px solid black;
+    padding: 1em;
+    text-align: center !important;
+}
+
+
+/*terms of use*/
+.terms {
+    border: 1px solid white;
+    padding: 45px;
+    background: white;
+    margin: 30px auto;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: -6px 4px 30px #667;
+    -webkit-box-shadow: -6px 4px 30px #667;
+    box-shadow: -6px 4px 30px #667;
+    background: url("../img/diagonal-noise.png");
+    text-align: justify;
+}
+
+
+        .terms li{
+            padding: 5px 0;
+        }
+
+.termsloginlink{
+    float:right;
+    margin-top:  -22px;
+    padding-right:110px;
+}
+
+
+.personalized-rss {
+    float: right;
+    background: url("../img/rss-feed-small.png") no-repeat scroll 5px 50% #FFFFFF;
+    padding: 6px 10px 4px 25px;
+    border: 1px solid #4F6CA6;
+    border-radius: 3px;
+    text-decoration: none;
 }

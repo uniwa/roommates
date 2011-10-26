@@ -4,18 +4,17 @@ App::import('Sanitize');
 class ProfilesController extends AppController {
 
     var $name = 'Profiles';
-    var $components = array('RequestHandler');
+    var $components = array('RequestHandler', 'Email');
     var $paginate = array('limit' => 15);
-    var $uses = array("Profile", "House");
+    var $uses = array("Profile", "House", "Municipality");
 
     function index() {
-        if ($this->RequestHandler->isRss()) {
-            $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1), 
-				    			  'limit' => 20, 
+        /*if ($this->RequestHandler->isRss()) {
+            $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
+				    			  'limit' => 20,
 				    			  'order' => 'Profile.modified.DESC'));
             return $this->set(compact('profiles'));
-
-        }
+        }*/
 
     	$genderLabels = Configure::read('GenderLabels');
     	$this->set('genderLabels', $genderLabels);
@@ -25,14 +24,14 @@ class ProfilesController extends AppController {
 		if(isset($this->params['named']['selection'])){
 			$selectedOrder = $this->params['named']['selection'];
 		}
-		
-		$order = $this->getSortOrder($selectedOrder);
 
+		$order = $this->getSortOrder($selectedOrder);
         if ($this->Auth->user('role') != 'admin'){
             $this->paginate = array(
                         'conditions' => array(
 							'Profile.visible' => 1,
-							'Profile.user_id !=' => $this->Auth->user('id')
+							'Profile.user_id !=' => $this->Auth->user('id'),
+                            'User.banned' => 0
 							),
                         'order' => $order);
         }
@@ -49,14 +48,30 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
 
-	$this->checkExistence($id);
+    	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         /* get profile  contains:
                 Profile + Preference + User + House
 		*/
         $profile = $this->Profile->read();
+        /* hide banned users unless we are admin */
+        if ($this->Auth->User('role') != 'admin' &&
+            $this->Auth->User('id') != $profile['Profile']['user_id']) {
+            if ($profile["User"]["banned"] == 1) {
+                $this->cakeError('error404');
+            }
+        }
         $this->set('profile', $profile);
+
+            $pref_municipality = $profile['Preference']['pref_municipality'];
+        if(isset($pref_municipality)){
+            $options['fields'] = array('Municipality.name');
+            $options['conditions'] = array('Municipality.id = '.$pref_municipality);
+            $municipality = $this->Municipality->find('list', $options);
+            $municipality = $municipality[$pref_municipality];
+            $this->set('municipality', $municipality);
+        }
         /* get house id of this user - NULL if he doesn't own one */
         if ( isset($profile["User"]["House"][0]["id"]) ) {
             $houseid = $profile["User"]["House"][0]["id"];
@@ -69,7 +84,7 @@ class ProfilesController extends AppController {
 /*
     function add(){
     	if (!empty($this->data)) {
-             //var_dump($this->data); die();     
+             //var_dump($this->data); die();
 
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
                  $this->Session->setFlash('Το προφίλ προστέθηκε.');
@@ -84,7 +99,7 @@ class ProfilesController extends AppController {
 		$genderLabels = Configure::read('GenderLabels');
 		$this->set('genderLabels', $genderLabels);
         $this->set('available_birth_dates', $dob);
-    }	
+    }
 
 
     function delete($id) {
@@ -130,7 +145,7 @@ class ProfilesController extends AppController {
 				 $profile = urlencode($profile);
 			  }
 			}
-			
+
 		    // Set search type
 			if(isset($this->params['form']['simplesearch'])) {
 				$searchType = 'simple';
@@ -156,10 +171,10 @@ class ProfilesController extends AppController {
 		$this->data['Profile'] = $this->params['named'];
 
 		$this->getSortOrder(0);
-		
+
 		if(isset($this->params['named']['searchtype'])){
 			$searchType = $this->params['named']['searchtype'];
-			
+
 			switch($searchType){
 				case 'resetvalues':
 					unset($this->params['named']);
@@ -183,7 +198,7 @@ class ProfilesController extends AppController {
 		$searchArgs = $this->params['named'];
 
         // set the conditions
-        $searchconditions = array('Profile.visible' => 1);
+        $searchconditions = array('Profile.visible' => 1, 'User.banned' => 0);
 
 		if(isset($searchArgs['has_house'])){
 			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
@@ -226,7 +241,7 @@ class ProfilesController extends AppController {
 		if(isset($searchArgs['orderby'])){
 			$selectedOrder = $searchArgs['orderby'];
 		}
-		
+
 		$order = $this->getSortOrder($selectedOrder);
 		$this->paginate = array(
 				'conditions' => $searchconditions,
@@ -293,11 +308,8 @@ class ProfilesController extends AppController {
         $this->Profile->id = $profile_id;
         $profile = $this->Profile->read();
         $user_id = $profile['User']['id'];
-        if( ($this->Auth->user('id') != $user_id) && ($this->Auth->user('role') != 'admin') ){
-            /*
-             * More info aboute params in app/app_error.php
-             */
-            $this->cakeError('error403'/*, array()*/ );
+        if( $this->Auth->user('id') != $user_id){
+            $this->cakeError('error403');
         }
     }
 
@@ -330,7 +342,7 @@ class ProfilesController extends AppController {
 
         $orderOptions = array('τελευταία ενημέρωση', 'ηλικία αύξουσα', 'ηλικία φθίνουσα', 'επιθ. συγκάτοικοι αύξουσα', 'επιθ. συγκάτοικοι φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
-		
+
 		return $order;
 	}
 
@@ -341,6 +353,73 @@ class ProfilesController extends AppController {
 		if( $profile == NULL ){
             $this->cakeError('error404');
         }
+    }
+
+    private function set_ban_status($id, $status) {
+        /* sets ban status for user with the given profile id */
+        $this->Profile->id = $id;
+        $profile = $this->Profile->read();
+
+        /* exit if this profile belongs to another admin */
+        if ($profile["User"]["role"] == "admin") {
+            $this->Session->setFlash("Ο διαχειριστής δεν μπορεί να μπλοκάρει άλλο διαχειριστή.");
+            $this->redirect(array("action" => "view", $id));
+        }
+
+        $user["User"] = $profile["User"];
+        $user["User"]["banned"] = $status;
+
+        $this->User->begin();
+        $this->User->id = $profile["Profile"]["user_id"];
+        if ($this->User->save($user, array('validate'=>'first'))) {
+            $this->User->commit();
+            return True;
+        } else {
+            $this->User->rollback();
+            return False;
+        }
+
+    }
+
+    function ban($id) {
+        if ($this->Auth->user('role') != 'admin') {
+            $this->cakeError('error403');
+        }
+        $success = $this->set_ban_status($id, 1);
+        if ($success) {
+            $this->Session->setFlash("Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.");
+            $this->email_banned_user($id);
+        } else {
+            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+        }
+        $this->redirect(array('action'=> "view", $id));
+    }
+
+    function unban($id) {
+        if ($this->Auth->user('role') != 'admin') {
+            $this->cakeError('error403');
+        }
+        $success = $this->set_ban_status($id, 0);
+        if ($success) {
+            $this->Session->setFlash("Ο λογαριασμός χρήστη ενεργοποιήθηκε με επιτυχία.");
+        } else {
+            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+        }
+        $this->redirect(array('action'=> "view", $id));
+
+    }
+
+    private function email_banned_user($id) {
+        /* TODO: make more abstract to use in other use cases */
+        $this->Profile->id = $id;
+        $profile = $this->Profile->read();
+        $this->Email->to = $profile["Profile"]["email"];
+        $this->Email->subject = 'Απενεργοποίηση λογαριασμού της υπηρεσίας roommates ΤΕΙ Αθήνας';
+        //$this->Email->replyTo = 'support@example.com';
+        $this->Email->from = 'admin@roommates.edu.teiath.gr';
+        $this->Email->template = 'banned';
+        $this->Email->sendAs = 'both';
+        $this->Email->send();
     }
 }
 ?>

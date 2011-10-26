@@ -5,7 +5,7 @@
         <div class="defaultimage">
             <?php
                        if (isset($images[0]))
-            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $images[0]['Image']['location'], array('alt' => 'house image'));
+            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $default_image_location/*$images[0]['Image']['location']*/, array('alt' => 'house image'));
         else
             echo $this->Html->image('homedefault.png', array('alt' => 'house image','class' => 'defaultimg')); ?>
 
@@ -142,6 +142,21 @@
         </tr>
 
         <tr>
+            <th>Ορατότητα:</th>
+            <td>
+                <?php
+                    if($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                        if($house['House']['visible']) {
+                            echo 'Είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
+                        } else {
+                            echo 'Δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
+                        }
+                    }
+                ?>
+            </td>
+        </tr>
+
+        <tr>
             <th>Περιγραφή:</th>
             <td> <?php echo Sanitize::html($house['House']['description'])?></td>
         </tr>
@@ -156,15 +171,12 @@
 <div class="rightCol">
     <div class="actions">
         <?php
-                             //if( ($this->Session->read( 'Auth.User.id') == $house['Profile']['user_id']) || ($this->Session->read('Auth.User.role') == 'admin') ){
-            if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
+            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
                 echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
             }
 
-
-            if (($this->Session->read('Auth.User.id') != $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
-
+            if ($this->Session->read('Auth.User.id') != $house['User']['id']) {
                 echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['Profile']['id']}");
             }
             ?>
@@ -183,9 +195,12 @@
             array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
         ); ?>
             <div class="imageactions">
-                <?php 
-                    if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
+                <?php
+                    if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                         echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images', 'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true)));
+                        echo $this->Html->link('Προεπιλεγμένη',
+                                array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
+                                array('class' => 'thumb_img_action'), null);
                     }
                 ?>
             </div>
@@ -198,7 +213,7 @@
 
         <?php
 
-            if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
+            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
             }
             ?>
@@ -214,46 +229,4 @@
 </div>
 
 <div class="clear-both"></div>
-<!-- <div class="houseProfile">
-    <h2></h2> -->
-        <?php
-/*
-    $i = 0;
-    foreach ($images as $image):
-
-        ?>
-
-        <div class="galleryimage">
-            <?php 
-                echo $this->Html->link(
-                    $this->Html->image("uploads/houses/" . $house['House']['id'] . "/thumb_"  . $image['Image']['location'], array('alt' => 'house image')),
-                    '/img/uploads/houses/' . $house['House']['id'] . "/medium_" . $image['Image']['location'],
-                    array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false));
-             ?>
-
-
-            <div class="imageactions">
-                <?php
-                    if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
-                        echo $this->Html->link(__('Διαγραφή', true),
-                                array('controller' => 'images', 'action' => 'delete', 
-                                      $image['Image']['id']),
-                                      array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true)));
-                    }
-                ?>
-            </div>
-
-        </div>
-        <?php endforeach; ?>
-
-    <div class="actions">
-
-
-        <?php
-
-            if (($this->Session->read('Auth.User.id') == $house['User']['id']) || ($this->Session->read('Auth.User.role') == 'admin')) {
-                echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
-            }*/
-            ?>
-<!--    </div> -->
 </div>

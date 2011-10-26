@@ -22,22 +22,8 @@ border-color: #B9BBBF;
 
     }
 
-    #smallform input[type=submit] {
-        font-size: 10px;
-        color: whiteSmoke;
-        padding: 5px 8px;
-        background-color: #4F6CA6;
-        border-color: #000066;
-        -moz-border-radius: 2px;
-        -khtml-border-radius: 2px;
-        -webkit-border-radius: 2px;
-        border-radius: 2px;
-
-    }
-
-
 .middletable{
-    padding-top:8px;
+    padding:5px;
 }
 
 </style>
@@ -145,17 +131,17 @@ border-color: #B9BBBF;
     <tr>
         <td>
             <?php
-                          echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
+                echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
                 echo '</td><td>';
-                echo $this->Form->submit('αναζήτηση με βάση τις προτιμήσεις μου', array('name' => 'searchbyprefs'));
+                echo $this->Form->submit('αποθήκευση', array('name' => 'savesearch'));
                 ?>
         </td>
 
         <td>
             <?php
-                          echo $this->Form->submit('καθαρισμός πεδίων', array('name' => 'resetvalues'));
+                echo $this->Form->submit('φόρτωση προτιμήσεων', array('name' => 'searchbyprefs'));
                 echo '</td><td>';
-                echo $this->Form->submit('αποθήκευση κριτηρίων αναζήτησης', array('name' => 'savesearch'));
+                echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues'));
                 ?>
         </td>
     </tr>
@@ -227,7 +213,9 @@ border-color: #B9BBBF;
                                                         echo $profile['Profile']['age'] . ", ";
                         $gender = ($profile['Profile']['gender']) ? 'γυναίκα' : 'άνδρας';
                         echo $gender . "<br />\n";
-                        echo "email: " . $profile['Profile']['email'] . "<br />\n";
+						$email = $profile['Profile']['email'];
+						$emailUrl = $this->Html->link($email, 'mailto:'.$email);
+						echo "email: ".$emailUrl."<br />\n";
                         echo "επιθυμητοί συγκάτοικοι: " . $profile['Profile']['max_roommates'] . "<br />\n";
                         ?>
                     </div>
@@ -366,16 +354,15 @@ border-color: #B9BBBF;
         <?php
             echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch'));
             echo '</td><td>';
-            echo $this->Form->submit('αναζήτηση με βάση τις προτιμήσεις μου', array('name' => 'searchbyprefs'));
+            echo $this->Form->submit('αποθήκευση', array('name' => 'savesearch'));
             ?>
                 </td>
-            </tr>
-            <tr>
+
                 <td>
         <?php
-            echo $this->Form->submit('καθαρισμός πεδίων', array('name' => 'resetvalues'));
+            echo $this->Form->submit('φόρτωση προτιμήσεων', array('name' => 'searchbyprefs'));
             echo '</td><td>';
-            echo $this->Form->submit('αποθήκευση κριτηρίων αναζήτησης', array('name' => 'savesearch'));
+            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues'));
             ?>
                 </td>
             </tr>
