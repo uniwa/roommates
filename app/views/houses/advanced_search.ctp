@@ -81,6 +81,13 @@
     </tr>
     <tr>
         <td colspan=3>
+            <?php echo 'Διαθέτει φωτογραφία '.$this->Form->checkbox('has_photo', array('hiddenField' => false,
+                                                                                        'checked' => isset($defaults['has_photo'])  ));
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan=3>
             <?php echo $this->Form->input('order_by', array('label' => 'Ταξινόμηση ανά: ',
                                                             'options' => $search_order_options,
                                                             'selected' => isset($defaults) ? $defaults['order_by'] : '0'   ));
