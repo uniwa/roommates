@@ -659,20 +659,20 @@ class HousesController extends AppController {
 	if(!empty($house_adv_prefs['heating_type'])){
 		$house_adv_conditions['House.heating_type_id'] = $house_adv_prefs['heating_type'];
 	}
-	if(!empty($house_adv_prefs['bedroom_num'])){
-		$house_adv_conditions['House.bedroom_num >='] = $house_adv_prefs['bedroom_num'];
+	if(!empty($house_adv_prefs['bedroom_num_min'])){
+		$house_adv_conditions['House.bedroom_num >='] = $house_adv_prefs['bedroom_num_min'];
 	}
-	if(!empty($house_adv_prefs['bathroom_num'])){
-		$house_adv_conditions['House.bathroom_num >='] = $house_adv_prefs['bathroom_num'];
+	if(!empty($house_adv_prefs['bathroom_num_min'])){
+		$house_adv_conditions['House.bathroom_num >='] = $house_adv_prefs['bathroom_num_min'];
 	}
-	if(!empty($house_adv_prefs['construction_year'])){
-		$house_adv_conditions['House.construction_year >='] = $house_adv_prefs['construction_year'];
+	if(!empty($house_adv_prefs['construction_year_min'])){
+		$house_adv_conditions['House.construction_year >='] = $house_adv_prefs['construction_year_min'];
 	}
-	if(!empty($house_adv_prefs['floor'])){
-		$house_adv_conditions['House.floor_id >='] = $house_adv_prefs['floor'];
+	if(!empty($house_adv_prefs['floor_min'])){
+		$house_adv_conditions['House.floor_id >='] = $house_adv_prefs['floor_min'];
 	}
-	if(!empty($house_adv_prefs['rent_period'])){
-		$house_adv_conditions['House.rent_period >='] = $house_adv_prefs['rent_period'];
+	if(!empty($house_adv_prefs['rent_period_min'])){
+		$house_adv_conditions['House.rent_period >='] = $house_adv_prefs['rent_period_min'];
 	}
 	if(isset($this->params['url']['solar_heater'])){
 		$house_adv_conditions['House.solar_heater'] = 1;
