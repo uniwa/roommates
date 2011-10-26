@@ -307,7 +307,7 @@ class HousesController extends AppController {
         }
 
         $municipalities = $this->House->Municipality->find('list');
-	$this->set('municipalities', $municipalities);
+        $this->set('municipalities', $municipalities);
 
         $this->search_order_options = array('τελευταία ενημέρωση',
                                             'τιμή - αύξουσα',
@@ -448,7 +448,7 @@ class HousesController extends AppController {
             $house_prefs['House.default_image_id !='] = null;
             $defaults['has_photo'] = 1;
         }
-        $house_prefs['House.user_id !='] = $this->Auth->user('id');
+        //$house_prefs['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
             $house_prefs['House.visible'] = 1;
         }
@@ -484,7 +484,7 @@ class HousesController extends AppController {
             $mates_prefs['Profile.couple'] = $prefs['pref_couple'];
             $defaults['child'] = $prefs['pref_couple'];
         }
-        $mates_prefs['Profile.user_id !='] = $this->Auth->user('id');
+        //$mates_prefs['Profile.user_id !='] = $this->Auth->user('id');
         // required for the joins
         array_push($mates_prefs, 'User.id = Profile.user_id');
 
@@ -592,7 +592,7 @@ class HousesController extends AppController {
             );
 
 	    $cond = $this->getHouseConditions();
-            $adv_cond =  $this->getHouseAdvancedConditions();
+        $adv_cond =  $this->getHouseAdvancedConditions();
 	    $options['conditions'] = array_merge($cond, $adv_cond);	    
 	    $options['limit'] = 15;
             $options['contain'] = '';
@@ -631,7 +631,7 @@ class HousesController extends AppController {
         if(isset($house_prefs['has_photo'])) {
             $house_conditions['House.default_image_id !='] = null;
         }
-        $house_conditions['House.user_id !='] = $this->Auth->user('id');
+        //$house_conditions['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
             $house_conditions['House.visible'] = 1;
         }
@@ -727,7 +727,7 @@ class HousesController extends AppController {
         if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
-        $mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
+        //$mates_conditions['Profile.user_id !='] = $this->Auth->user('id');
         // required condition for the left join
         array_push($mates_conditions, 'User.id = Profile.user_id');
 
