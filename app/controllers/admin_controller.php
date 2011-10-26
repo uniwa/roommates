@@ -19,16 +19,6 @@ class AdminController extends AppController
         }
     }
 
-    function banned() {
-        /* get list of banned users */
-        App::import('Model', 'User');
-        $Users = new User();
-
-        $conditions = array("banned" => 1);
-        $banned = $Users->find('all', array("conditions" => $conditions));
-
-        $this->set('banned', $banned);
-    }
 
     function search(){
 
@@ -37,8 +27,6 @@ class AdminController extends AppController
         $this->set( 'limit', $this->paginate[ 'limit' ] );
 
         if( isset( $this->params['url']['name'] ) || isset( $this->params['url']['banned'] ) ){
-//            var_dump( $this->params['url']);
-
 
             $parameters = $this->params['url'];
 
@@ -67,8 +55,6 @@ class AdminController extends AppController
 
 
         } else {
-
-           var_dump( $this->params['url'] );
 
             $results = $this->paginate( 'User' );
             $this->set( 'results', $results );

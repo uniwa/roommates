@@ -2,8 +2,13 @@
 <?php
 echo $this->Form->create( 'Admin' ,array( 'type' => 'get',  'url' => '/admin/search' ) );
 echo $this->Form->label( 'Αναζήτηση Χρήστη: ' );
-echo $this->Form->text( 'name' );
-echo $this->Form->checkbox( 'banned' );
+echo $this->Form->text( 'name', array(  'value' => isset( $this->params['url']['name'] )?$this->params['url']['name']:'' ) );
+if( isset( $this->params['url']['banned'] ) && $this->params['url']['banned'] == 1 ){
+    $check = 'checked';
+} else {
+    $check = 'unchecked';
+}
+echo $this->Form->checkbox( 'banned', array( 'checked' => $check ) );
 echo $this->Form->label( 'Banned' );
 echo $this->Form->button('Αναζήτηση', array('type'=>'submit'));
 echo $this->Form->end();
