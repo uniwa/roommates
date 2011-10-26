@@ -304,6 +304,12 @@ class HousesController extends AppController {
 
             // get user preferences
             $prefs = $this->loadSavedPreferences($profile_id);
+            $results = $this->simpleSearch($prefs['house_prefs'], $prefs['mates_prefs'], null, false);
+
+            $municipalities = $this->House->Municipality->find('list');
+            $this->set('municipalities', $municipalities);
+
+            return $this->set(compact('results'));
         }
 
         $municipalities = $this->House->Municipality->find('list');

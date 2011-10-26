@@ -13,7 +13,7 @@ class TokenComponent extends Object {
             'conditions' => array('token' => $token)
         ));
         if (isset($id["Profile"]["id"])) {
-            return $id;
+            return $id["Profile"]["id"];
         }
         return NULL;
     }
