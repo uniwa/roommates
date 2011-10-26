@@ -135,7 +135,8 @@
 			$selected_date = $defaults[ 'available_from' ]; 
 		}
 		else {
-			$selected_date = null;
+			//$selected_date = null;
+            $selected_date = strtotime('31-12-2016');
 		}
 		$this->field = 'available_from';
 		echo 'Ημερομηνία διαθεσιμότητας μέχρι ' . $this->Form->dateTime('available_from', 'DMY', null, $selected_date, array('minYear' => date('Y'),
