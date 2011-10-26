@@ -350,12 +350,7 @@ class HousesController extends AppController {
             $this->set('defaults', $prefs['defaults']);
         }
     }
-/*
-            $options['conditions'] = $this->getHouseConditions();
-	    $options['limit'] = 15;
-            $options['contain'] = '';
-            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
-*/
+
     private function simpleSearch(  $houseConditions, $matesConditions,
                                     $orderBy = null, $pagination = true ) {
 
@@ -379,7 +374,6 @@ class HousesController extends AppController {
             array(  'table' => 'profiles',
                     'alias' => 'Profile',
                     'type'  => 'inner',
-//                     'conditions' => $this->getMatesConditions()
                     'conditions' => $matesConditions
             ),
             array(  'table' => 'images',
@@ -389,10 +383,9 @@ class HousesController extends AppController {
             )
         );
 
-//         $options['conditions'] = $this->getHouseConditions();
         $options['conditions'] = $houseConditions;
         if ($orderBy != null) {
-            $options['order'] = $orderBy;/*$this->getOrderCondition($this->params['url']['order_by']);*/
+            $options['order'] = $orderBy;
         }
         // required recursive value for joins
         $this->House->recursive = -1;
