@@ -546,7 +546,7 @@ h1 {
 }
 
 .title {
-    clear: both;
+    clear: left;
     margin: 8px 0 8px -10px;
     font-size: 20px;
     font-weight: bold;
@@ -1066,48 +1066,12 @@ div.admin .banned table, th, td {
     padding-right:110px;
 }
 
-.admpanel th{
 
-    padding: 5px 35px 10px 2px;
-}
-.admpanel .banhead{
-    
-    padding:0pc 2pc;
-}
-.admpanel .banned{
-
-    text-align: center;
-}
-.admpanel .admpaginator{
-    margin-top:1pc;
-    font-size:0.9pc;
-    padding:0pc 0pc 0.4pc 0.2pc;
-}
-.admpanel form{
-    border-style:solid;
-    border-width:small;
-    width:450px;
-    background:#CCC;
-    border-radius:3px;
-    padding:0.5pc 0pc 0.5pc 0.5pc;
-}
-.admpanel table {
-
-    /*margin-top:1pc;*/
-}
-.admpanel table tr:hover{
-
-    background-color:#ccc;
-}
-.admpanel form label{
-    padding: 1px 2px 1px 1px;
-}
-.admpanel form button{
-
-    padding: 1px 3px 3px 2px;
-    float:right;
-}
-.admpanel form input[type="checkbox"] {
-
-    margin-left:1.2pc;
+.personalized-rss {
+    float: right;
+    background: url("../img/rss-feed-small.png") no-repeat scroll 5px 50% #FFFFFF;
+    padding: 6px 10px 4px 25px;
+    border: 1px solid #4F6CA6;
+    border-radius: 3px;
+    text-decoration: none;
 }

@@ -24,7 +24,6 @@ class AdminController extends AppController
 
         App::import( 'Model', 'User' );
         $user = new User();
-        $this->set( 'limit', $this->paginate[ 'limit' ] );
 
         if( isset( $this->params['url']['name'] ) || isset( $this->params['url']['banned'] ) ){
 
@@ -52,7 +51,6 @@ class AdminController extends AppController
                 $this->Session->setFlash( 'Δεν βρέθηκαν χρήστες' );
             }
             $this->set( 'results', $results );
-
 
         } else {
 
