@@ -62,7 +62,8 @@ class HousesController extends AppController {
 					$ascDesc = $ascoptions[1];
 					break;
 			}
-			$order = array($orderField => $ascDesc);
+			//$order = array($orderField => $ascDesc);
+            $options['order'] = array($orderField => $ascDesc);
 		}
 
         $orderOptions = array(  'τελευταία ενημέρωση',
@@ -81,26 +82,19 @@ class HousesController extends AppController {
             banned users view in /admin/banned
         */
 
-        if($this->Auth->User('role') == 'admin') {
-            $conds = array( 'House.user_id !=' => $this->Auth->user('id'));
-        } else {
-            $conds = array( 'House.user_id !=' => $this->Auth->user('id'),
-                            'House.visible' => 1);
-        }
+        if ($this->Auth->User('role') != 'admin')
+            $options['conditions'] = array('House.visible' => 1);
+
+        $options['fields'] = array( 'House.*, Image.location,
+                                    Municipality.name, Floor.type,
+                                    HouseType.type' );
 
         // manually join all the required tables
         // in order to get only the default
         // image for each house with only
         // one query
 
-        $this->paginate = array(
-            'fields' => array( 'House.*, Image.location,
-                                Municipality.name, Floor.type,
-                                HouseType.type'),
-            'order' => $order,
-			'conditions' => $conds,
-			'limit' => 15,
-            'joins' => array(
+        $options['joins'] = array(
                 array(  'table' => 'images',
                         'alias' => 'Image',
                         'type'  => 'left',
@@ -126,8 +120,11 @@ class HousesController extends AppController {
                         'type'  => 'left',
                         'conditions' => array('House.house_type_id = HouseType.id')
                 )
-            )
-        );
+            );
+
+        $options['limit'] = 15;
+
+        $this->paginate = $options;
         $this->House->recursive = -1;
         $houses = $this->paginate('House');
         $this->set('houses', $houses);
@@ -166,7 +163,7 @@ class HousesController extends AppController {
 
         $this->set('house', $house);
 
-        $images = $this->House->Image->find('all',array('conditions'=>array('house_id'=>$id)));
+        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
 
         foreach ($images as $image) {
             if ($image['Image']['id'] == $house['House']['default_image_id'])
