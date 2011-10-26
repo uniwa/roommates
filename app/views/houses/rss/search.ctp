@@ -29,7 +29,7 @@ foreach ($results as $house) {
     /* set image if exists */
     if (isset($house['Image']['location'])) {
         $_imgpath = 'uploads/houses/' . $house['House']['id'] . '/thumb_' . $house['Image']['location'];
-        $thumb = $this->Html->image($_imgpath, array('alt' => 'εικόνα '.$house['House']['address'], 'height' => 70));
+        $thumb = $this->Html->image($_imgpath, array('alt' => 'εικόνα '.$house['House']['address'], 'height' => 70)) . '<br />';
     }
     else {
         $thumb ="";
@@ -48,7 +48,7 @@ foreach ($results as $house) {
     /* sanitize body */
     App::import('Sanitize');
     $bodyText = Sanitize::stripAll($bodyText);
-    $body = $thumb ."<br />". $bodyText;
+    $body = $thumb . $bodyText;
 
     echo $this->Rss->item(array(), array(
         'title' => $houseTitle,
