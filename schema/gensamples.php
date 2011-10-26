@@ -28,7 +28,8 @@
 		$passwd = '8f9bc2b8007a93584efdf303b83619f1fc147016';
 		$uid = 100 + $i;
 		$street = $streets[array_rand($streets)];
-		$address = mysql_real_escape_string($street.' '.$street_names[array_rand($street_names)]);
+		$address = $street.' '.$street_names[array_rand($street_names)];
+		$address = addslashes($address);
 		$postal = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9);
 		$area = rand(20, 150);
 		$beds = rand(1,3);
