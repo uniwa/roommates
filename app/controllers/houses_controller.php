@@ -589,28 +589,34 @@ class HousesController extends AppController {
             $options['joins'] = array(
                 array(  'table' => 'users',
                         'alias' => 'User',
-                        'type'  => 'inner',
+                        'type'  => 'left',
                         'conditions' => array('House.user_id = User.id')
                 ),
                 array(  'table' => 'profiles',
                         'alias' => 'Profile',
                         'type'  => 'inner',
                         'conditions' => $this->getMatesConditions()
+                ),
+                array(  'table' => 'images',
+                        'alias' => 'Image',
+                        'type'  => 'left',
+                        'conditions' => array('Image.id = House.default_image_id')
                 )
             );
 
 	    $cond = $this->getHouseConditions();
-            $adv_cond =  $this->getHouseAdvancedConditions();
-	    $options['conditions'] = array_merge($cond, $adv_cond);	    
-	    $options['limit'] = 15;
-            $options['contain'] = '';
-            $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
-            $this->paginate = $options;
-            $this->House->recursive = -1;
-            $results = $this->paginate('House');
+        $adv_cond =  $this->getHouseAdvancedConditions();
+        $options['fields'] = array('House.*', 'Image.location');
+        $options['conditions'] = array_merge($cond, $adv_cond);	
+        $options['limit'] = 15;
+        $options['contain'] = '';
+        $options['order'] = $this->getOrderCondition($this->params['url']['order_by']);
+        $this->paginate = $options;
+        $this->House->recursive = -1;
+        $results = $this->paginate('House');
 
-            $this->set('results', $results);
-            $this->set('defaults', $this->params['url']);
+        $this->set('results', $results);
+        $this->set('defaults', $this->params['url']);
        }
     }
 
