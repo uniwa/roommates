@@ -51,7 +51,16 @@
         <li>
             <?php echo $this->Html->link('Σύνθετη Αναζήτηση', array('controller' => 'houses',
                                                                    'action' => 'advanced_search')); ?>
-	</li>
+    	</li>
+
+        <li>
+            <?php 
+                if( $this->Session->read( 'Auth.User.profile' ) == 'amdin' ) {
+
+                   echo $this->Html->link( 'Αναζήτηση Χρήστη', array( 'controller' => 'admin', 'action' => 'search' ) );
+                }
+            ?>
+        </li>
 
         <?php if ($this->Session->read('Auth.User')) {
         echo '<li>';
