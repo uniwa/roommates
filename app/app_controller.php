@@ -22,7 +22,8 @@ class  AppController extends Controller{
          * 3) user is alredy logged in and terms has not accepted from him
          */
         if( $this->params['controller'] != 'users'
-            && !( $this->params['controller'] == 'houses' && $this->params['action'] == 'index' && $this->RequestHandler->isRss() ) &&
+            && !( $this->params['controller'] == 'houses' && ( $this->params['action'] == 'index' || $this->params['action']='search' )
+            && $this->RequestHandler->isRss() ) &&
             ( $this->Auth->user() != null && $this->Auth->user('terms_accepted') === "0" )  ){
 
                   $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
