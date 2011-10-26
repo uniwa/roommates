@@ -1075,3 +1075,49 @@ div.admin .banned table, th, td {
     border-radius: 3px;
     text-decoration: none;
 }
+
+.admpanel th{
+
+    padding: 5px 35px 10px 2px;
+}
+.admpanel .banhead{
+    
+    padding:0pc 2pc;
+}
+.admpanel .banned{
+
+    text-align: center;
+}
+.admpanel .admpaginator{
+    margin-top:1pc;
+    font-size:0.9pc;
+    padding:0pc 0pc 0.4pc 0.2pc;
+}
+.admpanel form{
+    border-style:solid;
+    border-width:small;
+    width:450px;
+    background:#CCC;
+    border-radius:3px;
+    padding:0.5pc 0pc 0.5pc 0.5pc;
+}
+.admpanel table {
+
+    /*margin-top:1pc;*/
+}
+.admpanel table tr:hover{
+
+    background-color:#ccc;
+}
+.admpanel form label{
+    padding: 1px 2px 1px 1px;
+}
+.admpanel form button{
+
+    padding: 1px 3px 3px 2px;
+    float:right;
+}
+.admpanel form input[type="checkbox"] {
+
+    margin-left:1.2pc;
+}
