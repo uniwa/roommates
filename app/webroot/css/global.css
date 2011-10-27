@@ -1075,3 +1075,17 @@ div.admin .banned table, th, td {
     border-radius: 3px;
     text-decoration: none;
 }
+
+/*ενεργοι χρηστες - καταχωρημενα σπιτια*/
+#active-info{
+	text-align: center;
+}
+#active-info li{
+	font-size: 14px;
+}
+
+#active-info img{
+	vertical-align: middle;
+	padding: 3px;
+}
+

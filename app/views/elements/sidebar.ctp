@@ -70,14 +70,18 @@
             ?>
         </li>
         <li>
-			<div id='active-info'>
+			<ul id='active-info'>
+                <li>
             <?php
 				if(isset($active)){
-					echo "Ενεργά προφίλ χρηστών: ".$active['profiles']."<br />\n";
-					echo "Καταχωρημένα σπίτια: ".$active['houses']."<br />\n";
-				}
-			?>
-			</div>
+                    echo $this->Html->image("group-users.png", array("title" => "Ενεργά προφίλ χρηστών:". $active['profiles'])) ;
+                    echo $active['profiles'];
+        			echo "</li><li>";
+                    echo $this->Html->image("favicon.ico", array("title" => "Καταχωρημένα σπίτια:". $active['houses'])) ;
+                    echo $active['houses'];
+            }?>
+               </li>
+			</ul>
         </li>
 
     </ul>
