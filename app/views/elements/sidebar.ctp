@@ -59,7 +59,7 @@
                
                if( $this->Session->read( 'Auth.User.role' ) == 'admin' ) {
 
-                   echo $this->Html->link( 'Αναζήτηση Χρήστη', array( 'controller' => 'admin', 'action' => 'search' ) );
+                   echo $this->Html->link( 'Αναζήτηση Χρήστη', array( 'controller' => 'admins', 'action' => 'search' ) );
               }
             ?>
         </li>

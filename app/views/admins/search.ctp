@@ -1,6 +1,6 @@
 <div class = "admpanel"> 
-<?php
-echo $this->Form->create( 'Admin' ,array( 'type' => 'get',  'url' => '/admin/search' ) );
+<?php echo $this->Form->create( 'Admin' ,array( 'type' => 'get',  'controller' => 'admins', 'action' => 'search' ) );
+
 echo $this->Form->label( 'Αναζήτηση Χρήστη: ' );
 echo $this->Form->text( 'name', array(  'value' => isset( $this->params['url']['name'] )?$this->params['url']['name']:'' ) );
 if( isset( $this->params['url']['banned'] ) && $this->params['url']['banned'] == 1 ){
@@ -74,7 +74,7 @@ if( $results != array() ){
         if(isset( $this->params['url']['name'] ) || isset( $this->params['url']['banned'] ) ) {
 
             $queryString = "name={$this->params['url']['name']}&banned={$this->params['url']['banned']}";
-            $options = array( 'url'=>array( 'controller' => 'admin', 'action' => 'search',
+            $options = array( 'url'=>array( 'controller' => 'admins', 'action' => 'search',
                     '?' => $queryString ) );
             $this->Paginator->options( $options );
        }
