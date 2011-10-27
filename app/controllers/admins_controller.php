@@ -1,8 +1,8 @@
 <?php
 
-class AdminController extends AppController
+class AdminsController extends AppController
 {
-    var $name = 'Admin';
+    var $name = 'Admins';
     var $uses = array();
     var $paginate = array(
         'fields' => array( 'User.username', 'User.banned',
@@ -11,16 +11,9 @@ class AdminController extends AppController
         'limit' => 5
     );
 
-    function beforeFilter() {
-        parent::beforeFilter();
-        /* if we are not admin bail out */
-        if ($this->Session->read('Auth.User.role') != 'admin') {
-            $this->cakeError('error403');
-        }
-    }
-
-
     function search(){
+
+        $this->checkAccess();
 
         App::import( 'Model', 'User' );
         $user = new User();
@@ -61,6 +54,13 @@ class AdminController extends AppController
         }
 
 
+    }
+
+    private function checkAccess() {
+
+        if ($this->Session->read('Auth.User.role') != 'admin') {
+            $this->cakeError('error403');
+        }
     }
 
 }
