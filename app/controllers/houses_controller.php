@@ -81,9 +81,11 @@ class HousesController extends AppController {
             the houses of the banned users in the index - admin has his own
             banned users view in /admin/banned
         */
-
-        if ($this->Auth->User('role') != 'admin')
-            $options['conditions'] = array('House.visible' => 1);
+        //$options['conditions'] = array('User.banned !=' => 1);
+        if ($this->Auth->User('role') != 'admin') {
+            /* admin can see banned user's houses and invisible houses */
+            $options['conditions'] = array('House.visible' => 1, 'User.banned' => 0);
+        }
 
         $options['fields'] = array( 'House.*, Image.location,
                                     Municipality.name, Floor.type,
@@ -103,7 +105,7 @@ class HousesController extends AppController {
                 array(  'table' => 'users',
                         'alias' => 'User',
                         'type'  => 'left',
-                        'conditions' => array('User.id = House.user_id', 'User.banned = 0')
+                        'conditions' => array('User.id = House.user_id')
                 ),
                 array(  'table' => 'municipalities',
                         'alias' => 'Municipality',
