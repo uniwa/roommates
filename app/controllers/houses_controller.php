@@ -13,7 +13,10 @@ class HousesController extends AppController {
         if ($this->RequestHandler->isRss()) {
             $conditions = array("User.banned" => 0);
             $houses = $this->House->find('all',
-                        array('limit' => 50, 'order' => 'House.modified DESC'));
+                        array('limit' => 50,
+                              'order' => 'House.modified DESC',
+                              'conditions' => $conditions)
+            );
             return $this->set(compact('houses'));
         }
 
