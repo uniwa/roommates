@@ -134,6 +134,7 @@ class HousesController extends AppController {
         parent::beforeFilter();
         if( $this->RequestHandler->isRss()){
             $this->Auth->allow( 'index' );
+            $this->Auth->allow( 'search' );
         }
 
         if(!class_exists('L10n'))

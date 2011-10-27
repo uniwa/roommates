@@ -236,7 +236,7 @@
 			    if(isset($municipality)){
     				echoDetail('Δήμος', $municipality);
     			}
-                if($prefFurnished < '2') {
+                if($prefFurnished < '2' && $prefFurnished != null) {
 				    echoDetail('Επιπλωμένο', $furnished);
                 }
 			    if($prefAccessibility){?>
