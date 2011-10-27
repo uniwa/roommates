@@ -47,7 +47,7 @@
     ?>
     <div id="content" class="column">
     <?php
-        if ($this->Session->read('Auth.User.banned') == 1) {
+        if ($this->Auth->get('User.banned') == 1) {
             echo $this->element('banned');
         }
         echo $this->Session->flash();
