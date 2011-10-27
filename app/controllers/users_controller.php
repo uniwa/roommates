@@ -23,10 +23,13 @@ class UsersController extends AppController{
 
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
 
-        } else if( $this->Auth->user( 'terms_accepted' === "1" ) ) {
+        } else if( isset( $this->data ) &&  $this->Auth->user( 'terms_accepted' === "1" ) ) {
 
             $this->redirect( '/' );
         }
+
+        var_dump( $this->referer() ); 
+        //$this->redirect( $this->referer() );
 
     }
 
