@@ -54,15 +54,18 @@
                                                                    'action' => 'advanced_search')); ?>
         </li>
 
-        <li>
+        
             <?php 
-               
-               if( $this->Session->read( 'Auth.User.role' ) == 'admin' ) {
 
-                   echo $this->Html->link( 'Αναζήτηση Χρήστη', array( 'controller' => 'admins', 'action' => 'search' ) );
-              }
+                if( $this->Session->read( 'Auth.User.role' ) == 'admin' ) {
+
+                    echo '<li>';
+                    echo $this->Html->link( 'Αναζήτηση Χρήστη', array( 'controller' => 'admins', 'action' => 'search' ));
+                    echo '</li>';
+                }
+            
             ?>
-        </li>
+        
 
         <?php if ($this->Session->read('Auth.User')) {
         echo '<li>';
