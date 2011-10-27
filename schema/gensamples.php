@@ -59,6 +59,8 @@
 		$agemax = rand($agemin, 35);
 		$accessible = rand(0,1);
 		$construction = rand(1900, 2011);
+		$pref_municipality = rand(0,1)?'NULL':"'".rand(1,30)."'";
+		echo $pref_municipality."<br />";
 		
 		$insertUser = "INSERT INTO `roommates`.`users` (`id`, `username`, `password`, `role`, `banned`, `terms_accepted`)\n";			
 		$insertUser .= "VALUES ('{$uid}', '{$uname}', '{$passwd}', 'user', 0, 1);\n\n";
@@ -74,7 +76,7 @@
 		    `availability_date_min`, `rent_period_min`, `floor_id_min`, 
 		    `pref_house_type_id`, `pref_heating_type_id`)\n";
 		$insertPreference .= "VALUES ('{$prefid}', '{$agemin}', '{$agemax}', '{$prefgender}', '{$prefsmoker}', '{$prefpet}', '{$prefchild}', '{$prefcouple}',
-		    0, 9999, 0, 9999, '', 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 0, 0, 0, 0);\n\n";
+		    0, 9999, 0, 9999, {$pref_municipality}, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 0, 0, 0, 0);\n\n";
 		$insertHouse = "INSERT INTO `roommates`.`houses`(
     		`id`,`address`,`postal_code`,`area`,`bedroom_num`,`bathroom_num`,`price`,
             `construction_year`,`solar_heater`,`furnitured`,`aircondition`,`garden`,
