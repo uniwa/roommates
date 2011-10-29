@@ -952,8 +952,7 @@ input[type="button"] {
   padding: 3px 10px;
   text-shadow: white 0 1px 1px;
   width: auto;
-  padding-top: 2px;
-  padding-bottom: 0;
+
 }
 .actions a:hover,
 button:hover,
@@ -1040,7 +1039,7 @@ div.admin .banned table, th, td {
 
 
 /*terms of use*/
-.terms {
+.terms, .faq {
     border: 1px solid white;
     padding: 45px;
     background: white;
