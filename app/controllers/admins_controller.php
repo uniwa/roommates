@@ -1,8 +1,8 @@
 <?php
 
-class AdminController extends AppController
+class AdminsController extends AppController
 {
-    var $name = 'Admin';
+    var $name = 'Admins';
     var $uses = array();
     var $paginate = array(
         'fields' => array( 'User.username', 'User.banned',
@@ -11,29 +11,13 @@ class AdminController extends AppController
         'limit' => 5
     );
 
-    function beforeFilter() {
-        parent::beforeFilter();
-        /* if we are not admin bail out */
-        if ($this->Session->read('Auth.User.role') != 'admin') {
-            $this->cakeError('error403');
-        }
-    }
-
-    function banned() {
-        /* get list of banned users */
-        App::import('Model', 'User');
-        $Users = new User();
-
-        $conditions = array("banned" => 1);
-        $banned = $Users->find('all', array("conditions" => $conditions));
-
-        $this->set('banned', $banned);
-    }
-
     function search(){
+
+        $this->checkAccess();
 
         App::import( 'Model', 'User' );
         $user = new User();
+        $this->set( 'limit', $this->paginate[ 'limit' ] );
 
         if( isset( $this->params['url']['name'] ) || isset( $this->params['url']['banned'] ) ){
 
@@ -62,6 +46,7 @@ class AdminController extends AppController
             }
             $this->set( 'results', $results );
 
+
         } else {
 
             $results = $this->paginate( 'User' );
@@ -69,6 +54,13 @@ class AdminController extends AppController
         }
 
 
+    }
+
+    private function checkAccess() {
+
+        if ($this->Session->read('Auth.User.role') != 'admin') {
+            $this->cakeError('error403');
+        }
     }
 
 }

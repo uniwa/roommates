@@ -39,8 +39,8 @@
     </tr>
         <td>
             <?php echo $this->Form->input('max_price', array('label' => 'Ενοίκιο μέχρι ',
-                                                             'class' => 'short-textbox',
-                                                             'value' => isset($defaults) ? $defaults['max_price'] : '' ));
+                                                            'class' => 'short-textbox',
+                                                            'value' => isset($defaults) ? $defaults['max_price'] : '' ));
             ?>
         </td>
         <td>
@@ -81,6 +81,13 @@
     </tr>
     <tr>
         <td colspan=3>
+            <?php echo 'Διαθέτει φωτογραφία '.$this->Form->checkbox('has_photo', array('hiddenField' => false,
+                                                                                        'checked' => isset($defaults['has_photo'])  ));
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan=3>
             <?php echo $this->Form->input('order_by', array('label' => 'Ταξινόμηση ανά: ',
                                                             'options' => $search_order_options,
                                                             'selected' => isset($defaults) ? $defaults['order_by'] : '0'   ));
@@ -96,34 +103,34 @@
     <tr>
         <td colspan=8>
             <?php echo $this->Form->input('house_type', array('label' => 'Τύπος κατοικίας ',
-							         'options' => $house_type_options,
-                                                                 'value' => isset($defaults) ? $defaults['house_type'] : '',
-								 'empty' => 'Αδιάφορο' ));
+                                                            'options' => $house_type_options,
+                                                            'value' => isset($defaults) ? $defaults['house_type'] : '',
+                                                            'empty' => 'Αδιάφορο' ));
             ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
             <?php echo $this->Form->input('heating_type', array('label' => 'Είδος θέρμανσης ',
-                                                              'options' => $heating_type_options,
-                                                            	'value' => isset($defaults) ? $defaults['heating_type'] : '',
-								'empty' => 'Αδιάφορο' ));
+                                                                'options' => $heating_type_options,
+                                                                'value' => isset($defaults) ? $defaults['heating_type'] : '',
+                                                                'empty' => 'Αδιάφορο' ));
             ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
-            <?php echo $this->Form->input('bedroom_num', array('label' => 'Ελάχιστος αριθμός υπνοδωματίων',
-                                                           	   'class' => 'short-textbox',
-                                                            	   'value' => isset($defaults) ? $defaults['bedroom_num'] : '' ));
+            <?php echo $this->Form->input('bedroom_num_min', array('label' => 'Ελάχιστος αριθμός υπνοδωματίων', 
+                                                                'class' => 'short-textbox',
+                                                                'value' => isset($defaults) ? $defaults['bedroom_num_min'] : '' ));
             ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
-            <?php echo $this->Form->input('bathroom_num', array('label' => 'Ελάχιστος αριθμός μπάνιων',
-                                                           	    'class' => 'short-textbox',
-                                                            	    'value' => isset($defaults) ? $defaults['bathroom_num'] : '' ));
+            <?php echo $this->Form->input('bathroom_num_min', array('label' => 'Ελάχιστος αριθμός μπάνιων',
+                                                                    'class' => 'short-textbox',
+                                                                    'value' => isset($defaults) ? $defaults['bathroom_num_min'] : '' ));
             ?>
         </td>
     </tr>
@@ -135,45 +142,46 @@
 			$selected_date = $defaults[ 'available_from' ]; 
 		}
 		else {
-			$selected_date = null;
+			//$selected_date = null;
+            $selected_date = strtotime('31-12-2016');
 		}
 		$this->field = 'available_from';
 		echo 'Ημερομηνία διαθεσιμότητας μέχρι ' . $this->Form->dateTime('available_from', 'DMY', null, $selected_date, array('minYear' => date('Y'),
-													    		             'maxYear' => date('Y') + 5,	
-																     'empty' => false));
+                                                                        'maxYear' => date('Y') + 5,
+                                                                        'empty' => false));
 	    ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
-            <?php echo $this->Form->input('rent_period', array('label' => 'Ελάχιστη περίοδος ενοικίασης ',
-                                                               'class' => 'short-textbox',
-                                                               'value' => isset($defaults) ? $defaults['rent_period'] : ''));
+            <?php echo $this->Form->input('rent_period_min', array('label' => 'Ελάχιστη περίοδος ενοικίασης ',
+                                                                   'class' => 'short-textbox',
+                                                                   'value' => isset($defaults) ? $defaults['rent_period_min'] : ''));
             ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
-            <?php echo $this->Form->input('floor', array('label' => 'Όροφος από ',
-							 'options' => $floor_options,
-                                                         'value' => isset($defaults) ? $defaults['floor'] : '',
-							 'empty' => 'Αδιάφορο' ));
+            <?php echo $this->Form->input('floor_min', array('label' => 'Όροφος από ',
+							                                 'options' => $floor_options,
+                                                             'value' => isset($defaults) ? $defaults['floor_min'] : '',
+							                                 'empty' => 'Αδιάφορο' ));
             ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
-            <?php echo $this->Form->input('construction_year', array('label' => 'Έτος κατασκευής από ',
-                                                                     'options' => $construction_year_options,
-                                                                     'value' => isset($defaults) ? $defaults['construction_year'] : '',
-								     'empty' => 'Αδιάφορο' ));
+            <?php echo $this->Form->input('construction_year_min', array('label' => 'Έτος κατασκευής από ',
+                                                                         'options' => $construction_year_options,
+                                                                         'value' => isset($defaults) ? $defaults['construction_year_min'] : '',
+								                                         'empty' => 'Αδιάφορο' ));
             ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
             <?php echo 'Ηλιακός θερμοσίφωνας '.$this->Form->checkbox('solar_heater', array('hiddenField' => false,
-                                                                            		   'checked' => isset($defaults['solar_heater'])  ));
+                                                                                            'checked' => isset($defaults['solar_heater'])  ));
             ?>
         </td>
     </tr>
@@ -201,14 +209,14 @@
     <tr>
         <td colspan=8>
             <?php echo 'Χωρίς κοινόχρηστα '.$this->Form->checkbox('no_shared_pay', array('hiddenField' => false,
-                                                                            		 'checked' => isset($defaults['no_shared_pay'])  ));
+                                                                                        'checked' => isset($defaults['no_shared_pay'])  ));
             ?>
         </td>
     </tr>
     <tr>
         <td colspan=8>
             <?php echo 'Πόρτα ασφαλείας '.$this->Form->checkbox('security_doors', array('hiddenField' => false,
-                                                                          		'checked' => isset($defaults['security_doors'])  ));
+                                                                                        'checked' => isset($defaults['security_doors'])  ));
             ?>
         </td>
     </tr>
@@ -228,22 +236,22 @@
     <tr>
         <td>
             <?php echo $this->Form->input('min_age', array('label' => 'Ηλικία από ',
-                                			   'class' => 'short-textbox',
-                                			   'value' => isset($defaults) ? $defaults['min_age'] : ''));
+                                                            'class' => 'short-textbox',
+                                                            'value' => isset($defaults) ? $defaults['min_age'] : ''));
 	    ?>
         </td>
         <td>
             <?php echo $this->Form->input('max_age', array('label' => 'μέχρι ',
-                                	  		   'class' => 'short-textbox',
-                                	  		   'value' => isset($defaults) ? $defaults['max_age'] : ''));
+                                                            'class' => 'short-textbox',
+                                                            'value' => isset($defaults) ? $defaults['max_age'] : ''));
 	    ?>
         </td>
     </tr>
     <tr>
         <td>
             <?php echo $this->Form->input('gender', array('label' => 'Φύλο ',
-                                                                     'options' => $gender_options,
-                                                                     'value' => isset($defaults) ? $defaults['gender'] : '2'    ));
+                                                            'options' => $gender_options,
+                                                            'value' => isset($defaults) ? $defaults['gender'] : '2'    ));
             ?>
         </td>
         <td>
@@ -336,8 +344,8 @@
 						// thumbnail icon if exists
 						$house_id = $house['House']['id'];
 						$house_image = 'house.gif';
-						if(isset($images[$house_id])){
-							$house_image = 'uploads/houses/'.$house_id.'/thumb_'.$images[$house_id];
+						if(!empty($house['Image']['location'])){
+							$house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
 						}
 						echo $this->Html->image($house_image, array('alt' => 'εικόνα '.$house['House']['address'], 'height' => 70));
 					?>

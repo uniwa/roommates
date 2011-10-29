@@ -42,6 +42,7 @@
             <?php echo $this->Html->link('Αναζήτηση σπιτιών', array('controller' => 'houses',
                                                                    'action' => 'search')); ?>
         </li>
+
         <li>
             <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
 
@@ -51,7 +52,20 @@
         <li>
             <?php echo $this->Html->link('Σύνθετη Αναζήτηση', array('controller' => 'houses',
                                                                    'action' => 'advanced_search')); ?>
-	</li>
+        </li>
+
+        
+            <?php 
+
+                if( $this->Session->read( 'Auth.User.role' ) == 'admin' ) {
+
+                    echo '<li>';
+                    echo $this->Html->link( 'Αναζήτηση Χρήστη', array( 'controller' => 'admins', 'action' => 'search' ));
+                    echo '</li>';
+                }
+            
+            ?>
+        
 
         <?php if ($this->Session->read('Auth.User')) {
         echo '<li>';

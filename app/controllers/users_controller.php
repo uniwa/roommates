@@ -19,13 +19,12 @@ class UsersController extends AppController{
          */
 
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
-            var_dump($this->Auth->user() );
 
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
 
-        } else if( $this->Auth->user( 'terms_accepted' === "1" ) ) {
-
-            $this->redirect( '/' );
+        } else if( isset( $this->data ) &&  $this->Auth->user( 'terms_accepted' === "1" ) ) {
+            /* redirect in pre-fixed url */
+            $this->redirect( $this->Auth->redirect() );
         }
 
     }

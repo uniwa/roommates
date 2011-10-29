@@ -30,7 +30,7 @@ class ProfilesController extends AppController {
             $this->paginate = array(
                         'conditions' => array(
 							'Profile.visible' => 1,
-							'Profile.user_id !=' => $this->Auth->user('id'),
+							//'Profile.user_id !=' => $this->Auth->user('id'),
                             'User.banned' => 0
 							),
                         'order' => $order);
@@ -234,7 +234,7 @@ class ProfilesController extends AppController {
             $searchconditions['Profile.couple'] = $searchArgs['pref_couple'];
         }
         // exclude logged user's profile
-        $searchconditions['Profile.user_id !='] = $this->Auth->user('id');
+        //$searchconditions['Profile.user_id !='] = $this->Auth->user('id');
 
 		$order = array('Profile.modified' => 'desc');
 		$selectedOrder = 0;

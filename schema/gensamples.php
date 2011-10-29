@@ -28,7 +28,8 @@
 		$passwd = '8f9bc2b8007a93584efdf303b83619f1fc147016';
 		$uid = 100 + $i;
 		$street = $streets[array_rand($streets)];
-		$address = mysql_real_escape_string($street.' '.$street_names[array_rand($street_names)]);
+		$address = $street.' '.$street_names[array_rand($street_names)];
+		$address = addslashes($address);
 		$postal = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9);
 		$area = rand(20, 150);
 		$beds = rand(1,3);
@@ -58,6 +59,8 @@
 		$agemax = rand($agemin, 35);
 		$accessible = rand(0,1);
 		$construction = rand(1900, 2011);
+		$pref_municipality = rand(0,1)?'NULL':"'".rand(1,30)."'";
+		echo $pref_municipality."<br />";
 		
 		$insertUser = "INSERT INTO `roommates`.`users` (`id`, `username`, `password`, `role`, `banned`, `terms_accepted`)\n";			
 		$insertUser .= "VALUES ('{$uid}', '{$uname}', '{$passwd}', 'user', 0, 1);\n\n";
@@ -73,9 +76,18 @@
 		    `availability_date_min`, `rent_period_min`, `floor_id_min`, 
 		    `pref_house_type_id`, `pref_heating_type_id`)\n";
 		$insertPreference .= "VALUES ('{$prefid}', '{$agemin}', '{$agemax}', '{$prefgender}', '{$prefsmoker}', '{$prefpet}', '{$prefchild}', '{$prefcouple}',
-		    0, 9999, 0, 9999, '', 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 0, 0, 0, 0);\n\n";
-		$insertHouse = "INSERT INTO `roommates`.`houses` (`id`,`address`,`postal_code`,`area`,`bedroom_num`,`bathroom_num`,`price`,`construction_year`,`solar_heater`,`furnitured`,`aircondition`,`garden`,`parking`,`shared_pay`,`security_doors`,`disability_facilities`,`storeroom`,`availability_date`,`rent_period`,`description`,`created`,`modified`,`floor_id`,`house_type_id`,`heating_type_id`,`currently_hosting`,`total_places`,`user_id`,`municipality_id`)\n";
-		$insertHouse .= "VALUES ('{$hid}', '{$address}', '{$postal}', '{$area}', '{$beds}', '{$baths}', '{$price}','{$construction}',1,1,1,0,0,1,0,'{$accessible}',0,'2011-11-05',NULL,'',NOW(),NOW(),3,2,2,'{$weare}', '{$totalplaces}', '{$uid}', '{$munid}');\n\n";
+		    0, 9999, 0, 9999, {$pref_municipality}, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 0, 0, 0, 0);\n\n";
+		$insertHouse = "INSERT INTO `roommates`.`houses`(
+    		`id`,`address`,`postal_code`,`area`,`bedroom_num`,`bathroom_num`,`price`,
+            `construction_year`,`solar_heater`,`furnitured`,`aircondition`,`garden`,
+            `parking`,`shared_pay`,`security_doors`,`disability_facilities`,`storeroom`,
+            `availability_date`,`rent_period`,`description`,`created`,`modified`,`floor_id`,
+            `house_type_id`,`heating_type_id`,`currently_hosting`,`total_places`,
+            `user_id`,`municipality_id`,`visible`)\n";
+		$insertHouse .= "VALUES ('{$hid}', '{$address}', '{$postal}', '{$area}',
+		'{$beds}', '{$baths}', '{$price}','{$construction}',1,1,1,0,0,1,0,
+		'{$accessible}',0,'2011-11-05',NULL,'',NOW(),NOW(),3,2,2,'{$weare}',
+		'{$totalplaces}', '{$uid}', '{$munid}',1);\n\n";
 		
 		writeFile($fu, $insertUser);
 		writeFile($fp, $insertPreference.$insertProfile);

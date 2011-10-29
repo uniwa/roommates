@@ -22,8 +22,8 @@ class  AppController extends Controller{
          * 3) user is alredy logged in and terms has not accepted from him
          */
         if( $this->params['controller'] != 'users'
-            && !( $this->params['controller'] == 'houses' && $this->params['action'] == 'index'
-                     && $this->RequestHandler->isRss() ) &&
+            && !( $this->params['controller'] == 'houses' &&( $this->params['action'] == 'index'|| $this->params['action'] == 'search' ) 
+                && $this->RequestHandler->isRss() ) &&
             ( $this->Auth->user() != null && $this->Auth->user('terms_accepted') === "0" )  ){
 
                   $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
@@ -56,11 +56,10 @@ class  AppController extends Controller{
 		$user = $this->User->read();
 
 
-		return array(  	'User' => array( 'id' => $user['User']['id'] ),
-
+		return array(  	'User' => array( 'id' => $user['User']['id'], 'banned' => $user['User']['banned'] ),
 				'Profile' =>array( 'id' => $user['Profile']['id'] ),
-
-				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ) );
+				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ),
+        );
 
 	}
 }
