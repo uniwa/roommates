@@ -53,10 +53,10 @@
             <div id='footer-menu'>
                 <ul>
                     <li class='menu-item menu-footer'>
-                        όροι χρήσης
+                        <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
                     </li>
                     <li class='menu-item menu-footer'>
-                        οδηγίες
+                        <?php echo $this->Html->link('Συχνές ερωτήσεις', array('controller' => 'users','action' => 'faq')); ?>
                     </li>
                 </ul>
             </div>
