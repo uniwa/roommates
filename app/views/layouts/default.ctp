@@ -39,6 +39,7 @@
         <div id='header'>
             <div id='header-main'>
                 <div class='header-title'>
+                    <h1><?php echo $title_for_layout?></h1>
                 </div>
             </div>
         </div>
