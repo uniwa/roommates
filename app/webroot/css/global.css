@@ -384,11 +384,19 @@ button{
 .terms  h1,.faq h1 {
 	font-size:22px;
 	font-weight: bold;
-
+}
 .faq p{
-    padding-bottom: 15px;
+    padding: 15px;
 }
 
+/*faq list*/
+#faq{
+	font-size:14px;
+	padding:0 0 30px 30px;
+}
+#faq li{
+	list-style: circle;
+}
 .banned-msg {
     font-weight: bold;
     border: 1px solid #000000;
@@ -396,11 +404,11 @@ button{
     margin-bottom: 1em;
 }
 
-.terms h2,.faq h2 {
+.terms h2, .faq h2 {
 	font-size:16px;
 	font-weight: bold;
+	color: #4F6CA6;
 }
-
 
 /*!terms fag*/
 
