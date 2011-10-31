@@ -46,6 +46,7 @@
         <div id='main-cont'>
             <div id='main'>
                 <!-- /#content -->
+                <?php echo $content_for_layout; ?>
             </div>
         </div>
         <div id='footer'>
