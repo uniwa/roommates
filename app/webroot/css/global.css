@@ -430,7 +430,7 @@ button{
     overflow: hidden;
     height: 100%;
     border: 1px dashed;
-    padding: 3px;
+    padding: 4px;
 }
 
 .default-image {
@@ -443,8 +443,8 @@ button{
 
 .image-list ul li {
     display: inline-block;
+    padding-right: 4px;
 }
-
 
 .house-info th {
     text-align: right;
@@ -477,7 +477,6 @@ button{
 
 
 /*profile*/
-
 
 .frame {
     border-style: solid;

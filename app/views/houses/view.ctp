@@ -1,7 +1,8 @@
 <div class="house-gallery">
     <div class="default-image">
         <?php
-        if (isset($images[0]))
+        $empty_slots = 4 - count($images);
+        if (isset($images[0])) {
             echo $this->Html->link(
                     $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $default_image_location, array('alt' => 'house image')),
                     '/img/uploads/houses/' . $house['House']['id'] . '/medium_'. $default_image_location,
@@ -16,14 +17,33 @@
                                     );
                 echo "</div>";
             }
-        else
-            echo $this->Html->image('homedefault.png',
-                                    array('alt' => 'house image','class' => 'defaultimg'));
+        }
+        else {
+            /*echo $this->Html->image('homedefault.png',
+                                    array('alt' => 'house image','class' => 'defaultimg'));*/
+            echo $this->Html->link(
+                    $this->Html->image('addpic.png', array('alt' => 'add house image')),
+                    array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                    array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                    );
+            $empty_slots -= 1;
+
+        }
         ?>
     </div>
     <div class="image-list">
         <ul>
             <?php
+                for ($i = 1; $i <= $empty_slots; $i++) {
+                    echo '<li class="liimage">';
+                    echo $this->Html->link(
+                        $this->Html->image('addpic.png', array('alt' => 'add house image')),
+                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                        array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                    );
+                    echo '<div class="imageactions">&nbsp;</div>';
+                    echo "</li>\n";
+                }
                 $i = 0;
                 foreach ($images as $image):
                     if ($image['Image']['location'] == $default_image_location) {
