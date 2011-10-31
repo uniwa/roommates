@@ -181,8 +181,8 @@ img{
 
 #main-cont{
     background-color: #fff;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 20px 0px;
+    /*margin: 0px 0px 0px 0px;*/
+    /*padding: 0 0 20px 0;*/
 	width: 100%;
     overflow: auto;
 }
@@ -421,6 +421,40 @@ button{
 	color: #4F6CA6;
 }
 
+.houseProfile { 
+    clear: both;
+}
+
+.house-gallery {
+    margin-bottom: 6px;
+    overflow: hidden;
+    height: 100%;
+    border: 1px dashed;
+    padding: 3px;
+}
+
+.default-image {
+    float: left;
+}
+
+.image-list {
+    float: right;
+}
+
+.image-list ul li {
+    display: inline-block;
+}
+
+
+.house-info th {
+    text-align: right;
+    font-weight: bold;
+}
+
+.house-info td {
+    padding: 0 5px;
+}
+
 /*!terms fag*/
 
 /*footer logos*/
@@ -472,17 +506,17 @@ button{
 }
 
 .profile-strong {
-color: #4F6CA6;
+    color: #4F6CA6;
 }
 .profile-big {
-font-size: 12px;
-font-weight: bold;
-color: #555;
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
 }
 
 .frame-container {
-margin: 16px 32px 4px 32px;
-padding-bottom: 20px;
+    margin: 16px 32px 4px 32px;
+    padding-bottom: 20px;
 }
 
 
