@@ -174,8 +174,10 @@ class HousesController extends AppController {
         $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
 
         foreach ($images as $image) {
-            if ($image['Image']['id'] == $house['House']['default_image_id'])
+            if ($image['Image']['id'] == $house['House']['default_image_id']) {
                 $this->set('default_image_location', $image['Image']['location']);
+                $this->set('default_image_id', $image['Image']['id']);
+            }
         }
 
         $this->House->Image->recursive = 0;
