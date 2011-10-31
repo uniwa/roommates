@@ -7,14 +7,27 @@
             ?>
         </li>
         <li class='menu-item menu-user'>
-            το σπίτι μου
+            <?php
+                $house_id = $this->Auth->get("House.id");
+                    if ($house_id != NULL) {
+                        echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
+                            'action' => 'view', $house_id));
+                    } else {
+                        echo $this->Html->link('Προσθήκη σπιτιού', array('controller' => 'houses',
+                            'action' => 'add'));
+                }
+            ?>
         </li>
         <li class='menu-item menu-user'>
-            το προφίλ μου
+            <?php 
+                $profile_id = $this->Auth->get("Profile.id");
+                echo $this->Html->link(' Το προφίλ μου', array('controller' => 'profiles',
+                                                               'action' => 'view',
+                                                               $profile_id,)); 
+            ?>
         </li>
         <li class='menu-item menu-rss menu-login'>
             <img src='img/rss.png' />
         </li>
     </ul>
 </div>
-
