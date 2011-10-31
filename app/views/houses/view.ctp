@@ -5,6 +5,14 @@
             echo $this->Html->image('uploads/houses/' . $house['House']['id']
                                     . '/thumb_' . $default_image_location,
                                     array('alt' => 'house image'));
+            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                echo "<div class='imageactions'>";
+                echo $this->Html->link(__('Διαγραφή', true),
+                                    array('controller' => 'images', 'action' => 'delete', $default_image_id),
+                                        array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true))
+                                    );
+                echo "</div>";
+            }
         else
             echo $this->Html->image('homedefault.png',
                                     array('alt' => 'house image','class' => 'defaultimg'));
@@ -12,7 +20,13 @@
     </div>
     <div class="image-list">
         <ul>
-            <?php $i = 0; foreach ($images as $image): ?>
+            <?php
+                $i = 0;
+                foreach ($images as $image):
+                    if ($image['Image']['location'] == $default_image_location) {
+                        continue;
+                    }
+            ?>
             <li class="liimage">
                 <?php echo $this->Html->link(
                     $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),

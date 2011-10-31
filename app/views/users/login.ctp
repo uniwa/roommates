@@ -1,5 +1,5 @@
 <!--TODO rewrite this-->
-<style>
+<!--<style>
 
 .content{
 	width: 360px;
@@ -165,34 +165,93 @@ a{outline:none}
     color: red;
 }
 
-		</style>
+		</style>-->
+<style>
+    #wrapper{
+        border: 2px solid;
+        border-radius: 15px;
+        width: 300px;
+        height:177px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
+    #darkbanner {
+
+        height: 30px;
+    }
+    #darkbanner h2{
+        font-weight: bold; 
+        border: 2px solid;
+        border-top-left-radius: 60px 90px;
+        border-bottom-right-radius: 60px 90px;
+        border-bottom-left-radius: 13px 20px;
+        border-top-right-radius: 13px 20px;
+        -moz-box-shadow: 0 0 5px #53868B;
+        -webkit-box-shadow: 0 0 5px 5px #53868B;
+        box-shadow: 0 0 5px #53868B;
+        width: 400px;
+        margin-top: 10px;
+        margin-left:-65px;
+        text-align: center;
+        letter-spacing: 1.5px;
+        padding: 8px;
+    }
+    
+    .loginForm label{
+        margin-left:30px; 
+    }
+
+    .loginForm input {
+        border-radius: 7px;
+        margin-left: 30px;
+        width: 220px;
+    }
+
+    .loginForm {
+        margin-top: 9px;
+        width: 300px;
+    }
+
+    .loginForm button {
+        
+        border-top-left-radius: 60px 90px;
+        border-bottom-right-radius: 60px 90px;
+        border-bottom-left-radius: 13px 20px;
+        border-top-right-radius: 13px 20px;
+        float:right;
+    }
+
+    #authMessage.message {
+        margin-top:5px;
+        width: 320px;
+        margin-left:20px;
+    }
+</style>
 
 <?php echo $this->Session->flash();?>
 		<div id="wrappertop"></div>
 			<div id="wrapper">
 					<div class="content">
-						<div id="header">
-							<h1>Roommates</h1>
-						</div>
 						<div id="darkbanner" class="banner320">
-							<h2>Παρακαλώ Συνδεθείτε</h2>
+							<h2>Αυθεντικοποίηση</h2>
 						</div>
 						<div id="darkbannerwrap">
 						</div>
 
         <div class="login-main">
-        <?php
-            echo $this->Session->flash('auth');
-            echo $this->Form->create('User', array('action' => 'login',"class" => "loginForm"));
-            echo $this->Form->input('username', array('label' => 'Όνομα χρήστη:' ) );
-            echo $this->Form->input('password', array('label' => 'Συνθηματικό:' ) );
-            echo $this->Form->end('Είσοδος');
+        
+        <?php   echo $this->Session->flash('auth');?>
+        <?php   echo $this->Form->create('User', array('action' => 'login',"class" => "loginForm"));?>
+        <?php   echo $this->Form->input('username', array('label' => 'Όνομα χρήστη:' ) );?>
+        <?php   echo $this->Form->input('password', array('label' => 'Συνθηματικό:' ) );?>
+        <?php   echo '<hr>';
+                echo $this->Form->button( 'Είσοδος' ,array( 'type' => 'submit' ) );
+        ?>
+        
+        <?php    echo $this->Form->end();
         ?>
 
-          <div class="termsloginlink">
-            <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
-          </div>
         </div>
 
 					</div>

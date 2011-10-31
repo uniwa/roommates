@@ -308,7 +308,7 @@ img{
 .form-input{
 }
 
-.form-input input{
+.form-input input.input-elem{
     border: 0px;
     padding: 2px;
     width: 75px;
