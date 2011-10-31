@@ -12,7 +12,13 @@
     </div>
     <div class="image-list">
         <ul>
-            <?php $i = 0; foreach ($images as $image): ?>
+            <?php
+                $i = 0;
+                foreach ($images as $image):
+                    if ($image['Image']['location'] == $default_image_location) {
+                        continue;
+                    }
+            ?>
             <li class="liimage">
                 <?php echo $this->Html->link(
                     $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),
