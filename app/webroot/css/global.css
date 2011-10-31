@@ -345,3 +345,47 @@ button{
     margin: 16px 0px 0px 24px;
 }
 
+
+/*terms of use - faq*/
+.terms, .faq {
+    border: 1px solid white;
+    padding: 45px;
+    background: white;
+    margin: 30px auto;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: -6px 4px 30px #667;
+    -webkit-box-shadow: -6px 4px 30px #667;
+    box-shadow: -6px 4px 30px #667;
+    background: url("../img/diagonal-noise.png");
+    text-align: justify;
+	color:black;
+}
+
+
+.terms li{
+	padding: 5px 0;
+}
+
+.terms ul{
+    list-style-type:none;
+}
+
+.terms ul li{
+    padding-bottom: 5px;
+}
+
+.terms p{
+    font-weight: bold;
+}
+
+.terms  h1,.faq h1 {
+	font-size:22px;
+	font-weight: bold;
+}
+
+.terms h2,.faq h2 {
+	font-size:16px;
+	font-weight: bold;
+}
