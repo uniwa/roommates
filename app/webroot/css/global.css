@@ -33,6 +33,10 @@ ol, ul{
     list-style: none;
 }
 
+li{
+    list-style-type: none;
+}
+
 blockquote, q{
     quotes: none;
 }
@@ -260,6 +264,7 @@ img{
 }
 
 .desc-info{
+    margin: 4px 0px 0px 24px;
 }
 
 .left-title{
@@ -299,7 +304,7 @@ img{
     height: 14px;
 }
 
-select{
+.form-input select{
     margin: 0px 0px 0px 0px;
     font-size: 10px;
 }
