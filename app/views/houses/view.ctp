@@ -1,17 +1,57 @@
+<div class="house-gallery">
+    <div class="default-image">
+        <?php
+        if (isset($images[0]))
+            echo $this->Html->image('uploads/houses/' . $house['House']['id']
+                                    . '/thumb_' . $default_image_location,
+                                    array('alt' => 'house image'));
+        else
+            echo $this->Html->image('homedefault.png',
+                                    array('alt' => 'house image','class' => 'defaultimg'));
+        ?>
+    </div>
+    <div class="image-list">
+        <ul>
+            <?php $i = 0; foreach ($images as $image): ?>
+            <li class="liimage">
+                <?php echo $this->Html->link(
+                    $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),
+                    '/img/uploads/houses/' . $house['House']['id'] . '/medium_'. $image['Image']['location'],
+                    array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                    );
+                ?>
+
+                <div class="imageactions">
+                    <?php
+                        if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                            echo $this->Html->link(__('Διαγραφή', true),
+                                array('controller' => 'images', 'action' => 'delete',
+                                    $image['Image']['id']),
+                                    array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
+                            echo $this->Html->link('Προεπιλεγμένη',
+                                    array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
+                                    array('class' => 'thumb_img_thumb'), null);
+                        }
+                    ?>
+                </div>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+
+        <div class="actions">
+        <?php
+            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
+            }
+        ?>
+        </div>
+    </div> <!-- end image-list -->
+</div> <!-- end house-gallery -->
+
 <div class="profile houseProfile">
 
-<div class="leftCol">
-
-        <div class="defaultimage">
-            <?php
-                       if (isset($images[0]))
-            echo $this->Html->image('uploads/houses/' . $house['House']['id'] . '/thumb_' . $default_image_location/*$images[0]['Image']['location']*/, array('alt' => 'house image'));
-        else
-            echo $this->Html->image('homedefault.png', array('alt' => 'house image','class' => 'defaultimg')); ?>
-
-    </div>
-
-    <table class="info-block">
+<div class="house-left">
+    <table class="house-info">
         <tr>
             <th>Διεύθυνση:</th>
             <td><?php echo $house['House']['address']?></td>
@@ -65,11 +105,6 @@
             <td> <?php echo ($house['House']['rent_period']) ? $house['House']['rent_period'] . " μήνες"
                     : '-' ?></td>
         </tr>
-
-
-        <!--   </table> <table class="info-block">     this line makes 2 tables into 1-->
-        <!-- boolean fields -->
-
         <tr>
             <th>Ηλιακός:</th>
             <td>
@@ -93,19 +128,16 @@
             <td>
                 <span class="checkbox cb<?php echo $house['House']['garden']?>">&nbsp;</td>
         </tr>
-
         <tr>
             <th>Parking:</th>
             <td>
                 <span class="checkbox cb<?php echo $house['House']['parking']?>">&nbsp;</td>
         </tr>
-
         <tr>
             <th>Κοινόχρηστα:</th>
             <td>
                 <span class="checkbox cb<?php echo $house['House']['shared_pay']?>">&nbsp;</td>
         </tr>
-
         <tr>
             <th>Πόρτα ασφαλείας:</th>
             <td>
@@ -117,13 +149,11 @@
             <td>
                 <span class="checkbox cb<?php echo $house['House']['disability_facilities']?>">&nbsp;</td>
         </tr>
-
         <tr>
             <th>Αποθήκη:</th>
             <td>
                 <span class="checkbox cb<?php echo $house['House']['storeroom']?>">&nbsp;</td>
         </tr>
-
 
         <!-- availability -->
         <tr>
@@ -167,8 +197,7 @@
 </div>
 <!--left collumn-->
 
-
-<div class="rightCol">
+<div class="house-right">
     <div class="actions">
         <?php
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
@@ -184,49 +213,11 @@
 
     </div>
 
-    <div class="gallery">
-<ul class=ulimage>
-        <?php $i = 0; foreach ($images as $image): ?>
-
-        <li class="liimage">
-            <?php echo $this->Html->link(
-            $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),
-            '/img/uploads/houses/' . $house['House']['id'] . '/medium_'. $image['Image']['location'],
-            array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-        ); ?>
-            <div class="imageactions">
-                <?php
-                    if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                        echo $this->Html->link(__('Διαγραφή', true), array('controller' => 'images', 'action' => 'delete', $image['Image']['id']), array('class' => 'thumb_img_action'), sprintf(__('Είστε σίγουρος;', true)));
-                        echo $this->Html->link('Προεπιλεγμένη',
-                                array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
-                                array('class' => 'thumb_img_action'), null);
-                    }
-                ?>
-            </div>
-        </li>
-        <?php endforeach; ?>
-    </ul>
-
-        <div class="actions">
-
-
-        <?php
-
-            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
-            }
-            ?>
-        </div>
-
-
-    </div>
-
 
 </div>
 <!--right column-->
 
 </div>
 
-<div class="clear-both"></div>
+<!-- <div class="clear-both"></div> -->
 </div>

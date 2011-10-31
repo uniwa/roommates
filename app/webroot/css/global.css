@@ -72,6 +72,17 @@ img{
     user-select: none;
 }
 
+#flashMessage {
+    border: 1px solid;
+    margin: 10px 0;
+    padding: 15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #00529B;
+    background-color: #d3e3fa;
+    background-image: url(../img/info.png);
+}
+
 #top-menu-cont{
     position: fixed;
     top: 0px;
@@ -170,8 +181,8 @@ img{
 
 #main-cont{
     background-color: #fff;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 20px 0px;
+    /*margin: 0px 0px 0px 0px;*/
+    /*padding: 0 0 20px 0;*/
 	width: 100%;
     overflow: auto;
 }
@@ -380,16 +391,69 @@ button{
     font-weight: bold;
 }
 
+
 .terms  h1,.faq h1 {
 	font-size:22px;
 	font-weight: bold;
 }
-
-.terms h2,.faq h2 {
-	font-size:16px;
-	font-weight: bold;
+.faq p{
+    padding: 15px;
 }
 
+/*faq list*/
+#faq{
+	font-size:14px;
+	padding:0 0 30px 30px;
+}
+#faq li{
+	list-style: circle;
+}
+.banned-msg {
+    font-weight: bold;
+    border: 1px solid #000000;
+    background-color: #EEA2A4;
+    margin-bottom: 1em;
+}
+
+.terms h2, .faq h2 {
+	font-size:16px;
+	font-weight: bold;
+	color: #4F6CA6;
+}
+
+.houseProfile { 
+    clear: both;
+}
+
+.house-gallery {
+    margin-bottom: 6px;
+    overflow: hidden;
+    height: 100%;
+    border: 1px dashed;
+    padding: 3px;
+}
+
+.default-image {
+    float: left;
+}
+
+.image-list {
+    float: right;
+}
+
+.image-list ul li {
+    display: inline-block;
+}
+
+
+.house-info th {
+    text-align: right;
+    font-weight: bold;
+}
+
+.house-info td {
+    padding: 0 5px;
+}
 
 /*!terms fag*/
 
@@ -442,15 +506,47 @@ button{
 }
 
 .profile-strong {
-color: #4F6CA6;
+    color: #4F6CA6;
 }
 .profile-big {
-font-size: 12px;
-font-weight: bold;
-color: #555;
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
 }
 
 .frame-container {
-margin: 16px 32px 4px 32px;
-padding-bottom: 20px;
+    margin: 16px 32px 4px 32px;
+    padding-bottom: 20px;
+}
+
+
+/*scroll to top*/
+#toTop {
+	display:none;
+	text-decoration:none;
+	position:fixed;
+	bottom:10px;
+	right:10px;
+	overflow:hidden;
+	width:51px;
+	height:51px;
+	border:none;
+	text-indent:-999px;
+	background:url(../img/ui.totop.png) no-repeat left top;
+}
+
+#toTopHover {
+	background:url(../img/ui.totop.png) no-repeat left -51px;
+	width:51px;
+	height:51px;
+	display:block;
+	overflow:hidden;
+	float:left;
+	opacity: 0;
+	-moz-opacity: 0;
+	filter:alpha(opacity=0);
+}
+
+#toTop:active, #toTop:focus {
+	outline:none;
 }
