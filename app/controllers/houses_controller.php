@@ -10,6 +10,7 @@ class HousesController extends AppController {
     var $paginate = array('limit' => 15);
 
     function index() {
+        $this->set('title_for_layout','Σπίτια');
         if ($this->RequestHandler->isRss()) {
             $conditions = array("User.banned" => 0);
             $houses = $this->House->find('all',
@@ -152,6 +153,7 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
+        $this->set('title_for_layout','Σπίτι');
         $this->checkExistance($id);
         $this->House->id = $id;
         $this->House->recursive = 2;
@@ -182,7 +184,7 @@ class HousesController extends AppController {
     }
 
     function add() {
-
+        $this->set('title_for_layout','Προσθήκη σπιτιού');
         /* if user already owns a house bail out */
         $conditions = array("user_id" => $this->Auth->user('id'));
         $res = $this->House->find('first', array('conditions' => $conditions));
@@ -205,6 +207,7 @@ class HousesController extends AppController {
     }
 
     function delete($id) {
+        $this->set('title_for_layout','Διαγραφή σπιτιού');
         $this->checkAccess( $id );
         $this->House->begin();
         /* delete associated images first */
@@ -236,6 +239,7 @@ class HousesController extends AppController {
     }
 
     function edit($id = null) {
+        $this->set('title_for_layout','Επεξεργασία σπιτιού');
         $this->checkExistance($id);
         $this->checkAccess($id);
         $this->House->id = $id;
@@ -297,6 +301,7 @@ class HousesController extends AppController {
     }
 
     function search () {
+        $this->set('title_for_layout','Αναζήτηση σπιτιών');
         if ($this->RequestHandler->isRss()) {
             /*
              *  personalized rss feed
@@ -565,6 +570,7 @@ class HousesController extends AppController {
 
 
     function advanced_search () {
+        $this->set('title_for_layout','Σύνθετη αναζήτηση σπιτιών');
 	    //---------------------drop down menus options--------------------//
         $this->set('house_type_options', $this->House->HouseType->find('list', array('fields' => array('type'))));
         $this->set('heating_type_options', $this->House->HeatingType->find('list', array('fields' => array('type'))));
