@@ -380,9 +380,20 @@ button{
     font-weight: bold;
 }
 
+
 .terms  h1,.faq h1 {
 	font-size:22px;
 	font-weight: bold;
+
+.faq p{
+    padding-bottom: 15px;
+}
+
+.banned-msg {
+    font-weight: bold;
+    border: 1px solid #000000;
+    background-color: #EEA2A4;
+    margin-bottom: 1em;
 }
 
 .terms h2,.faq h2 {
