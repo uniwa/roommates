@@ -9,6 +9,7 @@ class ProfilesController extends AppController {
     var $uses = array("Profile", "House", "Municipality");
 
     function index() {
+        $this->set('title_for_layout','Δημόσια προφίλ');
         /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
 				    			  'limit' => 20,
@@ -47,7 +48,7 @@ class ProfilesController extends AppController {
     }
 
     function view($id = null) {
-
+        $this->set('title_for_layout','Προφίλ χρήστη');
     	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
@@ -112,6 +113,7 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
+        $this->set('title_for_layout','Επεξεργασία προφίλ');
         $this->checkExistence($id);
     	$this->checkAccess( $id );
         $this->Profile->id = $id;
@@ -133,6 +135,7 @@ class ProfilesController extends AppController {
      }
 
     function search() {
+        $this->set('title_for_layout','Αναζήτηση συγκατοίκων');
 		if($this->data){
 		    // Set up the URL that we will redirect to
 		    $url = array('controller' => 'profiles', 'action' => 'search');

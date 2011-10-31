@@ -10,7 +10,7 @@
         echo $this->Html->meta('favicon.ico', 'img/favicon.ico', array('type' => 'icon'));
         echo $this->Html->css('global');
 //        echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('media' => 'screen'));
-//        echo $this->Html->script('jquery');
+        echo $this->Html->script('jquery');
 //        echo $this->Html->script('jquery.fancybox-1.3.4.pack');
 //        echo $this->Html->script('jquery.easing-1.3.pack');
 //        echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
@@ -39,6 +39,7 @@
         <div id='header'>
             <div id='header-main'>
                 <div class='header-title'>
+                    <h1><?php echo $title_for_layout?></h1>
                 </div>
             </div>
         </div>
@@ -49,20 +50,9 @@
                 <?php echo $content_for_layout; ?>
             </div>
         </div>
-        <div id='footer'>
-            <div id='footer-menu'>
-                <ul>
-                    <li class='menu-item menu-footer'>
-                        όροι χρήσης
-                    </li>
-                    <li class='menu-item menu-footer'>
-                        οδηγίες
-                    </li>
-                </ul>
-            </div>
-            <div id='footer-main'>
-            </div>
-        </div>
+
+     <?php echo $this->element('footer'); ?>
+
     </div>
 </body>
 </html>
