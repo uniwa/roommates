@@ -50,20 +50,9 @@
                 <?php echo $content_for_layout; ?>
             </div>
         </div>
-        <div id='footer'>
-            <div id='footer-menu'>
-                <ul>
-                    <li class='menu-item menu-footer'>
-                        <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
-                    </li>
-                    <li class='menu-item menu-footer'>
-                        <?php echo $this->Html->link('Συχνές ερωτήσεις', array('controller' => 'users','action' => 'faq')); ?>
-                    </li>
-                </ul>
-            </div>
-            <div id='footer-main'>
-            </div>
-        </div>
+
+     <?php echo $this->element('footer'); ?>
+
     </div>
 </body>
 </html>
