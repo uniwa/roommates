@@ -2,9 +2,12 @@
     <div class="default-image">
         <?php
         if (isset($images[0]))
-            echo $this->Html->image('uploads/houses/' . $house['House']['id']
-                                    . '/thumb_' . $default_image_location,
-                                    array('alt' => 'house image'));
+            echo $this->Html->link(
+                    $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $default_image_location, array('alt' => 'house image')),
+                    '/img/uploads/houses/' . $house['House']['id'] . '/medium_'. $default_image_location,
+                    array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                    );
+
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo "<div class='imageactions'>";
                 echo $this->Html->link(__('Διαγραφή', true),
