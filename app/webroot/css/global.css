@@ -1019,6 +1019,10 @@ input[type="button"]:active {
     font-weight: bold;
 }
 
+.faq p{
+    padding-bottom: 15px;
+}
+
 .banned-msg {
     font-weight: bold;
     border: 1px solid #000000;
