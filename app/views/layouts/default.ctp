@@ -39,6 +39,7 @@
         <div id='header'>
             <div id='header-main'>
                 <div class='header-title'>
+                    <h1><?php echo $title_for_layout?></h1>
                 </div>
             </div>
         </div>
@@ -49,20 +50,9 @@
                 <?php echo $content_for_layout; ?>
             </div>
         </div>
-        <div id='footer'>
-            <div id='footer-menu'>
-                <ul>
-                    <li class='menu-item menu-footer'>
-                        όροι χρήσης
-                    </li>
-                    <li class='menu-item menu-footer'>
-                        οδηγίες
-                    </li>
-                </ul>
-            </div>
-            <div id='footer-main'>
-            </div>
-        </div>
+
+     <?php echo $this->element('footer'); ?>
+
     </div>
 </body>
 </html>

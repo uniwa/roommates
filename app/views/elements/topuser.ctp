@@ -27,7 +27,14 @@
             ?>
         </li>
         <li class='menu-item menu-rss menu-login'>
-            <img src='img/rss.png' />
+            <?php
+            $userid = $this->Session->read('Auth.User.id');
+            echo $this->Html->link(
+                $this->Html->image("rss.png", array("alt" => "Subscribe to RSS.")),
+                "/houses/index.rss",
+                array('escape' => false)
+            );
+            ?>
         </li>
     </ul>
 </div>
