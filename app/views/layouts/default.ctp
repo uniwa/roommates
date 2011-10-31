@@ -10,7 +10,7 @@
         echo $this->Html->meta('favicon.ico', 'img/favicon.ico', array('type' => 'icon'));
         echo $this->Html->css('global');
 //        echo $html->css(array('fancybox/jquery.fancybox-1.3.4'), 'stylesheet', array('media' => 'screen'));
-//        echo $this->Html->script('jquery');
+        echo $this->Html->script('jquery');
 //        echo $this->Html->script('jquery.fancybox-1.3.4.pack');
 //        echo $this->Html->script('jquery.easing-1.3.pack');
 //        echo $this->Html->script('jquery.mousewheel-3.0.4.pack');

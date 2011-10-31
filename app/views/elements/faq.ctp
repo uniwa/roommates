@@ -1,3 +1,22 @@
+<?php echo $this->Html->script('jquery.easing.1.3.js'); ?>
+<?php echo $this->Html->script('jquery.ui.totop.js'); ?>
+
+
+<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			var defaults = {
+	  			containerID: 'moccaUItoTop', // fading element id
+				containerHoverClass: 'moccaUIhover', // fading element hover class
+				scrollSpeed: 1200,
+				easingType: 'linear'
+	 		};
+			*/
+			
+			$().UItoTop({ easingType: 'easeOutQuart' });
+
+		});
+	</script>
 <h1 id="top">Συχνές ερωτήσεις</h1>
 <br>
 <h2>Περιεχόμενα</h2>
