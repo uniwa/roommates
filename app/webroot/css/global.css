@@ -130,7 +130,7 @@ img{
     text-align: center;
 }
 
-.menu-item,.menu-footer{
+.menu-item{
     height: 16px;
     padding: 4px;
     overflow: hidden;
@@ -213,12 +213,12 @@ img{
     background-color: #fff;
     height: 116px;
     margin: 0px 0px 0px 0px;
-    padding: 0;
+    padding: 0px 0px 0px 0px;
 }
 
 #footer-menu{
     margin: 12px 24px 0px 0px;
-    padding: 0px 0px 0px 0px;
+    padding: 4px 0px 4px 0px;
     height: 28px;
     overflow: auto;
 }
