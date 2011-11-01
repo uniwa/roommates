@@ -180,14 +180,14 @@
                     </div>
                 </li>
                 <li class='form-line form-buttons'>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch', 'class' => 'button'));
                         ?>
                     </div>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αποθήκευση', array('name' => 'savesearch', 'class' => 'button'));
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
@@ -197,14 +197,14 @@
             </div>
             <ul>
                 <li class='form-line form-buttons'>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('φόρτωση', array('name' => 'searchbyprefs', 'class' => 'button'));
+                            echo $this->Form->submit('αποθήκευση', array('name' => 'savesearch', 'class' => 'button'));
                         ?>
                     </div>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));
+                            echo $this->Form->submit('φόρτωση', array('name' => 'searchbyprefs', 'class' => 'button'));
                         ?>
                     </div>
                 </li>

@@ -308,7 +308,7 @@
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αποθήκευση', array('name' => 'save_search', 'class' => 'button'));
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
@@ -333,12 +333,12 @@
                 <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('φόρτωση', array('name' => 'load_prefs', 'class' => 'button'));
+                            echo $this->Form->submit('αποθήκευση', array('name' => 'save_search', 'class' => 'button'));
                         ?>
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
+                            echo $this->Form->submit('φόρτωση', array('name' => 'load_prefs', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
