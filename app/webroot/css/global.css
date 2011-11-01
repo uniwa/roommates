@@ -132,7 +132,7 @@ img{
 
 .menu-item,.menu-footer{
     height: 16px;
-    padding: 2px;
+    padding: 4px;
     overflow: hidden;
 /*    color: #617e80;
     text-shadow: #777777 1px 1px 0px;*/
@@ -146,6 +146,7 @@ img{
 
 .menu-main:hover,.menu-footer:hover{
     border-bottom: 3px solid #59a4d8;
+    background-color: #f0f0f0;
     cursor: pointer;
 }
 
@@ -157,15 +158,21 @@ img{
 
 .menu-user:hover{
     border-bottom: 3px solid #59a4d8;
+    background-color: #f0f0f0;
     cursor: pointer;
 }
 
-.menu-login,.menu-login:hover{
-    border-color: transparent;
+.menu-login{
+/*    border-color: transparent;*/
+}
+
+.menu-login:hover{
+    border-bottom: 3px solid #dc6865;
+    background-color: #f0f0f0;
 }
 
 .menu-selected{
-    border-bottom: 3px solid #59a4d8/*dc6865*/;
+    border-bottom: 3px solid #59a4d8;
     cursor: default;
 }
 
@@ -175,7 +182,7 @@ img{
 }
 
 .user-selected{
-    border-top: 3px solid #59a4d8/*dc6865*/;
+    border-top: 3px solid #59a4d8;
     cursor: default;
 }
 
@@ -195,7 +202,7 @@ img{
 
 #footer{
     clear: both;
-    background-color: #fff;
+    background-color: #ddd;
     margin: 8px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
     height: 148px;
@@ -203,7 +210,7 @@ img{
 
 #footer-main{
     position: relative;
-    background-color: #ddd;
+    background-color: #fff;
     height: 116px;
     margin: 0px 0px 0px 0px;
     padding: 0;
@@ -212,7 +219,7 @@ img{
 #footer-menu{
     margin: 12px 24px 0px 0px;
     padding: 0px 0px 0px 0px;
-    height: 24px;
+    height: 28px;
     overflow: auto;
 }
 
@@ -329,10 +336,11 @@ button{
 
 /*terms of use - faq*/
 .terms, .faq {
-    border: 1px solid white;
+/*    border: 1px solid white;*/
     padding: 45px;
-    background: white;
     margin: 30px auto;
+    text-align: justify;
+/*    background: white;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
@@ -340,8 +348,7 @@ button{
     -webkit-box-shadow: -6px 4px 30px #667;
     box-shadow: -6px 4px 30px #667;
     background: url("../img/diagonal-noise.png");
-    text-align: justify;
-	color:black;
+	color:black;*/
 }
 
 
@@ -362,9 +369,9 @@ button{
 }
 
 
-.terms  h1,.faq h1 {
-	font-size:22px;
-	font-weight: bold;
+.terms h1,.faq h1 {
+/*	font-size:22px;
+	font-weight: bold;*/
 }
 .faq p{
     padding: 15px;
@@ -372,7 +379,6 @@ button{
 
 /*faq list*/
 #faq{
-	font-size:14px;
 	padding:0 0 30px 30px;
 }
 #faq li{
@@ -386,9 +392,9 @@ button{
 }
 
 .terms h2, .faq h2 {
-	font-size:16px;
+	font-size:1.2em;
 	font-weight: bold;
-	color: #4F6CA6;
+/*	color: #4F6CA6;*/
 }
 
 .houseProfile { 
@@ -532,3 +538,4 @@ color: #667;
 .required{
     background:url(../img/required.gif) top left no-repeat;
 }
+

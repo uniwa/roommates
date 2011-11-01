@@ -37,7 +37,6 @@ class UsersController extends AppController{
 	}
 
     function terms(){
-
         /*When login or before filter snippet redirect to terms action
          *user by default takes a form with terms. if accept the terms
          *then terms action creates profile for new user else redirect
@@ -82,9 +81,13 @@ class UsersController extends AppController{
 
     }
 
-    function faq() {}
+    function faq() {
+        $this->set('title_for_layout','Συχνές ερωτήσεις');
+    }
 
-    function publicTerms() {}
+    function publicTerms() {
+        $this->set('title_for_layout','Όροι χρήσης');
+    }
 
     private function create_profile($id, $pref_id) {
         $this->Profile->begin();
