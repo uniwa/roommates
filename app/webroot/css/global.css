@@ -189,7 +189,6 @@ img{
 }
 
 #main{
-    margin: 0px 0px 0px 10px;
     padding: 8px;
     height: 100%;
     overflow: auto;
@@ -444,7 +443,7 @@ button{
 
 .image-list ul li {
     display: inline-block;
-    padding-right: 4px;
+    padding-left: 4px;
 }
 
 .house-info th {
