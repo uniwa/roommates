@@ -6,6 +6,10 @@
         font-weight: bold;
     }
     
+    .left-form ul{
+        margin: 0px 0px 20px 0px;
+    }
+    
     #leftbar{
         float: left;
         background-color: #eaeaea;
@@ -22,15 +26,26 @@
         width: 700px;
     }
 
+    .form-buttons{
+        margin: 10px auto;
+        width: 220px;
+    }
+    
     .form-elem{
         float: right;
         margin: 0px 8px 12px 0px;
         font-size: 1.2em;
     }
 
+    .form-submit{
+        float: left;
+    }
+
     .button{
         border: 0px;
-        height: 20px;
+        width: 100px;
+        height: 24px;
+        cursor: pointer;
     }
     
     .search-title{
@@ -164,28 +179,29 @@
                         ?>
                     </div>
                 </li>
-                <li class='form-line'>
+                <li class='form-line form-buttons'>
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch', 'class' => 'button'));
                         ?>
                     </div>
-                </li>
-                <li class='form-line'>
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->submit('αποθήκευση', array('name' => 'savesearch', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
-                <li class='form-line'>
+            </ul>
+            <div class='form-title'>
+                <h2>Οι προτιμήσεις μου</h2>
+            </div>
+            <ul>
+                <li class='form-line form-buttons'>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->submit('φόρτωση προτιμήσεων', array('name' => 'searchbyprefs', 'class' => 'button'));
+                            echo $this->Form->submit('φόρτωση', array('name' => 'searchbyprefs', 'class' => 'button'));
                         ?>
                     </div>
-                </li>
-                <li class='form-line'>
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));

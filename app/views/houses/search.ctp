@@ -25,9 +25,14 @@
         padding: 0px 0px 0px 0px;
         width: 620px;
     }
-
+    
+    .form-buttons{
+        margin: 10px auto;
+        width: 220px;
+    }
+    
     .form-line{
-        margin: 0px 12px 0px 0px;
+/*        margin: 0px 12px 0px 0px;*/
     }
     
     .form-elem{
@@ -55,6 +60,7 @@
         border: 0px;
         width: 100px;
         height: 24px;
+        cursor: pointer;
     }
     
     .search-title{
@@ -84,9 +90,7 @@
 
     .pagination ul li.current{
         border: 1px solid #59A4D8;
-/*        background-color: #59A4D8;*/
         padding: 0px 2px 0px 2px;
-/*        color: #fff;*/
     }
     
     .pagination ul li.disabled{
@@ -296,7 +300,7 @@
                         ?>
                     </div>
                 </li>
-                <li class='form-line'>
+                <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search', 'class' => 'button'));
@@ -326,7 +330,7 @@
                 <h2>Οι προτιμήσεις μου</h2>
             </div>
             <ul>
-                <li class='form-line'>
+                <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('φόρτωση', array('name' => 'load_prefs', 'class' => 'button'));
