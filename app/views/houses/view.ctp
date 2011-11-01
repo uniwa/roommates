@@ -46,7 +46,7 @@
                         );
                     /* empty placeholder without link to add image */
                     } else {
-                        echo $this->Html->image('addpic.png', array('alt' => 'add house image'));
+                        echo $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder'));
                     }
                     echo '<div class="imageactions">&nbsp;</div>';
                     echo "</li>\n";
