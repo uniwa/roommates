@@ -1,10 +1,21 @@
 <style>
+    .form-title{
+        clear: both;
+        margin: 20px 0px 12px 8px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    
+    .left-form ul{
+        margin: 0px 0px 20px 0px;
+    }
+    
     #leftbar{
         float: left;
         background-color: #eaeaea;
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
-        width: 240px;
+        width: 320px;
     }
 
     #main-inner{
@@ -12,41 +23,58 @@
         background-color: #eaeaea;
         margin: 0px 0px 0px 2px;
         padding: 0px 0px 0px 0px;
-        width: 680px;
+        width: 620px;
     }
 
+    .form-line{
+        margin: 0px 12px 0px 0px;
+    }
+    
     .form-elem{
         margin: 2px 0px 12px 8px;
         font-size: 1.2em;
     }
 
     .form-label{
-        margin: 2px 4px 2px 0px;
+        float: left;
+        width: 80px;
+/*        margin: 2px 4px 2px 0px;*/
     }
 
     .form-input{
+        float: left;
+        width: 200px;
+        overflow: no-scroll;
+    }
+
+    .form-submit{
         float: left;
     }
 
     .button{
         border: 0px;
-        height: 20px;
+        width: 100px;
+        height: 24px;
     }
     
     .search-title{
-        margin: 12px 0px 8px 48px;
+/*        margin: 12px 0px 8px 48px;*/
+        margin: 12px auto 0px auto;
+        text-align: center;
         font-size: 1.2em;
         font-weight: bold;
     }
 
     .search-subtitle{
-        margin: 0px 0px 12px 64px;
+/*        margin: 0px 0px 12px 64px;*/
+        margin: 8px auto 24px auto;
+        text-align: center;
         font-size: 1.2em;
         font-style: italic;
     }
     
     .pagination{
-        margin: 0px auto;
+        margin: 0px auto 12px auto;
         text-align: center;
     }
     
@@ -55,9 +83,10 @@
     }
 
     .pagination ul li.current{
-        background-color: #59A4D8;
+        border: 1px solid #59A4D8;
+/*        background-color: #59A4D8;*/
         padding: 0px 2px 0px 2px;
-        color: #fff;
+/*        color: #fff;*/
     }
     
     .pagination ul li.disabled{
@@ -92,7 +121,9 @@
     ?>
 
         <div class='left-form'>
-            <h2>Χαρακτηριστικά σπιτιών</h2>
+            <div class='form-title'>
+                <h2>Χαρακτηριστικά σπιτιών</h2>
+            </div>
             <ul>
                 <li class='form-line'>
                     <div class='form-elem form-label'>
@@ -176,21 +207,10 @@
                         ?>
                     </div>
                 </li>
-                <li class='form-line'>
-                    <div class='form-elem form-label'>
-                        Ταξινόμηση ανά:
-                    </div>
-                    <div class='form-elem form-input'>
-                        <?php
-                            echo $this->Form->input('order_by', array('label' => '',
-                                'options' => $order_options,
-                                'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
-                                'class' => 'input-elem'));
-                        ?>
-                    </div>
-                </li>
             </ul>
-            <h2>Χαρακτηριστικά συγκατοίκων</h2>
+            <div class='form-title'>
+                <h2>Χαρακτηριστικά συγκατοίκων</h2>
+            </div>
             <ul>
                 <li class='form-line'>
                     <div class='form-elem form-label'>
@@ -277,28 +297,42 @@
                     </div>
                 </li>
                 <li class='form-line'>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search', 'class' => 'button'));
                         ?>
                     </div>
-                </li>
-                <li class='form-line'>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('αποθήκευση', array('name' => 'save_search', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ταξινόμηση 
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->submit('φόρτωση προτιμήσεων', array('name' => 'load_prefs', 'class' => 'button'));
+                            echo $this->Form->input('order_by', array('label' => '',
+                                'options' => $order_options,
+                                'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
+                                'class' => 'input-elem'));
                         ?>
                     </div>
                 </li>
+            </ul>
+            <div class='form-title'>
+                <h2>Οι προτιμήσεις μου</h2>
+            </div>
+            <ul>
                 <li class='form-line'>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('φόρτωση', array('name' => 'load_prefs', 'class' => 'button'));
+                        ?>
+                    </div>
+                    <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
                         ?>
@@ -321,9 +355,9 @@
             $count = $this->Paginator->counter(array('format' => '%count%'));
             $foundmessage = 'Δεν βρέθηκαν σπίτια';
             if($count == 1) {
-                echo 'Βρέθηκε '.$count.' σπίτι';
+                $foundmessage = 'Βρέθηκε '.$count.' σπίτι';
             }else{
-                echo 'Βρέθηκαν '.$count.' σπίτια';
+                $foundmessage = 'Βρέθηκαν '.$count.' σπίτια';
             }
         ?>
         <div class='search-subtitle'>
@@ -359,7 +393,7 @@
                             if(!empty($house['Image']['location'])) {
                                 $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
                             }
-							echo $this->Html->image($house_image, array('alt' => 'εικόνα '.$house['House']['address'],/*'height' => 100*/));
+							echo $this->Html->image($house_image, array('alt' => 'εικόνα '.$house['House']['address']));
 						?>
                     </div>
                     <div class='result-desc'>

@@ -1,10 +1,17 @@
 <style>
+    .form-title{
+        clear: both;
+        margin: 16px 0px 12px 8px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    
     #leftbar{
         float: left;
         background-color: #eaeaea;
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
-        width: 180px;
+        width: 220px;
     }
 
     #main-inner{
@@ -12,7 +19,7 @@
         background-color: #eaeaea;
         margin: 0px 0px 0px 2px;
         padding: 0px 0px 0px 0px;
-        width: 740px;
+        width: 700px;
     }
 
     .form-elem{
@@ -77,6 +84,9 @@
     ?>
 
         <div class='left-form'>
+            <div class='form-title'>
+                <h2>Χαρακτηριστικά συγκατοίκων</h2>
+            </div>
             <ul>
                 <li class='form-line'>
                     <div class='form-elem form-input'>
