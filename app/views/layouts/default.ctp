@@ -6,7 +6,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,greek' rel='stylesheet' type='text/css'>
     <base href="<?php echo Router::url('/'); ?>"/>
     <?php
-//        echo $this->Html->meta('Σπίτια', '/houses/index.rss', array('type' => 'rss'));
+        echo $this->Html->meta('Σπίτια', '/houses/index.rss', array('type' => 'rss'));
         echo $this->Html->meta('favicon.ico', 'img/favicon.ico', array('type' => 'icon'));
         echo $this->Html->css('global');
         echo $this->Html->script('jquery');
