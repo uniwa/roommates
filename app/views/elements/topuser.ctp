@@ -7,7 +7,7 @@
             ?>
         </li>
 
-        <?php if ($selected_action == 'houses_view' ) { ?>
+        <?php if (isset($selected_action) && $selected_action == 'houses_view' ) { ?>
             <li class='menu-item menu-user menu-selected'>
         <?php } else { ?>
             <li class='menu-item menu-user'>
@@ -24,7 +24,7 @@
             ?>
             </li>
 
-        <?php if ($selected_action == 'profiles_view' ) { ?>
+        <?php if (isset($selected_action) && $selected_action == 'profiles_view' ) { ?>
             <li class='menu-item menu-user menu-selected'>
         <?php } else { ?>
             <li class='menu-item menu-user'>
