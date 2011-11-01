@@ -123,6 +123,10 @@ class UsersController extends AppController{
         $pref["Preference"]["pref_pet"] = 2;
         $pref["Preference"]["pref_child"] = 2;
         $pref["Preference"]["pref_couple"] = 2;
+        /* house preferences - only fields that don't default to NULL */
+        $pref["Preference"]["pref_furnitured"] = 2;
+        $pref["Preference"]["pref_has_photo"] = 0;
+        $pref["Preference"]["pref_disability_facilities"] = 0;
 
         if ( $this->Preference->save($pref) === False ) {
             $this->Preference->rollback();
