@@ -528,3 +528,7 @@ color: #667;
 #toTop:active, #toTop:focus {
 	outline:none;
 }
+
+.required{
+    background:url(../img/required.gif) top left no-repeat;
+}
