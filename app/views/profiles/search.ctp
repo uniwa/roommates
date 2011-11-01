@@ -1,4 +1,26 @@
 <style>
+    #leftbar{
+        float: left;
+        background-color: #eaeaea;
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        width: 180px;
+    }
+
+    #main-inner{
+        float: left;
+        background-color: #eaeaea;
+        margin: 0px 0px 0px 2px;
+        padding: 0px 0px 0px 0px;
+        width: 740px;
+    }
+
+    .form-elem{
+        float: right;
+        margin: 0px 8px 12px 0px;
+        font-size: 1.2em;
+    }
+
     .button{
         border: 0px;
         height: 20px;

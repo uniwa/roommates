@@ -194,22 +194,6 @@ img{
     overflow: auto;
 }
 
-#leftbar{
-    float: left;
-    background-color: #eaeaea;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    width: 180px;
-}
-
-#main-inner{
-    float: left;
-    background-color: #eaeaea;
-    margin: 0px 0px 0px 2px;
-    padding: 0px 0px 0px 0px;
-    width: 740px;
-}
-
 #footer{
     clear: both;
     background-color: #fff;
@@ -293,19 +277,6 @@ img{
 
 .form-line{
     clear: both;
-}
-
-.form-elem{
-    float: right;
-    margin: 0px 8px 12px 0px;
-    font-size: 1.2em;
-}
-
-.form-label{
-    margin: 2px 4px 0px 0px;
-}
-
-.form-input{
 }
 
 .form-input input.input-elem{
