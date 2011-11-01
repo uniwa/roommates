@@ -34,13 +34,20 @@
     <div class="image-list">
         <ul>
             <?php
+                /* image placeholder */
                 for ($i = 1; $i <= $empty_slots; $i++) {
                     echo '<li class="liimage">';
-                    echo $this->Html->link(
-                        $this->Html->image('addpic.png', array('alt' => 'add house image')),
-                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                        array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-                    );
+                    /* if we have access placeholder is a link to 'add image' */
+                    if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                        echo $this->Html->link(
+                            $this->Html->image('addpic.png', array('alt' => 'add house image')),
+                            array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                            array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                        );
+                    /* empty placeholder without link to add image */
+                    } else {
+                        echo $this->Html->image('addpic.png', array('alt' => 'add house image'));
+                    }
                     echo '<div class="imageactions">&nbsp;</div>';
                     echo "</li>\n";
                 }
@@ -68,6 +75,8 @@
                             echo $this->Html->link('Προεπιλεγμένη',
                                     array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
                                     array('class' => 'thumb_img_thumb'), null);
+                        } else {
+                            echo '<div class="imageactions">&nbsp;</div>';
                         }
                     ?>
                 </div>
@@ -77,9 +86,11 @@
 
         <div class="actions">
         <?php
+        /*
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
             }
+        */
         ?>
         </div>
     </div> <!-- end image-list -->
