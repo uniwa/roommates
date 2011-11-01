@@ -53,6 +53,9 @@
                 }
                 $i = 0;
                 foreach ($images as $image):
+                    /* skip image if is the default one
+                       the default image is shown on the left side of the image bar
+                    */
                     if ($image['Image']['location'] == $default_image_location) {
                         continue;
                     }
@@ -67,6 +70,7 @@
 
                 <div class="imageactions">
                     <?php
+                        /* image actions: set as default and delete */
                         if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                             echo $this->Html->link(__('Διαγραφή', true),
                                 array('controller' => 'images', 'action' => 'delete',
@@ -76,6 +80,7 @@
                                     array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
                                     array('class' => 'thumb_img_thumb'), null);
                         } else {
+                            /* dummy div to align image actions */
                             echo '<div class="imageactions">&nbsp;</div>';
                         }
                     ?>
