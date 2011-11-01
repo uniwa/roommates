@@ -1,3 +1,13 @@
+<?php
+    /* fancybox: js image gallery  */
+    echo $this->Html->script('jquery.fancybox-1.3.4.pack');
+    echo $this->Html->script('jquery.easing-1.3.pack');
+    echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
+    echo $this->Html->script('jQuery.fileinput');
+    echo $this->Html->script('jquery.autogrowtextarea');
+    echo $this->Html->script('main');
+    echo $this->Html->css('fancybox/jquery.fancybox-1.3.4.css', 'stylesheet', array("media"=>"all" ), false);
+?>
 <div class="house-gallery">
     <div class="default-image">
         <?php

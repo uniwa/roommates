@@ -6,7 +6,7 @@ class HousesController extends AppController {
 
     var $name = 'Houses';
     var $components = array('RequestHandler', 'Token');
-    var $helpers = array('Text', 'Time');
+    var $helpers = array('Text', 'Time', 'Html');
     var $paginate = array('limit' => 15);
 
     function index() {
