@@ -1,3 +1,13 @@
+<?php echo $this->Html->script('jquery.easing.1.3.js'); ?>
+<?php echo $this->Html->script('jquery.ui.totop.js'); ?>
+<script type="text/javascript">
+		$(document).ready(function() {
+			$().UItoTop({ easingType: 'easeOutQuart' });
+		});
+</script>
+
+
+
  <h1>ΥΠΗΡΕΣΙΑ ΕΥΡΕΣΗΣ ΣΥΓΚΑΤΟΙΚΩΝ - ΟΡΟΙ ΧΡΗΣΗΣ</h1>
 
         <p>
