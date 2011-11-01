@@ -118,6 +118,11 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'profiles_view');
+
         $this->set('title_for_layout','Επεξεργασία προφίλ');
         $this->checkExistence($id);
     	$this->checkAccess( $id );
