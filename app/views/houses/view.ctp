@@ -2,6 +2,7 @@
     <div class="default-image">
         <?php
         $empty_slots = 4 - count($images);
+        /* defaukt image */
         if (isset($images[0])) {
             echo $this->Html->link(
                     $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $default_image_location, array('alt' => 'house image')),
@@ -18,16 +19,20 @@
                 echo "</div>";
             }
         }
+        /* if don't have an image put placeholder */
         else {
-            /*echo $this->Html->image('homedefault.png',
-                                    array('alt' => 'house image','class' => 'defaultimg'));*/
-            echo $this->Html->link(
-                    $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
-                    array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                    array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-                    );
+            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                /* placeholder with link to add image */
+                echo $this->Html->link(
+                        $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
+                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                        array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                        );
+            } else {
+                /* empty placeholder without link to add image */
+                echo $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder'));
+            }
             $empty_slots -= 1;
-
         }
         ?>
     </div>
