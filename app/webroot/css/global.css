@@ -57,14 +57,13 @@ table{
 }
 
 body{
-
+    background-color: #f0f0f0;
     font-family: 'Open Sans', Verdana, Tahoma, Arial, sans-serif;
     font-size: 12px;
     margin: 0;
     padding: 0;
     height: 100%;
     color: #59a4d8;
-	background: rgba(30, 30, 30, 0.95);
 }
 
 img{
@@ -90,7 +89,7 @@ img{
     left: 0px;
     width: 100%;
     height: 40px;
-    background: rgba(30, 30, 30, 0.95);
+    background-color: #ddd;
 }
 
 #top-menu{
@@ -194,22 +193,6 @@ img{
     overflow: auto;
 }
 
-#leftbar{
-    float: left;
-    background-color: #eaeaea;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    width: 180px;
-}
-
-#main-inner{
-    float: left;
-    background-color: #eaeaea;
-    margin: 0px 0px 0px 2px;
-    padding: 0px 0px 0px 0px;
-    width: 740px;
-}
-
 #footer{
     clear: both;
     background-color: #fff;
@@ -293,19 +276,6 @@ img{
 
 .form-line{
     clear: both;
-}
-
-.form-elem{
-    float: right;
-    margin: 0px 8px 12px 0px;
-    font-size: 1.2em;
-}
-
-.form-label{
-    margin: 2px 4px 0px 0px;
-}
-
-.form-input{
 }
 
 .form-input input.input-elem{
