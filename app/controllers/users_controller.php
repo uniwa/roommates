@@ -40,6 +40,10 @@ class UsersController extends AppController{
 
     function terms(){
 
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'users_terms');
+
         /*When login or before filter snippet redirect to terms action
          *user by default takes a form with terms. if accept the terms
          *then terms action creates profile for new user else redirect
@@ -84,9 +88,17 @@ class UsersController extends AppController{
 
     }
 
-    function faq() {}
+    function faq() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'users_faq');
+    }
 
-    function publicTerms() {}
+    function publicTerms() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'users_terms');
+    }
 
     private function create_profile($id, $pref_id) {
         $this->Profile->begin();

@@ -1,7 +1,7 @@
 <div id='top-menu'>
     <ul>
 
-        <?php if ($selected_action == 'profiles_search' ) { ?>
+        <?php if (isset($selected_action) && $selected_action == 'profiles_search' ) { ?>
             <li class='menu-item menu-main menu-selected'>
         <?php } else { ?>
             <li class='menu-item menu-main'>
@@ -13,7 +13,7 @@
                 ?>
             </li>
 
-        <?php if ($selected_action == 'houses_search') { ?>
+        <?php if (isset($selected_action) && $selected_action == 'houses_search') { ?>
             <li class='menu-item menu-main menu-selected'>
         <?php } else { ?>
             <li class='menu-item menu-main'>

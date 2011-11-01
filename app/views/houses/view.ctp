@@ -1,3 +1,13 @@
+<?php
+    /* fancybox: js image gallery  */
+    echo $this->Html->script('jquery.fancybox-1.3.4.pack');
+    echo $this->Html->script('jquery.easing-1.3.pack');
+    echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
+    echo $this->Html->script('jQuery.fileinput');
+    echo $this->Html->script('jquery.autogrowtextarea');
+    echo $this->Html->script('main');
+    echo $this->Html->css('fancybox/jquery.fancybox-1.3.4.css', 'stylesheet', array("media"=>"all" ), false);
+?>
 <div class="house-gallery">
     <div class="default-image">
         <?php
@@ -26,7 +36,7 @@
                 echo $this->Html->link(
                         $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
                         array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                        array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                        array('class' => '', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
                         );
             } else {
                 /* empty placeholder without link to add image */
@@ -47,7 +57,7 @@
                         echo $this->Html->link(
                             $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
                             array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                            array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                            array('class' => '', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
                         );
                     /* empty placeholder without link to add image */
                     } else {
