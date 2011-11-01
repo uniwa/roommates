@@ -1,7 +1,6 @@
 <?php echo $this->Html->script('jquery.easing.1.3.js'); ?>
 <?php echo $this->Html->script('jquery.ui.totop.js'); ?>
 
-
 <script type="text/javascript">
 		$(document).ready(function() {
 			$().UItoTop({ easingType: 'easeOutQuart' });
@@ -10,11 +9,10 @@
 <h1 id="top">Συχνές ερωτήσεις</h1>
 <br>
 <h2>Περιεχόμενα</h2>
+    <ul id="faq"><li>
 <?php
     $prefix = 'faq#';
     $return = $this->Html->link('Επιστροφή', $prefix.'top');
-
-    echo '<ul id="faq"><li>';
 
     echo $this->Html->link(
             'Πως μπορώ να αλλάξω τα στοιχεία και τις προτιμήσεις μου;',
@@ -34,11 +32,8 @@
     echo $this->Html->link(
             'Πως μπορώ να προσθέσω εικόνες για το σπίτι μου;',
             $prefix.'faq4');
-<<<<<<< HEAD
+
     echo "</li><li>";
-=======
-    echo "<br/>";
->>>>>>> df38cfdfa5dd709268ba9583499db93a13618bc5
 
     echo $this->Html->link(
             'Πως μπορώ να ορίσω προεπιλεγμένη εικόνα σπιτιού για να εμφανίζεται
@@ -81,29 +76,20 @@
             'Πως μπορώ να αλλάξω τις προτιμήσεις μου για την αναζήτηση
                                                                 συγκατοίκων;',
             $prefix.'faq13');
-<<<<<<< HEAD
+
     echo "</li><li>";
-=======
-    echo "<br/>";
->>>>>>> df38cfdfa5dd709268ba9583499db93a13618bc5
 
     echo $this->Html->link(
             'Τι περιέχει το δημόσιο RSS feed;',
             $prefix.'faq14');
-<<<<<<< HEAD
+
     echo "</li><li>";
-=======
-    echo "<br/>";
->>>>>>> df38cfdfa5dd709268ba9583499db93a13618bc5
 
     echo $this->Html->link(
             'Τι περιέχει το προσωποποιημένο RSS feed;',
             $prefix.'faq15');
-<<<<<<< HEAD
+
     echo "</li>";
-=======
-    echo "<br/>";
->>>>>>> df38cfdfa5dd709268ba9583499db93a13618bc5
 ?>
 </ul>
 
@@ -219,8 +205,4 @@
 του. Το RSS αυτό μπορούν να το λάβουν μόνο όσοι είναι εγγεγραμμένοι στην
 υπηρεσία, κάνοντας κλικ στο κουμπί RSS στο προφίλ τους.
 <?php echo $return; ?>
-<<<<<<< HEAD
 </p>
-=======
-</p>
->>>>>>> df38cfdfa5dd709268ba9583499db93a13618bc5
