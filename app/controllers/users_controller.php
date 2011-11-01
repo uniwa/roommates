@@ -10,6 +10,8 @@ class UsersController extends AppController{
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
 
+        $this->Auth->allow('publicTerms');
+        $this->Auth->allow('faq');
     }
 
     function login() {

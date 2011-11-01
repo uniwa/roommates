@@ -232,7 +232,7 @@ a{outline:none}
         float:right;
         position:relative;
         top:16.5px;
-        background:#D1EEEE;
+        background:#D1EEEE;;
     }
 
     #authMessage.message {
