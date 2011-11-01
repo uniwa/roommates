@@ -159,19 +159,19 @@
 					}
 					else{
 						if($age_min){
-					?>Ηλικία από <span class='profile-strong'><?php
+					?>Ηλικία από: <span class='profile-strong'><?php
 							echo $profile['Preference']['age_min']." ";
 						}
 						if($age_max){
-					?></span>μέχρι <span class='profile-strong'><?php
+					?></span>μέχρι: <span class='profile-strong'><?php
 							echo $profile['Preference']['age_max'];
 						}
 					}
 				}elseif (isset($age_min) && is_null($age_max)){
-                    ?>Ηλικία από <span class='profile-strong'><?php
+                    ?>Ηλικία από: <span class='profile-strong'><?php
 							echo $profile['Preference']['age_min']." ";
 				}elseif (isset($age_max) && is_null($age_min)){
-                    ?>Ηλικία μέχρι <span class='profile-strong'><?php
+                    ?>Ηλικία μέχρι: <span class='profile-strong'><?php
 							echo $profile['Preference']['age_max']." ";
                 }
 			?></span><br />
