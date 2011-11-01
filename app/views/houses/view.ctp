@@ -22,7 +22,7 @@
             /*echo $this->Html->image('homedefault.png',
                                     array('alt' => 'house image','class' => 'defaultimg'));*/
             echo $this->Html->link(
-                    $this->Html->image('addpic.png', array('alt' => 'add house image')),
+                    $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
                     array('controller' => 'images', 'action' =>'add', $house['House']['id']),
                     array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
                     );
@@ -34,18 +34,28 @@
     <div class="image-list">
         <ul>
             <?php
+                /* image placeholder */
                 for ($i = 1; $i <= $empty_slots; $i++) {
                     echo '<li class="liimage">';
-                    echo $this->Html->link(
-                        $this->Html->image('addpic.png', array('alt' => 'add house image')),
-                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                        array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-                    );
+                    /* if we have access placeholder is a link to 'add image' */
+                    if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
+                        echo $this->Html->link(
+                            $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
+                            array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                            array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
+                        );
+                    /* empty placeholder without link to add image */
+                    } else {
+                        echo $this->Html->image('addpic.png', array('alt' => 'add house image'));
+                    }
                     echo '<div class="imageactions">&nbsp;</div>';
                     echo "</li>\n";
                 }
                 $i = 0;
                 foreach ($images as $image):
+                    /* skip image if is the default one
+                       the default image is shown on the left side of the image bar
+                    */
                     if ($image['Image']['location'] == $default_image_location) {
                         continue;
                     }
@@ -60,6 +70,7 @@
 
                 <div class="imageactions">
                     <?php
+                        /* image actions: set as default and delete */
                         if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                             echo $this->Html->link(__('Διαγραφή', true),
                                 array('controller' => 'images', 'action' => 'delete',
@@ -68,6 +79,9 @@
                             echo $this->Html->link('Προεπιλεγμένη',
                                     array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
                                     array('class' => 'thumb_img_thumb'), null);
+                        } else {
+                            /* dummy div to align image actions */
+                            echo '<div class="imageactions">&nbsp;</div>';
                         }
                     ?>
                 </div>
@@ -77,9 +91,11 @@
 
         <div class="actions">
         <?php
+        /*
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
             }
+        */
         ?>
         </div>
     </div> <!-- end image-list -->

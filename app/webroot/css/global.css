@@ -400,7 +400,7 @@ button{
     margin-bottom: 6px;
     overflow: hidden;
     height: 100%;
-    border: 1px dashed;
+    /*border: 1px dashed;*/
     padding: 4px;
 }
 
@@ -424,6 +424,12 @@ button{
 
 .house-info td {
     padding: 0 5px;
+}
+
+.img-placeholder {
+    border: 1px dashed #9F9E9E;
+    height: 100;
+    overflow: hidden;
 }
 
 /*!terms fag*/
