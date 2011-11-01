@@ -1,30 +1,18 @@
 <?php echo $this->Html->script('jquery.easing.1.3.js'); ?>
 <?php echo $this->Html->script('jquery.ui.totop.js'); ?>
 
-
 <script type="text/javascript">
 		$(document).ready(function() {
-			/*
-			var defaults = {
-	  			containerID: 'moccaUItoTop', // fading element id
-				containerHoverClass: 'moccaUIhover', // fading element hover class
-				scrollSpeed: 1200,
-				easingType: 'linear'
-	 		};
-			*/
-			
 			$().UItoTop({ easingType: 'easeOutQuart' });
-
 		});
 	</script>
 <h1 id="top">Συχνές ερωτήσεις</h1>
 <br>
 <h2>Περιεχόμενα</h2>
+    <ul id="faq"><li>
 <?php
     $prefix = 'faq#';
     $return = $this->Html->link('Επιστροφή', $prefix.'top');
-
-    echo '<ul id="faq"><li>';
 
     echo $this->Html->link(
             'Πως μπορώ να αλλάξω τα στοιχεία και τις προτιμήσεις μου;',
@@ -44,6 +32,7 @@
     echo $this->Html->link(
             'Πως μπορώ να προσθέσω εικόνες για το σπίτι μου;',
             $prefix.'faq4');
+
     echo "</li><li>";
 
     echo $this->Html->link(
@@ -87,16 +76,19 @@
             'Πως μπορώ να αλλάξω τις προτιμήσεις μου για την αναζήτηση
                                                                 συγκατοίκων;',
             $prefix.'faq13');
+
     echo "</li><li>";
 
     echo $this->Html->link(
             'Τι περιέχει το δημόσιο RSS feed;',
             $prefix.'faq14');
+
     echo "</li><li>";
 
     echo $this->Html->link(
             'Τι περιέχει το προσωποποιημένο RSS feed;',
             $prefix.'faq15');
+
     echo "</li>";
 ?>
 </ul>

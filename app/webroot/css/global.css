@@ -188,26 +188,9 @@ img{
 }
 
 #main{
-    margin: 0px 0px 0px 10px;
     padding: 8px;
     height: 100%;
     overflow: auto;
-}
-
-#leftbar{
-    float: left;
-    background-color: #eaeaea;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    width: 180px;
-}
-
-#main-inner{
-    float: left;
-    background-color: #eaeaea;
-    margin: 0px 0px 0px 2px;
-    padding: 0px 0px 0px 0px;
-    width: 740px;
 }
 
 #footer{
@@ -293,19 +276,6 @@ img{
 
 .form-line{
     clear: both;
-}
-
-.form-elem{
-    float: right;
-    margin: 0px 8px 12px 0px;
-    font-size: 1.2em;
-}
-
-.form-label{
-    margin: 2px 4px 0px 0px;
-}
-
-.form-input{
 }
 
 .form-input input.input-elem{
@@ -429,8 +399,8 @@ button{
     margin-bottom: 6px;
     overflow: hidden;
     height: 100%;
-    border: 1px dashed;
-    padding: 3px;
+    /*border: 1px dashed;*/
+    padding: 4px;
 }
 
 .default-image {
@@ -443,8 +413,8 @@ button{
 
 .image-list ul li {
     display: inline-block;
+    padding-left: 4px;
 }
-
 
 .house-info th {
     text-align: right;
@@ -455,14 +425,23 @@ button{
     padding: 0 5px;
 }
 
+.img-placeholder {
+    border: 1px dashed #9F9E9E;
+    height: 100;
+    overflow: hidden;
+}
+
 /*!terms fag*/
 
 /*footer logos*/
 
 .logos{
 	margin:0 auto;
-	width:580px;
-	padding:10px
+	width:550px;
+	padding:10px;
+
+font-size: 10px;
+color: #667;
 }
 /*!footer logos*/
 
@@ -477,7 +456,6 @@ button{
 
 
 /*profile*/
-
 
 .frame {
     border-style: solid;
@@ -549,4 +527,8 @@ button{
 
 #toTop:active, #toTop:focus {
 	outline:none;
+}
+
+.required{
+    background:url(../img/required.gif) top left no-repeat;
 }

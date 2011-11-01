@@ -1,8 +1,49 @@
+<style>
+select{
+        font-size: 12px;
+}
 
-<h2>Επεξεργασία κατοικίας</h2>
+#HouseAddForm label, #HouseEditForm label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #21759B;
+    line-height: 19px;
+    min-width: 120px;
+    display: inline-block;
+    padding-left: 10px;
+}
+
+#HouseAddForm input[type=text], #HouseAddForm textarea, #HouseEditForm input[type=text], #HouseEditForm textarea {
+    padding: 4px;
+    border: solid 1px #C6C6C6;
+    border-bottom: solid 1px #E3E3E3;
+    color: #333;
+    -moz-box-shadow: inset 0 4px 6px #ccc;
+    -webkit-box-shadow: inset 0 4px 6px #ccc;
+    box-shadow: inset 0 4px 6px #ccc;
+
+}
+
+#HouseAddForm input[type=text], #HouseEditForm input[type=text] {
+    width: 50px;
+    text-align: right;
+}
+
+.textarea label {
+    float: left;
+}
+
+.input {
+    padding: 3px 0;
+}
+
+
+</style>
+
+<!--<h2 class='title'>Επεξεργασία κατοικίας</h2>-->
+
 <?php
 echo $form->create('House', array('action' => 'edit'));
-
 echo $form->input('house_type_id', array('label' => 'Τύπος κατοικίας', 'empty' => 'Επιλέξτε...'));
 echo $form->input('municipality_id', array('label' => 'Δήμος', 'empty' => 'Επιλέξτε...'));
 echo $form->input('address', array('label' => 'Διεύθυνση','type' => 'textarea' ,"rows" => "2"));
@@ -28,12 +69,9 @@ echo $form->input('disability_facilities', array('label' => 'Προσβάσιμ�
 echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης','after' => 'μήνες'));
 echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
-
 echo $form->input('currently_hosting', array('label' => 'Διαμένουν','type' => 'select', 'options' => $places_availability));
 echo $form->input('total_places', array('label' => 'Μπορούν συνολικά να συγκατοικήσουν','type' => 'select', 'options' => $places_availability));
 echo $this->Form->input('visible', array('label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
-
 echo $form->input('id', array('type' => 'hidden'));
-
 echo $form->end('Αποθήκευση');
 ?>

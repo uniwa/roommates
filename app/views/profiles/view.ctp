@@ -30,9 +30,6 @@
 				$weare = $profile['Profile']['we_are'];
 				$mates_wanted = $profile['Profile']['max_roommates'];
 
-				//$koko = count($profile['House']);
-				//echo '<pre>'; print_r($koko); echo '</pre>'; die();
-
 				echo Sanitize::html($name, array('remove' => true));
 
 				function echoDetail($title, $option){
@@ -131,7 +128,7 @@
 <div id='bottom-frame' class='frame'>
 	<div class='frame-container'>
 		<div class='title'>
-			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
+			<h2>Προτιμήσεις συγκατοίκου</h2>
 		</div>
 		<div id='profile-preferences' class='options profile-big'>
 			<?php
@@ -185,7 +182,7 @@
 			?></span>
 		</div>
 		<div class='title'>
-			<h2>Κριτήρια επιλογής σπιτιού</h2>
+			<h2>Προτιμήσεις σπιτιού</h2>
 		</div>
 		<div id='house-preferences' class='options profile-big'>
 			<?php
