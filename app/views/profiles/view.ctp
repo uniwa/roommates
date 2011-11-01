@@ -1,7 +1,8 @@
 <div id='top-frame' class='frame'>
 	<div class='frame-container'>
-        <div class="personalized-rss">
-            <?php
+        <?php
+            if ($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')) {
+                echo '<div class="personalized-rss">';
                 echo $this->Html->link(
                     'Προσωποποιημένο RSS',
                     array(
@@ -10,8 +11,9 @@
                         '?' => array('token' => $profile["Profile"]["token"])
                     )
                 );
-            ?>
-        </div>
+                echo '</div>';
+            }
+        ?>
 		<div id='top-title' class='title'>
 			<h1>
 			<?php
