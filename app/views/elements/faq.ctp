@@ -6,8 +6,7 @@
 			$().UItoTop({ easingType: 'easeOutQuart' });
 		});
 	</script>
-<h1 id="top">Συχνές ερωτήσεις</h1>
-<br>
+
 <h2>Περιεχόμενα</h2>
     <ul id="faq"><li>
 <?php
