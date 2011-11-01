@@ -30,9 +30,6 @@
 				$weare = $profile['Profile']['we_are'];
 				$mates_wanted = $profile['Profile']['max_roommates'];
 
-				//$koko = count($profile['House']);
-				//echo '<pre>'; print_r($koko); echo '</pre>'; die();
-
 				echo Sanitize::html($name, array('remove' => true));
 
 				function echoDetail($title, $option){
@@ -131,7 +128,7 @@
 <div id='bottom-frame' class='frame'>
 	<div class='frame-container'>
 		<div class='title'>
-			<h2>Κριτήρια επιλογής συγκατοίκου</h2>
+			<h2>Προτιμήσεις συγκατοίκου</h2>
 		</div>
 		<div id='profile-preferences' class='options profile-big'>
 			<?php
@@ -149,9 +146,8 @@
 				$pet = getPrefValue($prefpet, $ynioptions);
 				$child = getPrefValue($prefchild, $ynioptions);
 				$couple = getPrefValue($prefcouple, $ynioptions);
-
+        
 			?></span>
-			Ηλικία:
 			<?php
 				$age_min = $profile['Preference']['age_min'];
 				$age_max = $profile['Preference']['age_max'];
@@ -163,29 +159,32 @@
 					}
 					else{
 						if($age_min){
-					?>από <span class='profile-strong'><?php
+					?>Ηλικία από: <span class='profile-strong'><?php
 							echo $profile['Preference']['age_min']." ";
 						}
 						if($age_max){
-					?></span>μέχρι <span class='profile-strong'><?php
+					?></span>μέχρι: <span class='profile-strong'><?php
 							echo $profile['Preference']['age_max'];
 						}
 					}
-				}else{
-					?><span class='profile-strong'><?php
-							echo 'αδιάφορο';
-				}
+				}elseif (isset($age_min) && is_null($age_max)){
+                    ?>Ηλικία από: <span class='profile-strong'><?php
+							echo $profile['Preference']['age_min']." ";
+				}elseif (isset($age_max) && is_null($age_min)){
+                    ?>Ηλικία μέχρι: <span class='profile-strong'><?php
+							echo $profile['Preference']['age_max']." ";
+                }
 			?></span><br />
 			<?php
-				echoDetail('Φύλο', $gender);
-				echoDetail('Καπνιστής', $smoker);
-				echoDetail('Κατοικίδιο', $pet);
-				echoDetail('Παιδί', $child);
-				echoDetail('Ζευγάρι', $couple);
+                if ($prefgender != 2) echoDetail('Φύλο', $gender);
+				if ($prefgender != 2) echoDetail('Καπνιστής', $smoker);
+				if ($prefgender != 2) echoDetail('Κατοικίδιο', $pet);
+				if ($prefgender != 2) echoDetail('Παιδί', $child);
+				if ($prefgender != 2) echoDetail('Ζευγάρι', $couple);
 			?></span>
 		</div>
 		<div class='title'>
-			<h2>Κριτήρια επιλογής σπιτιού</h2>
+			<h2>Προτιμήσεις σπιτιού</h2>
 		</div>
 		<div id='house-preferences' class='options profile-big'>
 			<?php
