@@ -397,7 +397,8 @@ button{
 /*	color: #4F6CA6;*/
 }
 
-.houseProfile { 
+/* house section */
+.houseProfile {
     clear: both;
 }
 
@@ -436,6 +437,15 @@ button{
     height: 100;
     overflow: hidden;
 }
+
+.houseactions {
+    margin-top: 15px;
+}
+.houseactions a {
+    padding-right: 10px;
+    font-weight: bold;
+}
+/* end - house section */
 
 /*!terms fag*/
 
