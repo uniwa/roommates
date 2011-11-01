@@ -1,4 +1,44 @@
+<style>
+select{
+        font-size: 12px;
+}
 
+#ProfileAddForm label, #ProfileEditForm label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #21759B;
+    line-height: 19px;
+    min-width: 120px;
+    display: inline-block;
+    padding-left: 10px;
+}
+
+#ProfileAddForm input[type=text], #ProfileAddForm textarea, #ProfileEditForm input[type=text], #ProfileEditForm textarea {
+    padding: 4px;
+    border: solid 1px #C6C6C6;
+    border-bottom: solid 1px #E3E3E3;
+    color: #333;
+    -moz-box-shadow: inset 0 4px 6px #ccc;
+    -webkit-box-shadow: inset 0 4px 6px #ccc;
+    box-shadow: inset 0 4px 6px #ccc;
+
+}
+
+#ProfileAddForm input[type=text], #ProfileEditForm input[type=text] {
+    width: 50px;
+    text-align: right;
+}
+
+.textarea label {
+    float: left;
+}
+
+.input {
+    padding: 3px 0;
+}
+
+
+</style>
    <div class="profileframe"><h2>Επεξεργασία Προφίλ</h2>
 <?php
 
