@@ -6,7 +6,12 @@
                     array('controller' => 'users', 'action' => 'logout'));
             ?>
         </li>
-        <li class='menu-item menu-user'>
+
+        <?php if ($selected_action == 'houses_view' ) { ?>
+            <li class='menu-item menu-user menu-selected'>
+        <?php } else { ?>
+            <li class='menu-item menu-user'>
+        <?php } ?>
             <?php
                 $house_id = $this->Auth->get("House.id");
                     if ($house_id != NULL) {
@@ -17,15 +22,20 @@
                             'action' => 'add'));
                 }
             ?>
-        </li>
-        <li class='menu-item menu-user'>
-            <?php 
-                $profile_id = $this->Auth->get("Profile.id");
-                echo $this->Html->link(' Το προφίλ μου', array('controller' => 'profiles',
-                                                               'action' => 'view',
-                                                               $profile_id,)); 
-            ?>
-        </li>
+            </li>
+
+        <?php if ($selected_action == 'profiles_view' ) { ?>
+            <li class='menu-item menu-user menu-selected'>
+        <?php } else { ?>
+            <li class='menu-item menu-user'>
+        <?php } ?>
+                <?php
+                    $profile_id = $this->Auth->get("Profile.id");
+                    echo $this->Html->link(' Το προφίλ μου', array('controller' => 'profiles',
+                                                                'action' => 'view',
+                                                                $profile_id,));
+                ?>
+            </li>
         <li class='menu-item menu-rss menu-login'>
             <?php
             $userid = $this->Session->read('Auth.User.id');

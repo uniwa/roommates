@@ -151,12 +151,12 @@ img{
 
 .menu-user{
     float: right;
-    border-top: 3px solid #f0f0f0;
+    border-bottom: 3px solid #f0f0f0;
     margin: 2px 4px 0px 0px;
 }
 
 .menu-user:hover{
-    border-top: 3px solid #59a4d8;
+    border-bottom: 3px solid #59a4d8;
     cursor: pointer;
 }
 

@@ -153,6 +153,11 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'houses_view');
+
         $this->set('title_for_layout','Σπίτι');
         $this->checkExistance($id);
         $this->House->id = $id;
@@ -303,6 +308,11 @@ class HousesController extends AppController {
     }
 
     function search () {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'houses_search');
+
         $this->set('title_for_layout','Αναζήτηση σπιτιών');
         if ($this->RequestHandler->isRss()) {
             /*

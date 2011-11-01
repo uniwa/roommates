@@ -48,6 +48,11 @@ class ProfilesController extends AppController {
     }
 
     function view($id = null) {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'profiles_view');
+
         $this->set('title_for_layout','Προφίλ χρήστη');
     	$this->checkExistence($id);
         $this->Profile->id = $id;
@@ -135,6 +140,11 @@ class ProfilesController extends AppController {
      }
 
     function search() {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'profiles_search');
+
         $this->set('title_for_layout','Αναζήτηση συγκατοίκων');
 		if($this->data){
 		    // Set up the URL that we will redirect to
