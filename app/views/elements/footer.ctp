@@ -1,10 +1,19 @@
 <div id='footer'>
     <div id='footer-menu'>
         <ul>
-            <li class='menu-item menu-footer'>
+            <?php if (isset($selected_action) && $selected_action == 'users_terms') { ?>
+                <li class='menu-item menu-footer menu-selected'>
+            <?php } else { ?>
+                <li class='menu-item menu-footer'>
+            <?php } ?>
                 <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
             </li>
-            <li class='menu-item menu-footer'>
+
+            <?php if (isset($selected_action) && $selected_action == 'users_faq') { ?>
+                <li class='menu-item menu-footer menu-selected'>
+            <?php } else { ?>
+                <li class='menu-item menu-footer'>
+            <?php } ?>
                 <?php echo $this->Html->link('Συχνές ερωτήσεις', array('controller' => 'users','action' => 'faq')); ?>
             </li>
         </ul>
