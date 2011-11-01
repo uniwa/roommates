@@ -12,7 +12,7 @@ class HousesController extends AppController {
     function index() {
         $this->set('title_for_layout','Σπίτια');
         if ($this->RequestHandler->isRss()) {
-            $conditions = array("User.banned" => 0);
+            $conditions = array("User.banned" => 0, 'House.visible' => 1);
             $houses = $this->House->find('all',
                         array('limit' => 50,
                               'order' => 'House.modified DESC',
@@ -189,7 +189,7 @@ class HousesController extends AppController {
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
     }
-
+ 
     function add() {
         $this->set('title_for_layout','Προσθήκη σπιτιού');
         /* if user already owns a house bail out */
