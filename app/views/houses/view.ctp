@@ -266,7 +266,7 @@
 <!--left collumn-->
 
 <div class="house-right">
-    <div class="actions">
+    <div class="houseactions">
         <?php
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
