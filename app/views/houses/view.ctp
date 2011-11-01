@@ -22,7 +22,7 @@
             /*echo $this->Html->image('homedefault.png',
                                     array('alt' => 'house image','class' => 'defaultimg'));*/
             echo $this->Html->link(
-                    $this->Html->image('addpic.png', array('alt' => 'add house image')),
+                    $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
                     array('controller' => 'images', 'action' =>'add', $house['House']['id']),
                     array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
                     );
@@ -40,7 +40,7 @@
                     /* if we have access placeholder is a link to 'add image' */
                     if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                         echo $this->Html->link(
-                            $this->Html->image('addpic.png', array('alt' => 'add house image')),
+                            $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
                             array('controller' => 'images', 'action' =>'add', $house['House']['id']),
                             array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
                         );
