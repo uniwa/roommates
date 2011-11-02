@@ -15,7 +15,7 @@
         background-color: #eaeaea;
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
-        width: 220px;
+        width: 260px;
     }
 
     #main-inner{
@@ -23,18 +23,32 @@
         background-color: #eaeaea;
         margin: 0px 0px 0px 2px;
         padding: 0px 0px 0px 0px;
-        width: 700px;
+        width: 660px;
     }
 
+    .left-form ul{
+        margin: 0px 0px 20px 0px;
+    }
+    
     .form-buttons{
         margin: 10px auto;
         width: 220px;
     }
     
     .form-elem{
-        float: right;
         margin: 0px 8px 12px 0px;
         font-size: 1.2em;
+    }
+
+    .form-label{
+        float: left;
+        width: 80px;
+    }
+    
+    .form-input{
+        float: left;
+        width: 140px;
+        overflow: no-scroll;
     }
 
     .form-submit{
@@ -104,19 +118,28 @@
             </div>
             <ul>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ηλικία από
+                    </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input(('age_min'), array('label' => 'Ηλικία από ', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input(('age_min'), array('label' => '', 'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        μέχρι
+                    </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input('age_max', array('label' => 'μέχρι ', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input('age_max', array('label' => '', 'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Φύλο
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_gender', array('label' => 'Φύλο ',
+                            echo $this->Form->input('pref_gender', array('label' => '',
                                 'options' => $genderoptions,
                                 'value' => (isset($defaults['pref_gender']))
                                       ? $defaults['pref_gender']
@@ -127,9 +150,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Καπνιστής
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_smoker', array('label' => 'Καπνιστής ',
+                            echo $this->Form->input('pref_smoker', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_smoker'])) ? $defaults['pref_smoker'] : '2',
@@ -138,9 +164,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Κατοικίδιο
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_pet', array('label' => 'Κατοικίδιο ',
+                            echo $this->Form->input('pref_pet', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_pet'])) ? $defaults['pref_pet'] : '2',
@@ -149,9 +178,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Παιδί
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_child', array('label' => 'Παιδί ',
+                            echo $this->Form->input('pref_child', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_child'])) ? $defaults['pref_child'] : '2',
@@ -160,9 +192,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ζευγάρι
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_couple', array('label' => 'Ζευγάρι ',
+                            echo $this->Form->input('pref_couple', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_couple'])) ? $defaults['pref_couple'] : '2',
@@ -175,7 +210,8 @@
                         <?php
                             echo $this->Form->checkbox('has_house', array('value' => 1,
                                 'class' => 'input-elem',
-                                'checked' => isset($defaults['has_house']) ? $defaults['has_house'] : false, 'hiddenField' => false)).' Διαθέτει σπίτι';
+                                'checked' => isset($defaults['has_house']) ? $defaults['has_house'] :
+                                    false, 'hiddenField' => false)).' Διαθέτει σπίτι';
                         ?>
                     </div>
                 </li>

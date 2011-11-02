@@ -569,12 +569,15 @@
             $foundmessage = 'Δεν βρέθηκαν σπίτια';
             if($count == 1) {
                 $foundmessage = 'Βρέθηκε '.$count.' σπίτι';
-            }else{
+            }else if($count > 1){
                 $foundmessage = 'Βρέθηκαν '.$count.' σπίτια';
             }
         ?>
         <div class='search-subtitle'>
-            <?php echo $foundmessage; ?>
+            <?php
+                echo $foundmessage;
+                if($count > 0){
+            ?>
         </div>
         <div class="pagination">
             <ul>
@@ -649,6 +652,7 @@
             </ul>
         </div>
         <?php
+                } // if $count > 0
             } // isset($results)
         ?>
     </div>
