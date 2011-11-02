@@ -1,5 +1,47 @@
+<style>
+select{
+        font-size: 12px;
+}
 
-<h2>Προσθήκη κατοικίας</h2>
+#HouseAddForm label, #HouseEditForm label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #21759B;
+    line-height: 19px;
+    min-width: 120px;
+    display: inline-block;
+    padding-left: 10px;
+}
+
+#HouseAddForm input[type=text], #HouseAddForm textarea, #HouseEditForm input[type=text], #HouseEditForm textarea {
+    padding: 4px;
+    border: solid 1px #C6C6C6;
+    border-bottom: solid 1px #E3E3E3;
+    color: #333;
+    -moz-box-shadow: inset 0 4px 6px #ccc;
+    -webkit-box-shadow: inset 0 4px 6px #ccc;
+    box-shadow: inset 0 4px 6px #ccc;
+
+}
+
+#HouseAddForm input[type=text], #HouseEditForm input[type=text] {
+    width: 50px;
+    text-align: right;
+}
+
+.textarea label {
+    float: left;
+}
+
+.input {
+    padding: 3px 0;
+}
+
+
+</style>
+
+<!-- <h2>Προσθήκη κατοικίας</h2> -->
+
 <?php
 echo $form->create('House');
 

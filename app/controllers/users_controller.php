@@ -10,6 +10,8 @@ class UsersController extends AppController{
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
 
+        $this->Auth->allow('publicTerms');
+        $this->Auth->allow('faq');
     }
 
     function login() {
@@ -37,6 +39,9 @@ class UsersController extends AppController{
 	}
 
     function terms(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'users_terms');
 
         /*When login or before filter snippet redirect to terms action
          *user by default takes a form with terms. if accept the terms
@@ -82,9 +87,21 @@ class UsersController extends AppController{
 
     }
 
-    function faq() {}
+    function faq() {
+        $this->set('title_for_layout','Συχνές ερωτήσεις');
 
-    function publicTerms() {}
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'users_faq');
+    }
+
+    function publicTerms() {
+        $this->set('title_for_layout','Όροι χρήσης');
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'users_terms');
+    }
 
     private function create_profile($id, $pref_id) {
         $this->Profile->begin();

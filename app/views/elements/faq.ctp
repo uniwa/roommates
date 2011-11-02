@@ -1,87 +1,96 @@
-<h1 id="top">Συχνές ερωτήσεις</h1>
-<br/>
+<?php echo $this->Html->script('jquery.easing.1.3.js'); ?>
+<?php echo $this->Html->script('jquery.ui.totop.js'); ?>
+
+<script type="text/javascript">
+		$(document).ready(function() {
+			$().UItoTop({ easingType: 'easeOutQuart' });
+		});
+	</script>
 
 <h2>Περιεχόμενα</h2>
+    <ul id="faq"><li>
 <?php
     $prefix = 'faq#';
     $return = $this->Html->link('Επιστροφή', $prefix.'top');
 
-    echo "<br/>";
-
     echo $this->Html->link(
             'Πως μπορώ να αλλάξω τα στοιχεία και τις προτιμήσεις μου;',
             $prefix.'faq1');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Γίνεται να μη εμφανίζομαι στις αναζητήσεις συγκατοίκων;',
             $prefix.'faq2');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Πως μπορώ να αλλάξω τα χαρακτηριστικά του σπιτιού μου;',
             $prefix.'faq3');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Πως μπορώ να προσθέσω εικόνες για το σπίτι μου;',
             $prefix.'faq4');
-    echo "<br/>";
+
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Πως μπορώ να ορίσω προεπιλεγμένη εικόνα σπιτιού για να εμφανίζεται
                                                             στις αναζητήσεις;',
             $prefix.'faq6');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Γίνεται το σπίτι μου να μην εμφανίζεται στη λίστα σπιτιών ή στις
                                                                 αναζητήσεις;',
             $prefix.'faq7');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Πως μπορώ να δω το προφίλ άλλων χρηστών;',
             $prefix.'faq8');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Πως μπορώ να δω αναλυτικά τα χαρακτηριστικά ενός σπιτιού;',
             $prefix.'faq9');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Τι διαφορετικό μεταξύ τους έχουν τα τρία είδη αναζητήσεων;',
             $prefix.'faq10');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Τι κάνει το κουμπί “αποθήκευση” στις αναζητήσεις;',
             $prefix.'faq11');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Πως μπορώ να αναζητήσω συγκατοίκους με βάση τις προτιμήσεις μου;',
             $prefix.'faq12');
-    echo "<br/>";
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Πως μπορώ να αλλάξω τις προτιμήσεις μου για την αναζήτηση
                                                                 συγκατοίκων;',
             $prefix.'faq13');
-    echo "<br/>";
+
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Τι περιέχει το δημόσιο RSS feed;',
             $prefix.'faq14');
-    echo "<br/>";
+
+    echo "</li><li>";
 
     echo $this->Html->link(
             'Τι περιέχει το προσωποποιημένο RSS feed;',
             $prefix.'faq15');
-    echo "<br/>";
+
+    echo "</li>";
 ?>
-<br/>
+</ul>
 
 <h2 id="faq1">Πως μπορώ να αλλάξω τα στοιχεία και τις προτιμήσεις μου;</h2>
 <p>

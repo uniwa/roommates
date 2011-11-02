@@ -6,10 +6,11 @@ class HousesController extends AppController {
 
     var $name = 'Houses';
     var $components = array('RequestHandler', 'Token');
-    var $helpers = array('Text', 'Time');
+    var $helpers = array('Text', 'Time', 'Html');
     var $paginate = array('limit' => 15);
 
     function index() {
+        $this->set('title_for_layout','Σπίτια');
         if ($this->RequestHandler->isRss()) {
             $conditions = array("User.banned" => 0, 'House.visible' => 1);
             $houses = $this->House->find('all',
@@ -152,6 +153,12 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'houses_view');
+
+        $this->set('title_for_layout','Σπίτι');
         $this->checkExistance($id);
         $this->House->id = $id;
         $this->House->recursive = 2;
@@ -172,8 +179,10 @@ class HousesController extends AppController {
         $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
 
         foreach ($images as $image) {
-            if ($image['Image']['id'] == $house['House']['default_image_id'])
+            if ($image['Image']['id'] == $house['House']['default_image_id']) {
                 $this->set('default_image_location', $image['Image']['location']);
+                $this->set('default_image_id', $image['Image']['id']);
+            }
         }
 
         $this->House->Image->recursive = 0;
@@ -182,7 +191,7 @@ class HousesController extends AppController {
     }
  
     function add() {
-
+        $this->set('title_for_layout','Προσθήκη σπιτιού');
         /* if user already owns a house bail out */
         $conditions = array("user_id" => $this->Auth->user('id'));
         $res = $this->House->find('first', array('conditions' => $conditions));
@@ -205,6 +214,7 @@ class HousesController extends AppController {
     }
 
     function delete($id) {
+        $this->set('title_for_layout','Διαγραφή σπιτιού');
         $this->checkAccess( $id );
         $this->House->begin();
         /* delete associated images first */
@@ -236,6 +246,7 @@ class HousesController extends AppController {
     }
 
     function edit($id = null) {
+        $this->set('title_for_layout','Επεξεργασία σπιτιού');
         $this->checkExistance($id);
         $this->checkAccess($id);
         $this->House->id = $id;
@@ -297,6 +308,12 @@ class HousesController extends AppController {
     }
 
     function search () {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'houses_search');
+
+        $this->set('title_for_layout','Αναζήτηση σπιτιών');
         if ($this->RequestHandler->isRss()) {
             /*
              *  personalized rss feed
@@ -565,6 +582,7 @@ class HousesController extends AppController {
 
 
     function advanced_search () {
+        $this->set('title_for_layout','Σύνθετη αναζήτηση σπιτιών');
 	    //---------------------drop down menus options--------------------//
         $this->set('house_type_options', $this->House->HouseType->find('list', array('fields' => array('type'))));
         $this->set('heating_type_options', $this->House->HeatingType->find('list', array('fields' => array('type'))));

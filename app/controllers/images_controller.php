@@ -11,6 +11,11 @@ class ImagesController extends AppController {
     }
 
     function add( $id ) {
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'houses_view');
+
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
