@@ -4,7 +4,7 @@ $this->set('documentData', array(
 $channel = array(
             'title' => __("Προσωποποιημένο RSS.", true),
             'link' => $this->Html->url('/', true),
-            'description' => __("Προσωποποιημένο RSS", true),
+            'description' => __("Υπηρεσία αναζήτησης συγκατοίκων ΤΕΙ Αθήνας.", true),
             'language' => 'el',
             'atom:link' => array(
                 'attrib' => array(
