@@ -59,7 +59,6 @@
     .form-label{
         float: left;
         width: 80px;
-/*        margin: 2px 4px 2px 0px;*/
     }
 
     .form-input{
