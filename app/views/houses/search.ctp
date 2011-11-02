@@ -118,7 +118,27 @@
     <div class='left-form-cont'>
 
     <?php
-        $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
+    $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
+    $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
+    $min_age_options = array(   'label' => 'Ηλικία από ',
+                                'class' => 'short-textbox',
+                                'value' => isset($defaults['min_age']) ? $defaults['min_age'] : '');
+    $max_age_options = array(   'label' => 'μέχρι ',
+                                'class' => 'short-textbox',
+                                'value' => isset($defaults['max_age']) ? $defaults['max_age'] : '');
+
+    // modify the URL for pagination
+    $get_vars = '';
+    $urls = $this->params['url'];
+    foreach($urls as $key => $value) {
+        if($key == 'url' || $key == 'ext') continue;
+
+        $get_vars .= urldecode($key).'='.urldecode($value).'&';
+    }
+    $get_vars = substr_replace($get_vars, '', -1); // remove the last &
+
+    echo $this->Form->create('House', array('action' => 'search', 'type' => 'get'));
+/*        $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
         $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
         $min_age_options = array(   'label' => '',
                                     'class' => '',
@@ -144,7 +164,7 @@
         $get_vars = substr_replace($get_vars, '', -1, 'UTF-8'); // remove the last &
 
         echo $this->Form->create('House', array('action' => 'search', 'type' => 'get'));
-    ?>
+*/    ?>
 
         <div class='left-form'>
             <div class='form-title'>
@@ -169,8 +189,10 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('min_area', array('label' => '',
-                                'value' => isset($defaults['min_area']) ? $defaults['min_area'] : '',
+                            echo $this->Form->input('min_area', array(
+                                'label' => '',
+                                'value' => isset($defaults['min_area']) ?
+                                    $defaults['min_area'] : '',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -181,8 +203,10 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('max_area', array('label' => '',
-                                'value' => isset($defaults['max_area']) ? $defaults['max_area'] : '',
+                            echo $this->Form->input(
+                                'max_area', array('label' => '',
+                                'value' => isset($defaults['max_area']) ?
+                                    $defaults['max_area'] : '',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -193,9 +217,11 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('municipality', array('label' => '',
+                            echo $this->Form->input('municipality', array(
+                                'label' => '',
                                 'options' => $municipalities,
-                                'value' => isset($defaults['municipality']) ? $defaults['municipality'] : '',
+                                'value' => isset($defaults['municipality']) ?
+                                    $defaults['municipality'] : '',
                                 'empty' => 'Αδιάφορο',
                                 'class' => 'input-elem'));
                         ?>
@@ -207,9 +233,11 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('furnitured', array('label' => '',
+                            echo $this->Form->input('furnitured', array(
+                                'label' => '',
                                 'options' => array( 'Όχι','Ναι','Αδιάφορο'),
-                                'value' => isset($defaults['furnitured']) ? $defaults['furnitured'] : '2',
+                                'value' => isset($defaults['furnitured']) ?
+                                    $defaults['furnitured'] : '2',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -217,19 +245,20 @@
                 <li class='form-line'>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->checkbox('accessibility',
-                                array(  'hiddenField' => false,
-                                        'checked' => isset($defaults['accessibility'])))
-                                        .' Προσβάσιμο από ΑΜΕΑ';
+                            echo $this->Form->checkbox('accessibility', array(
+                                'hiddenField' => false,
+                                'checked' => isset($defaults['accessibility'])))
+                                    .' Προσβάσιμο από ΑΜΕΑ';
                         ?>
                     </div>
                 </li>
                 <li class='form-line'>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->checkbox('has_photo',
-                                array('hiddenField' => false, 'checked' => isset($defaults['has_photo'])))
-                                .' Διαθέτει φωτογραφία';
+                            echo $this->Form->checkbox('has_photo', array(
+                                'hiddenField' => false,
+                                'checked' => isset($defaults['has_photo'])))
+                                    .' Διαθέτει φωτογραφία';
                         ?>
                     </div>
                 </li>
@@ -244,8 +273,10 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('min_age', array('label' => '',
-                                'value' => isset($defaults['min_age']) ? $defaults['min_age'] : '',
+                            echo $this->Form->input('min_age', array(
+                                'label' => '',
+                                'value' => isset($defaults['min_age']) ?
+                                    $defaults['min_age'] : '',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -256,8 +287,10 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('max_age', array('label' => '',
-                                'value' => isset($defaults['max_age']) ? $defaults['max_age'] : '',
+                            echo $this->Form->input('max_age', array(
+                                'label' => '',
+                                'value' => isset($defaults['max_age']) ?
+                                    $defaults['max_age'] : '',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -268,9 +301,11 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('gender', array(   'label' => '',
+                            echo $this->Form->input('gender', array(
+                                'label' => '',
                                 'options' => $gender_options,
-                                'value' => isset($defaults['gender']) ? $defaults['gender'] : '2'));
+                                'value' => isset($defaults['gender']) ?
+                                    $defaults['gender'] : '2'));
                         ?>
                     </div>
                 </li>
@@ -280,9 +315,11 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('smoker', array('label' => '',
+                            echo $this->Form->input('smoker', array(
+                                'label' => '',
                                 'options' => $select_options,
-                                'value' => isset($defaults['smoker']) ? $defaults['smoker'] : '2'));
+                                'value' => isset($defaults['smoker']) ?
+                                    $defaults['smoker'] : '2'));
                         ?>
                     </div>
                 </li>
@@ -292,9 +329,11 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pet', array('label' => '',
+                            echo $this->Form->input('pet', array(
+                                'label' => '',
                                 'options' => $select_options,
-                                'value' => isset($defaults['pet']) ? $defaults['pet'] : '2'));
+                                'value' => isset($defaults['pet']) ?
+                                    $defaults['pet'] : '2'));
                         ?>
                     </div>
                 </li>
@@ -304,9 +343,11 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('child', array('label' => '',
+                            echo $this->Form->input('child', array(
+                                'label' => '',
                                 'options' => $select_options,
-                                'value' => isset($defaults['child']) ? $defaults['child'] : '2'));
+                                'value' => isset($defaults['child']) ?
+                                    $defaults['child'] : '2'));
                         ?>
                     </div>
                 </li>
@@ -316,21 +357,27 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('couple', array('label' => '',
+                            echo $this->Form->input('couple', array(
+                                'label' => '',
                                 'options' => $select_options,
-                                'value' => isset($defaults['couple']) ? $defaults['couple'] : '2'));
+                                'value' => isset($defaults['couple']) ?
+                                    $defaults['couple'] : '2'));
                         ?>
                     </div>
                 </li>
                 <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search', 'class' => 'button'));
+                            echo $this->Form->submit('αναζήτηση', array(
+                                'name' => 'simple_search',
+                                    'class' => 'button'));
                         ?>
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
+                            echo $this->Form->submit('καθαρισμός', array(
+                                'name' => 'reset_fields',
+                                'class' => 'button'));
                         ?>
                     </div>
                 </li>
@@ -340,9 +387,11 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('order_by', array('label' => '',
+                            echo $this->Form->input('order_by', array(
+                                'label' => '',
                                 'options' => $order_options,
-                                'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
+                                'selected' => isset($defaults['order_by']) ?
+                                    $defaults['order_by'] : '0',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -542,12 +591,16 @@
                 <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αποθήκευση', array('name' => 'save_search', 'class' => 'button'));
+                            echo $this->Form->submit('αποθήκευση', array(
+                                'name' => 'save_search',
+                                'class' => 'button'));
                         ?>
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('φόρτωση', array('name' => 'load_prefs', 'class' => 'button'));
+                            echo $this->Form->submit('φόρτωση', array(
+                                'name' => 'load_prefs',
+                                'class' => 'button'));
                         ?>
                     </div>
                 </li>
@@ -582,6 +635,8 @@
         <div class="pagination">
             <ul>
                 <?php
+                    // set the URL
+                    $paginator->options(array('url' => array('?' => $get_vars)));
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */

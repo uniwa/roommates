@@ -577,6 +577,8 @@
         <div class="pagination">
             <ul>
                 <?php
+                    // set the URL
+                    $paginator->options(array('url' => array('?' => $get_vars)));
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
