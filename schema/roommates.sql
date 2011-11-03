@@ -277,8 +277,8 @@ CREATE TABLE IF NOT EXISTS `roommates`.`real_estates` (
   `banned` TINYINT(1) NOT NULL DEFAULT 0 ,
   `user_id` INT NOT NULL ,
 	PRIMARY KEY (`id`) ,
-	INDEX `fk_real_estate_municipality` (`municipality_id ASC`) ,
-	INDEX `fk_real_estate_user` (`user_id ASC`) ,
+	INDEX `fk_real_estate_municipality` (`municipality_id`) ,
+	INDEX `fk_real_estate_user` (`user_id`) ,
 	CONSTRAINT `fk_real_estate_municipality`
 		FOREIGN KEY (`municipality_id`)
 		REFERENCES `roommates`.`municipalities` (`id`)
