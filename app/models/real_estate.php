@@ -69,7 +69,7 @@ class RealEstate extends AppModel {
                 'message' => 'Παρακαλώ εισάγετε ένα τηλέφωνο επικοινωνίας.'
             ),
             'valid' => array(
-                'rule' => '/^\d$/',
+                'rule' => '/^\d+$/',
                 'message' => 'Ο αριθμός μπορεί να περιέχει μόνο ψηφία.',
                 'allowEmpty' => true
             )
@@ -83,7 +83,7 @@ class RealEstate extends AppModel {
                 'required' => false
             ),
             'valid' => array(
-                'rule' => '/^\d$/',
+                'rule' => '/^\d+$/',
                 'message' => 'Ο αριθμός περιέχει έναν μη έγκυρο χαρακτήρα.',
                 'allowEmpty' => true,
                 'required' => false
@@ -101,7 +101,7 @@ class RealEstate extends AppModel {
                 'message' => 'Παρακαλώ εισάγετε το ΑΦΜ σας.'
             ),
             'valid' => array(
-                'rule' => '/^\d$/',
+                'rule' => '/^\d+$/',
                 'message' => 'Το ΑΦΜ πρέπει να περιέχει μόνο ψηφία',
                 'allowEmpty' => true
             )
