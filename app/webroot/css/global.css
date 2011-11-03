@@ -315,7 +315,7 @@ img{
 }
 
 .form-input input.input-elem{
-    border: 0px;
+    border: 1px solid #ddd;
     padding: 2px;
     width: 75px;
     height: 14px;
