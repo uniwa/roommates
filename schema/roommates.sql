@@ -265,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `roommates`.`real_estates` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `firstname` VARCHAR(45) NOT NULL ,
   `lastname` VARCHAR(45) NOT NULL ,
-	`company_name` VARCHAR(45) NOT NULL ,
+	`company_name` VARCHAR(100) NOT NULL ,
 	`email` VARCHAR(45) NOT NULL ,
 	`phone` VARCHAR(45) NOT NULL ,
 	`fax` VARCHAR(45) NULL DEFAULT NULL,
