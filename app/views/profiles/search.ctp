@@ -22,7 +22,7 @@
         float: left;
         border-left: 1px dotted #aaa;
 /*        background-color: #eaeaea;*/
-        margin: 0px 0px 0px 2px;
+        margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 660px;
     }
@@ -76,7 +76,7 @@
     }
     
     .pagination{
-        margin: 0px auto;
+        margin: 0px auto 12px auto;
         text-align: center;
     }
     
@@ -87,6 +87,7 @@
     .pagination ul li.current{
         border: 1px solid #59A4D8;
         padding: 0px 2px 0px 2px;
+        font-weight: bold;
     }
     
     .pagination ul li.disabled{

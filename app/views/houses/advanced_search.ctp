@@ -107,6 +107,7 @@
     .pagination ul li.current{
         border: 1px solid #59A4D8;
         padding: 0px 2px 0px 2px;
+        font-weight: bold;
     }
     
     .pagination ul li.disabled{
