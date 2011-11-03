@@ -12,6 +12,7 @@ class UsersController extends AppController{
 
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
+        $this->Auth->allow('register');
     }
 
     function login() {
