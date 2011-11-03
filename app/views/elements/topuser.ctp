@@ -7,12 +7,14 @@
             ?>
         </li>
 
-        <?php if (isset($selected_action) && $selected_action == 'houses_view' ) { ?>
+        <?php
+            if($this->Session->read('Auth.User.role') !== 'admin'){
+                if (isset($selected_action) && $selected_action == 'houses_view' ) { ?>
             <li class='menu-item menu-user menu-selected'>
         <?php } else { ?>
             <li class='menu-item menu-user'>
-        <?php } ?>
-            <?php
+        <?php
+                }
                 $house_id = $this->Auth->get("House.id");
                     if ($house_id != NULL) {
                         echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
@@ -21,7 +23,7 @@
                         echo $this->Html->link('Προσθήκη σπιτιού', array('controller' => 'houses',
                             'action' => 'add'));
                 }
-            ?>
+        ?>
             </li>
 
         <?php if (isset($selected_action) && $selected_action == 'profiles_view' ) { ?>
@@ -36,6 +38,7 @@
                                                                 $profile_id,));
                 ?>
             </li>
+        <?php } // if 'admin' ?>
         <li class='menu-item menu-rss menu-login'>
             <?php
             $userid = $this->Session->read('Auth.User.id');

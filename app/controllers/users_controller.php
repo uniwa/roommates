@@ -42,6 +42,7 @@ class UsersController extends AppController{
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'users_terms');
+        $this->set('title_for_layout','Όροι χρήσης');
 
         /*When login or before filter snippet redirect to terms action
          *user by default takes a form with terms. if accept the terms

@@ -5,11 +5,11 @@
             <li class='menu-item menu-main menu-selected'>
         <?php } else { ?>
             <li class='menu-item menu-main'>
-        <?php } ?>
-                <?php
-                    echo $this->Html->link( 'Αναζήτηση συγκατοίκων',
-                                            array(  'controller' => 'profiles',
-                                                    'action' => 'search'));
+        <?php
+            }
+            echo $this->Html->link( 'Αναζήτηση συγκατοίκων',
+                                        array(  'controller' => 'profiles',
+                                                'action' => 'search'));
                 ?>
             </li>
 
@@ -17,12 +17,27 @@
             <li class='menu-item menu-main menu-selected'>
         <?php } else { ?>
             <li class='menu-item menu-main'>
-        <?php } ?>
-                <?php
-                    echo $this->Html->link( 'Αναζήτηση σπιτιών',
-                                            array(  'controller' => 'houses',
-                                                    'action' => 'advanced_search'));
-                ?>
+        <?php
+            }
+            echo $this->Html->link( 'Αναζήτηση σπιτιών',
+                                        array(  'controller' => 'houses',
+                                                'action' => 'advanced_search'));
+        ?>
+            </li>
+        <?php
+            if($this->Session->read('Auth.User.role') == 'admin'){
+                if (isset($selected_action) && $selected_action == 'admin_search' ) {
+        ?>
+            <li class='menu-item menu-main menu-selected'>
+        <?php } else { ?>
+            <li class='menu-item menu-main'>
+        <?php
+                }
+                echo $this->Html->link( 'Αναζήτηση χρηστών',
+                                            array(  'controller' => 'admins',
+                                                    'action' => 'search'));
+            }
+        ?>
             </li>
     </ul>
 </div>

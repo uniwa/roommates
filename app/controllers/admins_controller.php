@@ -12,6 +12,10 @@ class AdminsController extends AppController
     );
 
     function search(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'admin_search');
+        $this->set('title_for_layout','Αναζήτηση χρηστών');
 
         $this->checkAccess();
 
