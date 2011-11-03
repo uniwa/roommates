@@ -1,4 +1,7 @@
 <?php
+
+/*App::import('Vendor', 'recaptchalib');*/
+
 class UsersController extends AppController{
 
 	var $name = "Users";
@@ -195,7 +198,21 @@ class UsersController extends AppController{
                         $this->User->commit();
                     }
                 }
+
+                //reCAPTCHA
+                /*$privatekey = "6Ld7vMkSAAAAAPpRf4v0_zcyS24RLPE1iu9zbOfh";
+                $resp = recaptcha_check_answer($privatekey, 
+                                                $_SERVER["REMOTE_ADDR"],
+                                                $_POST["recaptcha_challenge_field"],
+                                                $_POST["recaptcha_response_field"]);
+                if(!$resp->is_valid){
+                    $this->Session->setFlash("Το reCAPTCHA δεν εισήχθηκε σωστά. Παρακαλώ προσπαθήστε ξανα.");
+                    $this->controller->redirect(array('action' => 'register'));
+                    exit();
+                }*/
+
             }
+
         }
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
     }

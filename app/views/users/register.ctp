@@ -15,8 +15,8 @@
     echo $this->Form->input('password', array('label' => 'Συνθηματικό', 'type' => 'password', 'autocomplete' => 'off'));
     echo $this->Form->input('password_confirm', array('label' => 'Επιβεβαίωση Συνθηματικού', 'type' => 'password', 'autocomplete' => 'off'));
     
-    $publicKey = "6Ld7vMkSAAAAALw4jfDEI6LLyCxTN4pOIQ7GvPZx"
-    echo recaptcha_get_html($publickey);
+    /*$publicKey = "6Ld7vMkSAAAAALw4jfDEI6LLyCxTN4pOIQ7GvPZx";
+    echo recaptcha_get_html($publickey);*/
     
     echo $this->Form->end('Εγγραφή');
 ?>
