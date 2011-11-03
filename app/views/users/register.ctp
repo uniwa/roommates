@@ -11,5 +11,8 @@
     echo $this->Form->input('address', array('label' => 'Διεύθυνση', 'type' => 'textarea', 'rows' => '2'));
     echo $this->Form->input('postal_code', array('label' => 'Τ.Κ.'));
     echo $this->Form->input('municipality_id', array('label' => 'Δήμος', 'empty' => 'Επιλέξτε...'));
+    echo $this->Form->input('username', array('label' => 'Όνομα Χρήστη'));
+    echo $this->Form->input('password', array('label' => 'Συνθηματικό'));
+    echo $this->Form->input('password_confirm', array('label' => 'Επιβεβαίωση Συνθηματικού', 'type' => 'password'));
     echo $this->Form->end('Εγγραφή');
 ?>
