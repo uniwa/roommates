@@ -365,8 +365,8 @@ button{
 /*terms of use - faq*/
 .terms, .faq {
 /*    border: 1px solid white;*/
-    padding: 45px;
-    margin: 30px auto;
+    padding: 10px 45px 45px 45px;
+    margin: 10px auto;
     text-align: justify;
 /*    background: white;
     -moz-border-radius: 10px;
