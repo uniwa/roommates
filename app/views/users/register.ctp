@@ -14,5 +14,9 @@
     echo $this->Form->input('username', array('label' => 'Όνομα Χρήστη'));
     echo $this->Form->input('password', array('label' => 'Συνθηματικό'));
     echo $this->Form->input('password_confirm', array('label' => 'Επιβεβαίωση Συνθηματικού', 'type' => 'password'));
+    
+    $publicKey = "6Ld7vMkSAAAAALw4jfDEI6LLyCxTN4pOIQ7GvPZx"
+    echo recaptcha_get_html($publickey);
+    
     echo $this->Form->end('Εγγραφή');
 ?>
