@@ -3,6 +3,6 @@ class User extends AppModel{
 
 	var $name = 'User';
 	var $hasMany = array("House");
-	var $hasOne = "Profile";
+	var $hasOne = array('Profile', 'RealEstate');
 }
 ?>
