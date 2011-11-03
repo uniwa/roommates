@@ -28,7 +28,7 @@
     
     #leftbar{
         float: left;
-        background-color: #f7f7f7;
+/*        background-color: #f7f7f7;*/
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 320px;
@@ -36,8 +36,9 @@
 
     #main-inner{
         float: left;
-        background-color: #f7f7f7;
-        margin: 0px 0px 0px 2px;
+        border-left: 1px dotted #aaa;
+/*        background-color: #f7f7f7;*/
+        margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
     }

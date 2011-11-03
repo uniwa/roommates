@@ -582,7 +582,11 @@ class HousesController extends AppController {
 
 
     function advanced_search () {
-        $this->set('title_for_layout','Σύνθετη αναζήτηση σπιτιών');
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'houses_search');
+
+        $this->set('title_for_layout','Αναζήτηση σπιτιών');
 	    //---------------------drop down menus options--------------------//
         $this->set('house_type_options', $this->House->HouseType->find('list', array('fields' => array('type'))));
         $this->set('heating_type_options', $this->House->HeatingType->find('list', array('fields' => array('type'))));

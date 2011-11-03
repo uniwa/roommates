@@ -12,7 +12,7 @@
     
     #leftbar{
         float: left;
-        background-color: #eaeaea;
+/*        background-color: #eaeaea;*/
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 260px;
@@ -20,7 +20,8 @@
 
     #main-inner{
         float: left;
-        background-color: #eaeaea;
+        border-left: 1px dotted #aaa;
+/*        background-color: #eaeaea;*/
         margin: 0px 0px 0px 2px;
         padding: 0px 0px 0px 0px;
         width: 660px;
@@ -84,9 +85,8 @@
     }
 
     .pagination ul li.current{
-        background-color: #59A4D8;
+        border: 1px solid #59A4D8;
         padding: 0px 2px 0px 2px;
-        color: #fff;
     }
     
     .pagination ul li.disabled{

@@ -21,7 +21,7 @@
                 <?php
                     echo $this->Html->link( 'Αναζήτηση σπιτιών',
                                             array(  'controller' => 'houses',
-                                                    'action' => 'search'));
+                                                    'action' => 'advanced_search'));
                 ?>
             </li>
     </ul>
