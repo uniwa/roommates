@@ -2,7 +2,7 @@
 class UsersController extends AppController{
 
 	var $name = "Users";
-    var $uses = array("Profile", "User", "Preference");
+    var $uses = array("Profile", "User", "Preference", "Municipality");
     var $components = array('Token');
 
     function beforeFilter() {
@@ -157,7 +157,8 @@ class UsersController extends AppController{
     }
 
     function register() {
-        return true;
+        $this->set('title_for_layout','Εγγραφή νέου χρήστη');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
     }
 
     private function create_estate_profile($id, $data) {
