@@ -254,6 +254,45 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `roommates`.`real_estates`
+-- Represents real estates as well
+-- as any individual.
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `roommates`.`real_estates` ;
+
+CREATE TABLE IF NOT EXISTS `roommates`.`real_estates` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `firstname` VARCHAR(45) NOT NULL ,
+  `lastname` VARCHAR(45) NOT NULL ,
+	`company_name` VARCHAR(45) NOT NULL ,
+	`email` VARCHAR(45) NOT NULL ,
+	`phone` VARCHAR(45) NOT NULL ,
+	`fax` VARCHAR(45) NULL DEFAULT NULL,
+	`afm`	VARCHAR(45) NOT NULL ,
+	`doy` VARCHAR(45) NULL DEFAULT NULL,
+  `address` VARCHAR(50) NULL DEFAULT NULL,
+  `postal_code` VARCHAR(5) NULL DEFAULT NULL ,
+  `municipality_id` INT NULL DEFAULT NULL ,
+  `banned` TINYINT(1) NOT NULL DEFAULT 0 ,
+  `user_id` INT NOT NULL ,
+	PRIMARY KEY (`id`) ,
+	INDEX `fk_real_estate_municipality` (`municipality_id ASC`) ,
+	INDEX `fk_real_estate_user` (`user_id ASC`) ,
+	CONSTRAINT `fk_real_estate_municipality`
+		FOREIGN KEY (`municipality_id`)
+		REFERENCES `roommates`.`municipalities` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION ,
+	CONSTRAINT `fk_real_estate_user`
+		FOREIGN KEY (`user_id`)
+		REFERENCES `roommates`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
