@@ -12,6 +12,7 @@ class UsersController extends AppController{
 
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
+        $this->Auth->allow('register');
     }
 
     function login() {
@@ -153,6 +154,37 @@ class UsersController extends AppController{
             $this->Preference->commit();
             return $this->Preference->id;
         }
+    }
+
+    function register() {
+        return true;
+    }
+
+    private function create_estate_profile($id, $data) {
+        $this->RealEstate->begin();
+        $this->RealEstate->create();
+
+        $realestate["RealEstate"]["firstname"] = "";
+        $realestate["RealEstate"]["lastname"] = "";
+        $realestate["RealEstate"]["company_name"] = "";
+        $realestate["RealEstate"]["email"] = "";
+        $realestate["RealEstate"]["phone"] = "";
+        $realestate["RealEstate"]["fax"] = "";
+        $realestate["RealEstate"]["afm"] = "";
+        $realestate["RealEstate"]["doy"] = "";
+        $realestate["RealEstate"]["address"] = "";
+        $realestate["RealEstate"]["postal_code"] = "";
+        $realestate["RealEstate"]["municipality_id"] = "";
+        $realestate["RealEstate"]["user_id"] = $id;
+        $realestate["RealEstate"]["banned"] = 0;
+
+        if ( $this->RealEstate->save($realestate) === False) {
+            $this->RealEstate->rollback();
+        }
+        else {
+            $this->RealEstate->commit();
+        }
+        return $this->RealEstate->id;
     }
 
 }
