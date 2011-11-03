@@ -52,7 +52,8 @@ class UsersController extends AppController{
         if( $this->Auth->user( "terms_accepted") === "1" ) {
 
 
-            $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default' );
+            $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default',
+                array('class' => 'flashBlue'));
             $this->redirect( $this->referer() );
         }
 
@@ -79,7 +80,8 @@ class UsersController extends AppController{
 
             } else {
 
-                $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default' );
+                $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default',
+                array('class' => 'flashRed'));
                 $this->redirect ( array( 'controller' => 'users', 'action' => 'logout') );
             }
 

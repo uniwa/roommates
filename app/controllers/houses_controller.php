@@ -196,7 +196,8 @@ class HousesController extends AppController {
         $conditions = array("user_id" => $this->Auth->user('id'));
         $res = $this->House->find('first', array('conditions' => $conditions));
         if (isset($res["House"]["id"])) {
-            $this->Session->setFlash('Έχετε ήδη ένα σπίτι αποθηκευμένο.');
+            $this->Session->setFlash('Έχετε ήδη ένα σπίτι αποθηκευμένο.',
+                    'default', array('class' => 'flashRed'));
             $this->redirect(array('action' => 'index'));
         }
 
@@ -204,7 +205,8 @@ class HousesController extends AppController {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.');
+                $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
+                    'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
                 $this->redirect(array('action' => "view/$hid"));
             }
@@ -221,27 +223,31 @@ class HousesController extends AppController {
         $conditions = array("house_id" => $id);
         if ( ! $this->House->Image->deleteAll($conditions) ) {
             $this->House->rollback();
-            $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από την βάση.');
+            $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από την βάση.',
+                    'default', array('class' => 'flashRed'));
             $this->redirect(array('action'=>'index'));
         }
         else {
             /* remove from FS */
             if (! $this->House->Image->delete_all($id) ) {
                 $this->House->rollback();
-                $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από το σύστημα αρχείων.');
+                $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από το σύστημα αρχείων.',
+                    'default', array('class' => 'flashRed'));
                 $this->redirect(array('action'=>'index'));
             }
             else {
                 /* delete house */
                 if (! $this->House->delete( $id ) ) {
                     $this->House->rollback();
-                    $this->Session->setFlash('Αδυναμία διαγραφής σπιτιού');
+                    $this->Session->setFlash('Αδυναμία διαγραφής σπιτιού',
+                        'default', array('class' => 'flashRed'));
                     $this->redirect(array('action'=>'index'));
                 }
             }
         }
         $this->House->commit();
-        $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.');
+        $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
+                    'default', array('class' => 'flashBlue'));
         $this->redirect(array('action'=>'index'));
     }
 
@@ -256,7 +262,8 @@ class HousesController extends AppController {
         }
         else {
             if ($this->House->save($this->data)) {
-                $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.');
+                $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
+                    'default', array('class' => 'flashBlue'));
                 $this->redirect(array('action' => "view/$id"));
             }
         }
@@ -576,7 +583,8 @@ class HousesController extends AppController {
                         'pref_child' => $search_args['child'],
                         'pref_couple' => $search_args['couple']
         ));
-        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
+        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.',
+                    'default', array('class' => 'flashBlue'));
     }
 
 
