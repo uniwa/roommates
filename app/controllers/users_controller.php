@@ -156,6 +156,10 @@ class UsersController extends AppController{
         }
     }
 
+    function register() {
+        return true;
+    }
+
     private function create_estate_profile($id, $data) {
         $this->RealEstate->begin();
         $this->RealEstate->create();
