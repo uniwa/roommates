@@ -21,25 +21,29 @@ class ImagesController extends AppController {
         }
         $image_count = $this->imageCount($id);
         if ( $image_count >= $this->max_images ) {
-            $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών.');
+            $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών.',
+                'default', array('class' => 'flashRed'));
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
         }
 
         if(!empty($this->data)) {
             /* check if user pressed upload without image */
             if ( empty($this->data["Image"]["location"]["name"]) ) {
-                $this->Session->setFlash('Παρακαλώ επιλέξτε εικόνα.');
+                $this->Session->setFlash('Παρακαλώ επιλέξτε εικόνα.',
+                    'default', array('class' => 'flashRed'));
                 $this->redirect(array('controller' => 'images', 'action' => 'add', $id));
             }
             /* check if image is uploaded */
             if ( ! is_uploaded_file($this->data["Image"]["location"]["tmp_name"])) {
-                $this->Session->setFlash('Υπερβολικά μεγάλο μέγεθος εικόνας, η εικόνα δεν αποθηκεύτηκε.');
+                $this->Session->setFlash('Υπερβολικά μεγάλο μέγεθος εικόνας, η εικόνα δεν αποθηκεύτηκε.',
+                    'default', array('class' => 'flashRed'));
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
 
             /* check file type */
             if ( ! $this->validType($this->data["Image"]["location"]["tmp_name"]) ) {
-                $this->Session->setFlash('Επιτρέπονται μόνο αρχεία PNG και JPG.');
+                $this->Session->setFlash('Επιτρέπονται μόνο αρχεία PNG και JPG.',
+                    'default', array('class' => 'flashRed'));
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
 
@@ -48,7 +52,8 @@ class ImagesController extends AppController {
 
 
             if ($newName == NULL) {
-                $this->Session->setFlash('Σφάλμα αποθήκευσης εικόνας, επικοινωνήστε με τον διαχειριστή.');
+                $this->Session->setFlash('Σφάλμα αποθήκευσης εικόνας, επικοινωνήστε με τον διαχειριστή.',
+                    'default', array('class' => 'flashRed'));
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
 
@@ -58,12 +63,14 @@ class ImagesController extends AppController {
                 if ($image_count == 0) {
                     $this->set_default_image($id, $this->Image->id); //TODO: check success/fail
                 }
-                $this->Session->setFlash(__('Η εικόνα αποθηκεύτηκε με επιτυχία...', true));
+                $this->Session->setFlash('Η εικόνα αποθηκεύτηκε με επιτυχία.',
+                    'default', array('class' => 'flashBlue'));
                 /* IMPORTANT: $this->referer() in this redirect will break on 5th image
                     upload due to max image count, redirect only on house view */
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             } else {
-                $this->Session->setFlash(__('Η εικόνα ΔΕΝ αποθηκεύτηκε', true));
+                $this->Session->setFlash('Η εικόνα ΔΕΝ αποθηκεύτηκε.',
+                    'default', array('class' => 'flashRed'));
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
         }
@@ -81,7 +88,8 @@ class ImagesController extends AppController {
         }
 
         if (!$id) {
-            $this->Session->setFlash(__('Λαθος id', true));
+            $this->Session->setFlash('Λαθος id',
+                'default', array('class' => 'flashRed'));
         }
         else {
             /* set new default image */
@@ -92,10 +100,12 @@ class ImagesController extends AppController {
 
             if ($this->Image->delete($id)) {
                 $this->Image->delImage($house_id, $imageData['Image']['location']);
-                $this->Session->setFlash(__('Η εικόνα διαγραφήκε με επιτυχία.', true));
+                $this->Session->setFlash('Η εικόνα διαγραφήκε με επιτυχία.',
+                    'default', array('class' => 'flashBlue'));
             }
             else {
-                $this->Session->setFlash(__('Η εικόνα δεν διαγραφηκε.', true));
+                $this->Session->setFlash('Η εικόνα δεν διαγραφηκε.',
+                    'default', array('class' => 'flashRed'));
             }
         }
         $this->redirect(array('controller' => 'houses', 'action'=>'view', $house_id));
@@ -113,15 +123,17 @@ class ImagesController extends AppController {
         }
 
         if (!$id) {
-            $this->Session->setFlash(__('Λαθος id', true));
+            $this->Session->setFlash('Λαθος id', 'default', array('class' => 'flashRed'));
         }
         else {
             $ret = $this->set_default_image($house_id, $id);
             if ($ret == False) {
-                $this->Session->setFlash(__('Σφάλμα ανάθεσης προεπιλεγμένης εικόνας.', true));
+                $this->Session->setFlash('Σφάλμα ανάθεσης προεπιλεγμένης εικόνας.',
+                    'default', array('class' => 'flashRed'));
             }
             else {
-                $this->Session->setFlash(__('Η νέα προεπιλεγμένη εικόνα ορίστικε με επιτυχία.', true));
+                $this->Session->setFlash('Η νέα προεπιλεγμένη εικόνα ορίστικε με επιτυχία.',
+                    'default', array('class' => 'flashRed'));
             }
         }
         $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));

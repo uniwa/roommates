@@ -93,7 +93,8 @@ class ProfilesController extends AppController {
              //var_dump($this->data); die();
 
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
-                 $this->Session->setFlash('Το προφίλ προστέθηκε.');
+                 $this->Session->setFlash('Το προφίλ προστέθηκε.',
+                    array('class' => 'flashBlue'));
                  $this->redirect(array('action' => 'index'));
             }
         }
@@ -111,7 +112,8 @@ class ProfilesController extends AppController {
     function delete($id) {
 
           if ($this->Profile->delete($id, $cascade = true)) {
-             $this->Session->setFlash('Το προφίλ διεγράφη.');
+             $this->Session->setFlash('Το προφίλ διεγράφη.',
+                array('class' => 'flashBlue'));
              $this->redirect(array('action'=> 'index'));
     	  }
     }
@@ -133,7 +135,8 @@ class ProfilesController extends AppController {
 	}
         else {
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.');
+                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.',
+                        array('class' => 'flashBlue'));
                     $this->redirect(array('action'=> "view", $id));
             }
 		}
@@ -309,7 +312,9 @@ class ProfilesController extends AppController {
                                         'child' => $search_args['pref_child'],
                                         'couple' => $search_args['pref_couple'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
-*/        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.');
+*/
+        $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.',
+            'default', array('class' => 'flashBlue'));
     }
 
     private function searchBySavedPrefs() {
@@ -380,7 +385,8 @@ class ProfilesController extends AppController {
 
         /* exit if this profile belongs to another admin */
         if ($profile["User"]["role"] == "admin") {
-            $this->Session->setFlash("Ο διαχειριστής δεν μπορεί να μπλοκάρει άλλο διαχειριστή.");
+            $this->Session->setFlash('Ο διαχειριστής δεν μπορεί να μπλοκάρει άλλο διαχειριστή.',
+                'default', array('class' => 'flashBlue'));
             $this->redirect(array("action" => "view", $id));
         }
 
@@ -405,10 +411,13 @@ class ProfilesController extends AppController {
         }
         $success = $this->set_ban_status($id, 1);
         if ($success) {
-            $this->Session->setFlash("Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.");
+            $this->Session->setFlash('Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.',
+                'default', array('class' => 'flashBlue'));
             $this->email_banned_user($id);
         } else {
-            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+            $this->Session->setFlash(
+                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.',
+                'deafult', array('class' => 'flashRed'));
         }
         $this->redirect(array('action'=> "view", $id));
     }
@@ -419,9 +428,12 @@ class ProfilesController extends AppController {
         }
         $success = $this->set_ban_status($id, 0);
         if ($success) {
-            $this->Session->setFlash("Ο λογαριασμός χρήστη ενεργοποιήθηκε με επιτυχία.");
+            $this->Session->setFlash('Ο λογαριασμός χρήστη ενεργοποιήθηκε με επιτυχία.',
+            'default', array('class' => 'flashBlue'));
         } else {
-            $this->Session->setFlash('Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.');
+            $this->Session->setFlash(
+                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.',
+                'default', array('class' => 'flashBlue'));
         }
         $this->redirect(array('action'=> "view", $id));
 

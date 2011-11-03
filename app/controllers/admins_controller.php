@@ -8,10 +8,14 @@ class AdminsController extends AppController
         'fields' => array( 'User.username', 'User.banned',
         'Profile.id', 'Profile.firstname', 'Profile.lastname',
         'Profile.email'),
-        'limit' => 5
+        'limit' => 50
     );
 
     function search(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'admin_search');
+        $this->set('title_for_layout','Αναζήτηση χρηστών');
 
         $this->checkAccess();
 

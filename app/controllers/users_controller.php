@@ -46,6 +46,7 @@ class UsersController extends AppController{
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'users_terms');
+        $this->set('title_for_layout','Όροι χρήσης');
 
         /*When login or before filter snippet redirect to terms action
          *user by default takes a form with terms. if accept the terms
@@ -56,7 +57,8 @@ class UsersController extends AppController{
         if( $this->Auth->user( "terms_accepted") === "1" ) {
 
 
-            $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default' );
+            $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default',
+                array('class' => 'flashBlue'));
             $this->redirect( $this->referer() );
         }
 
@@ -83,7 +85,8 @@ class UsersController extends AppController{
 
             } else {
 
-                $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default' );
+                $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default',
+                array('class' => 'flashRed'));
                 $this->redirect ( array( 'controller' => 'users', 'action' => 'logout') );
             }
 

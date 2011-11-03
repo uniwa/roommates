@@ -30,6 +30,7 @@
         ?>
     </div>
     <div id='container'>
+        <?php echo $this->Session->flash(); ?>
         <div id='header'>
             <div id='header-main'>
                 <div class='header-title'>
