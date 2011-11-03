@@ -151,6 +151,16 @@ class RealEstate extends AppModel {
             'required' => false
         )
     );
+
+
+    function beforeValidate() {
+
+        if ($this->data['RealEstate']['company_name'] == null) {
+            $this->data['RealEstate']['company_name'] =
+                $this->data['RealEstate']['lastname'].' '.
+                $this->data['RealEstate']['firstname'];
+        }
+    }
 }
 
 ?>
