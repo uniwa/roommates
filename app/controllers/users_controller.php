@@ -5,7 +5,7 @@
 class UsersController extends AppController{
 
 	var $name = "Users";
-    var $uses = array("Profile", "User", "Preference", "Municipality");
+    var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
     var $components = array('Token');
 
     function beforeFilter() {
@@ -212,7 +212,6 @@ class UsersController extends AppController{
                 }*/
 
             }
-
         }
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
     }
