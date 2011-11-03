@@ -70,6 +70,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `role` VARCHAR(40) NULL DEFAULT NULL ,
   `banned` TINYINT(1) NOT NULL DEFAULT 0 ,
   `terms_accepted` TINYINT(1) NOT NULL DEFAULT 0 ,
+	`enabled` TINYINT(1) NOT NULL DEFAULT 1 ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -265,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `roommates`.`real_estates` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `firstname` VARCHAR(45) NOT NULL ,
   `lastname` VARCHAR(45) NOT NULL ,
-	`company_name` VARCHAR(45) NOT NULL ,
+	`company_name` VARCHAR(100) NOT NULL ,
 	`email` VARCHAR(45) NOT NULL ,
 	`phone` VARCHAR(45) NOT NULL ,
 	`fax` VARCHAR(45) NULL DEFAULT NULL,
