@@ -234,13 +234,13 @@ img{
     background-color: #ddd;
     margin: 8px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
-    height: 148px;
+/*    height: 148px;*/
 }
 
 #footer-main{
     position: relative;
     background-color: #fff;
-    height: 116px;
+/*    height: 116px;*/
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
 }
@@ -478,17 +478,32 @@ button{
 
 /*!terms fag*/
 
-/*footer logos*/
-
+/*footer*/
 .logos{
-	margin:0 auto;
-	width:550px;
-	padding:10px;
-
-font-size: 10px;
-color: #667;
+	margin: 0 auto;
+	width: 300px;
+	padding: 10px;
+    font-size: 10px;
+    color: #667;
 }
-/*!footer logos*/
+
+.funding{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.infos{
+    margin: 8px 0px 0px 24px;
+}
+
+.info{
+    float: left;
+    margin: 16px 0px 24px 0px;
+}
+
+img.info{
+    margin: 10px 4px 24px 32px;
+}
 
 .personalized-rss {
     float: right;

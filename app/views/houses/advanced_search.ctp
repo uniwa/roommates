@@ -148,6 +148,20 @@
     ?>
 
         <div class='left-form'>
+            <ul>
+                <li class='form-line form-buttons'>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('αναζήτηση', array('name' => 'advanced_search', 'class' => 'button'));
+                        ?>
+                    </div>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+            </ul>
             <div class='form-title'>
                 <h2>Χαρακτηριστικά σπιτιών</h2>
             </div>
@@ -319,18 +333,6 @@
                             echo $this->Form->input('couple', array('label' => '',
                                 'options' => $select_options,
                                 'value' => isset($defaults['couple']) ? $defaults['couple'] : '2'));
-                        ?>
-                    </div>
-                </li>
-                <li class='form-line form-buttons'>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('αναζήτηση', array('name' => 'advanced_search', 'class' => 'button'));
-                        ?>
-                    </div>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
                         ?>
                     </div>
                 </li>

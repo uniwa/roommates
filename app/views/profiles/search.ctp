@@ -12,7 +12,6 @@
     
     #leftbar{
         float: left;
-/*        background-color: #eaeaea;*/
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 260px;
@@ -21,7 +20,6 @@
     #main-inner{
         float: left;
         border-left: 1px dotted #aaa;
-/*        background-color: #eaeaea;*/
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 660px;
@@ -114,6 +112,20 @@
     ?>
 
         <div class='left-form'>
+            <ul>
+                <li class='form-line form-buttons'>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch', 'class' => 'button'));
+                        ?>
+                    </div>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+            </ul>
             <div class='form-title'>
                 <h2>Χαρακτηριστικά συγκατοίκων</h2>
             </div>
@@ -213,18 +225,6 @@
                                 'class' => 'input-elem',
                                 'checked' => isset($defaults['has_house']) ? $defaults['has_house'] :
                                     false, 'hiddenField' => false)).' Διαθέτει σπίτι';
-                        ?>
-                    </div>
-                </li>
-                <li class='form-line form-buttons'>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch', 'class' => 'button'));
-                        ?>
-                    </div>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
