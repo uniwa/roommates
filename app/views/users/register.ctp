@@ -124,7 +124,8 @@
             <div class='form-elem form-submit'>
                 <?php
                     echo $this->Form->submit('Εγγραφή', array(
-                        'name' => 'register', 'class' => 'button'));
+                        'class' => 'button'));
+                    echo $this->Form->end();
                 ?>
             </div>
         </li>
