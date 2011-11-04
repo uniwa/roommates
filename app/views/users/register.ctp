@@ -67,6 +67,17 @@
 <?php
     echo $this->Form->create('User', array('action' => 'register'));
     $inputelems = array();
+    $inputelems['uname']['input'] = $this->Form->input('username', array(
+        'label' => '', 'autocomplete' => 'off', 'class' => 'input-elem'));
+    $inputelems['uname']['label'] = 'Όνομα χρήστη';
+    $inputelems['pass1']['input'] = $this->Form->input('password', array(
+        'label' => '', 'type' => 'password', 'autocomplete' => 'off', 'class' => 'input-elem'));
+    $inputelems['pass1']['label'] = 'Συνθηματικό';
+    $inputelems['pass2']['input'] = $this->Form->input('password_confirm', array(
+        'label' => '', 'type' => 'password',
+        'autocomplete' => 'off', 'class' => 'input-elem'));
+    $inputelems['pass2']['label'] = 'Επιβεβαίωση συνθηματικού';
+    /* user info end - real estate profile start */
     $inputelems['fname']['input'] = $this->Form->input('firstname', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['fname']['label'] = 'Όνομα';
@@ -93,16 +104,6 @@
     $inputelems['municipality']['input'] = $this->Form->input('municipality_id', array(
         'label' => '', 'empty' => 'Επιλέξτε...', 'class' => 'input-elem'));
     $inputelems['municipality']['label'] = 'Δήμος';
-    $inputelems['uname']['input'] = $this->Form->input('username', array(
-        'label' => '', 'autocomplete' => 'off', 'class' => 'input-elem'));
-    $inputelems['uname']['label'] = 'Όνομα χρήστη';
-    $inputelems['pass1']['input'] = $this->Form->input('password', array(
-        'label' => '', 'type' => 'password', 'autocomplete' => 'off', 'class' => 'input-elem'));
-    $inputelems['pass1']['label'] = 'Συνθηματικό';
-    $inputelems['pass2']['input'] = $this->Form->input('password_confirm', array(
-        'label' => '', 'type' => 'password',
-        'autocomplete' => 'off', 'class' => 'input-elem'));
-    $inputelems['pass2']['label'] = 'Επιβεβαίωση συνθηματικού';
 ?>
     <ul>
         <div class='form-title'>
