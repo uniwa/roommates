@@ -425,11 +425,9 @@
                     <div class='form-elem'>
                         <?php 
                             if ( isset( $defaults ) ) {
-                                //pr($defaults);
                                 $selected_date = $defaults[ 'available_from' ]; 
                             }
                             else {
-                                //$selected_date = null;
                                 // TODO fix hardcoded date
                                 $selected_date = strtotime('31-12-2016');
                             }
