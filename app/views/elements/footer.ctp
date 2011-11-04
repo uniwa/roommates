@@ -1,25 +1,25 @@
 <div id='footer'>
     <div id='footer-menu'>
         <ul>
-            <?php if (isset($selected_action) && $selected_action == 'users_terms') { ?>
-                <li class='menu-item menu-footer menu-selected'>
-            <?php } else { ?>
-                <li class='menu-item menu-footer'>
-            <?php
-                }
-                echo $this->Html->link('Όροι χρήσης', array(
-                    'controller' => 'users','action' => 'publicTerms'));
-            ?>
+            <li>
+                <?php
+                    $linkClass = 'menu-item menu-footer';
+                    if(isset($selected_action) && $selected_action == 'users_terms'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('Όροι χρήσης', array('controller' => 'users',
+                        'action' => 'publicTerms'), array('class' => $linkClass));
+                ?>
             </li>
-            <?php if (isset($selected_action) && $selected_action == 'users_faq') { ?>
-                <li class='menu-item menu-footer menu-selected'>
-            <?php } else { ?>
-                <li class='menu-item menu-footer'>
-            <?php
-                }
-                echo $this->Html->link('Συχνές ερωτήσεις', array(
-                    'controller' => 'users','action' => 'faq'));
-            ?>
+            <li>
+                <?php
+                    $linkClass = 'menu-item menu-footer';
+                    if(isset($selected_action) && $selected_action == 'users_faq'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('Συχνές ερωτήσεις', array('controller' => 'users',
+                        'action' => 'faq'), array('class' => $linkClass));
+                ?>
             </li>
         </ul>
     </div>
