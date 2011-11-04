@@ -198,7 +198,6 @@ class UsersController extends AppController{
                     else {
                         $this->User->commit();
                     }
-                    die();
                 }
 
                 //reCAPTCHA
