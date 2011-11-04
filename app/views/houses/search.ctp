@@ -121,14 +121,8 @@
     <?php
         $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
         $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-        $min_age_options = array(   'label' => '',
-                                    'class' => '',
-                                    'value' => isset($defaults['min_age']) ? $defaults['min_age'] : '');
-        $max_age_options = array(   'label' => '',
-                                    'class' => '',
-                                    'value' => isset($defaults['max_age']) ? $defaults['max_age'] : '');
 
-        //modify the url for pagination    
+        //modify the url for pagination
         $get_vars = '';
         $urls = $this->params['url'];
         //pr($urls);die();
@@ -144,7 +138,7 @@
         }
         $get_vars = substr_replace($get_vars, '', -1, 'UTF-8'); // remove the last &
 
-        echo $this->Form->create('House', array('action' => 'advanced_search', 'type' => 'get'));
+        echo $this->Form->create('House', array('action' => 'search', 'type' => 'get'));
     ?>
 
         <div class='left-form'>
@@ -152,12 +146,12 @@
                 <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αναζήτηση', array('name' => 'advanced_search', 'class' => 'button'));
+                            echo $this->Form->submit('αναζήτηση', array('name' => 'search', 'class' => 'button'));
                         ?>
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'clear', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
@@ -343,7 +337,7 @@
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->input('order_by', array('label' => '',
-                                'options' => $search_order_options,
+                                'options' => $order_options,
                                 'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
                                 'class' => 'input-elem'));
                         ?>
@@ -357,12 +351,12 @@
                 <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αποθήκευση', array('name' => 'save_search', 'class' => 'button'));
+                            echo $this->Form->submit('αποθήκευση', array('name' => 'save', 'class' => 'button'));
                         ?>
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('φόρτωση', array('name' => 'load_prefs', 'class' => 'button'));
+                            echo $this->Form->submit('φόρτωση', array('name' => 'load', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
@@ -436,9 +430,9 @@
                             }
                             else {
                                 //$selected_date = null;
+                                // TODO fix hardcoded date
                                 $selected_date = strtotime('31-12-2016');
                             }
-                            $this->field = 'available_from';
                             echo $this->Form->dateTime('available_from',
                                 'DMY', null, $selected_date, array('minYear' => date('Y'),
                                 'maxYear' => date('Y') + 5,
@@ -544,12 +538,12 @@
                 <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αναζήτηση', array('name' => 'advanced_search', 'class' => 'button'));
+                            echo $this->Form->submit('αναζήτηση', array('name' => 'search', 'class' => 'button'));
                         ?>
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'clear', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
