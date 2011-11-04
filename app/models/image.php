@@ -14,9 +14,15 @@ class Image extends AppModel {
         )
     );
 
+    /* NOTE: trailing slash is needed to pass a dir in is_writable() !!! */
+    var $upload_path = "{WWW_ROOT}img/uploads/houses/";
+
     function saveImage($house_id, $fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality) {
 		App::import('Vendor','ccImageResize', array('file' => 'ccImageResize.class.php'));
 		$fileData['name'] = $this->getLocationName($fileData['name']);
+
+        /* catch permission errors before calling move_uploaded_file() */
+        if (! is_writable($this->upload_path)) return NULL;
 
         /* base path to store this file */
         $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
