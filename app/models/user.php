@@ -42,9 +42,10 @@ class User extends AppModel{
     // Check if the username already exists by doing SELECT COUNT(*) FROM users WHERE username = 'your_username'
     function beforeValidate()
     {
-        if( !$this->id )
+        if( isset($this->data["User"]["username"]) )
         {
-            if( $this->findCount( array('User.username' => $this->data['User']['username'] ) ) > 0 )
+            $conditions = array('User.username' => $this->data['User']['username'] );
+            if( $this->find( 'count', array('conditions' => $conditions) ) > 0 )
             {
                 // If any rows are found, send an error and call it 'username_unique'
                 // In our view, we can check for this by doing $form->error('username_unique','Not Unique Username!!!')
