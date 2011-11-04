@@ -433,6 +433,9 @@
                                 // TODO fix hardcoded date
                                 $selected_date = strtotime('31-12-2016');
                             }
+                            // next line is necessary for the search function
+                            // to work properly
+                            $this->field = 'available_from';
                             echo $this->Form->dateTime('available_from',
                                 'DMY', null, $selected_date, array('minYear' => date('Y'),
                                 'maxYear' => date('Y') + 5,
