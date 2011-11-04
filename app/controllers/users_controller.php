@@ -184,7 +184,6 @@ class UsersController extends AppController{
                 $userdata["User"]["enabled"] = 0;
 
                 $this->User->begin();
-                $this->User->create();
                 /* try saving user model */
                 if ($this->User->save($userdata) === false) {
                     $this->User->rollback();
@@ -193,13 +192,13 @@ class UsersController extends AppController{
                 else {
                     /* try saving real estate profile */
                     $uid = $this->User->id;
-                    $estate_id = $this->create_estate_profile($uid, $this->data);
-                    if ($estate_id === false) {
+                    if ( $this->create_estate_profile($uid, $this->data) == false) {
                         $this->User->rollback();
                     }
                     else {
                         $this->User->commit();
                     }
+                    die();
                 }
 
                 //reCAPTCHA
@@ -220,9 +219,6 @@ class UsersController extends AppController{
     }
 
     private function create_estate_profile($id, $data) {
-        $this->RealEstate->begin();
-        $this->RealEstate->create();
-
         $realestate["RealEstate"]["firstname"] = $data["User"]["firstname"];
         $realestate["RealEstate"]["lastname"] = $data["User"]["lastname"];
         $realestate["RealEstate"]["company_name"] = $data["User"]["company_name"];
@@ -238,11 +234,7 @@ class UsersController extends AppController{
         $realestate["RealEstate"]["banned"] = 0;
 
         if ( $this->RealEstate->save($realestate) === false) {
-            $this->RealEstate->rollback();
             return false;
-        }
-        else {
-            $this->RealEstate->commit();
         }
         return $this->RealEstate->id;
     }
