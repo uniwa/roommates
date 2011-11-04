@@ -86,7 +86,7 @@
     $inputelems['fax']['input'] = $this->Form->input('fax', array('label' => '', 'class' => 'input-elem'));
     $inputelems['fax']['label'] = 'Φαξ';
     $inputelems['address']['input'] = $this->Form->input('address', array(
-        'label' => '', 'type' => 'textarea', 'rows' => '2', 'class' => 'input-elem'));
+        'label' => '', 'class' => 'input-elem'));
     $inputelems['address']['label'] = 'Διεύθυνση';
     $inputelems['pc']['input'] = $this->Form->input('postal_code', array('label' => '', 'class' => 'input-elem'));
     $inputelems['pc']['label'] = 'Τ.Κ.';
