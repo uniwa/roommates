@@ -213,6 +213,8 @@ class UsersController extends AppController{
                 }*/
 
             }
+            /* clear password fields */
+            $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
     }
