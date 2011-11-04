@@ -178,6 +178,12 @@ img{
     cursor: pointer;
 }
 
+.menu-footer{
+    float: right;
+    border-bottom: 3px solid #f0f0f0;
+    margin: 0px 12px 0px 0px;
+}
+
 .menu-user{
     float: right;
     border-bottom: 3px solid #f0f0f0;
@@ -202,12 +208,6 @@ img{
 .menu-selected{
     border-bottom: 3px solid #59a4d8;
     cursor: default;
-}
-
-.menu-footer{
-    float: right;
-    border-bottom: 3px solid #f0f0f0;
-    margin: 0px 12px 0px 0px;
 }
 
 .user-selected{

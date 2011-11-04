@@ -191,14 +191,18 @@ class HousesController extends AppController {
     }
  
     function add() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'houses_view');
         $this->set('title_for_layout','Προσθήκη σπιτιού');
+
         /* if user already owns a house bail out */
         $conditions = array("user_id" => $this->Auth->user('id'));
         $res = $this->House->find('first', array('conditions' => $conditions));
         if (isset($res["House"]["id"])) {
             $this->Session->setFlash('Έχετε ήδη ένα σπίτι αποθηκευμένο.',
                     'default', array('class' => 'flashRed'));
-            $this->redirect(array('action' => 'index'));
+            $this->redirect(array('action' => 'view', $res["House"]["id"]));
         }
 
         if (!empty($this->data)) {
