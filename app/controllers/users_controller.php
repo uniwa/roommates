@@ -167,13 +167,13 @@ class UsersController extends AppController{
         if ($this->data) {
             // TODO: check if accepted terms (depends on real estate terms story card)
             /* salt+hash confirmation password field */
-            $this->data["User"]["password_confirm"] = $this->Auth->password($this->data["User"]["password_confirm"]);
+            //$this->data["User"]["password_confirm"] = $this->Auth->password($this->data["User"]["password_confirm"]);
 
-            if ($this->data["User"]["password"] != $this->data["User"]["password_confirm"]) {
+            //if ($this->data["User"]["password"] != $this->data["User"]["password_confirm"]) {
                 //TODO show validation error for uneven fields
-                pr("wrong pass"); die();
-            }
-            else {
+                //pr("wrong pass"); die();
+            //}
+            //else {
                 $userdata["User"]["username"] = $this->data["User"]["username"];
                 $userdata["User"]["password"] = $this->data["User"]["password"];
                 $userdata["User"]["role"] = 'realestate';
@@ -212,7 +212,7 @@ class UsersController extends AppController{
                     exit();
                 }*/
 
-            }
+            //}
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
