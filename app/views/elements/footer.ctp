@@ -39,9 +39,11 @@
                 if(isset($active)){
                     $activeusers = $active['profiles'];
                     $activehouses = $active['houses'];
-                    echo "<img src='img/group-users.png' alt''Ενεργά προφίλ χρηστών' class='info' />";
+                    echo "<img src='img/group-users.png' alt='Ενεργά προφίλ χρηστών'";
+                    echo "title='Ενεργά προφίλ χρηστών' class='info' />";
                     echo "<div class='info'>".$activeusers."</div>";
-                    echo "<img src='img/favicon.ico' alt='Καταχωρημένα σπίτια' class='info' />";
+                    echo "<img src='img/favicon.ico' alt='Καταχωρημένα σπίτια'";
+                    echo "title='Καταχωρημένα σπίτια' class='info' />";
                     echo "<div class='info'>".$activehouses."</div>";
                 } // isset active
             ?>
