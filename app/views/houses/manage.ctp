@@ -3,7 +3,7 @@
         float: left;
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
-        width: 260px;
+        width: 300px;
     }
 
     #main-inner{
@@ -11,7 +11,7 @@
         border-left: 1px dotted #aaa;
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
-        width: 660px;
+        width: 620px;
     }
 
     .form-title{
@@ -94,7 +94,7 @@
         color: #aaa;
     }
     
-    .usertable{
+    .housetable{
         margin: 0px 0px 0px 8px;
     }
     
@@ -131,23 +131,23 @@
         width: 12px;
     }
 
-    .uname{
-        width: 110px;
+    .address{
+        width: 180px;
+        overflow: hidden;
     }
 
-    .fname,.lname{
+    .type{
         width: 100px;
     }
-
-    .email{
-        width: 180px;
-    }
-
-    .banned{
-        border-right: 0px;
-        width: 40px;
-    }
     
+    .area{
+        width: 60px;
+    }
+
+    .price{
+        width: 50px;
+    }
+
     .admpaginator{
         clear: both;
         margin: 20px auto 20px auto;
@@ -223,12 +223,12 @@
         <div class='admpaginator' >
             <?php
                 /*records per page*/
-                $current_recs = $this->Paginator->counter( array( 'format' => '%count%' ) ); 
+                $current_recs = $this->Paginator->counter(array('format' => '%count%')); 
                 /*change type from String to int*/
-                settype( $current_recs, "integer");
+                settype($current_recs, "integer");
 
-                $page_num = $this->Paginator->counter( array( 'format' => '%pages%' ) );
-                settype( $page_num, "integer" );
+                $page_num = $this->Paginator->counter(array('format' => '%pages%'));
+                settype($page_num, "integer");
 
                 $page = $this->Paginator->current();
                 $count = ($page-1)*$limit;
@@ -238,26 +238,35 @@
                      *Pass params in paginator options in case form is submited
                      *so as to hold params in new page
                      */
-                    if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])){
-                        $queryString = "name={$this->params['url']['name']}&
-                            banned={$this->params['url']['banned']}";
+                    if(isset($this->params['url']['address']) ||
+                        isset($this->params['url']['type']) ||
+                        isset($this->params['url']['area']) ||
+                        isset($this->params['url']['price'])){
+                        $queryString = "address={$this->params['url']['address']}&";
+                        $queryString .= "banned={$this->params['url']['type']}&";
+                        $queryString .= "banned={$this->params['url']['area']}&";
+                        $queryString .= "banned={$this->params['url']['price']}";
                         $options = array('url' => array(
-                            'controller' => 'admins', 'action' => 'search', '?' => $queryString));
+                            'controller' => 'houses',
+                            'action' => 'manage', '?' => $queryString));
                         $this->Paginator->options($options);
                     }
                     
                     /* pagination anv*/
-                    echo $paginator->prev('« Προηγούμενη ',null, null, array('class' => 'disabled'));
+                    echo $paginator->prev('« Προηγούμενη ',null, null,
+                        array('class' => 'disabled'));
                     /* show pages */
                     echo $paginator->numbers(array(
-                        'first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' '));
+                        'first' => 3, 'last' => 3,
+                        'modulus' => '4', 'separator' => ' '));
                     /* Shows the next link */
-                    echo $paginator->next(' Επόμενη » ', null, null, array('class' => 'disabled'));
+                    echo $paginator->next(' Επόμενη » ', null, null,
+                        array('class' => 'disabled'));
                 }
             ?>
         </div>
         <!-- pagination -->
-        <div class='usertable'>
+        <div class='housetable'>
             <div class='row rowtitle'>
                 <div class='col num'>
                     #
@@ -297,7 +306,7 @@
                     ?>
                 </div>
                 <div class='col type'>
-                    <?php //echo $house['House']['type']; ?>
+                    <?php echo '';// $house['House']['type']; ?>
                 </div>
                 <div class='col area'>
                     <?php echo $house['House']['area']; ?>
@@ -313,12 +322,15 @@
         <div class='admpaginator'>
             <?php
                 /* pagination anv*/
-                echo $paginator->prev('« Προηγούμενη ',null, null, array( 'class' => 'disabled' ) );
+                echo $paginator->prev('« Προηγούμενη ',null, null,
+                    array( 'class' => 'disabled' ) );
                 /* show pages */
                 echo $paginator->numbers(array(
-                    'first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' '));
+                    'first' => 3, 'last' => 3,
+                    'modulus' => '4', 'separator' => ' '));
                 /* Shows the next link */
-                echo $paginator->next(' Επόμενη » ', null, null, array('class' => 'disabled'));
+                echo $paginator->next(' Επόμενη » ', null, null,
+                    array('class' => 'disabled'));
             ?>
         </div>
     <?php } //isset results ?>
