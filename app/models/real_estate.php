@@ -93,8 +93,8 @@ class RealEstate extends AppModel {
         'afm' => array(
             'size' => array(
                 'rule' => array('between', 9, 9),
-                'message' => 'Το ΑΦΜ πρέπει να περιέχει ακριβώς 9 ψηφία.',
-                'allowEmpty' => true
+                'allowEmpty' => true,
+                'message' => 'Το ΑΦΜ πρέπει να περιέχει ακριβώς 9 ψηφία.'
             ),
             'not_empty' => array(
                 'rule' => 'notEmpty',
@@ -160,6 +160,8 @@ class RealEstate extends AppModel {
                 $this->data['RealEstate']['lastname'].' '.
                 $this->data['RealEstate']['firstname'];
         }
+
+        return true;
     }
 }
 
