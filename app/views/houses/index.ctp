@@ -100,7 +100,7 @@
                             <?php
                                 echo 'Ενοίκιο '.$house['House']['price'].'€, Εμβαδόν '.$house['House']['area'].' τ.μ. ';
                                 echo $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
-                                echo '<br />Δήμος '.$municipalities[$house['House']['municipality_id']].'<br />';
+                                echo '<br />Δήμος '.$house['Municipality']['name'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 echo 'Διαθέσιμες θέσεις '.$house['House']['free_places'].'<br />';
                             ?>

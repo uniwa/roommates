@@ -91,9 +91,9 @@ class HousesController extends AppController {
             $options['conditions'] = array('House.visible' => 1, 'User.banned' => 0);
         }
 
-        $options['fields'] = array( 'House.*, Image.location,
-                                    Municipality.name, Floor.type,
-                                    HouseType.type' );
+        $options['fields'] = array( 'House.*', 'Image.location',
+                                    'Municipality.name', 'Floor.type',
+                                    'HouseType.type' );
 
         // manually join all the required tables
         // in order to get only the default
