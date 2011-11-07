@@ -74,6 +74,12 @@ class Profile extends AppModel {
 			'required' => false,
 			'allowEmpty' => true),
 
+		'get_mail' => array(
+			'rule' => '/^[0-1]$/',
+			'message' => 'Υπήρξε κάποιο σφάλμα.',
+			'required' => false,
+			'allowEmpty' => true),
+
 		'we_are' => array(
 
 			'rule1'=>array(

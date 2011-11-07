@@ -214,6 +214,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `we_are` INT(11) NULL DEFAULT NULL ,
   `max_roommates` TINYINT NULL DEFAULT NULL ,
   `visible` TINYINT(1) NULL DEFAULT NULL ,
+  `get_mail` TINYINT(1) NULL DEFAULT NULL ,
   `token` VARCHAR(40) NULL DEFAULT NULL ,
   `created` DATETIME NULL DEFAULT NULL ,
   `modified` DATETIME NULL DEFAULT NULL ,
