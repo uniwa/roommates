@@ -135,8 +135,7 @@ class ProfilesController extends AppController {
 	}
         else {
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.',
-                        array('class' => 'flashBlue'));
+                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.', 'default', array('class' => 'flashBlue'));
                     $this->redirect(array('action'=> "view", $id));
             }
 		}
