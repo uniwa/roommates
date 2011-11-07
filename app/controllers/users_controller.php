@@ -1,8 +1,11 @@
 <?php
+
+/*App::import('Vendor', 'recaptchalib');*/
+
 class UsersController extends AppController{
 
 	var $name = "Users";
-    var $uses = array("Profile", "User", "Preference");
+    var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
     var $components = array('Token');
 
     function beforeFilter() {
@@ -12,6 +15,7 @@ class UsersController extends AppController{
 
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
+        $this->Auth->allow('register');
     }
 
     function login() {
@@ -156,6 +160,91 @@ class UsersController extends AppController{
             $this->Preference->commit();
             return $this->Preference->id;
         }
+    }
+
+    function register() {
+        $this->set('title_for_layout','Εγγραφή νέου χρήστη');
+        if ($this->data) {
+            // TODO: check if accepted terms (depends on real estate terms story card)
+            /* salt+hash confirmation password field */
+            $this->data["User"]["password_confirm"] = $this->Auth->password($this->data["User"]["password_confirm"]);
+
+            if ($this->data["User"]["password"] != $this->data["User"]["password_confirm"]) {
+                //TODO show validation error for uneven fields
+                pr("wrong pass"); die();
+            }
+            else {
+                $userdata["User"]["username"] = $this->data["User"]["username"];
+                $userdata["User"]["password"] = $this->data["User"]["password"];
+                $userdata["User"]["role"] = 'realestate';
+                $userdata["User"]["banned"] = 0;
+                /* terms are shown on register page and cannot proceed without accepting */
+                $userdata["User"]["terms_accepted"] = 1;
+                /* we need enabled = 0 because all users are enabled in db by default */
+                $userdata["User"]["enabled"] = 0;
+
+                $this->User->begin();
+                $this->User->create();
+                /* try saving user model */
+                if ($this->User->save($userdata) === false) {
+                    $this->User->rollback();
+                    //TODO show errors (maybe username didn't pass validation ?!)
+                }
+                else {
+                    /* try saving real estate profile */
+                    $uid = $this->User->id;
+                    $estate_id = $this->create_estate_profile($uid, $this->data);
+                    if ($estate_id === false) {
+                        $this->User->rollback();
+                    }
+                    else {
+                        $this->User->commit();
+                    }
+                }
+
+                //reCAPTCHA
+                /*$privatekey = "6Ld7vMkSAAAAAPpRf4v0_zcyS24RLPE1iu9zbOfh";
+                $resp = recaptcha_check_answer($privatekey, 
+                                                $_SERVER["REMOTE_ADDR"],
+                                                $_POST["recaptcha_challenge_field"],
+                                                $_POST["recaptcha_response_field"]);
+                if(!$resp->is_valid){
+                    $this->Session->setFlash("Το reCAPTCHA δεν εισήχθηκε σωστά. Παρακαλώ προσπαθήστε ξανα.");
+                    $this->controller->redirect(array('action' => 'register'));
+                    exit();
+                }*/
+
+            }
+        }
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+    }
+
+    private function create_estate_profile($id, $data) {
+        $this->RealEstate->begin();
+        $this->RealEstate->create();
+
+        $realestate["RealEstate"]["firstname"] = $data["User"]["firstname"];
+        $realestate["RealEstate"]["lastname"] = $data["User"]["lastname"];
+        $realestate["RealEstate"]["company_name"] = $data["User"]["company_name"];
+        $realestate["RealEstate"]["email"] = $data["User"]["email"];
+        $realestate["RealEstate"]["phone"] = $data["User"]["phone"];
+        $realestate["RealEstate"]["fax"] = $data["User"]["fax"];
+        $realestate["RealEstate"]["afm"] = $data["User"]["afm"];
+        $realestate["RealEstate"]["doy"] = $data["User"]["doy"];
+        $realestate["RealEstate"]["address"] = $data["User"]["address"];
+        $realestate["RealEstate"]["postal_code"] = $data["User"]["postal_code"];
+        $realestate["RealEstate"]["municipality_id"] = $data["User"]["municipality_id"];
+        $realestate["RealEstate"]["user_id"] = $id;
+        $realestate["RealEstate"]["banned"] = 0;
+
+        if ( $this->RealEstate->save($realestate) === false) {
+            $this->RealEstate->rollback();
+            return false;
+        }
+        else {
+            $this->RealEstate->commit();
+        }
+        return $this->RealEstate->id;
     }
 
 }

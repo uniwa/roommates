@@ -17,7 +17,7 @@
                     $linkClass .= ' menu-selected';
                 }
                 echo $this->Html->link('Αναζήτηση σπιτιών', array('controller' => 'houses',
-                    'action' => 'advanced_search'), array('class' => $linkClass));
+                    'action' => 'search'), array('class' => $linkClass));
             ?>
         </li>
         <li>
