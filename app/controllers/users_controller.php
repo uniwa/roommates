@@ -1,9 +1,12 @@
 <?php
+
+
 class UsersController extends AppController{
 
 	var $name = "Users";
-    var $uses = array("Profile", "User", "Preference");
-    var $components = array('Token');
+    var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
+    var $components = array('Token', 'Recaptcha.Recaptcha');
+    //var $helpers = array('RecaptchaPlugin.Recaptcha');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -12,7 +15,7 @@ class UsersController extends AppController{
 
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
-
+        $this->Auth->allow('register');
     }
 
     function login() {
@@ -43,6 +46,7 @@ class UsersController extends AppController{
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'users_terms');
+        $this->set('title_for_layout','Όροι χρήσης');
 
         /*When login or before filter snippet redirect to terms action
          *user by default takes a form with terms. if accept the terms
@@ -52,8 +56,8 @@ class UsersController extends AppController{
         /*Checks if user has accepted the terms*/
         if( $this->Auth->user( "terms_accepted") === "1" ) {
 
-
-            $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default' );
+            $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default',
+                array('class' => 'flashBlue'));
             $this->redirect( $this->Auth->redirect() );
         }
 
@@ -80,7 +84,8 @@ class UsersController extends AppController{
 
             } else {
 
-                $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default' );
+                $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default',
+                array('class' => 'flashRed'));
                 $this->redirect ( array( 'controller' => 'users', 'action' => 'logout') );
             }
 
@@ -143,6 +148,10 @@ class UsersController extends AppController{
         $pref["Preference"]["pref_pet"] = 2;
         $pref["Preference"]["pref_child"] = 2;
         $pref["Preference"]["pref_couple"] = 2;
+        /* house preferences - only fields that don't default to NULL */
+        $pref["Preference"]["pref_furnitured"] = 2;
+        $pref["Preference"]["pref_has_photo"] = 0;
+        $pref["Preference"]["pref_disability_facilities"] = 0;
 
         if ( $this->Preference->save($pref) === False ) {
             $this->Preference->rollback();
@@ -152,6 +161,75 @@ class UsersController extends AppController{
             $this->Preference->commit();
             return $this->Preference->id;
         }
+    }
+
+    function register() {
+        $this->set('title_for_layout','Εγγραφή νέου χρήστη');
+        if ($this->data) {
+            if (! $this->Recaptcha->verify()) {
+                $this->Session->setFlash($this->Recaptcha->error);
+                return;
+            }
+            // TODO: check if accepted terms (depends on real estate terms story card)
+
+            $userdata["User"]["username"] = $this->data["User"]["username"];
+            $userdata["User"]["password"] = $this->data["User"]["password"];
+            $userdata["User"]["password_confirm"] = $this->data["User"]["password_confirm"];
+            $userdata["User"]["role"] = 'realestate';
+            $userdata["User"]["banned"] = 0;
+            /* terms are shown on register page and cannot proceed without accepting */
+            $userdata["User"]["terms_accepted"] = 1;
+            /* we need enabled = 0 because all users are enabled in db by default */
+            $userdata["User"]["enabled"] = 0;
+
+            $this->User->set($userdata);
+            if (!$this->User->validates()) {
+                $user_errors = $this->User->invalidFields();
+                $this->set('user_errors', $user_errors);
+                return;
+            }
+
+            $this->User->begin();
+            /* try saving user model */
+            if ($this->User->save($userdata) === false) {
+                $this->User->rollback();
+                //TODO show errors (maybe username didn't pass validation ?!)
+            }
+            else {
+                /* try saving real estate profile */
+                $uid = $this->User->id;
+                if ( $this->create_estate_profile($uid, $this->data) == false) {
+                    $this->User->rollback();
+                }
+                else {
+                    $this->User->commit();
+                }
+            }
+
+            /* clear password fields */
+            $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+        }
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+    }
+
+    private function create_estate_profile($id, $data) {
+        $realestate["RealEstate"]["firstname"] = $data["User"]["firstname"];
+        $realestate["RealEstate"]["lastname"] = $data["User"]["lastname"];
+        $realestate["RealEstate"]["company_name"] = $data["User"]["company_name"];
+        $realestate["RealEstate"]["email"] = $data["User"]["email"];
+        $realestate["RealEstate"]["phone"] = $data["User"]["phone"];
+        $realestate["RealEstate"]["fax"] = $data["User"]["fax"];
+        $realestate["RealEstate"]["afm"] = $data["User"]["afm"];
+        $realestate["RealEstate"]["doy"] = $data["User"]["doy"];
+        $realestate["RealEstate"]["address"] = $data["User"]["address"];
+        $realestate["RealEstate"]["postal_code"] = $data["User"]["postal_code"];
+        $realestate["RealEstate"]["municipality_id"] = $data["User"]["municipality_id"];
+        $realestate["RealEstate"]["user_id"] = $id;
+
+        if ( $this->RealEstate->save($realestate) === false) {
+            return false;
+        }
+        return $this->RealEstate->id;
     }
 
 }

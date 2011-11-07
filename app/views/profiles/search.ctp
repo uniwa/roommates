@@ -12,29 +12,42 @@
     
     #leftbar{
         float: left;
-        background-color: #eaeaea;
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
-        width: 220px;
+        width: 260px;
     }
 
     #main-inner{
         float: left;
-        background-color: #eaeaea;
-        margin: 0px 0px 0px 2px;
+        border-left: 1px dotted #aaa;
+        margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
-        width: 700px;
+        width: 660px;
     }
 
+    .left-form ul{
+        margin: 0px 0px 20px 0px;
+    }
+    
     .form-buttons{
         margin: 10px auto;
         width: 220px;
     }
     
     .form-elem{
-        float: right;
         margin: 0px 8px 12px 0px;
         font-size: 1.2em;
+    }
+
+    .form-label{
+        float: left;
+        width: 80px;
+    }
+    
+    .form-input{
+        float: left;
+        width: 140px;
+        overflow: no-scroll;
     }
 
     .form-submit{
@@ -49,19 +62,22 @@
     }
     
     .search-title{
-        margin: 12px 0px 8px 48px;
+        margin: 12px auto 0px auto;
+        text-align: center;
         font-size: 1.2em;
         font-weight: bold;
     }
 
     .search-subtitle{
-        margin: 0px 0px 12px 64px;
+/*        margin: 0px 0px 12px 64px;*/
+        margin: 8px auto 24px auto;
+        text-align: center;
         font-size: 1.2em;
         font-style: italic;
     }
     
     .pagination{
-        margin: 0px auto;
+        margin: 0px auto 12px auto;
         text-align: center;
     }
     
@@ -70,9 +86,9 @@
     }
 
     .pagination ul li.current{
-        background-color: #59A4D8;
+        border: 1px solid #59A4D8;
         padding: 0px 2px 0px 2px;
-        color: #fff;
+        font-weight: bold;
     }
     
     .pagination ul li.disabled{
@@ -99,24 +115,47 @@
     ?>
 
         <div class='left-form'>
+            <ul>
+                <li class='form-line form-buttons'>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch', 'class' => 'button'));
+                        ?>
+                    </div>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+            </ul>
             <div class='form-title'>
                 <h2>Χαρακτηριστικά συγκατοίκων</h2>
             </div>
             <ul>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ηλικία από
+                    </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input(('age_min'), array('label' => 'Ηλικία από ', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input(('age_min'), array('label' => '', 'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        μέχρι
+                    </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input('age_max', array('label' => 'μέχρι ', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input('age_max', array('label' => '', 'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Φύλο
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_gender', array('label' => 'Φύλο ',
+                            echo $this->Form->input('pref_gender', array('label' => '',
                                 'options' => $genderoptions,
                                 'value' => (isset($defaults['pref_gender']))
                                       ? $defaults['pref_gender']
@@ -127,9 +166,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Καπνιστής
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_smoker', array('label' => 'Καπνιστής ',
+                            echo $this->Form->input('pref_smoker', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_smoker'])) ? $defaults['pref_smoker'] : '2',
@@ -138,9 +180,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Κατοικίδιο
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_pet', array('label' => 'Κατοικίδιο ',
+                            echo $this->Form->input('pref_pet', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_pet'])) ? $defaults['pref_pet'] : '2',
@@ -149,9 +194,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Παιδί
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_child', array('label' => 'Παιδί ',
+                            echo $this->Form->input('pref_child', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_child'])) ? $defaults['pref_child'] : '2',
@@ -160,9 +208,12 @@
                     </div>
                 </li>
                 <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ζευγάρι
+                    </div>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->input('pref_couple', array('label' => 'Ζευγάρι ',
+                            echo $this->Form->input('pref_couple', array('label' => '',
                                 'options' => $options,
                                 'default' => '2',
                                 'value' => (isset($defaults['pref_couple'])) ? $defaults['pref_couple'] : '2',
@@ -175,19 +226,8 @@
                         <?php
                             echo $this->Form->checkbox('has_house', array('value' => 1,
                                 'class' => 'input-elem',
-                                'checked' => isset($defaults['has_house']) ? $defaults['has_house'] : false, 'hiddenField' => false)).' Διαθέτει σπίτι';
-                        ?>
-                    </div>
-                </li>
-                <li class='form-line form-buttons'>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('αναζήτηση', array('name' => 'simplesearch', 'class' => 'button'));
-                        ?>
-                    </div>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));
+                                'checked' => isset($defaults['has_house']) ? $defaults['has_house'] :
+                                    false, 'hiddenField' => false)).' Διαθέτει σπίτι';
                         ?>
                     </div>
                 </li>

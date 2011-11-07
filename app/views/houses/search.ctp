@@ -1,4 +1,20 @@
+<?php
+    echo $this->Html->script('search');
+?>
+
 <style>
+    ul.collapsible{
+        display: none;
+    }
+    
+    .form-collapse{
+        background-image: url('img/arrows.png');
+        background-position: 98% 0px;
+        background-repeat: no-repeat;
+        height: 16px;
+        cursor: pointer;
+    }
+    
     .form-title{
         clear: both;
         margin: 20px 0px 12px 8px;
@@ -12,7 +28,7 @@
     
     #leftbar{
         float: left;
-        background-color: #eaeaea;
+/*        background-color: #f7f7f7;*/
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 320px;
@@ -20,8 +36,9 @@
 
     #main-inner{
         float: left;
-        background-color: #eaeaea;
-        margin: 0px 0px 0px 2px;
+        border-left: 1px dotted #aaa;
+/*        background-color: #f7f7f7;*/
+        margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
     }
@@ -43,7 +60,6 @@
     .form-label{
         float: left;
         width: 80px;
-/*        margin: 2px 4px 2px 0px;*/
     }
 
     .form-input{
@@ -91,6 +107,7 @@
     .pagination ul li.current{
         border: 1px solid #59A4D8;
         padding: 0px 2px 0px 2px;
+        font-weight: bold;
     }
     
     .pagination ul li.disabled{
@@ -104,27 +121,41 @@
     <?php
         $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
         $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-        $min_age_options = array(   'label' => '',
-                                    'class' => '',
-                                    'value' => isset($defaults['min_age']) ? $defaults['min_age'] : '');
-        $max_age_options = array(   'label' => '',
-                                    'class' => '',
-                                    'value' => isset($defaults['max_age']) ? $defaults['max_age'] : '');
 
-        // modify the URL for pagination
+        //modify the url for pagination
         $get_vars = '';
         $urls = $this->params['url'];
+        //pr($urls);die();
         foreach($urls as $key => $value) {
             if($key == 'url' || $key == 'ext') continue;
-
-            $get_vars .= urldecode($key).'='.urldecode($value).'&';
+	    if($key == 'available_from'){
+		    foreach ($urls[$key]as $x => $y){
+			    $get_vars .= urldecode($key.'['.$x.']').'='.$y.'&';
+		    }
+	    }else{
+	            $get_vars .= urldecode($key).'='.urldecode($value).'&';
+	    }
         }
-        $get_vars = substr_replace($get_vars, '', -1); // remove the last &
+        $get_vars = substr_replace($get_vars, '', -1, 'UTF-8'); // remove the last &
 
         echo $this->Form->create('House', array('action' => 'search', 'type' => 'get'));
     ?>
 
         <div class='left-form'>
+            <ul>
+                <li class='form-line form-buttons'>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('αναζήτηση', array('name' => 'search', 'class' => 'button'));
+                        ?>
+                    </div>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'clear', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+            </ul>
             <div class='form-title'>
                 <h2>Χαρακτηριστικά σπιτιών</h2>
             </div>
@@ -172,7 +203,7 @@
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->input('municipality', array('label' => '',
-                                'options' => $municipalities,
+                                'options' => $municipality_options,
                                 'value' => isset($defaults['municipality']) ? $defaults['municipality'] : '',
                                 'empty' => 'Αδιάφορο',
                                 'class' => 'input-elem'));
@@ -196,9 +227,8 @@
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->checkbox('accessibility',
-                                array(  'hiddenField' => false,
-                                        'checked' => isset($defaults['accessibility'])))
-                                        .' Προσβάσιμο από ΑΜΕΑ';
+                                array('hiddenField' => false,
+                                    'checked' => isset($defaults['accessibility']))).' Προσβάσιμο από ΑΜΕΑ';
                         ?>
                     </div>
                 </li>
@@ -206,8 +236,8 @@
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->checkbox('has_photo',
-                                array('hiddenField' => false, 'checked' => isset($defaults['has_photo'])))
-                                .' Διαθέτει φωτογραφία';
+                                array('hiddenField' => false,
+                                    'checked' => isset($defaults['has_photo']))).' Διαθέτει φωτογραφία';
                         ?>
                     </div>
                 </li>
@@ -300,18 +330,6 @@
                         ?>
                     </div>
                 </li>
-                <li class='form-line form-buttons'>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('αναζήτηση', array('name' => 'simple_search', 'class' => 'button'));
-                        ?>
-                    </div>
-                    <div class='form-elem form-submit'>
-                        <?php
-                            echo $this->Form->submit('καθαρισμός', array('name' => 'reset_fields', 'class' => 'button'));
-                        ?>
-                    </div>
-                </li>
                 <li class='form-line'>
                     <div class='form-elem form-label'>
                         Ταξινόμηση 
@@ -333,12 +351,200 @@
                 <li class='form-line form-buttons'>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('αποθήκευση', array('name' => 'save_search', 'class' => 'button'));
+                            echo $this->Form->submit('αποθήκευση', array('name' => 'save', 'class' => 'button'));
                         ?>
                     </div>
                     <div class='form-elem form-submit'>
                         <?php
-                            echo $this->Form->submit('φόρτωση', array('name' => 'load_prefs', 'class' => 'button'));
+                            echo $this->Form->submit('φόρτωση', array('name' => 'load', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+            </ul>
+            <div class='form-title form-collapse expand'>
+                <h2>Πρόσθετα χαρακτηριστικά σπιτιών</h2>
+            </div>
+            <ul class='collapsible'>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Τύπος σπιτιού
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+                            echo $this->Form->input('house_type', array('label' => '',
+                                'options' => $house_type_options,
+                                'value' => isset($defaults) ? $defaults['house_type'] : '',
+                                'empty' => 'Αδιάφορο' ));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Είδος θέρμανσης
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->input('heating_type', array('label' => '',
+                                'options' => $heating_type_options,
+                                'value' => isset($defaults) ? $defaults['heating_type'] : '',
+                                'empty' => 'Αδιάφορο' ));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ελάχιστος αριθμός υπνοδωματίων
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->input('bedroom_num_min', array('label' => '', 
+                                'class' => 'short-textbox',
+                                'value' => isset($defaults) ? $defaults['bedroom_num_min'] : '',
+                                'class' => 'input-elem'));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ελάχιστος αριθμός μπάνιων
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->input('bathroom_num_min', array('label' => '',
+                                'class' => 'short-textbox',
+                                'value' => isset($defaults) ? $defaults['bathroom_num_min'] : '',
+                                'class' => 'input-elem'));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem'>
+                        Ημερομηνία διαθεσιμότητας μέχρι
+                    </div>
+                <li class='form-line'>
+                    <div class='form-elem'>
+                        <?php 
+                            if ( isset( $defaults ) ) {
+                                $selected_date = $defaults[ 'available_from' ]; 
+                            }
+                            else {
+                                // TODO fix hardcoded date
+                                $selected_date = strtotime('31-12-2016');
+                            }
+                            // next line is necessary for the search function
+                            // to work properly
+                            $this->field = 'available_from';
+                            echo $this->Form->dateTime('available_from',
+                                'DMY', null, $selected_date, array('minYear' => date('Y'),
+                                'maxYear' => date('Y') + 5,
+                                'empty' => false));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ελάχιστη περίοδος ενοικίασης
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->input('rent_period_min', array('label' => '',
+                                'class' => 'short-textbox',
+                                'value' => isset($defaults) ? $defaults['rent_period_min'] : '',
+                                'class' => 'input-elem'));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Όροφος από
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->input('floor_min', array('label' => '',
+                                'options' => $floor_options,
+                                'value' => isset($defaults) ? $defaults['floor_min'] : '',
+                                'empty' => 'Αδιάφορο' ));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Έτος κατασκευής από
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->input('construction_year_min', array('label' => '',
+                                'options' => $construction_year_options,
+                                'value' => isset($defaults) ? $defaults['construction_year_min'] : '',
+                                'empty' => 'Αδιάφορο' ));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->checkbox('solar_heater', array('hiddenField' => false,
+                                'checked' => isset($defaults['solar_heater']))).' Ηλιακός θερμοσίφωνας';
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->checkbox('aircondition', array('hiddenField' => false,
+                                'checked' => isset($defaults['aircondition']))).' Κλιματισμός';
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->checkbox('garden', array('hiddenField' => false,
+                                'checked' => isset($defaults['garden']))).' Κήπος';
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->checkbox('parking', array('hiddenField' => false,
+                                'checked' => isset($defaults['parking']))).' Θέση πάρκινγκ';
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->checkbox('no_shared_pay', array('hiddenField' => false,
+                                'checked' => isset($defaults['no_shared_pay']))).' Χωρίς κοινόχρηστα';
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->checkbox('security_doors', array('hiddenField' => false,
+                                'checked' => isset($defaults['security_doors']))).' Πόρτα ασφαλείας';
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+	                        echo $this->Form->checkbox('storeroom', array('hiddenField' => false,
+                                'checked' => isset($defaults['storeroom']))).' Αποθήκη';
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line form-buttons'>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('αναζήτηση', array('name' => 'search', 'class' => 'button'));
+                        ?>
+                    </div>
+                    <div class='form-elem form-submit'>
+                        <?php
+                            echo $this->Form->submit('καθαρισμός', array('name' => 'clear', 'class' => 'button'));
                         ?>
                     </div>
                 </li>
@@ -370,6 +576,8 @@
         <div class="pagination">
             <ul>
                 <?php
+                    // set the URL
+                    $paginator->options(array('url' => array('?' => $get_vars)));
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -411,7 +619,7 @@
                             <?php
                                 echo 'Ενοίκιο '.$house['House']['price'].'€, Εμβαδόν '.$house['House']['area'].' τ.μ. ';
                                 echo $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
-                                echo '<br />Δήμος '.$municipalities[$house['House']['municipality_id']].'<br />';
+                                echo '<br />Δήμος '.$municipality_options[$house['House']['municipality_id']].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 echo 'Διαθέσιμες θέσεις '.$house['House']['free_places'].'<br />';
                             ?>

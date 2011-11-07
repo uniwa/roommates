@@ -248,9 +248,14 @@ a{outline:none}
         top:20px;
      
     }
+
+    
 </style>
 
 <?php echo $this->Session->flash();?>
+        <div id='registration'>
+            <?php echo $this->Html->link('Εγγραφή', array('controller' => 'users', 'action' => 'register')); ?> 
+        </div>
 		<div id="wrappertop"></div>
 			<div id="wrapper">
 					<div class="content">
