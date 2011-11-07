@@ -64,7 +64,8 @@ echo $this->Form->input('Profile.couple', array('label' => 'Συζώ'));
 echo $this->Form->input('Profile.we_are', array('label' => 'Είμαστε'));
 
 echo $this->Form->input('Profile.max_roommates', array('label' => 'Ζητούνται'));
-echo $this->Form->input('Profile.visible', array('label' => 'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου'));
+echo $this->Form->input('Profile.visible', array('label' => 'Να γίνομαι ορατός σε αναζητήσεις χρηστών με βάση τα στοιχεία του προφίλ μου.'));
+echo $this->Form->input('Profile.get_mail', array('label' => 'Να λαμβάνω ενημερώσεις μέσω e-mail για τα νέα σπίτια που αναρτώνται.'));
 
 ?>
 
