@@ -12,6 +12,7 @@ class UsersController extends AppController{
 
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
+
     }
 
     function login() {
@@ -53,7 +54,7 @@ class UsersController extends AppController{
 
 
             $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default' );
-            $this->redirect( $this->referer() );
+            $this->redirect( $this->Auth->redirect() );
         }
 
         $this->layout = 'terms';
@@ -70,8 +71,8 @@ class UsersController extends AppController{
                 /*refresh session for this field*/
                 $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
 
-
                 if( $user["Profile"]["id"] == null ) {
+
                     $pref_id = $this->create_preferences();
                     $profile_id = $this->create_profile($this->User->id, $pref_id);
                     $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
@@ -104,13 +105,15 @@ class UsersController extends AppController{
     }
 
     private function create_profile($id, $pref_id) {
+
         $this->Profile->begin();
         $this->Profile->create();
 
-        /* TODO: get this info from LDAP */
-        $profile["Profile"]["firstname"] = "firstname";
-        $profile["Profile"]["lastname"] = "lastname";
-        $profile["Profile"]["email"] = "test@teiath.gr";
+       $ldap_data = $this->Session->read('LdapData');
+        
+        $profile["Profile"]["firstname"] = $ldap_data['first_name'];
+        $profile["Profile"]["lastname"] = $ldap_data['last_name'];
+        $profile["Profile"]["email"] = $ldap_data['email'];
 
         /* dummy sane data - user will edit his profile after login */
         $profile["Profile"]["dob"] = date('Y') - 18;
