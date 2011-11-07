@@ -6,27 +6,25 @@ class User extends AppModel{
     var $hasOne = array('Profile', 'RealEstate');
 
     var $validate = array(
-        /*
-        'id' => array(
-            'rule' => 'blank',
-            'on' => 'create'
-        ),*/
         'username' => array(
             'rule' => 'alphanumeric',
             'message' => 'Please enter a valid username',
             'required' => true
         ),
         'password' => array(
-            'rule' => array('confirmPassword', 'password'),
-            'message' => 'Passwords do not match',
-            'required' => 'true'
-        ),
-        'confirm_password' => array(
             'rule' => 'alphanumeric',
-            'required' => 'true'
+            'required' => true,
+            'allowEmpty' => false
+        ),
+        'password_confirm' => array(
+            'rule' => 'alphanumeric',
+            'required' => true,
+            'allowEmpty' => false
         )
     );
 
+    /* user model validation cannot see confirm_password for some strange reason
+       temporarily moved to user controller
     private function confirmPassword($data)
     {
         // We must manually hash the second piece in the same way the AuthComponent would
@@ -38,6 +36,7 @@ class User extends AppModel{
         // hashed passwords did NOT match
         return false;
     }
+    */
 
     // Check if the username already exists by doing SELECT COUNT(*) FROM users WHERE username = 'your_username'
     function beforeValidate()

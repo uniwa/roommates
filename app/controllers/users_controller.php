@@ -166,53 +166,41 @@ class UsersController extends AppController{
         $this->set('title_for_layout','Εγγραφή νέου χρήστη');
         if ($this->data) {
             // TODO: check if accepted terms (depends on real estate terms story card)
+
             /* salt+hash confirmation password field */
-            //$this->data["User"]["password_confirm"] = $this->Auth->password($this->data["User"]["password_confirm"]);
+            $this->data["User"]["password_confirm"] = $this->Auth->password($this->data["User"]["password_confirm"]);
 
-            //if ($this->data["User"]["password"] != $this->data["User"]["password_confirm"]) {
-                //TODO show validation error for uneven fields
-                //pr("wrong pass"); die();
-            //}
-            //else {
-                $userdata["User"]["username"] = $this->data["User"]["username"];
-                $userdata["User"]["password"] = $this->data["User"]["password"];
-                $userdata["User"]["role"] = 'realestate';
-                $userdata["User"]["banned"] = 0;
-                /* terms are shown on register page and cannot proceed without accepting */
-                $userdata["User"]["terms_accepted"] = 1;
-                /* we need enabled = 0 because all users are enabled in db by default */
-                $userdata["User"]["enabled"] = 0;
+            if ($this->data["User"]["password"] != $this->data["User"]["password_confirm"]) {
+                $this->Session->setFlash('Οι δυο κωδικοί δεν συμπίπτουν.', 'default', array('class' => 'flashRed'));
+                $this->redirect(array('controller' => 'users', 'action' => 'register'));
+            }
 
-                $this->User->begin();
-                /* try saving user model */
-                if ($this->User->save($userdata) === false) {
+            $userdata["User"]["username"] = $this->data["User"]["username"];
+            $userdata["User"]["password"] = $this->data["User"]["password"];
+            $userdata["User"]["role"] = 'realestate';
+            $userdata["User"]["banned"] = 0;
+            /* terms are shown on register page and cannot proceed without accepting */
+            $userdata["User"]["terms_accepted"] = 1;
+            /* we need enabled = 0 because all users are enabled in db by default */
+            $userdata["User"]["enabled"] = 0;
+
+            $this->User->begin();
+            /* try saving user model */
+            if ($this->User->save($userdata) === false) {
+                $this->User->rollback();
+                //TODO show errors (maybe username didn't pass validation ?!)
+            }
+            else {
+                /* try saving real estate profile */
+                $uid = $this->User->id;
+                if ( $this->create_estate_profile($uid, $this->data) == false) {
                     $this->User->rollback();
-                    //TODO show errors (maybe username didn't pass validation ?!)
                 }
                 else {
-                    /* try saving real estate profile */
-                    $uid = $this->User->id;
-                    if ( $this->create_estate_profile($uid, $this->data) == false) {
-                        $this->User->rollback();
-                    }
-                    else {
-                        $this->User->commit();
-                    }
+                    $this->User->commit();
                 }
+            }
 
-                //reCAPTCHA
-                /*$privatekey = "6Ld7vMkSAAAAAPpRf4v0_zcyS24RLPE1iu9zbOfh";
-                $resp = recaptcha_check_answer($privatekey, 
-                                                $_SERVER["REMOTE_ADDR"],
-                                                $_POST["recaptcha_challenge_field"],
-                                                $_POST["recaptcha_response_field"]);
-                if(!$resp->is_valid){
-                    $this->Session->setFlash("Το reCAPTCHA δεν εισήχθηκε σωστά. Παρακαλώ προσπαθήστε ξανα.");
-                    $this->controller->redirect(array('action' => 'register'));
-                    exit();
-                }*/
-
-            //}
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
