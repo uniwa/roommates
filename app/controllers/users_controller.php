@@ -1,12 +1,12 @@
 <?php
 
-/*App::import('Vendor', 'recaptchalib');*/
 
 class UsersController extends AppController{
 
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
-    var $components = array('Token');
+    var $components = array('Token', 'Recaptcha.Recaptcha');
+    //var $helpers = array('RecaptchaPlugin.Recaptcha');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -165,6 +165,10 @@ class UsersController extends AppController{
     function register() {
         $this->set('title_for_layout','Εγγραφή νέου χρήστη');
         if ($this->data) {
+            if (! $this->Recaptcha->verify()) {
+                $this->Session->setFlash($this->Recaptcha->error);
+                return;
+            }
             // TODO: check if accepted terms (depends on real estate terms story card)
 
             $userdata["User"]["username"] = $this->data["User"]["username"];
