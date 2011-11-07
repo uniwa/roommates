@@ -325,6 +325,8 @@ class HousesController extends AppController {
 
 
     function manage(){
+        // TODO Access control: allow only 'realestate' users
+        
         // this variable is used to properly display
         // the selected element on header
         $this->set('selected_action', 'houses_manage');
