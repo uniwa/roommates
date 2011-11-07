@@ -181,6 +181,7 @@ class UsersController extends AppController{
             if (!$this->User->validates()) {
                 $user_errors = $this->User->invalidFields();
                 $this->set('user_errors', $user_errors);
+                return;
             }
 
             $this->User->begin();

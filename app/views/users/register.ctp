@@ -139,6 +139,8 @@
     <?php
         /*$publicKey = "6Ld7vMkSAAAAALw4jfDEI6LLyCxTN4pOIQ7GvPZx";
         echo recaptcha_get_html($publickey);*/
+        //pr($user_errors);
+        //pr($form->error('username_unique'));
     ?>
 </div>
 
