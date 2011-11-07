@@ -324,7 +324,46 @@ class HousesController extends AppController {
     }
 
 
-    function search () {
+    function manage(){
+        // this variable is used to properly display
+        // the selected element on header
+        $this->set('selected_action', 'houses_manage');
+        $this->set('title_for_layout','Διαχείρηση σπιτιών');
+
+        // drop down menu options
+        $this->set('house_type_options',
+                   $this->House->HouseType->find('list',array('fields' => array('type'))));
+
+        $this->set('order_options', array('τελευταία ενημέρωση',
+                                            'τιμή - αύξουσα',
+                                            'τιμή - φθίνουσα',
+                                            'εμβαδό - αύξουσα',
+                                            'εμβαδό - φθίνουσα',
+                                            'δήμο - αύξουσα',
+                                            'δήμο - φθίνουσα',
+                                            'διαθέσιμες θέσεις - αύξουσα',
+                                            'διαθέσιμες θέσεις - φθίνουσα'));
+
+        $houseConditions['House.visible'] = 1;
+        if(!empty($this->params['url']['house_type'])){
+            $houseConditions['House.house_type_id'] .= $this->params['url']['house_type'];
+        }
+        $options['conditions'] = $houseConditions;
+
+//        $options['fields'] = array('House.*');
+        if(isset($this->params['url']['order_by'])){
+            $orderBy = $this->getOrderCondition($this->params['url']['order_by']);
+            $options['order'] = $orderBy;
+        }
+        // pagination options
+        $options['limit'] = 15;
+        $this->paginate = $options;
+        $results = $this->paginate('House');
+        $this->set('results', $results);
+        $this->set('limit', $this->paginate['limit']);
+    }
+
+    function search(){
 
         // this variable is used to properly display
         // the selected element on header
