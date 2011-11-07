@@ -20,7 +20,7 @@
         margin: 10px auto;
         width: 220px;
     }
-    
+
     .form-elem{
         margin: 0px 8px 12px 0px;
         font-size: 1.2em;
@@ -31,7 +31,6 @@
         width: 160px;
         text-align: right;
     }
-    
     .form-input{
         float: left;
         width: 240px;
@@ -126,6 +125,7 @@
             </div>
         </li>
     <?php } // foreach ?>
+    <div> <?php echo $this->Recaptcha->display(); ?> </div>
         <li class='form-line form-buttons'>
             <div class='form-elem form-submit'>
                 <?php
@@ -136,11 +136,4 @@
             </div>
         </li>
     </ul>
-    <?php
-        /*$publicKey = "6Ld7vMkSAAAAALw4jfDEI6LLyCxTN4pOIQ7GvPZx";
-        echo recaptcha_get_html($publickey);*/
-        //pr($user_errors);
-        //pr($form->error('username_unique'));
-    ?>
 </div>
-
