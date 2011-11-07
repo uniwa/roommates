@@ -120,6 +120,8 @@
 
 <div class="house-left">
     <table class="house-info">
+        <td>
+        <table>
         <tr>
             <th>Διεύθυνση:</th>
             <td><?php echo $house['House']['address']?></td>
@@ -258,9 +260,52 @@
             <th>Περιγραφή:</th>
             <td> <?php echo Sanitize::html($house['House']['description'])?></td>
         </tr>
+        </table>
+        </td>
+
+        <td>
+        <table>
+
+        <?php if($house['User']['Profile']){?>
+
+        <tr>
+        <th><?php echo $this->Html->link($house['User']['Profile']['firstname'] . ' ' . $house['User']['Profile']['lastname'],
+                                        array('controller' => 'profiles', 'action' => 'view', $house['User']['Profile']['id']));?></th>
+        </tr>
+        <tr>
+            <td> <?php echo Sanitize::html($house['User']['Profile']['age'] . ' ετών, ' . ($house['User']['Profile']['gender']?'γυναίκα':'άνδρας'))?></td>
+        </tr>
+        <tr>
+            <td>e-mail:</td>
+            <td> <?php echo Sanitize::html($house['User']['Profile']['email'])?></td>
+        </tr>
+        <tr>
+            <td>επιθυμητοί συγκάτοικοι:</td>
+            <td> <?php echo Sanitize::html($house['User']['Profile']['max_roommates'])?></td>
+        </tr>
+
+        <?php }elseif($house['User']['RealEstate']){ ?>
+        <tr>
+        <th><?php echo $this->Html->link($house['User']['RealEstate']['company_name'],
+                                        array('controller' => 'realEstates', 'action' => 'view', $house['User']['RealEstate']['id']));?></th>
+        </tr>
+        <tr><td>e-mail:</td>
+            <td> <?php echo Sanitize::html($house['User']['RealEstate']['email'])?></td>
+        </tr>
+        <tr>
+            <td>τηλέφωνο επικοινωνίας:</td>
+            <td> <?php echo Sanitize::html($house['User']['RealEstate']['phone'])?></td>
+        </tr>
+        <tr>
+            <td>φαξ:</td>
+            <td> <?php echo Sanitize::html($house['User']['RealEstate']['fax'])?></td>
+        </tr>
+        <?php } ?>
+
+        </table>
+        </td>
 
     </table>
-
 
 </div>
 <!--left collumn-->
