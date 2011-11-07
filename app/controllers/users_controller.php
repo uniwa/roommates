@@ -167,22 +167,21 @@ class UsersController extends AppController{
         if ($this->data) {
             // TODO: check if accepted terms (depends on real estate terms story card)
 
-            /* salt+hash confirmation password field */
-            $this->data["User"]["password_confirm"] = $this->Auth->password($this->data["User"]["password_confirm"]);
-
-            if ($this->data["User"]["password"] != $this->data["User"]["password_confirm"]) {
-                $this->Session->setFlash('Οι δυο κωδικοί δεν συμπίπτουν.', 'default', array('class' => 'flashRed'));
-                $this->redirect(array('controller' => 'users', 'action' => 'register'));
-            }
-
             $userdata["User"]["username"] = $this->data["User"]["username"];
             $userdata["User"]["password"] = $this->data["User"]["password"];
+            $userdata["User"]["password_confirm"] = $this->data["User"]["password_confirm"];
             $userdata["User"]["role"] = 'realestate';
             $userdata["User"]["banned"] = 0;
             /* terms are shown on register page and cannot proceed without accepting */
             $userdata["User"]["terms_accepted"] = 1;
             /* we need enabled = 0 because all users are enabled in db by default */
             $userdata["User"]["enabled"] = 0;
+
+            $this->User->set($userdata);
+            if (!$this->User->validates()) {
+                $user_errors = $this->User->invalidFields();
+                $this->set('user_errors', $user_errors);
+            }
 
             $this->User->begin();
             /* try saving user model */

@@ -17,26 +17,26 @@ class User extends AppModel{
             'allowEmpty' => false
         ),
         'password_confirm' => array(
-            'rule' => 'alphanumeric',
-            'required' => true,
-            'allowEmpty' => false
+            'identical_passwd' => array(
+                'rule' => array('identical_password', 'password'),
+                'required' => true,
+                'allowEmpty' => false
+            )
         )
     );
 
-    /* user model validation cannot see confirm_password for some strange reason
-       temporarily moved to user controller
-    private function confirmPassword($data)
+    function identical_password($check, $passwd)
     {
+        $hashed_pass = Security::hash(Configure::read('Security.salt') . $check["password_confirm"]);
         // We must manually hash the second piece in the same way the AuthComponent would
         // if they match, return true!
-        if ($data['password'] == Security::hash(Configure::read('Security.salt') . $this->data['User']['confirm_password'])) {
+        if ($this->data[$this->name][$passwd] == $hashed_pass) {
             return true;
         }
 
         // hashed passwords did NOT match
         return false;
     }
-    */
 
     // Check if the username already exists by doing SELECT COUNT(*) FROM users WHERE username = 'your_username'
     function beforeValidate()
