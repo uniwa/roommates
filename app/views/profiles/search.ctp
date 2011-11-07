@@ -62,13 +62,16 @@
     }
     
     .search-title{
-        margin: 12px 0px 8px 48px;
+        margin: 12px auto 0px auto;
+        text-align: center;
         font-size: 1.2em;
         font-weight: bold;
     }
 
     .search-subtitle{
-        margin: 0px 0px 12px 64px;
+/*        margin: 0px 0px 12px 64px;*/
+        margin: 8px auto 24px auto;
+        text-align: center;
         font-size: 1.2em;
         font-style: italic;
     }
