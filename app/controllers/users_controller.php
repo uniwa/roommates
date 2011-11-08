@@ -164,6 +164,7 @@ class UsersController extends AppController{
 
     function register() {
         $this->set('title_for_layout','Εγγραφή νέου χρήστη');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         if ($this->data) {
             // user must accept the real estate terms
             if ($this->data["User"]["estate_terms"] != "1") {
@@ -221,7 +222,6 @@ class UsersController extends AppController{
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
-        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
     }
 
     private function create_estate_profile($id, $data) {
