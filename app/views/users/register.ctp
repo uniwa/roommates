@@ -76,8 +76,8 @@
     $inputelems['uname']['label'] = 'Όνομα χρήστη';
 
     /* set error for username that already exists */
-    if (isset($user_errors["username"]["not_unique"])) {
-        $inputelems['uname']['error'] = "<div class='error-message'>Το συγκεκριμένο όνομα χρήστη υπάρχει ήδη</div>";
+    if (isset($user_errors["username"])) {
+        $inputelems['uname']['error'] = "<div class='error-message'>". $user_errors["username"] ."</div>";
     }
 
     /* set error for non-matching passowrds */
