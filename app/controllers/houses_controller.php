@@ -430,10 +430,17 @@ class HousesController extends AppController {
         }
 
         if(isset($this->params['url']['search'])) {
-            $results = $this->simpleSearch( $this->getHouseConditions(),
-                                            $this->getMatesConditions(),
-                                            $this->getOrderCondition($this->params['url']['order_by'])
-                                          );
+            if ($this->Auth->User('role') == 'realestate') {
+                $results = $this->simpleSearch( $this->getHouseConditions(),
+                                                null,
+                                                $this->getOrderCondition($this->params['url']['order_by'])
+                                              );
+            } else {
+                $results = $this->simpleSearch( $this->getHouseConditions(),
+                                                $this->getMatesConditions(),
+                                                $this->getOrderCondition($this->params['url']['order_by'])
+                                              );
+            }
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
@@ -441,28 +448,19 @@ class HousesController extends AppController {
 
         if(isset($this->params['url']['load'])) {
             $prefs = $this->loadSavedPreferences();
-
-//          search manuall or automatically with saved preferences?
-//          for now search manually (== press search button as well)
-//             $results = $this->simpleSearch( $prefs['house_prefs'],
-//                                             $prefs['mates_prefs'],
-//                                             $this->getOrderCondition($this->params['url']['order_by'])
-//                                           );
-//
-//             $this->set('results', $results);
             $this->set('defaults', $prefs['defaults']);
         }
     }
 
 
-    private function simpleSearch(  $houseConditions, $matesConditions,
+    private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true ) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
         // house conditions are added to the 'where' statement
         // ----------------------------------------------------------------
-        // SELECT House.* FROM houses House
+        // SELECT House.*, Image.location FROM houses House
         // LEFT JOIN users User ON House.user_id = User.id
         // INNER JOIN profiles Profile ON Profile.user_id = User.id
         // LEFT JOIN images Image ON Image.id = House.default_image_id;
@@ -475,11 +473,6 @@ class HousesController extends AppController {
                     'type'  => 'left',
                     'conditions' => array('House.user_id = User.id')
             ),
-            array(  'table' => 'profiles',
-                    'alias' => 'Profile',
-                    'type'  => 'inner',
-                    'conditions' => $matesConditions
-            ),
             array(  'table' => 'images',
                     'alias' => 'Image',
                     'type'  => 'left',
@@ -487,10 +480,23 @@ class HousesController extends AppController {
             )
         );
 
+        if ($matesConditions != null) {
+            array_push($options['joins'], array('table' => 'profiles',
+                                                'alias' => 'Profile',
+                                                'type'  => 'inner',
+                                                'conditions' => $matesConditions
+                                               )
+                      );
+        }
+
         $options['conditions'] = $houseConditions;
         if ($orderBy != null) {
             $options['order'] = $orderBy;
         }
+
+//         pr($options);
+//         die();
+
         // required recursive value for joins
         $this->House->recursive = -1;
         // pagination options
