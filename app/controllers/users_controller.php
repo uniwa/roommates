@@ -16,6 +16,11 @@ class UsersController extends AppController{
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
+
+        if( $this->params['action'] === 'register' && $this->Auth->user() ) {
+
+            $this->cakeError( 'error403' );
+        }
     }
 
     function login() {
