@@ -260,6 +260,10 @@ a{outline:none}
     background-image: url(../img/info.png);
 }
 
+.required {
+    /* override global setting for login */
+    background-image: none !important;
+}
     
 </style>
 
