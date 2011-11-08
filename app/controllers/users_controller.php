@@ -192,7 +192,6 @@ class UsersController extends AppController{
             /* try saving user model */
             if ($this->User->save($userdata) === false) {
                 $this->User->rollback();
-                //TODO show errors (maybe username didn't pass validation ?!)
             }
             else {
                 /* try saving real estate profile */
@@ -202,6 +201,10 @@ class UsersController extends AppController{
                 }
                 else {
                     $this->User->commit();
+                    // registration successfull - send to login
+                    // TODO: maybe redirect to some public page
+                    $this->Session->setFlash("Registration successfull.");
+                    $this->redirect('login');
                 }
             }
 
