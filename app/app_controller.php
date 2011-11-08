@@ -54,10 +54,12 @@ class  AppController extends Controller{
 
 		$user = $this->User->read();
 
-
-		return array(  	'User' => array( 'id' => $user['User']['id'], 'banned' => $user['User']['banned'] ),
-				'Profile' =>array( 'id' => $user['Profile']['id'] ),
-				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ),
+		return array(  	'User' => array('id' => $user['User']['id'],
+                                        'banned' => $user['User']['banned'] ),
+                        'Profile' =>array( 'id' => $user['Profile']['id'] ),
+                        'House' => array('id' => isset($user['House'][0]['id']) ?
+                                                 $user['House'][0]['id'] : NULL),
+                        'RealEstate' => array('id' => $user['RealEstate']['id'])
         );
 
 	}

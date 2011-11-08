@@ -16,6 +16,7 @@ class AuthHelper extends AppHelper{
         $this->profile_id = $this->data['Auth']['Profile']['id'];
         $this->house_id = $this->data['Auth']['House']['id'];
         $this->banned = $this->data['Auth']['User']['banned'];
+        $this->estate_id = $this->data['Auth']['RealEstate']['id'];
     }
 
     /*
@@ -41,6 +42,11 @@ class AuthHelper extends AppHelper{
             case 'Profile':
                 switch( $property ){
                     case 'id': return $this->profile_id;
+                }
+                break;
+            case 'RealEstate':
+                switch ($property) {
+                    case 'id': return $this->estate_id;
                 }
                 break;
         }
