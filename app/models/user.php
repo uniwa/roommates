@@ -9,16 +9,18 @@ class User extends AppModel{
         'username' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
-                'required' => true,
-                'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό'
+                'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό',
+                'required' => true
             ),
             'alphanumeric' => array(
                 'rule' => 'alphanumeric',
                 'message' => 'Επιτρέπονται μόνο αλφαριθμητικά',
+                'allowEmpty' => true
             ),
             'unique' => array(
                 'rule' => 'isUnique',
-                'message' => 'Αυτό το όνομα χρήστη χρησιμοποιείται ήδη'
+                'message' => 'Αυτό το όνομα χρήστη χρησιμοποιείται ήδη',
+                'allowEmpty' => true
             )
         ),
 
