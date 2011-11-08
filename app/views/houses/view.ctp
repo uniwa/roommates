@@ -273,6 +273,11 @@
         </td>
 
         <td>
+
+        <?php  // TODO fix css in order to use this check
+            // if ($house['House']['user_id'] !== $this->Session->read('Auth.User.id') ) {
+        ?>
+
         <table>
 
         <?php if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){?>
@@ -349,6 +354,11 @@
         </table>
         </td>
     </table>
+
+    <?php // TODO fix css in order to use this check
+        // }
+    ?>
+
 </div>
 <!--left collumn-->
 <div class="house-right">
