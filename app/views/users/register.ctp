@@ -63,7 +63,7 @@
 
     /* TODO: add custom class to differenciate between other views stars */
     .required {
-        background: url("../img/required.gif") no-repeat scroll right top transparent;
+        background: url("img/required.gif") no-repeat scroll right top transparent;
     }
 </style>
 
@@ -76,8 +76,8 @@
     $inputelems['uname']['label'] = 'Όνομα χρήστη';
 
     /* set error for username that already exists */
-    if (isset($user_errors["username"]["not_unique"])) {
-        $inputelems['uname']['error'] = "<div class='error-message'>Το συγκεκριμένο όνομα χρήστη υπάρχει ήδη</div>";
+    if (isset($user_errors["username"])) {
+        $inputelems['uname']['error'] = "<div class='error-message'>". $user_errors["username"] ."</div>";
     }
 
     /* set error for non-matching passowrds */
@@ -112,14 +112,15 @@
     $inputelems['phone']['label'] = 'Τηλέφωνο επικοινωνίας';
     $inputelems['fax']['input'] = $this->Form->input('RealEstate.fax', array('label' => '', 'class' => 'input-elem'));
     $inputelems['fax']['label'] = 'Φαξ';
+    $inputelems['municipality']['input'] = $this->Form->input('RealEstate.municipality_id', array(
+        'label' => '', 'empty' => 'Επιλέξτε...', 'class' => 'input-elem'));
+    $inputelems['municipality']['label'] = 'Δήμος';
     $inputelems['address']['input'] = $this->Form->input('RealEstate.address', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['address']['label'] = 'Διεύθυνση';
     $inputelems['pc']['input'] = $this->Form->input('RealEstate.postal_code', array('label' => '', 'class' => 'input-elem'));
     $inputelems['pc']['label'] = 'Τ.Κ.';
-    $inputelems['municipality']['input'] = $this->Form->input('RealEstate.municipality_id', array(
-        'label' => '', 'empty' => 'Επιλέξτε...', 'class' => 'input-elem'));
-    $inputelems['municipality']['label'] = 'Δήμος';
+
     /* model related form data end */
     // TODO: place terms text here (or load from file?!)
     $terms_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit mi, blandit sit amet volutpat ut, accumsan quis ante. Vivamus euismod, metus id molestie sagittis, neque tortor eleifend elit, in sodales neque erat eu eros. Nullam vitae ante libero. Vestibulum vehicula egestas sem, vitae viverra ipsum pharetra sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque malesuada risus libero, et placerat velit. Phasellus ac interdum justo. Donec consequat viverra nisl vitae dapibus.";
