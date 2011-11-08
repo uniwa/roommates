@@ -80,6 +80,12 @@
         $inputelems['uname']['error'] = "<div class='error-message'>Το συγκεκριμένο όνομα χρήστη υπάρχει ήδη</div>";
     }
 
+    /* set error for non-matching passowrds */
+    if (isset($user_errors["password_confirm"])) {
+        $inputelems['pass1']['error'] = "<div class='error-message'>". $user_errors["password_confirm"] ."</div>";
+        $inputelems['pass2']['error'] = "<div class='error-message'>". $user_errors["password_confirm"] ."</div>";
+    }
+
     $inputelems['pass1']['input'] = $this->Form->input('User.password', array(
         'label' => '', 'type' => 'password', 'autocomplete' => 'off', 'class' => 'input-elem'));
     $inputelems['pass1']['label'] = 'Συνθηματικό';
