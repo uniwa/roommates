@@ -20,7 +20,8 @@ class User extends AppModel{
             'identical_passwd' => array(
                 'rule' => array('identical_password', 'password'),
                 'required' => true,
-                'allowEmpty' => false
+                'allowEmpty' => false,
+                'message' => 'Οι 2 κωδικοί δεν ταιριάζουν'
             )
         )
     );
