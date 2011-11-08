@@ -168,6 +168,7 @@ class ProfilesController extends AppController {
      }
 
     function search() {
+        // Deny access to real estates
         $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
@@ -473,6 +474,7 @@ class ProfilesController extends AppController {
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
+    
     private function denyRole($role){
         if($this->Session->read('Auth.User.role') == $role){
             $this->cakeError('error403');
