@@ -63,7 +63,7 @@
 
     /* TODO: add custom class to differenciate between other views stars */
     .required {
-        background: url("../img/required.gif") no-repeat scroll right top transparent;
+        background: url("img/required.gif") no-repeat scroll right top transparent;
     }
 </style>
 
