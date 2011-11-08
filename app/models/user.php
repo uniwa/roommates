@@ -11,17 +11,43 @@ class User extends AppModel{
             'message' => 'Please enter a valid username',
             'required' => true
         ),
+
         'password' => array(
-            'rule' => 'alphanumeric',
-            'required' => true,
-            'allowEmpty' => false
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό.'
+            ),
+            'length' => array (
+                'rule' => array('between', 8, 16),
+                'required' => true,
+                'message' => 'Ο κωδικός πρέπει να είναι μεταξύ 8 και 16 χαρακτήρων.'
+            ),
+            'alphanumeric' => array(
+                'rule' => '/^[\d\w!@#\$%&\*\^\+\?-_.,]+$/',
+                'required' => true,
+                'message' => 'Υπάρχει κάποιος μη αποδεκτός χαρακτήρας'
+            )
         ),
+
         'password_confirm' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό.'
+            ),
+            'length' => array (
+                'rule' => array('between', 8, 16),
+                'required' => true,
+                'message' => 'Ο κωδικός πρέπει να είναι μεταξύ 8 και 16 χαρακτήρων.'
+            ),
             'identical_passwd' => array(
                 'rule' => array('identical_password', 'password'),
                 'required' => true,
-                'allowEmpty' => false,
                 'message' => 'Οι 2 κωδικοί δεν ταιριάζουν'
+            ),
+            'alphanumeric' => array(
+                'rule' => '/^[\d\w!@#\$%&\*\^\+\?-_.,]+$/',
+                'required' => true,
+                'message' => 'Υπάρχει κάποιος μη αποδεκτός χαρακτήρας'
             )
         )
     );
