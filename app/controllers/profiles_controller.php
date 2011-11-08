@@ -9,6 +9,9 @@ class ProfilesController extends AppController {
     var $uses = array("Profile", "House", "Municipality");
 
     function index() {
+        // Block access for all
+        $this->cakeError('error403');
+        
         $this->set('title_for_layout','Δημόσια προφίλ');
         /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
@@ -48,7 +51,7 @@ class ProfilesController extends AppController {
     }
 
     function view($id = null) {
-
+        $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_view');
@@ -138,7 +141,7 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-
+        $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_view');
@@ -165,7 +168,7 @@ class ProfilesController extends AppController {
      }
 
     function search() {
-
+        $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_search');
@@ -423,6 +426,7 @@ class ProfilesController extends AppController {
     }
 
     function ban($id) {
+        $this->denyRole('realestate');
         if ($this->Auth->user('role') != 'admin') {
             $this->cakeError('error403');
         }
@@ -440,6 +444,7 @@ class ProfilesController extends AppController {
     }
 
     function unban($id) {
+        $this->denyRole('realestate');
         if ($this->Auth->user('role') != 'admin') {
             $this->cakeError('error403');
         }
@@ -467,6 +472,11 @@ class ProfilesController extends AppController {
         $this->Email->template = 'banned';
         $this->Email->sendAs = 'both';
         $this->Email->send();
+    }
+    private function denyRole($role){
+        if($this->Session->read('Auth.User.role') == $role){
+            $this->cakeError('error403');
+        }
     }
 }
 ?>
