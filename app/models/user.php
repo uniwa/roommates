@@ -7,9 +7,19 @@ class User extends AppModel{
 
     var $validate = array(
         'username' => array(
-            'rule' => 'alphanumeric',
-            'message' => 'Please enter a valid username',
-            'required' => true
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'required' => true,
+                'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό'
+            ),
+            'alphanumeric' => array(
+                'rule' => 'alphanumeric',
+                'message' => 'Επιτρέπονται μόνο αλφαριθμητικά',
+            ),
+            'unique' => array(
+                'rule' => 'isUnique',
+                'message' => 'Αυτό το όνομα χρήστη χρησιμοποιείται ήδη'
+            )
         ),
 
         'password' => array(
@@ -62,24 +72,6 @@ class User extends AppModel{
 
         // hashed passwords did NOT match
         return false;
-    }
-
-    // Check if the username already exists by doing SELECT COUNT(*) FROM users WHERE username = 'your_username'
-    function beforeValidate()
-    {
-        if( isset($this->data["User"]["username"]) )
-        {
-            $conditions = array('User.username' => $this->data['User']['username'] );
-            if( $this->find( 'count', array('conditions' => $conditions) ) > 0 )
-            {
-                // If any rows are found, send an error and call it 'username_unique'
-                // In our view, we can check for this by doing $form->error('username_unique','Not Unique Username!!!')
-                //   As specified in the view code I placed above
-                $this->invalidate('username', 'not_unique');
-                return false;
-            }
-        }
-        return true;
     }
 }
 ?>
