@@ -59,14 +59,15 @@ class RealEstate extends AppModel {
         ),
 
         'phone' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ εισάγετε ένα τηλέφωνο επικοινωνίας.',
+                'required' => true
+            ),
             'size' => array(
                 'rule' => array('between', 10, 10),
                 'message' => 'Ο αριθμός τηλεφώνου πρέπει να περιέχει 10 ψηφία.',
                 'allowEmpty' => true
-            ),
-            'not_empty' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Παρακαλώ εισάγετε ένα τηλέφωνο επικοινωνίας.'
             ),
             'valid' => array(
                 'rule' => '/^\d+$/',
