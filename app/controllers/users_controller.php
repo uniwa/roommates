@@ -218,7 +218,7 @@ class UsersController extends AppController{
                     $this->User->commit();
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
-                    $this->Session->setFlash("Registration successfull.");
+                    $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.");
                     $this->redirect('login');
                 }
             }
