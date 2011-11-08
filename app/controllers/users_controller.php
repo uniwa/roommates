@@ -167,6 +167,7 @@ class UsersController extends AppController{
         if ($this->data) {
             if (! $this->Recaptcha->verify()) {
                 $this->Session->setFlash($this->Recaptcha->error);
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
                 return;
             }
             // TODO: check if accepted terms (depends on real estate terms story card)
@@ -185,6 +186,7 @@ class UsersController extends AppController{
             if (!$this->User->validates()) {
                 $user_errors = $this->User->invalidFields();
                 $this->set('user_errors', $user_errors);
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
                 return;
             }
 
