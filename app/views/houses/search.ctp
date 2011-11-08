@@ -242,6 +242,9 @@
                     </div>
                 </li>
             </ul>
+
+<?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+
             <div class='form-title'>
                 <h2>Χαρακτηριστικά συγκατοίκων</h2>
             </div>
@@ -330,6 +333,9 @@
                         ?>
                     </div>
                 </li>
+
+<?php } // role != realestate ?>
+
                 <li class='form-line'>
                     <div class='form-elem form-label'>
                         Ταξινόμηση 
@@ -344,6 +350,9 @@
                     </div>
                 </li>
             </ul>
+
+<?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+
             <div class='form-title'>
                 <h2>Οι προτιμήσεις μου</h2>
             </div>
@@ -361,6 +370,9 @@
                     </div>
                 </li>
             </ul>
+
+<?php } // role != realestate ?>
+
             <div class='form-title form-collapse expand'>
                 <h2>Πρόσθετα χαρακτηριστικά σπιτιών</h2>
             </div>

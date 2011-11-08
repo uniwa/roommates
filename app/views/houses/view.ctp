@@ -275,7 +275,7 @@
         <td>
         <table>
 
-        <?php if($house['User']['Profile']){?>
+        <?php if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){?>
 
         <tr>
         <th>
@@ -361,9 +361,10 @@
                     $house['House']['id']), null, 'Είστε σίγουρος/η;');
             }
 
-            if ($this->Session->read('Auth.User.id') != $house['User']['id']) {
+            if ($this->Session->read('Auth.User.id') != $house['User']['id'] &&
+                $this->Session->read('Auth.User.role' != 'realestate')) {
                 echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας',
-                    "/profiles/view/{$house['User']['Profile']['id']}");
+                            "/profiles/view/{$house['User']['Profile']['id']}");
             }
             ?>
 
