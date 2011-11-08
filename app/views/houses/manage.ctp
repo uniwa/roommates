@@ -16,7 +16,7 @@
 
     .form-title{
         clear: both;
-        margin: 16px 0px 12px 8px;
+        margin: 12px 0px 12px 8px;
         font-size: 1.2em;
         font-weight: bold;
     }
@@ -60,7 +60,13 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
+    .buttonAdd{
+        background-color: #aaa;
+        margin: 12px 0px 0px 48px;
+        padding: 4px 12px 4px 12px;
+    }
+        
     .search-title{
 /*        margin: 12px 0px 8px 48px;*/
         text-align: center;
@@ -157,6 +163,14 @@
 
 <div id='leftbar'>
     <div class='left-form-cont'>
+        <div class='form-title'>
+            <h2>Προσθήκη σπιτιού</h2>
+        </div>
+        <?php
+            $addLink = array('controller' => 'houses', 'action' => 'add');
+            $addClass = 'button buttonAdd';
+            echo $this->Html->link('προσθήκη', $addLink, array('class' => $addClass));
+        ?>
         <div class='form-title'>
             <h2>Αναζήτηση σπιτιών</h2>
         </div>
