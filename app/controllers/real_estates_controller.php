@@ -13,6 +13,10 @@ class RealEstatesController extends AppController {
 
     function view($id = null) {
 
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'real_estates_view');
+
         $this->checkExistance($id);
         $this->RealEstate->id = $id;
         $estate = $this->RealEstate->read();

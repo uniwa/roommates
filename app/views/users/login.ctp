@@ -249,6 +249,21 @@ a{outline:none}
      
     }
 
+#flashMessage{
+    border: 1px solid;
+    margin: 10px 0;
+    padding: 15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #00529B;
+    background-color: #d3e3fa;
+    background-image: url(../img/info.png);
+}
+
+.required {
+    /* override global setting for login */
+    background-image: none !important;
+}
     
 </style>
 
