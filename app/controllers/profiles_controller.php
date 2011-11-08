@@ -52,8 +52,8 @@ class ProfilesController extends AppController {
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_view');
-
         $this->set('title_for_layout','Προφίλ χρήστη');
+
     	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
@@ -79,12 +79,25 @@ class ProfilesController extends AppController {
             $this->set('municipality', $municipality);
         }
         /* get house id of this user - NULL if he doesn't own one */
-        if ( isset($profile["User"]["House"][0]["id"]) ) {
+        if(isset($profile["User"]["House"][0]["id"])){
             $houseid = $profile["User"]["House"][0]["id"];
-        } else {
+            $this->House->id = $houseid;
+            $house = $this->House->read();
+            $image = $this->House->Image->find('first',array('conditions' => array(
+                'house_id' => $house['House']['default_image_id'])));
+            $this->set('image', $image);
+//            $thumb = $images[]
+/*            foreach($images as $image){
+                if($image['Image']['id'] == $house['House']['default_image_id']){
+                    $this->set('default_image_location', $image['Image']['location']);
+                    $this->set('default_image_id', $image['Image']['id']);
+                }
+            }*/
+        }else{
             $houseid = NULL;
+            $house = NULL;
         }
-        $this->set('houseid', $houseid);
+        $this->set('house', $house);
     }
 
 /*
