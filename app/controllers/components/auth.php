@@ -966,14 +966,14 @@ class AuthComponent extends Object {
 
                 //create new user
                 $inside_user = $model->save( array( 'User' => array(
-                        'id' => null,
+
                         'username' => $user[ $this->userModel.".".$this->fields['username'] ],
                         'password' => '',
                         'role' => 'user',
                         'banned' => 0,
                         'terms_accepted' => 0,
                         'enabled' => 1
-                    ) ) );
+                    ) ), false );
 
                 var_dump( $inside_user );
                 if( !$inside_user ) {
