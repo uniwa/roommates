@@ -191,18 +191,13 @@ class UsersController extends AppController{
             /* we need enabled = 0 because all users are enabled in db by default */
             $userdata["User"]["enabled"] = 0;
 
-            $this->User->set($userdata);
-            if (!$this->User->validates()) {
-                $user_errors = $this->User->invalidFields();
-                $this->set('user_errors', $user_errors);
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
-            }
-
             $this->User->begin();
             /* try saving user model */
             if ($this->User->save($userdata) === false) {
                 $this->User->rollback();
+                // pass custom validation errors to view
+                $user_errors = $this->User->validationErrors;
+                $this->set('user_errors', $user_errors);
             }
             else {
                 /* try saving real estate profile */

@@ -50,7 +50,7 @@ class User extends AppModel{
                 // If any rows are found, send an error and call it 'username_unique'
                 // In our view, we can check for this by doing $form->error('username_unique','Not Unique Username!!!')
                 //   As specified in the view code I placed above
-                $this->invalidate('username_unique');
+                $this->invalidate('username', 'not_unique');
                 return false;
             }
         }
