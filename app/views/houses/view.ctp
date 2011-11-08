@@ -266,7 +266,7 @@
         <td>
         <table>
 
-        <?php if($house['User']['Profile']){?>
+        <?php if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){?>
 
         <tr>
         <th><?php echo $this->Html->link($house['User']['Profile']['firstname'] . ' ' . $house['User']['Profile']['lastname'],
@@ -318,7 +318,8 @@
                 echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
             }
 
-            if ($this->Session->read('Auth.User.id') != $house['User']['id']) {
+            if ($this->Session->read('Auth.User.id') != $house['User']['id'] &&
+                $this->Session->read('Auth.User.role' != 'realestate')) {
                 echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['Profile']['id']}");
             }
             ?>

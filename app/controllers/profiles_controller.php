@@ -68,6 +68,11 @@ class ProfilesController extends AppController {
                 $this->cakeError('error404');
             }
         }
+
+        // Deny access to real estates
+        if ($this->Auth->User('role') == 'realestate')
+            $this->cakeError('error403');
+
         $this->set('profile', $profile);
 
             $pref_municipality = $profile['Preference']['pref_municipality'];
