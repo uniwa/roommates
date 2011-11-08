@@ -331,7 +331,8 @@ class AuthComponent extends Object {
 			return false;
         }
 
-        $this->data/* = $controller->data */= $this->hashPasswords($controller->data);
+    //    $controllerData = $controller->data;
+        $this->data /*= $controller->data */= $this->hashPasswords($controller->data);
 
 		$url = '';
 
@@ -961,14 +962,20 @@ class AuthComponent extends Object {
 
             if( !$inside_user ) {
 
+                pr(  $user );
+
                 //create new user
                 $inside_user = $model->save( array( 'User' => array(
+                        'id' => null,
                         'username' => $user[ $this->userModel.".".$this->fields['username'] ],
                         'password' => '',
-                        'role' => 'user'
+                        'role' => 'user',
+                        'banned' => 0,
+                        'terms_accepted' => 0,
+                        'enabled' => 1
                     ) ) );
 
-
+                var_dump( $inside_user );
                 if( !$inside_user ) {
                     var_dump( 'oh shit'); die();
                     //$this->cakeError( 'ldapError');

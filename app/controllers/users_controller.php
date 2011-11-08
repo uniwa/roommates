@@ -173,6 +173,7 @@ class UsersController extends AppController{
             // TODO: check if accepted terms (depends on real estate terms story card)
 
             $userdata["User"]["username"] = $this->data["User"]["username"];
+            pr( $this->data ); die();
             $userdata["User"]["password"] = $this->data["User"]["password"];
             $userdata["User"]["password_confirm"] = $this->data["User"]["password_confirm"];
             $userdata["User"]["role"] = 'realestate';
