@@ -71,8 +71,8 @@ class UsersController extends AppController{
                 $this->User->id = $this->Auth->user('id');
                 $user = $this->User->read();
                 /* Update user field which determines that user accepted the terms*/
-                $this->User->set(  'terms_accepted', "1"  );
-                $this->User->save();
+                $user["User"]["terms_accepted"] = 1;
+                $this->User->save($user, false);
                 /*refresh session for this field*/
                 $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
 
@@ -167,6 +167,7 @@ class UsersController extends AppController{
         if ($this->data) {
             if (! $this->Recaptcha->verify()) {
                 $this->Session->setFlash($this->Recaptcha->error);
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
                 return;
             }
             // TODO: check if accepted terms (depends on real estate terms story card)
@@ -185,6 +186,7 @@ class UsersController extends AppController{
             if (!$this->User->validates()) {
                 $user_errors = $this->User->invalidFields();
                 $this->set('user_errors', $user_errors);
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
                 return;
             }
 
@@ -192,7 +194,6 @@ class UsersController extends AppController{
             /* try saving user model */
             if ($this->User->save($userdata) === false) {
                 $this->User->rollback();
-                //TODO show errors (maybe username didn't pass validation ?!)
             }
             else {
                 /* try saving real estate profile */
@@ -202,6 +203,10 @@ class UsersController extends AppController{
                 }
                 else {
                     $this->User->commit();
+                    // registration successfull - send to login
+                    // TODO: maybe redirect to some public page
+                    $this->Session->setFlash("Registration successfull.");
+                    $this->redirect('login');
                 }
             }
 
