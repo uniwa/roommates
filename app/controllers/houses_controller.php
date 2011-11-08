@@ -328,17 +328,16 @@ class HousesController extends AppController {
 
 
     function manage(){
-        // TODO Access control: allow only 'realestate' users
-        
         // this variable is used to properly display
         // the selected element on header
         $this->set('selected_action', 'houses_manage');
         $this->set('title_for_layout','Διαχείρηση σπιτιών');
+        
+        $this->checkRole('realestate');
 
         // drop down menu options
         $this->set('house_type_options',
                    $this->House->HouseType->find('list',array('fields' => array('type'))));
-
         $this->set('order_options', array('τελευταία ενημέρωση',
                                             'τιμή - αύξουσα',
                                             'τιμή - φθίνουσα',
@@ -349,13 +348,14 @@ class HousesController extends AppController {
                                             'διαθέσιμες θέσεις - αύξουσα',
                                             'διαθέσιμες θέσεις - φθίνουσα'));
 
+        $uid = $this->Auth->User('id');
         $houseConditions['House.visible'] = 1;
+        $houseConditions['House.user_id'] = $uid;
         if(!empty($this->params['url']['house_type'])){
             $houseConditions['House.house_type_id'] .= $this->params['url']['house_type'];
         }
         $options['conditions'] = $houseConditions;
 
-//        $options['fields'] = array('House.*');
         if(isset($this->params['url']['order_by'])){
             $orderBy = $this->getOrderCondition($this->params['url']['order_by']);
             $options['order'] = $orderBy;
@@ -830,6 +830,12 @@ class HousesController extends AppController {
         }
 
         return $order;
+    }
+
+    private function checkRole($role){
+        if($this->Session->read('Auth.User.role') != $role){
+            $this->cakeError('error403');
+        }
     }
 }
 ?>
