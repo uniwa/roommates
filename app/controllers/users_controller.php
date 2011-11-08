@@ -165,12 +165,20 @@ class UsersController extends AppController{
     function register() {
         $this->set('title_for_layout','Εγγραφή νέου χρήστη');
         if ($this->data) {
-            if (! $this->Recaptcha->verify()) {
-                $this->Session->setFlash($this->Recaptcha->error);
+            // user must accept the real estate terms
+            if ($this->data["User"]["estate_terms"] != "1") {
+                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης 
+για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
                 $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
                 return;
             }
-            // TODO: check if accepted terms (depends on real estate terms story card)
+
+            // check for valid captcha
+            if (! $this->Recaptcha->verify()) {
+                $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                return;
+            }
 
             $userdata["User"]["username"] = $this->data["User"]["username"];
             $userdata["User"]["password"] = $this->data["User"]["password"];

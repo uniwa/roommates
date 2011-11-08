@@ -108,6 +108,10 @@
     $inputelems['municipality']['input'] = $this->Form->input('RealEstate.municipality_id', array(
         'label' => '', 'empty' => 'Επιλέξτε...', 'class' => 'input-elem'));
     $inputelems['municipality']['label'] = 'Δήμος';
+    /* model related form data end */
+    // TODO: place terms text here (or load from file?!)
+    $terms_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit mi, blandit sit amet volutpat ut, accumsan quis ante. Vivamus euismod, metus id molestie sagittis, neque tortor eleifend elit, in sodales neque erat eu eros. Nullam vitae ante libero. Vestibulum vehicula egestas sem, vitae viverra ipsum pharetra sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque malesuada risus libero, et placerat velit. Phasellus ac interdum justo. Donec consequat viverra nisl vitae dapibus.";
+
 ?>
     <ul>
         <div class='form-title'>
@@ -125,6 +129,18 @@
             </div>
         </li>
     <?php } // foreach ?>
+    <div>
+        <textarea rows="6" cols="80" readonly="readonly">
+            <?php echo $terms_text; ?>
+        </textarea>
+        <div class="required">
+            <?php
+                // TODO: fix "required" star's position
+                echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης.');
+                echo $this->Form->checkbox('estate_terms', array('hidden' => false, 'checked' => false));
+            ?>
+        </div>
+    </div>
     <div> <?php echo $this->Recaptcha->display(); ?> </div>
         <li class='form-line form-buttons'>
             <div class='form-elem form-submit'>
