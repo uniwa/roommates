@@ -28,12 +28,15 @@ class UsersController extends AppController{
          *and terms has not accepted redirect him in terms action.
          *If rules has accepted redirect him to main page
          */
-
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
-
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
 
         } else if( isset( $this->data ) &&  $this->Auth->user( 'terms_accepted' === "1" ) ) {
+            if ($this->Auth->user('enabled') == '0') {
+                $this->Session->setFlash('Ο λογαριασμός σας δεν έχει ενεργοποιηθεί από τον διαχειριστή.',
+                        'default', array('class' => 'flashRed'));
+                $this->redirect($this->Auth->logout());
+            }
             /* redirect in pre-fixed url */
             $this->redirect( $this->Auth->redirect() );
         }
@@ -215,7 +218,7 @@ class UsersController extends AppController{
                     $this->User->commit();
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
-                    $this->Session->setFlash("Registration successfull.");
+                    $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.");
                     $this->redirect('login');
                 }
             }
