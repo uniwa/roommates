@@ -71,41 +71,41 @@
 <?php
     echo $this->Form->create('User', array('action' => 'register'));
     $inputelems = array();
-    $inputelems['uname']['input'] = $this->Form->input('username', array(
+    $inputelems['uname']['input'] = $this->Form->input('User.username', array(
         'label' => '', 'autocomplete' => 'off', 'class' => 'input-elem'));
     $inputelems['uname']['label'] = 'Όνομα χρήστη';
-    $inputelems['pass1']['input'] = $this->Form->input('password', array(
+    $inputelems['pass1']['input'] = $this->Form->input('User.password', array(
         'label' => '', 'type' => 'password', 'autocomplete' => 'off', 'class' => 'input-elem'));
     $inputelems['pass1']['label'] = 'Συνθηματικό';
-    $inputelems['pass2']['input'] = $this->Form->input('password_confirm', array(
+    $inputelems['pass2']['input'] = $this->Form->input('User.password_confirm', array(
         'label' => '', 'type' => 'password',
         'autocomplete' => 'off', 'class' => 'input-elem'));
     $inputelems['pass2']['label'] = 'Επιβεβαίωση συνθηματικού';
     /* user info end - real estate profile start */
-    $inputelems['fname']['input'] = $this->Form->input('firstname', array(
+    $inputelems['fname']['input'] = $this->Form->input('RealEstate.firstname', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['fname']['label'] = 'Όνομα';
-    $inputelems['lname']['input'] = $this->Form->input('lastname', array(
+    $inputelems['lname']['input'] = $this->Form->input('RealEstate.lastname', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['lname']['label'] = 'Επίθετο';
-    $inputelems['cname']['input'] = $this->Form->input('company_name', array('label' => '', 'class' => 'input-elem'));
+    $inputelems['cname']['input'] = $this->Form->input('RealEstate.company_name', array('label' => '', 'class' => 'input-elem'));
     $inputelems['cname']['label'] = 'Επωνυμία εταιρίας';
-    $inputelems['afm']['input'] = $this->Form->input('afm', array('label' => '', 'class' => 'input-elem'));
+    $inputelems['afm']['input'] = $this->Form->input('RealEstate.afm', array('label' => '', 'class' => 'input-elem'));
     $inputelems['afm']['label'] = 'ΑΦΜ';
-    $inputelems['doy']['input'] = $this->Form->input('doy', array('label' => '', 'class' => 'input-elem'));
+    $inputelems['doy']['input'] = $this->Form->input('RealEstate.doy', array('label' => '', 'class' => 'input-elem'));
     $inputelems['doy']['label'] = 'ΔΟΥ';
-    $inputelems['email']['input'] = $this->Form->input('email', array('label' => '', 'class' => 'input-elem'));
+    $inputelems['email']['input'] = $this->Form->input('RealEstate.email', array('label' => '', 'class' => 'input-elem'));
     $inputelems['email']['label'] = 'Email';
-    $inputelems['phone']['input'] = $this->Form->input('phone', array('label' => '', 'class' => 'input-elem'));
+    $inputelems['phone']['input'] = $this->Form->input('RealEstate.phone', array('label' => '', 'class' => 'input-elem'));
     $inputelems['phone']['label'] = 'Τηλέφωνο επικοινωνίας';
-    $inputelems['fax']['input'] = $this->Form->input('fax', array('label' => '', 'class' => 'input-elem'));
+    $inputelems['fax']['input'] = $this->Form->input('RealEstate.fax', array('label' => '', 'class' => 'input-elem'));
     $inputelems['fax']['label'] = 'Φαξ';
-    $inputelems['address']['input'] = $this->Form->input('address', array(
+    $inputelems['address']['input'] = $this->Form->input('RealEstate.address', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['address']['label'] = 'Διεύθυνση';
-    $inputelems['pc']['input'] = $this->Form->input('postal_code', array('label' => '', 'class' => 'input-elem'));
+    $inputelems['pc']['input'] = $this->Form->input('RealEstate.postal_code', array('label' => '', 'class' => 'input-elem'));
     $inputelems['pc']['label'] = 'Τ.Κ.';
-    $inputelems['municipality']['input'] = $this->Form->input('municipality_id', array(
+    $inputelems['municipality']['input'] = $this->Form->input('RealEstate.municipality_id', array(
         'label' => '', 'empty' => 'Επιλέξτε...', 'class' => 'input-elem'));
     $inputelems['municipality']['label'] = 'Δήμος';
 ?>

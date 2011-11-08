@@ -217,17 +217,17 @@ class UsersController extends AppController{
     }
 
     private function create_estate_profile($id, $data) {
-        $realestate["RealEstate"]["firstname"] = $data["User"]["firstname"];
-        $realestate["RealEstate"]["lastname"] = $data["User"]["lastname"];
-        $realestate["RealEstate"]["company_name"] = $data["User"]["company_name"];
-        $realestate["RealEstate"]["email"] = $data["User"]["email"];
-        $realestate["RealEstate"]["phone"] = $data["User"]["phone"];
-        $realestate["RealEstate"]["fax"] = $data["User"]["fax"];
-        $realestate["RealEstate"]["afm"] = $data["User"]["afm"];
-        $realestate["RealEstate"]["doy"] = $data["User"]["doy"];
-        $realestate["RealEstate"]["address"] = $data["User"]["address"];
-        $realestate["RealEstate"]["postal_code"] = $data["User"]["postal_code"];
-        $realestate["RealEstate"]["municipality_id"] = $data["User"]["municipality_id"];
+        $realestate["RealEstate"]["firstname"] = $data["RealEstate"]["firstname"];
+        $realestate["RealEstate"]["lastname"] = $data["RealEstate"]["lastname"];
+        $realestate["RealEstate"]["company_name"] = $data["RealEstate"]["company_name"];
+        $realestate["RealEstate"]["email"] = $data["RealEstate"]["email"];
+        $realestate["RealEstate"]["phone"] = $data["RealEstate"]["phone"];
+        $realestate["RealEstate"]["fax"] = $data["RealEstate"]["fax"];
+        $realestate["RealEstate"]["afm"] = $data["RealEstate"]["afm"];
+        $realestate["RealEstate"]["doy"] = $data["RealEstate"]["doy"];
+        $realestate["RealEstate"]["address"] = $data["RealEstate"]["address"];
+        $realestate["RealEstate"]["postal_code"] = $data["RealEstate"]["postal_code"];
+        $realestate["RealEstate"]["municipality_id"] = $data["RealEstate"]["municipality_id"];
         $realestate["RealEstate"]["user_id"] = $id;
 
         if ( $this->RealEstate->save($realestate) === false) {
