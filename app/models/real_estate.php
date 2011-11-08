@@ -91,14 +91,15 @@ class RealEstate extends AppModel {
         ),
 
         'afm' => array(
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ εισάγετε το ΑΦΜ σας.',
+                'required' => true
+            ),
             'size' => array(
                 'rule' => array('between', 9, 9),
                 'allowEmpty' => true,
                 'message' => 'Το ΑΦΜ πρέπει να περιέχει ακριβώς 9 ψηφία.'
-            ),
-            'not_empty' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Παρακαλώ εισάγετε το ΑΦΜ σας.'
             ),
             'valid' => array(
                 'rule' => '/^\d+$/',
