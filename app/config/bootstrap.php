@@ -58,5 +58,4 @@ function showDebug($msg){
     Configure::write('debugging', $new.$old);
 }
 
-Configure::write('Recaptcha.publicKey', '6Ld7vMkSAAAAALw4jfDEI6LLyCxTN4pOIQ7GvPZx');
-Configure::write('Recaptcha.privateKey', '6Ld7vMkSAAAAAPpRf4v0_zcyS24RLPE1iu9zbOfh');
+include_once('captcha.php');
