@@ -9,53 +9,70 @@ class RealEstate extends AppModel {
     var $validate = array(
 
         'firstname' => array(
-            'maxsize' => array(
-                'rule' => array('maxLength', 45),
-                'message' => 'Το όνομα μπορεί να περιέχει μέχρι 45 χαρακτήρες.'
-            ),
             'not_empty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Παρακαλώ εισάγετε ένα όνομα.'
+                'message' => 'Παρακαλώ εισάγετε ένα όνομα.',
+                'required' => true
+            ),
+            'maxsize' => array(
+                'rule' => array('maxLength', 45),
+                'allowEmpty' => true,
+                'message' => 'Το όνομα μπορεί να περιέχει μέχρι 45 χαρακτήρες.'
             ),
             'valid' => array(
                 'rule' => '/^[\wαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς]+$/',
+                'allowEmpty' => true,
                 'message' => 'Το όνομα περιέχει έναν μη έγκυρο χαρακτήρα.'
             )
         ),
 
         'lastname' => array(
-            'maxsize' => array(
-                'rule' => array('maxLength', 45),
-                'message' => 'Το επίθετο μπορεί να περιέχει μέχρι 45 χαρακτήρες.'
-            ),
             'not_empty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Παρακαλώ εισάγετε ένα επίθετο.'
+                'message' => 'Παρακαλώ εισάγετε ένα επίθετο.',
+                'required' => true
+            ),
+            'maxsize' => array(
+                'rule' => array('maxLength', 45),
+                'allowEmpty' => true,
+                'message' => 'Το επίθετο μπορεί να περιέχει μέχρι 45 χαρακτήρες.'
             ),
             'valid' => array(
                 'rule' => '/^[\wαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς]+$/',
+                'allowEmpty' => true,
                 'message' => 'Το επίθετο περιέχει έναν μη έγκυρο χαρακτήρα.'
             )
         ),
 
         'company_name' => array(
-            'maxsize' => array(
-                'rule' => array('maxLength', 100),
-                'message' => 'Η επωνυμία μπορεί να περιέχει μέχρι 100 χαρακτήρες.'
-            ),
             'not_empty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Παρακαλώ εισάγετε την επωνυμία.'
+                'message' => 'Παρακαλώ εισάγετε την επωνυμία.',
+                'required' => true
+            ),
+            'maxsize' => array(
+                'rule' => array('maxLength', 100),
+                'allowEmpty' => true,
+                'message' => 'Η επωνυμία μπορεί να περιέχει μέχρι 100 χαρακτήρες.'
             ),
             'valid' => array(
                 'rule' => '/^[\w\dαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς,. &]+$/',
+                'allowEmpty' => true,
                 'message' => 'Η επωνυμία περιέχει έναν μη έγκυρο χαρακτήρα.'
             )
         ),
 
         'email' => array(
-            'rule' => array('email', true),
-            'message' => 'Παρακαλώ εισάγετε έγκυρη ηλεκτρονική διεύθυνση.'
+            'not_empty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Παρακαλώ εισάγετε ηλεκτρονική διεύθυνση.',
+                'required' => true
+            ),
+            'valid' => array (
+                'rule' => array('email', true),
+                'allowEmpty' => true,
+                'message' => 'Παρακαλώ εισάγετε έγκυρη ηλεκτρονική διεύθυνση.'
+            )
         ),
 
         'phone' => array(
