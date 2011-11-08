@@ -26,15 +26,17 @@ class User extends AppModel{
             'notEmpty' => array(
                 'rule' => 'notEmpty',
                 'required' => true,
-                'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό.'
+//                 'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό.'
             ),
             'length' => array (
                 'rule' => array('minLength', 8),
-                'message' => 'Ο κωδικός πρέπει να είναι μεταξύ 8 και 16 χαρακτήρων.'
+                'allowEmpty' => true,
+//                 'message' => 'Ο κωδικός πρέπει να είναι μεταξύ 8 και 16 χαρακτήρων.'
             ),
             'alphanumeric' => array(
                 'rule' => '/^[\d\w!@#\$%&\*\^\+\?-_.,]+$/',
-                'message' => 'Υπάρχει κάποιος μη αποδεκτός χαρακτήρας'
+                'allowEmpty' => true,
+//                 'message' => 'Υπάρχει κάποιος μη αποδεκτός χαρακτήρας'
             )
         ),
 
@@ -45,17 +47,17 @@ class User extends AppModel{
             ),
             'length' => array (
                 'rule' => array('between', 8, 16),
-                'required' => true,
+                'allowEmpty' => true,
                 'message' => 'Ο κωδικός πρέπει να είναι μεταξύ 8 και 16 χαρακτήρων.'
             ),
             'identical_passwd' => array(
                 'rule' => array('identical_password', 'password'),
-                'required' => true,
+                'allowEmpty' => true,
                 'message' => 'Οι 2 κωδικοί δεν ταιριάζουν'
             ),
             'alphanumeric' => array(
                 'rule' => '/^[\d\w!@#\$%&\*\^\+\?-_.,]+$/',
-                'required' => true,
+                'allowEmpty' => true,
                 'message' => 'Υπάρχει κάποιος μη αποδεκτός χαρακτήρας'
             )
         )
