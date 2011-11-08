@@ -331,8 +331,8 @@ class AuthComponent extends Object {
 			return false;
         }
 
-    //    $controllerData = $controller->data;
-        $this->data /*= $controller->data */= $this->hashPasswords($controller->data);
+        $controllerData = $controller->data;
+        $this->data = $controller->data = $this->hashPasswords($controller->data);
 
 		$url = '';
 
@@ -366,8 +366,8 @@ class AuthComponent extends Object {
 
             if ($isValid) {
 
-				$username = $controller->data[$model->alias][$this->fields['username']];
-				$password = $controller->data[$model->alias][$this->fields['password']];
+				$username = $controllerData[$model->alias][$this->fields['username']];
+				$password = $controllerData[$model->alias][$this->fields['password']];
 
 				$data = array(
 					$model->alias . '.' . $this->fields['username'] => $username,
