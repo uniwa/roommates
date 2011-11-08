@@ -153,6 +153,10 @@ class ProfilesController extends AppController {
 
     function search() {
 
+        // Deny access to real estates
+        if ($this->Auth->User('role') == 'realestate')
+            $this->cakeError('error403');
+
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_search');
