@@ -164,13 +164,22 @@ class UsersController extends AppController{
 
     function register() {
         $this->set('title_for_layout','Εγγραφή νέου χρήστη');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         if ($this->data) {
-            if (! $this->Recaptcha->verify()) {
-                $this->Session->setFlash($this->Recaptcha->error);
+            // user must accept the real estate terms
+            if ($this->data["User"]["estate_terms"] != "1") {
+                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης 
+για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
                 $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
                 return;
             }
-            // TODO: check if accepted terms (depends on real estate terms story card)
+
+            // check for valid captcha
+            if (! $this->Recaptcha->verify()) {
+                $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                return;
+            }
 
             $userdata["User"]["username"] = $this->data["User"]["username"];
             $userdata["User"]["password"] = $this->data["User"]["password"];
@@ -182,18 +191,13 @@ class UsersController extends AppController{
             /* we need enabled = 0 because all users are enabled in db by default */
             $userdata["User"]["enabled"] = 0;
 
-            $this->User->set($userdata);
-            if (!$this->User->validates()) {
-                $user_errors = $this->User->invalidFields();
-                $this->set('user_errors', $user_errors);
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
-            }
-
             $this->User->begin();
             /* try saving user model */
             if ($this->User->save($userdata) === false) {
                 $this->User->rollback();
+                // pass custom validation errors to view
+                $user_errors = $this->User->validationErrors;
+                $this->set('user_errors', $user_errors);
             }
             else {
                 /* try saving real estate profile */
@@ -213,21 +217,20 @@ class UsersController extends AppController{
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
-        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
     }
 
     private function create_estate_profile($id, $data) {
-        $realestate["RealEstate"]["firstname"] = $data["User"]["firstname"];
-        $realestate["RealEstate"]["lastname"] = $data["User"]["lastname"];
-        $realestate["RealEstate"]["company_name"] = $data["User"]["company_name"];
-        $realestate["RealEstate"]["email"] = $data["User"]["email"];
-        $realestate["RealEstate"]["phone"] = $data["User"]["phone"];
-        $realestate["RealEstate"]["fax"] = $data["User"]["fax"];
-        $realestate["RealEstate"]["afm"] = $data["User"]["afm"];
-        $realestate["RealEstate"]["doy"] = $data["User"]["doy"];
-        $realestate["RealEstate"]["address"] = $data["User"]["address"];
-        $realestate["RealEstate"]["postal_code"] = $data["User"]["postal_code"];
-        $realestate["RealEstate"]["municipality_id"] = $data["User"]["municipality_id"];
+        $realestate["RealEstate"]["firstname"] = $data["RealEstate"]["firstname"];
+        $realestate["RealEstate"]["lastname"] = $data["RealEstate"]["lastname"];
+        $realestate["RealEstate"]["company_name"] = $data["RealEstate"]["company_name"];
+        $realestate["RealEstate"]["email"] = $data["RealEstate"]["email"];
+        $realestate["RealEstate"]["phone"] = $data["RealEstate"]["phone"];
+        $realestate["RealEstate"]["fax"] = $data["RealEstate"]["fax"];
+        $realestate["RealEstate"]["afm"] = $data["RealEstate"]["afm"];
+        $realestate["RealEstate"]["doy"] = $data["RealEstate"]["doy"];
+        $realestate["RealEstate"]["address"] = $data["RealEstate"]["address"];
+        $realestate["RealEstate"]["postal_code"] = $data["RealEstate"]["postal_code"];
+        $realestate["RealEstate"]["municipality_id"] = $data["RealEstate"]["municipality_id"];
         $realestate["RealEstate"]["user_id"] = $id;
 
         if ( $this->RealEstate->save($realestate) === false) {
