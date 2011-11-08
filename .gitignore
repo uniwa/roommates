@@ -7,6 +7,9 @@
 #ldap configuration
 /app/config/ldap.php
 
+# captcha keys
+/app/config/captcha.php
+
 # swap et al
 *~
 *.swp
