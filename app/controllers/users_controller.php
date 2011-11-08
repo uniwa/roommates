@@ -70,8 +70,8 @@ class UsersController extends AppController{
                 $this->User->id = $this->Auth->user('id');
                 $user = $this->User->read();
                 /* Update user field which determines that user accepted the terms*/
-                $this->User->set(  'terms_accepted', "1"  );
-                $this->User->save();
+                $user["User"]["terms_accepted"] = 1;
+                $this->User->save($user, false);
                 /*refresh session for this field*/
                 $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
 
