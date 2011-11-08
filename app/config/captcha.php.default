@@ -1,0 +1,7 @@
+<?php
+/*
+ * put your captcha keys here
+ */
+Configure::write('Recaptcha.publicKey', '');
+Configure::write('Recaptcha.privateKey', '');
+?>
