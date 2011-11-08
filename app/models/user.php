@@ -15,16 +15,15 @@ class User extends AppModel{
         'password' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
+                'required' => true,
                 'message' => 'Το πεδίο αυτό δεν μπορεί να είναι κενό.'
             ),
             'length' => array (
-                'rule' => array('between', 8, 16),
-                'required' => true,
+                'rule' => array('minLength', 8),
                 'message' => 'Ο κωδικός πρέπει να είναι μεταξύ 8 και 16 χαρακτήρων.'
             ),
             'alphanumeric' => array(
                 'rule' => '/^[\d\w!@#\$%&\*\^\+\?-_.,]+$/',
-                'required' => true,
                 'message' => 'Υπάρχει κάποιος μη αποδεκτός χαρακτήρας'
             )
         ),
