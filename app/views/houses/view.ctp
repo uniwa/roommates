@@ -39,7 +39,7 @@
                 echo $this->Html->link($this->Html->image('addpic.png',
                     array('alt' => 'add house image', 'class' => 'img-placeholder')),
                     array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                    array('title' => 'description title', 'escape' => false));
+                    array('title' => 'add house image', 'escape' => false));
             } else {
                 /* empty placeholder without link to add image */
                 echo $this->Html->image('addpic.png', array(
@@ -61,7 +61,7 @@
                             array('alt' => 'add house image', 'class' => 'img-placeholder')
                         ),
                         array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                        array('title' => 'description title', 'escape' => false));
+                        array('title' => 'add house image', 'escape' => false));
                     /* empty placeholder without link to add image */
                     } else {
                         echo $this->Html->image('addpic.png',
