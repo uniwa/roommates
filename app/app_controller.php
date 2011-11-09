@@ -2,7 +2,7 @@
 class  AppController extends Controller{
 
 	var $components = array('Auth', 'Session', 'RequestHandler');
-	var $helpers  = Array('Html', 'Form', 'Session','Auth');
+	var $helpers  = array('Html', 'Form', 'Session','Auth');
 	var $uses = array('User', 'Profile');
 
 	function beforeFilter(){
@@ -54,10 +54,12 @@ class  AppController extends Controller{
 
 		$user = $this->User->read();
 
-
-		return array(  	'User' => array( 'id' => $user['User']['id'], 'banned' => $user['User']['banned'] ),
-				'Profile' =>array( 'id' => $user['Profile']['id'] ),
-				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ),
+		return array(  	'User' => array('id' => $user['User']['id'],
+                                        'banned' => $user['User']['banned'] ),
+                        'Profile' =>array( 'id' => $user['Profile']['id'] ),
+                        'House' => array('id' => isset($user['House'][0]['id']) ?
+                                                 $user['House'][0]['id'] : NULL),
+                        'RealEstate' => array('id' => $user['RealEstate']['id'])
         );
 
 	}

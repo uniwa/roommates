@@ -8,7 +8,7 @@ class AdminsController extends AppController
         'fields' => array( 'User.username', 'User.banned',
         'Profile.id', 'Profile.firstname', 'Profile.lastname',
         'Profile.email'),
-        'limit' => 5
+        'limit' => 50
     );
 
     function search(){

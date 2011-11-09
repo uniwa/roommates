@@ -50,3 +50,12 @@
  */
 Configure::write('GenderLabels', array('0' => 'Άνδρας', '1' => 'Γυναίκα', '2' => 'Αδιάφορο'));
 Configure::write('YNI', array('0' => 'Ναι', '1' => 'Όχι', '2' => 'Αδιάφορο'));
+
+Configure::write('debugging', 'Debugging view');
+function showDebug($msg){
+    $new = '['.date('H:i:s').'] '.$msg.' [php]<br /><br />';
+    $old = Configure::read('debugging');
+    Configure::write('debugging', $new.$old);
+}
+
+include_once('captcha.php');

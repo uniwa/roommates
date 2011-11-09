@@ -10,11 +10,17 @@
         echo $this->Html->meta('favicon.ico', 'img/favicon.ico', array('type' => 'icon'));
         echo $this->Html->css('global');
         echo $this->Html->script('jquery');
+        echo $this->Html->script('debug');
         /* fancybox: js gallery moved to house view only */
         echo $scripts_for_layout;
     ?>
 </head>
 <body>
+    <div id='debug'>
+        <?php
+            echo Configure::read('debugging');
+        ?>
+    </div>
     <div id='top-menu-cont'>
         <?php
             $userid = $this->Session->read('Auth.User.id');
