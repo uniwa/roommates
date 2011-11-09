@@ -1,29 +1,36 @@
 $(function(){
-    var dbgState = false;
-    
-    $.ctrl = function(key, callback, args) {
-        $(document).keydown(function(e) {
-            if(!args) args=[]; // IE barks when args is null
-            if(e.keyCode == key.charCodeAt(0) && e.ctrlKey) {
-                callback.apply(this, args);
-                return false;
-            }
-        });
-    };
+    var dbgState = 0;
 
-    $.ctrl('E', function() {
-		if (dbgState) {
-//				var msg = 'debug off';
-//				dbg(msg);
-			$('#debug').hide();
-		} else {
-//				var msg = 'debug on';
-//				dbg(msg);
-			$('#debug').show();
+	$(document).keypress(function(e){
+		if((e.which == '100')|(e.which == '68')|(e.which == '948')|(e.which == '916')){
+	        if(dbgState == 0){
+    	        dbgState = 1;
+    	        return;
+	        }
+        }
+
+		if((e.which == '101')|(e.which == '69')|(e.which == '949')|(e.which == '917')){
+	        if(dbgState == 1){
+	            dbgState = 2;
+	            return;
+            }
+        }
+
+		if((e.which == '98')|(e.which == '66')|(e.which == '944')|(e.which == '914')){
+			if (dbgState == 2) {
+				// debug on
+				$('#debug').show();
+				return;
+			}
 		}
 		
-		dbgState = !dbgState;
-    });
+		if(e.keyCode == '27'){
+    		$('#debug').hide();
+		}
+
+		// debug off
+		dbgState = 0;
+	});
 
 	function dbg(msg){
 		var now = new Date();
