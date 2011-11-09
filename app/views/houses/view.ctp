@@ -46,6 +46,44 @@
         }
         ?>
     </div>
+    
+    <div class="float: both;">
+    
+        <?php 
+            /* create the link to post on Facebook */
+            
+            $furnished = null;
+            if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
+            else $furnished = ', ';
+        
+            echo '<a href='
+                . '"http://www.facebook.com/dialog/feed'
+                . '?app_id=' . $facebook->getAppId()
+                
+                . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
+                . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                . '&caption=' . urlencode( '«Συγκατοικώ»' )
+
+                . '&description=' . urlencode( 
+                    'Διεύθυνση ' . $house['House']['address'] . ', '
+                    . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                    . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
+                    . $furnished
+                    . 'Δήμος ' . $house['Municipality']['name'] ) . ', '
+                    . 'Διαθέσιμες θέσεις ' . Sanitize::html( $house['House']['free_places'] )
+
+                . '&message=' . urlencode( 'this is message.' )
+                . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+            . '">Κοινωποίηση στο Facebook</a>';
+        ?>
+    
+    
+        <?php /*echo $this->Html->link(
+            'Δημοσίευση στο Facebook',
+            array( 'controller' => 'houses', 'action' => 'publish', $house['House']['id'] ) );*/
+        ?>
+    </div>
+    
     <div class="image-list">
         <ul>
             <?php

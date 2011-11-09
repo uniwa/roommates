@@ -1,6 +1,8 @@
 <?php
 
 App::import('Sanitize');
+App::import( 'Vendor', 'facebook' );
+Configure::load( 'facebook' );
 
 class HousesController extends AppController {
 
@@ -150,16 +152,23 @@ class HousesController extends AppController {
         $this->L10n->get('gr');
         // not sure for this solution
         $_SESSION['Config']['language'] = 'gr';
+        
+		/* facebook instance initialization */
+		if( !$this->Session->check( 'facebook' ) ) {
+		    $this->facebookInit( );
+	    }
+	    
     }
 
     function view($id = null) {
-
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'houses_view');
 
         $this->set('title_for_layout','Σπίτι');
         $this->checkExistance($id);
+
+        
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
@@ -188,6 +197,9 @@ class HousesController extends AppController {
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
+		
+		$this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+		$this->set( 'facebook', $this->Session->read( 'facebook' ) );
     }
  
     function add() {
@@ -208,6 +220,11 @@ class HousesController extends AppController {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
+                
+                /* post to facebook application wall */
+                $house = $this->House->read( );
+                $this->postToAppWall( $house );
+                
                 $this->redirect(array('action' => "view/$hid"));
             }
         }
@@ -264,6 +281,10 @@ class HousesController extends AppController {
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
+                    
+                /* post updated house on application's page on Facebook */
+                $this->postToAppWall( $this->data );
+                
                 $this->redirect(array('action' => "view/$id"));
             }
         }
@@ -815,6 +836,69 @@ class HousesController extends AppController {
         }
 
         return $order;
+    }
+    
+    /* ==============
+     * facebook stuff
+     * ==============
+     */
+
+    /**
+     * Posts an announcement on the application's page on Facebook.
+     * The supplied parameter is a two-dimensional array which 
+     * contains the entries 'House' and 'Municipality'.
+     */                    
+    function postToAppWall( $house_id, $house = null ) {
+    
+        //print_r( $this->House->id );
+    
+        $this->House->id = $house_id;
+        $house = $this->House->read( );
+
+        $furnished = null;
+        if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
+        else $furnished = ', ';
+        
+        $fb_app_uri = Configure::read( 'fb_app_uri' );
+        $facebook = $this->Session->read( 'facebook' );
+
+        try {    
+            $facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
+            
+                'message' =>
+                    'Διεύθυνση ' . $house['House']['address'] . ', '
+                    . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                    . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
+                    . $furnished
+                    . 'Δήμος ' . $house['Municipality']['name'] . ', '
+                    . 'Διαθέσιμες θέσεις ' . Sanitize::html( $house['House']['free_places'] ),
+
+                'name' => 'Δείτε περισσότερα εδώ...',
+                'link' => $fb_app_uri . 'houses/view/' . $house['House']['id'],
+                'caption' => '«Συγκατοικώ»',
+            ) );      
+
+        } catch( FacebookApiException $e ) {
+        
+            $this->Session->setFlash( $e->getMessage( ) );
+        }
+    }
+    
+    /**
+     * Creates a Facebook instance which is then made available though
+     * the Session.
+     * Execute once per session. More won't hurt, but is not required.
+     */
+    protected function facebookInit( ) {
+        
+        $fb_app_id = Configure::read( 'fb_app_id' );
+        $fb_secret = Configure::read( 'fb_secret' );
+        
+        $facebook = new Facebook( array(
+            'appId' => $fb_app_id,
+            'secret' => $fb_secret ) );
+            
+        $this->Session->write( 'facebook', $facebook );
     }
 }
 ?>
