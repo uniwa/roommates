@@ -34,17 +34,16 @@ class Image extends AppModel {
 		App::import('Vendor','ccImageResize', array('file' => 'ccImageResize.class.php'));
 		$fileData['name'] = $this->getLocationName($fileData['name']);
 
-
-        /* catch permission errors before calling move_uploaded_file() */
-        if ($this->has_permissions($house_id) != true) {
-            return NULL;
-        }
-
         /* base path to store this file */
         $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
 
         /* create destination folder if it does not exist*/
         if(!is_dir($base_path)) mkdir($base_path, 0700, true);
+
+        /* catch permission errors before calling move_uploaded_file() */
+        if ($this->has_permissions($house_id) != true) {
+            return NULL;
+        }
 
         /* get extension */
         $ext = substr(strrchr($fileData['name'], '.'), 1);
