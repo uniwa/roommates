@@ -28,8 +28,8 @@
             $userBanned = $this->Session->read('Auth.User.banned');
             if(!$userNull){
                 echo $this->element('topmenu', array("userid" => $userid));
-                echo $this->element('topuser', array("userid" => $userid));
             }
+            echo $this->element('topuser', array("userid" => $userid));
         ?>
     </div>
     <div id='container'>
