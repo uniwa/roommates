@@ -17,11 +17,12 @@
             echo $this->Html->link(
                     $this->Html->image('uploads/houses/'.
                         $house["House"]["id"]."/thumb_".
-                        $default_image_location, array('alt' => 'house image')),
-                        '/img/uploads/houses/'.$house['House']['id'].
-                        '/medium_'. $default_image_location, array(
-                        'class' => 'fancyImage', 'rel' => 'group',
-                        'title' => 'description title', 'escape' => false));
+                        $default_image_location, array('alt' => 'house image')
+                    ),
+                    '/img/uploads/houses/'.$house['House']['id'].
+                    '/medium_'. $default_image_location, array(
+                    'class' => 'fancyImage', 'rel' => 'group',
+                    'title' => 'description title', 'escape' => false));
 
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo "<div class='imageactions'>";
@@ -58,9 +59,10 @@
                     /* if we have access placeholder is a link to 'add image' */
                     if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                         echo $this->Html->link($this->Html->image('addpic.png',
-                            array('alt' => 'add house image', 'class' => 'img-placeholder')),
-                            array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                            array('class' => '', 'rel' => 'group',
+                            array('alt' => 'add house image', 'class' => 'img-placeholder')
+                        ),
+                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                        array('class' => '', 'rel' => 'group',
                                 'title' => 'description title', 'escape' => false));
                     /* empty placeholder without link to add image */
                     } else {
