@@ -6,7 +6,7 @@ class ProfilesController extends AppController {
     var $name = 'Profiles';
     var $components = array('RequestHandler', 'Email');
     var $paginate = array('limit' => 15);
-    var $uses = array("Profile", "House", "Municipality");
+    var $uses = array('Profile', 'House', 'Municipality', 'Image');
 
     function index() {
         // Block access for all
@@ -72,13 +72,9 @@ class ProfilesController extends AppController {
             }
         }
 
-        // Deny access to real estates
-        if ($this->Auth->User('role') == 'realestate')
-            $this->cakeError('error403');
-
         $this->set('profile', $profile);
 
-            $pref_municipality = $profile['Preference']['pref_municipality'];
+        $pref_municipality = $profile['Preference']['pref_municipality'];
         if(isset($pref_municipality)){
             $options['fields'] = array('Municipality.name');
             $options['conditions'] = array('Municipality.id = '.$pref_municipality);
@@ -88,12 +84,12 @@ class ProfilesController extends AppController {
         }
         /* get house id of this user - NULL if he doesn't own one */
         if(isset($profile["User"]["House"][0]["id"])){
-showDebug('house id: '.$profile["User"]["House"][0]["id"]);
             $houseid = $profile["User"]["House"][0]["id"];
             $this->House->id = $houseid;
             $house = $this->House->read();
-            $image = $this->House->Image->find('first',array('conditions' => array(
-                'house_id' => $house['House']['default_image_id'])));
+            $image = $this->Image->find('all',array('conditions' => array(
+                'Image.id' => $house['House']['default_image_id'])));
+showDebug('image: '.$image['Image']['location']);
             $this->set('image', $image);
 //            $thumb = $images[]
 /*            foreach($images as $image){

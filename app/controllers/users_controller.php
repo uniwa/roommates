@@ -24,6 +24,11 @@ class UsersController extends AppController{
     }
 
     function login() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'login');
+        $this->set('title_for_layout', 'Σύνδεση χρήστη');
+
         /*In case user try to login with some credentials
          *and terms has not accepted redirect him in terms action.
          *If rules has accepted redirect him to main page

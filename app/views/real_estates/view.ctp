@@ -105,10 +105,10 @@
     </div>
     <div id='profileEdit'>
         <?php
-            if($this->Session->read('Auth.User.id') == $realEstate['User']['id']){
-                echo $html->link('Επεξεργασία στοιχείων',
-                    array('action' => 'edit', $realEstate['RealEstate']['id']));
-            }
+//            if($this->Session->read('Auth.User.id') == $realEstate['User']['id']){
+//                echo $html->link('Επεξεργασία στοιχείων',
+//                    array('action' => 'edit', $realEstate['RealEstate']['id']));
+//            }
         ?>
     </div>
 </div>
