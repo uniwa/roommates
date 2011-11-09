@@ -1,3 +1,6 @@
+<?php
+    $role = $this->Session->read('Auth.User.role');
+?>
 <div id='top-user'>
     <ul>
         <li>
@@ -12,7 +15,7 @@
         </li>
         <li>
             <?php
-                if($this->Session->read('Auth.User.role') !== 'admin'){
+                if($role !== 'admin'){
                     $linkClass = 'menu-item menu-user';
                     if(isset($selected_action) &&
                        ($selected_action == 'houses_view' ||
@@ -21,20 +24,20 @@
                     }
 
                     $house_id = $this->Auth->get('House.id');
-                    if ($house_id != null) {
-                        if ($this->Session->read('Auth.User.role') == 'realestate') {
-                            $linkContent = 'Διαχείριση σπιτιών';
-                            $linkAction = 'manage';
-                            $actionTarget = null;
-                        } else {
+                    if ($role == 'realestate') {
+                        $linkContent = 'Διαχείριση σπιτιών';
+                        $linkAction = 'manage';
+                        $actionTarget = null;
+                    } else {
+                        if ($house_id != null) {
                             $linkContent = 'Το σπίτι μου';
                             $linkAction = 'view';
                             $actionTarget = $house_id;
+                        } else {
+                                $linkContent = 'Προσθήκη σπιτιού';
+                                $linkAction = 'add';
+                                $actionTarget = null;
                         }
-                    } else {
-                            $linkContent = 'Προσθήκη σπιτιού';
-                            $linkAction = 'add';
-                            $actionTarget = null;
                     }
 
                     echo $this->Html->link($linkContent, array('controller' => 'houses',
@@ -44,15 +47,15 @@
         </li>
         <li>
             <?php
-                if($this->Session->read('Auth.User.role') !== 'admin'){
+                if($role !== 'admin'){
                     $linkClass = 'menu-item menu-user';
-                    $linkContent = 'Το προφίλ μου';
+                    $linkContent = ($role == 'realestate')?'Στοιχεία επικοινωνίας':'Το προφίλ μου';
                     if(isset($selected_action) &&
                        ($selected_action == 'profiles_view' ||
                         $selected_action == 'real_estates_view')) {
                         $linkClass .= ' menu-selected';
                     }
-                    if ($this->Session->read('Auth.User.role') == 'realestate') {
+                    if ($role == 'realestate') {
                         $id = $this->Auth->get('RealEstate.id');
                         $controller = 'real_estates';
                     } else {

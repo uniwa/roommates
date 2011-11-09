@@ -15,7 +15,7 @@ class RealEstatesController extends AppController {
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'real_estates_view');
-        $this->set('title_for_layout','Προφίλ ενοικιαστή');
+        $this->set('title_for_layout','Στοιχεία επικοινωνίας');
 showDebug($id);
     	$this->checkExistence($id);
         $this->RealEstate->id = $id;
