@@ -229,8 +229,8 @@ class HousesController extends AppController {
                 $hid = $this->House->id;
                 
                 /* post to facebook application wall */
-                $house = $this->House->read( );
-                $this->postToAppWall( $house );
+                $this->House->id = $hid;
+                $this->postToAppWall( $this->House->read() );
                 
                 $this->redirect(array('action' => "view/$hid"));
             }
@@ -291,7 +291,8 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
                     
                 /* post updated house on application's page on Facebook */
-                $this->postToAppWall( $this->data );
+                
+                $this->postToAppWall( $this->House->read( ) );
                 
                 $this->redirect(array('action' => "view/$id"));
             }
@@ -868,12 +869,7 @@ class HousesController extends AppController {
      * The supplied parameter is a two-dimensional array which 
      * contains the entries 'House' and 'Municipality'.
      */                    
-    function postToAppWall( $house_id, $house = null ) {
-    
-        //print_r( $this->House->id );
-    
-        $this->House->id = $house_id;
-        $house = $this->House->read( );
+    function postToAppWall( $house = null ) {
 
         $furnished = null;
         if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
