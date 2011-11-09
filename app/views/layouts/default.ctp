@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title><?php echo $title_for_layout?></title>
+    <title><?php echo $title_for_layout; ?></title>
     <?php echo $this->Html->charset('utf-8'); ?>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,greek' rel='stylesheet' type='text/css'>
     <base href="<?php echo Router::url('/'); ?>"/>
@@ -24,13 +24,10 @@
     <div id='top-menu-cont'>
         <?php
             $userid = $this->Session->read('Auth.User.id');
-            if ($this->Session->read("Auth.User") != NULL) {
+            $userNull = $this->Session->read("Auth.User") == NULL;
+            $userBanned = $this->Session->read('Auth.User.banned');
+            if(!$userNull){
                 echo $this->element('topmenu', array("userid" => $userid));
-            }
-        ?>
-        <?php
-            $userid = $this->Session->read('Auth.User.id');
-            if ($this->Session->read("Auth.User") != NULL) {
                 echo $this->element('topuser', array("userid" => $userid));
             }
         ?>
@@ -38,9 +35,14 @@
     <div id='container'>
         <?php echo $this->Session->flash(); ?>
         <div id='header'>
+            <?php
+                if($userBanned){
+                    echo $this->element('banned');
+                }
+            ?>
             <div id='header-main'>
                 <div class='header-title'>
-                    <h1><?php echo $title_for_layout?></h1>
+                    <h1><?php echo $title_for_layout; ?></h1>
                 </div>
             </div>
         </div>
