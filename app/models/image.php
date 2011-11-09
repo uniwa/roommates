@@ -94,7 +94,7 @@ class Image extends AppModel {
         $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
         $original = $base_path . "orig_" . $filename;
         $thumbnail = $base_path . "thumb_" . $filename;
-        $medium = $base_path . "_medium" . $filename;
+        $medium = $base_path . "medium_" . $filename;
 
 		if (! unlink($original)) return False;
 		if (! unlink($thumbnail)) return False;
