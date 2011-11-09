@@ -88,6 +88,7 @@ class ProfilesController extends AppController {
         }
         /* get house id of this user - NULL if he doesn't own one */
         if(isset($profile["User"]["House"][0]["id"])){
+showDebug('house id: '.$profile["User"]["House"][0]["id"]);
             $houseid = $profile["User"]["House"][0]["id"];
             $this->House->id = $houseid;
             $house = $this->House->read();
@@ -433,13 +434,13 @@ class ProfilesController extends AppController {
         }
         $success = $this->set_ban_status($id, 1);
         if ($success) {
-            $this->Session->setFlash('Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.',
+            $this->Session->setFlash('Ο λογαριασμός χρήστη απενεργοποιήθηκε με επιτυχία.',
                 'default', array('class' => 'flashBlue'));
             $this->email_banned_user($id);
         } else {
             $this->Session->setFlash(
-                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.',
-                'deafult', array('class' => 'flashRed'));
+                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριασμού του χρήστη.',
+                'default', array('class' => 'flashRed'));
         }
         $this->redirect(array('action'=> "view", $id));
     }
@@ -455,8 +456,8 @@ class ProfilesController extends AppController {
             'default', array('class' => 'flashBlue'));
         } else {
             $this->Session->setFlash(
-                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.',
-                'default', array('class' => 'flashBlue'));
+                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριασμού του χρήστη.',
+                'default', array('class' => 'flashRed'));
         }
         $this->redirect(array('action'=> "view", $id));
 
