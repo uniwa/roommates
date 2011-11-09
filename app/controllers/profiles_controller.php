@@ -9,6 +9,9 @@ class ProfilesController extends AppController {
     var $uses = array("Profile", "House", "Municipality");
 
     function index() {
+        // Block access for all
+        $this->cakeError('error403');
+        
         $this->set('title_for_layout','Δημόσια προφίλ');
         /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
@@ -48,12 +51,12 @@ class ProfilesController extends AppController {
     }
 
     function view($id = null) {
-
+        $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_view');
-
         $this->set('title_for_layout','Προφίλ χρήστη');
+
     	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
@@ -68,6 +71,11 @@ class ProfilesController extends AppController {
                 $this->cakeError('error404');
             }
         }
+
+        // Deny access to real estates
+        if ($this->Auth->User('role') == 'realestate')
+            $this->cakeError('error403');
+
         $this->set('profile', $profile);
 
             $pref_municipality = $profile['Preference']['pref_municipality'];
@@ -79,12 +87,25 @@ class ProfilesController extends AppController {
             $this->set('municipality', $municipality);
         }
         /* get house id of this user - NULL if he doesn't own one */
-        if ( isset($profile["User"]["House"][0]["id"]) ) {
+        if(isset($profile["User"]["House"][0]["id"])){
             $houseid = $profile["User"]["House"][0]["id"];
-        } else {
+            $this->House->id = $houseid;
+            $house = $this->House->read();
+            $image = $this->House->Image->find('first',array('conditions' => array(
+                'house_id' => $house['House']['default_image_id'])));
+            $this->set('image', $image);
+//            $thumb = $images[]
+/*            foreach($images as $image){
+                if($image['Image']['id'] == $house['House']['default_image_id']){
+                    $this->set('default_image_location', $image['Image']['location']);
+                    $this->set('default_image_id', $image['Image']['id']);
+                }
+            }*/
+        }else{
             $houseid = NULL;
+            $house = NULL;
         }
-        $this->set('houseid', $houseid);
+        $this->set('house', $house);
     }
 
 /*
@@ -120,7 +141,7 @@ class ProfilesController extends AppController {
 */
 
     function edit($id = null) {
-
+        $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_view');
@@ -135,8 +156,7 @@ class ProfilesController extends AppController {
 	}
         else {
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.',
-                        array('class' => 'flashBlue'));
+                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.', 'default', array('class' => 'flashBlue'));
                     $this->redirect(array('action'=> "view", $id));
             }
 		}
@@ -148,7 +168,8 @@ class ProfilesController extends AppController {
      }
 
     function search() {
-
+        // Deny access to real estates
+        $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'profiles_search');
@@ -406,6 +427,7 @@ class ProfilesController extends AppController {
     }
 
     function ban($id) {
+        $this->denyRole('realestate');
         if ($this->Auth->user('role') != 'admin') {
             $this->cakeError('error403');
         }
@@ -423,6 +445,7 @@ class ProfilesController extends AppController {
     }
 
     function unban($id) {
+        $this->denyRole('realestate');
         if ($this->Auth->user('role') != 'admin') {
             $this->cakeError('error403');
         }
@@ -450,6 +473,12 @@ class ProfilesController extends AppController {
         $this->Email->template = 'banned';
         $this->Email->sendAs = 'both';
         $this->Email->send();
+    }
+    
+    private function denyRole($role){
+        if($this->Session->read('Auth.User.role') == $role){
+            $this->cakeError('error403');
+        }
     }
 }
 ?>

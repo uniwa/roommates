@@ -1,52 +1,78 @@
 <div id='top-user'>
     <ul>
-        <li class='menu-item menu-user menu-login'>
+        <li>
             <?php
-                echo $this->Html->link('αποσύνδεση ('.$this->Session->read("Auth.User.username").")",
-                    array('controller' => 'users', 'action' => 'logout'));
+                $uname = $this->Session->read('Auth.User.username');
+                $linkContent = "αποσύνδεση ({$uname})";
+                echo $this->Html->link($linkContent, array(
+                    'controller' => 'users',
+                    'action' => 'logout'),
+                    array('class' => 'menu-item menu-user menu-login'));
             ?>
         </li>
+        <li>
+            <?php
+                if($this->Session->read('Auth.User.role') !== 'admin'){
+                    $linkClass = 'menu-item menu-user';
+                    if(isset($selected_action) &&
+                       ($selected_action == 'houses_view' ||
+                        $selected_action == 'houses_manage')) {
+                        $linkClass .= ' menu-selected';
+                    }
 
-        <?php
-            if($this->Session->read('Auth.User.role') !== 'admin'){
-                if (isset($selected_action) && $selected_action == 'houses_view' ) { ?>
-            <li class='menu-item menu-user menu-selected'>
-        <?php } else { ?>
-            <li class='menu-item menu-user'>
-        <?php
-                }
-                $house_id = $this->Auth->get("House.id");
-                    if ($house_id != NULL) {
-                        echo $this->Html->link('Το σπίτι μου', array('controller' => 'houses',
-                            'action' => 'view', $house_id));
+                    $house_id = $this->Auth->get('House.id');
+                    if ($house_id != null) {
+                        if ($this->Session->read('Auth.User.role') == 'realestate') {
+                            $linkContent = 'Διαχείριση σπιτιών';
+                            $linkAction = 'manage';
+                            $actionTarget = null;
+                        } else {
+                            $linkContent = 'Το σπίτι μου';
+                            $linkAction = 'view';
+                            $actionTarget = $house_id;
+                        }
                     } else {
-                        echo $this->Html->link('Προσθήκη σπιτιού', array('controller' => 'houses',
-                            'action' => 'add'));
-                }
-        ?>
-            </li>
+                            $linkContent = 'Προσθήκη σπιτιού';
+                            $linkAction = 'add';
+                            $actionTarget = null;
+                    }
 
-        <?php if (isset($selected_action) && $selected_action == 'profiles_view' ) { ?>
-            <li class='menu-item menu-user menu-selected'>
-        <?php } else { ?>
-            <li class='menu-item menu-user'>
-        <?php } ?>
-                <?php
-                    $profile_id = $this->Auth->get("Profile.id");
-                    echo $this->Html->link(' Το προφίλ μου', array('controller' => 'profiles',
-                                                                'action' => 'view',
-                                                                $profile_id,));
-                ?>
-            </li>
-        <?php } // if 'admin' ?>
+                    echo $this->Html->link($linkContent, array('controller' => 'houses',
+                        'action' => $linkAction, $actionTarget), array('class' => $linkClass));
+                }
+            ?>
+        </li>
+        <li>
+            <?php
+                if($this->Session->read('Auth.User.role') !== 'admin'){
+                    $linkClass = 'menu-item menu-user';
+                    $linkContent = 'Το προφίλ μου';
+                    if(isset($selected_action) &&
+                       ($selected_action == 'profiles_view' ||
+                        $selected_action == 'real_estates_view')) {
+                        $linkClass .= ' menu-selected';
+                    }
+                    if ($this->Session->read('Auth.User.role') == 'realestate') {
+                        $id = $this->Auth->get('RealEstate.id');
+                        $controller = 'real_estates';
+                    } else {
+                        $id = $this->Auth->get("Profile.id");
+                        $controller = 'profiles';
+                    }
+
+                    echo $this->Html->link($linkContent, array('controller' => $controller,
+                        'action' => 'view', $id), array('class' => $linkClass));
+                }
+            ?>
+        </li>
         <li class='menu-item menu-rss menu-login'>
             <?php
-            $userid = $this->Session->read('Auth.User.id');
-            echo $this->Html->link(
-                $this->Html->image("rss.png", array("alt" => "Subscribe to RSS.")),
-                "/houses/index.rss",
-                array('escape' => false)
-            );
+                $userid = $this->Session->read('Auth.User.id');
+                echo $this->Html->link(
+                    $this->Html->image("rss.png", array("alt" => "Subscribe to RSS.")),
+                    "/houses/index.rss",
+                    array('escape' => false)
+                );
             ?>
         </li>
     </ul>

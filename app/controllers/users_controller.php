@@ -1,9 +1,12 @@
 <?php
+
+
 class UsersController extends AppController{
 
 	var $name = "Users";
-    var $uses = array("Profile", "User", "Preference");
-    var $components = array('Token');
+    var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
+    var $components = array('Token', 'Recaptcha.Recaptcha');
+    //var $helpers = array('RecaptchaPlugin.Recaptcha');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -12,6 +15,12 @@ class UsersController extends AppController{
 
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
+        $this->Auth->allow('register');
+
+        if( $this->params['action'] === 'register' && $this->Auth->user() ) {
+
+            $this->cakeError( 'error403' );
+        }
     }
 
     function login() {
@@ -19,12 +28,15 @@ class UsersController extends AppController{
          *and terms has not accepted redirect him in terms action.
          *If rules has accepted redirect him to main page
          */
-
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
-
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
 
         } else if( isset( $this->data ) &&  $this->Auth->user( 'terms_accepted' === "1" ) ) {
+            if ($this->Auth->user('enabled') == '0') {
+                $this->Session->setFlash('Ο λογαριασμός σας δεν έχει ενεργοποιηθεί από τον διαχειριστή.',
+                        'default', array('class' => 'flashRed'));
+                $this->redirect($this->Auth->logout());
+            }
             /* redirect in pre-fixed url */
             $this->redirect( $this->Auth->redirect() );
         }
@@ -52,10 +64,9 @@ class UsersController extends AppController{
         /*Checks if user has accepted the terms*/
         if( $this->Auth->user( "terms_accepted") === "1" ) {
 
-
             $this->Session->setFlash( 'Οι όροι έχουν γίνει αποδεκτοί', 'default',
                 array('class' => 'flashBlue'));
-            $this->redirect( $this->referer() );
+            $this->redirect( $this->Auth->redirect() );
         }
 
         $this->layout = 'terms';
@@ -67,13 +78,13 @@ class UsersController extends AppController{
                 $this->User->id = $this->Auth->user('id');
                 $user = $this->User->read();
                 /* Update user field which determines that user accepted the terms*/
-                $this->User->set(  'terms_accepted', "1"  );
-                $this->User->save();
+                $user["User"]["terms_accepted"] = 1;
+                $this->User->save($user, false);
                 /*refresh session for this field*/
                 $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
 
-
                 if( $user["Profile"]["id"] == null ) {
+
                     $pref_id = $this->create_preferences();
                     $profile_id = $this->create_profile($this->User->id, $pref_id);
                     $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
@@ -107,13 +118,15 @@ class UsersController extends AppController{
     }
 
     private function create_profile($id, $pref_id) {
+
         $this->Profile->begin();
         $this->Profile->create();
 
-        /* TODO: get this info from LDAP */
-        $profile["Profile"]["firstname"] = "firstname";
-        $profile["Profile"]["lastname"] = "lastname";
-        $profile["Profile"]["email"] = "test@teiath.gr";
+       $ldap_data = $this->Session->read('LdapData');
+        
+        $profile["Profile"]["firstname"] = $ldap_data['first_name'];
+        $profile["Profile"]["lastname"] = $ldap_data['last_name'];
+        $profile["Profile"]["email"] = $ldap_data['email'];
 
         /* dummy sane data - user will edit his profile after login */
         $profile["Profile"]["dob"] = date('Y') - 18;
@@ -156,6 +169,83 @@ class UsersController extends AppController{
             $this->Preference->commit();
             return $this->Preference->id;
         }
+    }
+
+    function register() {
+        $this->set('title_for_layout','Εγγραφή νέου χρήστη');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        if ($this->data) {
+            // user must accept the real estate terms
+            if ($this->data["User"]["estate_terms"] != "1") {
+                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης 
+για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                return;
+            }
+
+            // check for valid captcha
+            if (! $this->Recaptcha->verify()) {
+                $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                return;
+            }
+
+            $userdata["User"]["username"] = $this->data["User"]["username"];
+            $userdata["User"]["password"] = $this->data["User"]["password"];
+            $userdata["User"]["password_confirm"] = $this->data["User"]["password_confirm"];
+            $userdata["User"]["role"] = 'realestate';
+            $userdata["User"]["banned"] = 0;
+            /* terms are shown on register page and cannot proceed without accepting */
+            $userdata["User"]["terms_accepted"] = 1;
+            /* we need enabled = 0 because all users are enabled in db by default */
+            $userdata["User"]["enabled"] = 0;
+
+            $this->User->begin();
+            /* try saving user model */
+            if ($this->User->save($userdata) === false) {
+                $this->User->rollback();
+                // pass custom validation errors to view
+                $user_errors = $this->User->validationErrors;
+                $this->set('user_errors', $user_errors);
+            }
+            else {
+                /* try saving real estate profile */
+                $uid = $this->User->id;
+                if ( $this->create_estate_profile($uid, $this->data) == false) {
+                    $this->User->rollback();
+                }
+                else {
+                    $this->User->commit();
+                    // registration successfull - send to login
+                    // TODO: maybe redirect to some public page
+                    $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.");
+                    $this->redirect('login');
+                }
+            }
+
+            /* clear password fields */
+            $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+        }
+    }
+
+    private function create_estate_profile($id, $data) {
+        $realestate["RealEstate"]["firstname"] = $data["RealEstate"]["firstname"];
+        $realestate["RealEstate"]["lastname"] = $data["RealEstate"]["lastname"];
+        $realestate["RealEstate"]["company_name"] = $data["RealEstate"]["company_name"];
+        $realestate["RealEstate"]["email"] = $data["RealEstate"]["email"];
+        $realestate["RealEstate"]["phone"] = $data["RealEstate"]["phone"];
+        $realestate["RealEstate"]["fax"] = $data["RealEstate"]["fax"];
+        $realestate["RealEstate"]["afm"] = $data["RealEstate"]["afm"];
+        $realestate["RealEstate"]["doy"] = $data["RealEstate"]["doy"];
+        $realestate["RealEstate"]["address"] = $data["RealEstate"]["address"];
+        $realestate["RealEstate"]["postal_code"] = $data["RealEstate"]["postal_code"];
+        $realestate["RealEstate"]["municipality_id"] = $data["RealEstate"]["municipality_id"];
+        $realestate["RealEstate"]["user_id"] = $id;
+
+        if ( $this->RealEstate->save($realestate) === false) {
+            return false;
+        }
+        return $this->RealEstate->id;
     }
 
 }

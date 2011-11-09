@@ -1,43 +1,53 @@
 <div id='footer'>
     <div id='footer-menu'>
         <ul>
-            <?php if (isset($selected_action) && $selected_action == 'users_terms') { ?>
-                <li class='menu-item menu-footer menu-selected'>
-            <?php } else { ?>
-                <li class='menu-item menu-footer'>
-            <?php } ?>
-                <?php echo $this->Html->link('Όροι χρήσης', array('controller' => 'users','action' => 'publicTerms')); ?>
+            <li>
+                <?php
+                    $linkClass = 'menu-item menu-footer';
+                    if(isset($selected_action) && $selected_action == 'users_terms'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('Όροι χρήσης', array('controller' => 'users',
+                        'action' => 'publicTerms'), array('class' => $linkClass));
+                ?>
             </li>
-
-            <?php if (isset($selected_action) && $selected_action == 'users_faq') { ?>
-                <li class='menu-item menu-footer menu-selected'>
-            <?php } else { ?>
-                <li class='menu-item menu-footer'>
-            <?php } ?>
-                <?php echo $this->Html->link('Συχνές ερωτήσεις', array('controller' => 'users','action' => 'faq')); ?>
+            <li>
+                <?php
+                    $linkClass = 'menu-item menu-footer';
+                    if(isset($selected_action) && $selected_action == 'users_faq'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('Συχνές ερωτήσεις', array('controller' => 'users',
+                        'action' => 'faq'), array('class' => $linkClass));
+                ?>
             </li>
         </ul>
     </div>
     <div id='footer-main'>
-        <div class="logos">
-        <?php
-            echo $this->Html->image("logos/tei.png", array("alt" => "" ,"style" => "width:110px;height:90px;"));
-            echo $this->Html->image("logos/psifiakiellada.JPG", array("alt" => "" ,"style" => "width:80px;height:90px;"));
-            echo $this->Html->image("logos/epsa_logo_CMYK.png", array("alt" => "" ,"style" => "width:220px;height:90px;"));
-            echo $this->Html->image("logos/eurwpaikienwsi.jpg", array("alt" => "" ,"style" => "width:140px;height:90px;"));
-        ?>
-            Με τη συγχρηματοδότηση της Ελλάδας και της Ευρωπαϊκής Ένωσης – Ευρωπαϊκό Ταμείο Περιφερειακής Ανάπτυξης
+        <div class='logos'>
+            <img src='img/logos/tei.png' alt='ΤΕΙ Αθήνας' />
+            <img src='img/logos/psifiakiellada.JPG' alt='Ψηφιακή Ελλάδα' />
+            <img src='img/logos/epsa_logo_CMYK.png' alt='ΕΣΠΑ 2007-2013' />
+            <img src='img/logos/eurwpaikienwsi.jpg' alt='Ευρωπαϊκή Ένωση' />
         </div>
-        <div class="info">
-        <?php
-            if(isset($active)){
-                echo $this->Html->image("group-users.png", array("title" => "Ενεργά προφίλ χρηστών:". $active['profiles'])) ;
-                echo $active['profiles'];
-                echo $this->Html->image("favicon.ico", array("title" => "Καταχωρημένα σπίτια:". $active['houses'])) ;
-                echo $active['houses'];
-             }
-        ?>
+        <div class='funding'>
+            Με τη συγχρηματοδότηση της Ελλάδας και της Ευρωπαϊκής Ένωσης
+             - Ευρωπαϊκό Ταμείο Περιφερειακής Ανάπτυξης
         </div>
-
+        <div class='infos'>
+            <?php
+                if(isset($active)){
+                    $activeusers = $active['profiles'];
+                    $activehouses = $active['houses'];
+                    echo "<img src='img/group-users.png' alt='Ενεργά προφίλ χρηστών'";
+                    echo "title='Ενεργά προφίλ χρηστών' class='info' />";
+                    echo "<div class='info'>".$activeusers."</div>";
+                    echo "<img src='img/favicon.ico' alt='Καταχωρημένα σπίτια'";
+                    echo "title='Καταχωρημένα σπίτια' class='info' />";
+                    echo "<div class='info'>".$activehouses."</div>";
+                } // isset active
+            ?>
+        </div>
     </div>
 </div>
+
