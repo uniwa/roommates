@@ -769,6 +769,7 @@ class HousesController extends AppController {
         $mates_prefs = $this->params['url'];
 
         $mates_conditions = array();
+
         if(!empty($mates_prefs['min_age'])) {
             $mates_conditions['Profile.dob <='] = $this->age_to_year($mates_prefs['min_age']);
         }
@@ -790,6 +791,9 @@ class HousesController extends AppController {
         if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
+
+        if (empty($mates_conditions)) return null;
+
         // required condition for the left join
         array_push($mates_conditions, 'User.id = Profile.user_id');
 
