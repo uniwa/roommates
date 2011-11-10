@@ -235,6 +235,11 @@
         </tr>
 
         <!-- availability -->
+        <?php // if the house belongs to real estate, don't
+              // display availability info
+            if ($house['User']['role'] != 'realestate') {
+        ?>
+
         <tr>
             <th>Διαμένουν:</th>
             <td>
@@ -249,6 +254,8 @@
                 (από <?php echo Sanitize::html($house['House']['total_places'])?> συνολικά θέσεις)
             </td>
         </tr>
+
+        <?php } ?>
 
         <tr>
             <th>Ορατότητα:</th>
