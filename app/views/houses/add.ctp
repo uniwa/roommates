@@ -70,12 +70,15 @@ echo $form->input('disability_facilities', array('label' => 'Προσβάσιμ�
 echo $form->input('storeroom', array('label' => 'Αποθήκη'));
 echo $form->input('rent_period', array('label' => 'Περίοδος ενοικίασης','after' => 'μήνες'));
 echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
-echo $form->input('currently_hosting', array(   'label' => 'Διαμένουν',
-                                                'type'=>'select',
-                                                'options' => $places_availability));
-echo $form->input('total_places', array('label' => 'Μπορούν συνολικά να συγκατοικήσουν',
-                                        'type'=>'select',
-                                        'options' => $places_availability_extra));
+
+if ($this->Session->read('Auth.User.role') != 'realestate') {
+    echo $form->input('currently_hosting', array(   'label' => 'Διαμένουν',
+                                                    'type'=>'select',
+                                                    'options' => $places_availability));
+    echo $form->input('total_places', array('label' => 'Μπορούν συνολικά να συγκατοικήσουν',
+                                            'type'=>'select',
+                                            'options' => $places_availability_extra));
+}
 echo $this->Form->input('visible', array(   'checked' => true ,
                                             'label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
 echo $form->end('Αποθήκευση');
