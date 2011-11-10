@@ -5,11 +5,6 @@ class ImagesController extends AppController {
     var $uses = array("Image", "House");
     var $max_images = 4;
 
-    function index() {
-        $this->Image->recursive = 0;
-        $this->set('images', $this->paginate());
-    }
-
     function add( $id ) {
         $this->set('title_for_layout', 'Προσθήκη εικόνας σπιτιού');
 
