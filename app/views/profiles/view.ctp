@@ -22,11 +22,11 @@
         margin: 64px 0px 0px 12px;
     }
     
-    #profileRss{
+    #profileRss,#profileBan{
         margin: 16px 0px 0px 0px;
     }
     
-    #profileRss img{
+    #profileRss img,#profileBan img{
         margin: 0px 4px 0px 0px;
     }
     
@@ -52,6 +52,7 @@
     }
 </style>
 <?php
+    $role = $this->Session->read('Auth.User.role');
     // Profile info
 	$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
     if($this->Session->read("Auth.User.role") == 'admin'){
@@ -141,6 +142,30 @@
             }
         ?>
     </div>
+    <div id='profileBan'>
+        <?php
+            if($role == 'admin' &&
+                $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
+                if($profile['User']['banned'] == 0){
+                    $banContent = $this->Html->image('ban.png', array('alt' => $name));
+                    $banContent .= ' Απενεργοποίηση χρήστη';
+                    $banClass = 'banButton';
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banCase = 'ban';
+                }else{
+                    $banContent = $this->Html->image('unban.png', array('alt' => $name));
+                    $banContent .= ' Ενεργοποίηση χρήστη';
+                    $banClass = 'unbanButton';
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να ενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banCase = 'unban';
+                }
+                $banLink = $this->Html->link($banContent, array(
+                    'controller' => 'profiles', 'action' => $banCase, $profile['Profile']['id']),
+                    array('class' => $banClass, 'escape' => false), $banMsg);
+                echo $banLink;
+            }
+        ?>
+    </div>
     <div id='profileEdit'>
         <?php
             if($this->Session->read('Auth.User.id') == $profile['User']['id']){
@@ -151,21 +176,6 @@
     </div>
 </div>
 <div id='main-inner'>
-        <?php
-/*            if($this->Session->read('Auth.User.role') == 'admin' &&
-                $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
-                if($profile['User']['banned'] == 0){
-                    $flash = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαρισμό αυτού του χρήστη;";
-                    echo $html->link('Ban',
-                        array('action' => 'ban', $profile['Profile']['id']),
-                        array('class' => 'ban-button'), $flash);
-                }else{
-                    echo $html->link('Unban',
-                        array('action' => 'unban', $profile['Profile']['id']),
-                        array('class' => 'unban-button'));
-                }
-            }*/
-        ?>
     <div class='profileBlock profileClear'>
         <div id='myName' class='profileTitle'>
             <h2><?php echo $name; ?></h2>

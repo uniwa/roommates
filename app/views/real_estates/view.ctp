@@ -22,11 +22,11 @@
         margin: 16px 0px 0px 0px;
     }
     
-    #profileRss{
+    #profileRss,#profileBan{
         margin: 16px 0px 0px 0px;
     }
     
-    #profileRss img{
+    #profileRss img,#profileBan img{
         margin: 0px 4px 0px 0px;
     }
     
@@ -52,6 +52,7 @@
     }
 </style>
 <?php
+    $role = $this->Session->read('Auth.User.role');
     // Profile info
 	$name = $realEstate['RealEstate']['firstname']." ".$realEstate['RealEstate']['lastname'];
 	$company = $realEstate['RealEstate']['company_name'];
@@ -78,12 +79,36 @@
             echo $profilePic;
         ?>
     </div>
+    <div id='profileBan'>
+        <?php
+            if($role == 'admin' &&
+                $realEstate['RealEstate']['user_id'] != $this->Session->read('Auth.User.id')){
+                if($realEstate['User']['banned'] == 0){
+                    $banContent = $this->Html->image('ban.png', array('alt' => $company));
+                    $banContent .= ' Απενεργοποίηση χρήστη';
+                    $banClass = 'banButton';
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banCase = 'ban';
+                }else{
+                    $banContent = $this->Html->image('unban.png', array('alt' => $company));
+                    $banContent .= ' Ενεργοποίηση χρήστη';
+                    $banClass = 'unbanButton';
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να ενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banCase = 'unban';
+                }
+                $banLink = $this->Html->link($banContent, array(
+                    'controller' => 'real_estates', 'action' => $banCase, $realEstate['RealEstate']['id']),
+                    array('class' => $banClass, 'escape' => false), $banMsg);
+                echo $banLink;
+            }
+        ?>
+    </div>
     <div id='profileEdit'>
         <?php
-            if($this->Session->read('Auth.User.id') == $realEstate['User']['id']){
-                echo $html->link('Επεξεργασία στοιχείων',
-                    array('action' => 'edit', $realEstate['RealEstate']['id']));
-            }
+//            if($this->Session->read('Auth.User.id') == $realEstate['User']['id']){
+//                echo $html->link('Επεξεργασία στοιχείων',
+//                    array('action' => 'edit', $realEstate['RealEstate']['id']));
+//            }
         ?>
     </div>
 </div>
