@@ -51,7 +51,8 @@ class UsersController extends AppController{
 
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
-		//and redirect them to where they need to go
+        //and redirect them to where they need to go
+        $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
 
