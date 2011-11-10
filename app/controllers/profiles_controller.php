@@ -133,7 +133,7 @@ class ProfilesController extends AppController {
     }
 */
 
-    function edit($id = null) {
+    function edit($id = null){
         $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
@@ -145,7 +145,6 @@ class ProfilesController extends AppController {
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
-        $this->set('profile', $profile);
 
         if (empty($this->data)) {
              $this->data = $this->Profile->read();
@@ -183,6 +182,7 @@ class ProfilesController extends AppController {
                 $this->set('image', $imageFile);
             }
         }
+        $this->set('profile', $profile['Profile']);
      }
 
     function search() {

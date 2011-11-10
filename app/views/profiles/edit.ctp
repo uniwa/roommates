@@ -1,9 +1,24 @@
 <style>
-    #main-inner{
-        margin: 0px 0px 0px 0px;
-        padding: 32px 128px 32px 128px;
+    #leftbar{
+        float: left;
+        margin: 0px 0px 0px 32px;
+        padding: 32px;
     }
     
+    #main-inner{
+        float: left;
+        border-left: 1px dotted #333;
+        margin: 10px 0px 20px 0px;
+        padding: 24px 24px 24px 64px;
+    }
+    
+    #profilePic{
+        margin: 6px;
+        padding: 2px;
+        width: 128px;
+        height: 128px;
+    }
+
     .edit-title{
         margin: 12px 0px 24px 0px;
         font-size: 1.2em;
@@ -13,7 +28,7 @@
     select{
             font-size: 12px;
     }
-
+/*
     #ProfileAddForm label, #ProfileEditForm label {
         font-size: 12px;
         font-weight: bold;
@@ -39,7 +54,7 @@
         width: 50px;
         text-align: right;
     }
-
+*/
     .textarea label {
         float: left;
     }
@@ -48,6 +63,21 @@
         padding: 3px 0;
     }
 </style>
+<?php
+    $name = $profile['firstname'].' '.$profile['lastname'];
+    $email = $profile['email'];
+    $emailUrl = $this->Html->link($email, 'mailto:'.$email);
+	$picture = ($profile['gender'])?'female.jpg':'male.jpg';
+    $profileThumb = $this->Html->image($picture, array('alt' => $name));
+?>
+<div id='leftbar'>
+    <div id='profilePic'>
+        <?php
+            echo $profileThumb.'<br />'.$name.'<br />'.$emailUrl;
+
+        ?>
+    </div>
+</div>
 <div id='main-inner'>
     <div class='profileframe'>
         <div class='edit-title'>
@@ -55,10 +85,6 @@
         </div>
         <?php
             echo $this->Form->create('Profile');
-            echo $this->Form->input('firstname', array('label' => 'Όνομα'));
-            echo $this->Form->input('lastname', array('label' => 'Επώνυμο'));
-            echo $this->Form->input('email', array('label' => 'Email'));
-            //	echo $this->Form->input('age', array('label' => 'Ηλικία'));
             echo $form->input('dob', array(
                 'label' => 'Ημερομηνία γέννησης',
                 'type' => 'select',
