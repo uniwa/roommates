@@ -482,7 +482,7 @@ class HousesController extends AppController {
         // INNER JOIN profiles Profile ON Profile.user_id = User.id
         // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
-        $options['fields'] = array('House.*', 'Image.location');
+        $options['fields'] = array('House.*', 'Image.location', 'User.role');
 
         $options['joins'] = array(
             array(  'table' => 'users',
