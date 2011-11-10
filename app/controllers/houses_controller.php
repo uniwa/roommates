@@ -1,6 +1,8 @@
 <?php
 
 App::import('Sanitize');
+App::import( 'Vendor', 'facebook' );
+Configure::load( 'facebook' );
 
 class HousesController extends AppController {
 
@@ -151,16 +153,23 @@ class HousesController extends AppController {
         $this->L10n->get('gr');
         // not sure for this solution
         $_SESSION['Config']['language'] = 'gr';
+        
+		/* facebook instance initialization */
+		if( !$this->Session->check( 'facebook' ) ) {
+		    $this->facebookInit( );
+	    }
+	    
     }
 
     function view($id = null) {
-
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'houses_view');
 
         $this->set('title_for_layout','Σπίτι');
         $this->checkExistance($id);
+
+        
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
@@ -189,6 +198,10 @@ class HousesController extends AppController {
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
+		
+		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
+		$this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+		$this->set( 'facebook', $this->Session->read( 'facebook' ) );
     }
  
     function add() {
@@ -210,12 +223,21 @@ class HousesController extends AppController {
         }
 
         if (!empty($this->data)) {
+            if ($this->Auth->User('role') == 'realestate') {
+                $this->data['House']['currently_hosting'] = 1;
+                $this->data['House']['total_places'] = 9;
+            }
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
+                
+                /* post to facebook application wall */
+                $this->House->id = $hid;
+                $this->postToAppWall( $this->House->read() );
+                
                 $this->redirect(array('action' => "view/$hid"));
             }
         }
@@ -273,6 +295,11 @@ class HousesController extends AppController {
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
+                    
+                /* post updated house on application's page on Facebook */
+                
+                $this->postToAppWall( $this->House->read( ) );
+                
                 $this->redirect(array('action' => "view/$id"));
             }
         }
@@ -298,6 +325,9 @@ class HousesController extends AppController {
             $no_mates[$i] = $i;
         }
         $this->set('places_availability', $no_mates);
+        unset($no_mates[1]);
+        $no_mates[10] = 10;
+        $this->set('places_availability_extra', $no_mates);
     }
 
 
@@ -453,6 +483,11 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
+
+            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
+            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+
             $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
@@ -475,7 +510,7 @@ class HousesController extends AppController {
         // INNER JOIN profiles Profile ON Profile.user_id = User.id
         // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
-        $options['fields'] = array('House.*', 'Image.location');
+        $options['fields'] = array('House.*', 'Image.location', 'User.role');
 
         $options['joins'] = array(
             array(  'table' => 'users',
@@ -843,10 +878,70 @@ class HousesController extends AppController {
         return $order;
     }
 
+    
+    /* ==============
+     * facebook stuff
+     * ==============
+     */
+
+    /**
+     * Posts an announcement on the application's page on Facebook.
+     * The supplied parameter is a two-dimensional array which 
+     * contains the entries 'House' and 'Municipality'.
+     */                    
+    function postToAppWall( $house = null ) {
+
+        $furnished = null;
+        if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
+        else $furnished = ', ';
+        
+        $fb_app_uri = Configure::read( 'fb_app_uri' );
+        $facebook = $this->Session->read( 'facebook' );
+
+        try {    
+            $facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
+            
+                'message' =>
+                    'Διεύθυνση ' . $house['House']['address'] . ', '
+                    . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                    . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
+                    . $furnished
+                    . 'Δήμος ' . $house['Municipality']['name'] . ', '
+                    . 'Διαθέσιμες θέσεις ' . Sanitize::html( $house['House']['free_places'] ),
+
+                'name' => 'Δείτε περισσότερα εδώ...',
+                'link' => $fb_app_uri . 'houses/view/' . $house['House']['id'],
+                'caption' => '«Συγκατοικώ»',
+            ) );      
+
+        } catch( FacebookApiException $e ) {
+        
+            $this->Session->setFlash( $e->getMessage( ) );
+        }
+    }
+    
+    /**
+     * Creates a Facebook instance which is then made available though
+     * the Session.
+     * Execute once per session. More won't hurt, but is not required.
+     */
+    protected function facebookInit( ) {
+        
+        $fb_app_id = Configure::read( 'fb_app_id' );
+        $fb_secret = Configure::read( 'fb_secret' );
+        
+        $facebook = new Facebook( array(
+            'appId' => $fb_app_id,
+            'secret' => $fb_secret ) );
+            
+        $this->Session->write( 'facebook', $facebook );
+    }
+
     private function checkRole($role){
         if($this->Session->read('Auth.User.role') != $role){
             $this->cakeError('error403');
         }
     }
+
 }
 ?>

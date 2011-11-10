@@ -135,9 +135,9 @@
         <div id='myProfile' class='profileInfo'>
 		    <?php
 			    $emailUrl = $this->Html->link($email, 'mailto:'.$email);
-			    echoDetail('Διεύθυνση', $address);
-			    echoDetail('ΤΚ', $postal);
-			    echoDetail('Δήμος', $municipality);
+			    echoDetail('Διεύθυνση', ($address) ? $address : '-');
+			    echoDetail('ΤΚ', ($postal) ? $postal : '-');
+			    echoDetail('Δήμος', isset($municipality) ? $municipality : '-');
 			    echoDetail('ΑΦΜ', $afm);
 			    echoDetail('ΔΟΥ', $doy);
 			    echo '<br />';

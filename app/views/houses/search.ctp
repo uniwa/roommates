@@ -128,13 +128,13 @@
         //pr($urls);die();
         foreach($urls as $key => $value) {
             if($key == 'url' || $key == 'ext') continue;
-	    if($key == 'available_from'){
-		    foreach ($urls[$key]as $x => $y){
-			    $get_vars .= urldecode($key.'['.$x.']').'='.$y.'&';
-		    }
-	    }else{
-	            $get_vars .= urldecode($key).'='.urldecode($value).'&';
-	    }
+	        if($key == 'available_from'){
+		        foreach ($urls[$key]as $x => $y){
+			        $get_vars .= urldecode($key.'['.$x.']').'='.$y.'&';
+		        }
+	        }else{
+	                $get_vars .= urldecode($key).'='.urldecode($value).'&';
+	        }
         }
         $get_vars = substr_replace($get_vars, '', -1, 'UTF-8'); // remove the last &
 
@@ -634,7 +634,37 @@
                                 echo '<br />Δήμος '.$municipality_options[$house['House']['municipality_id']].'<br />';
                                 echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
-                                echo 'Διαθέσιμες θέσεις '.$house['House']['free_places'].'<br />';
+                                if ($house['User']['role'] != 'realestate') {
+                                    echo 'Διαθέσιμες θέσεις '.
+                                        $house['House']['free_places'].'<br />';
+                                }
+                            ?>
+                        </div>
+                        <div class='facebook-post'>
+                            <?php
+                            
+                                $this_url = substr( $get_vars, 0, -1 ); //replace last character (ampersand)
+                                $furnished = $house['House']['furnitured'] ? ' Επιπλωμένο, ' : ', ';
+                                echo '<a href='
+                                    . '"http://www.facebook.com/dialog/feed'
+                                    . '?app_id=' . $facebook->getAppId()
+                                    
+                                    . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
+                                    . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                                    . '&caption=' . urlencode( '«Συγκατοικώ»' )
+
+                                    . '&description=' . urlencode( 
+                                        'Διεύθυνση ' . $house['House']['address'] . ', '
+                                        . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                                        . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
+                                        . $furnished
+                                        . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']] . ', '
+                                        . 'Διαθέσιμες θέσεις ' . /*Sanitize::html( */$house['House']['free_places'] )
+
+                                    . '&redirect_uri=' . urlencode(
+                                        'http://' . $_SERVER['HTTP_HOST'] . $this->here
+                                        . '?' . $this_url )
+                                . '">Κοινωποίηση στο Facebook</a>';
                             ?>
                         </div>
                     </div>

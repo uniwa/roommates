@@ -1,0 +1,6 @@
+<?php
+    $config['fb_app_id'] = '';
+    $config['fb_secret'] = '';
+    $config['fb_app_uri'] = 'http://localhost/';
+    
+?>
