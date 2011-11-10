@@ -75,7 +75,6 @@
                     . 'Δήμος ' . $house['Municipality']['name'] ) . ', '
                     . 'Διαθέσιμες θέσεις ' . Sanitize::html( $house['House']['free_places'] )
 
-                . '&message=' . urlencode( 'this is message.' )
                 . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
             . '">Κοινωποίηση στο Facebook</a>';
         ?>

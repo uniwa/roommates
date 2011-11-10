@@ -657,7 +657,6 @@
                                         . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']] . ', '
                                         . 'Διαθέσιμες θέσεις ' . /*Sanitize::html( */$house['House']['free_places'] )
 
-                                    . '&message=' . urlencode( 'this is message.' )
                                     . '&redirect_uri=' . urlencode(
                                         'http://' . $_SERVER['HTTP_HOST'] . $this->here
                                         . '?' . $this_url )
