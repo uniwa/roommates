@@ -89,8 +89,8 @@ class ProfilesController extends AppController {
                 $houseid = $profile["User"]["House"][0]["id"];
                 $this->House->id = $houseid;
                 $house = $this->House->read();
-                $image = $this->Image->find('first',array('conditions' => array(
-                    'Image.id' => $house['House']['default_image_id'])));
+                $image = $this->Image->find('first',array('conditions' =>
+                    array('Image.id' => $house['House']['default_image_id'])));
                 $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
                 $this->set('image', $imageFile);
             }
@@ -261,7 +261,9 @@ class ProfilesController extends AppController {
         $searchconditions = array('Profile.visible' => 1, 'User.banned' => 0);
 
 		if(isset($searchArgs['has_house'])){
-			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
+			$ownerId = $this->Profile->User->House->find('all', array(
+			    'fields' => 'DISTINCT user_id',
+			    'conditions' => array('House.visible' => 1)));
 			$ownerId = Set::extract($ownerId, '/House/user_id');
 			$searchconditions['Profile.user_id'] = $ownerId;
 		};
