@@ -75,7 +75,7 @@ echo $form->input('currently_hosting', array(   'label' => 'Διαμένουν',
                                                 'options' => $places_availability));
 echo $form->input('total_places', array('label' => 'Μπορούν συνολικά να συγκατοικήσουν',
                                         'type'=>'select',
-                                        'options' => $places_availability));
+                                        'options' => $places_availability_extra));
 echo $this->Form->input('visible', array(   'checked' => true ,
                                             'label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
 echo $form->end('Αποθήκευση');
