@@ -153,7 +153,12 @@
     .price{
         width: 50px;
     }
-
+    
+    .delete{
+        width: 100px;
+        text-align: center;
+    }
+    
     .admpaginator{
         clear: both;
         margin: 20px auto 20px auto;
@@ -257,9 +262,9 @@
                         isset($this->params['url']['area']) ||
                         isset($this->params['url']['price'])){
                         $queryString = "address={$this->params['url']['address']}&";
-                        $queryString .= "banned={$this->params['url']['type']}&";
-                        $queryString .= "banned={$this->params['url']['area']}&";
-                        $queryString .= "banned={$this->params['url']['price']}";
+                        $queryString .= "type={$this->params['url']['type']}&";
+                        $queryString .= "area={$this->params['url']['area']}&";
+                        $queryString .= "price={$this->params['url']['price']}";
                         $options = array('url' => array(
                             'controller' => 'houses',
                             'action' => 'manage', '?' => $queryString));
@@ -320,13 +325,20 @@
                     ?>
                 </div>
                 <div class='col type'>
-                    <?php echo '';// $house['House']['type']; ?>
+                    <?php echo $house['HouseType']['type']; ?>
                 </div>
                 <div class='col area'>
                     <?php echo $house['House']['area']; ?>
                 </div>
                 <div class='col price'>
                     <?php echo $house['House']['price']; ?>
+                </div>
+                <div class='col delete'>
+                    <?php
+                        echo $this->Html->link('διαγραφή',
+                            array('action' => 'delete', $house['House']['id']),
+                            null, 'Είστε σίγουρος/η;');
+                    ?>
                 </div>
             </div>
             <?php
