@@ -14,4 +14,8 @@
 		echo $this->Form->input('house_id', array('type' => 'hidden' , "value" => $house_id));
 	?>
 <?php echo $this->Form->end(__('Ανέβασμα εικόνας', true));?>
+<div class="img-info">
+    <span class="bold">Σημείωση:<span> Επιτρέπονται μόνο εικόνες τύπου <span class="bold">jpeg</span> και <span class="bold">png</span>
+    με μέχιστο μέγεθος <span class="bold"><?php echo $max_size; ?> MB</span>.
+</div>
 </fieldset>
