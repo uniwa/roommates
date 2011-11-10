@@ -8,6 +8,7 @@ class HousesController extends AppController {
     var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time', 'Html');
     var $paginate = array('limit' => 15);
+    var $uses = array('House', 'HouseType');
 
     function index() {
         $this->set('title_for_layout','Σπίτια');
@@ -447,6 +448,7 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
+            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if(isset($this->params['url']['load'])) {
