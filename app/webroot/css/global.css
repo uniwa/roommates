@@ -249,7 +249,7 @@ img{
 
 #main{
     padding: 8px;
-    /*height: 100%; for ff7 support*/
+    height: 100%;
     overflow: visible;
 }
 
@@ -458,7 +458,7 @@ button{
 .house-gallery {
     margin-bottom: 6px;
     overflow: hidden;
-    /*height: 100%; for ff7 support */
+    height: 100%;
     /*border: 1px dashed;*/
     padding: 4px;
 }

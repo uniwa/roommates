@@ -50,7 +50,7 @@
         ?>
     </div>
     
-    <div class="float: both;">
+    <div class='facebook-post'>
     
         <?php 
             /* create the link to post on Facebook */

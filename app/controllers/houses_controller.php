@@ -198,6 +198,7 @@ class HousesController extends AppController {
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
 		
+		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
 		$this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
 		$this->set( 'facebook', $this->Session->read( 'facebook' ) );
     }
@@ -469,6 +470,10 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
+            
+    		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
+		    $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+		    $this->set( 'facebook', $this->Session->read( 'facebook' ) );
         }
 
         if(isset($this->params['url']['load'])) {
