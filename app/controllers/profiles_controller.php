@@ -146,13 +146,16 @@ class ProfilesController extends AppController {
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
 
-        if (empty($this->data)) {
-             $this->data = $this->Profile->read();
-	}
-        else {
+        if(empty($this->data)){
+             $this->data = $profile;
+	    }else{
+	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
+	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
+	        $this->data['Profile']['email'] = $profile['Profile']['email'];
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.', 'default', array('class' => 'flashBlue'));
-                    $this->redirect(array('action'=> "view", $id));
+                $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
+                    array('class' => 'flashBlue'));
+                $this->redirect(array('action'=> "view", $id));
             }
 		}
         $dob = array();

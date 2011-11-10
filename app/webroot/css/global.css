@@ -72,6 +72,10 @@ img{
     user-select: none;
 }
 
+.bold{
+    font-weight: bold;
+}
+
 #debug{
     display: none;
     position: fixed;
