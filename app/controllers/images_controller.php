@@ -11,6 +11,7 @@ class ImagesController extends AppController {
     }
 
     function add( $id ) {
+        $this->set('title_for_layout', 'Προσθήκη εικόνας σπιτιού');
 
         // this variable is used to display properly
         // the selected element on header
