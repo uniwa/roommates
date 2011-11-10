@@ -12,7 +12,8 @@
         padding: 24px;
     }
     
-    #profilePic{
+    .profilePic{
+        float: left;
         width: 128px;
         height: 128px;
         padding: 2px;
@@ -22,11 +23,11 @@
         margin: 64px 0px 0px 12px;
     }
     
-    #profileRss{
+    #profileRss,#profileBan{
         margin: 16px 0px 0px 0px;
     }
     
-    #profileRss img{
+    #profileRss img,#profileBan img{
         margin: 0px 4px 0px 0px;
     }
     
@@ -41,17 +42,27 @@
     }
 
     .profileTitle{
-        margin: 12px 0px 8px 18px;
+        margin: 24px 0px 8px 18px;
         font-size: 1.2em;
         font-weight: bold;
     }
 
     .profileInfo{
-        margin: 0px 0px 0px 24px;
+        float: left;
+        margin: 0px 0px 16px 24px;
         font-size: 1.0em;
+    }
+    
+    #myHousePic{
+        margin: 0px 0px 0px 24px;
+    }
+    
+    #myHouse{
+        margin: 24px 0px 0px 24px;
     }
 </style>
 <?php
+    $role = $this->Session->read('Auth.User.role');
     // Profile info
 	$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
     if($this->Session->read("Auth.User.role") == 'admin'){
@@ -104,7 +115,14 @@
         $houseMunicipality = $house['Municipality']['name'];
         $houseFree = $house['House']['free_places'];
         $houseId = $house['House']['id'];
-        $houseThumb = $image;
+        $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+        $houseLink = $this->Html->link($houseTypeArea,
+            array('controller' => 'houses', 'action' => 'view', $houseId));
+        $houseThumb = $this->Html->image($image,
+            array('alt' => $houseTypeArea));
+        $houseThumbLink = $this->Html->link($houseThumb,
+            array('controller' => 'houses', 'action' => 'view', $houseId),
+            array('escape' => false));
     }
 	function echoDetail($title, $option){
 		$span = array("open" => "<span class='profile-strong'>", "close" => "</span>");
@@ -122,13 +140,13 @@
 	}
 ?>
 <div id='leftbar'>
-    <div id='profilePic'>
+    <div class='profilePic'>
         <?php
             $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
             echo $profilePic;
         ?>
     </div>
-    <div id='profileRss'>
+    <div id='profileRss' class='profileClear'>
         <?php
             $rssContent = $this->Html->image('rss.png', array('alt' => $name));
             $rssContent .= ' Προσωποποιημένο RSS';
@@ -138,6 +156,30 @@
                 $personalRSS = $this->Html->link(
                     $rssContent, $rssLink, array('escape' => false));
                 echo $personalRSS;
+            }
+        ?>
+    </div>
+    <div id='profileBan'>
+        <?php
+            if($role == 'admin' &&
+                $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
+                if($profile['User']['banned'] == 0){
+                    $banContent = $this->Html->image('ban.png', array('alt' => $name));
+                    $banContent .= ' Απενεργοποίηση χρήστη';
+                    $banClass = 'banButton';
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banCase = 'ban';
+                }else{
+                    $banContent = $this->Html->image('unban.png', array('alt' => $name));
+                    $banContent .= ' Ενεργοποίηση χρήστη';
+                    $banClass = 'unbanButton';
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να ενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banCase = 'unban';
+                }
+                $banLink = $this->Html->link($banContent, array(
+                    'controller' => 'profiles', 'action' => $banCase, $profile['Profile']['id']),
+                    array('class' => $banClass, 'escape' => false), $banMsg);
+                echo $banLink;
             }
         ?>
     </div>
@@ -151,21 +193,6 @@
     </div>
 </div>
 <div id='main-inner'>
-        <?php
-/*            if($this->Session->read('Auth.User.role') == 'admin' &&
-                $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
-                if($profile['User']['banned'] == 0){
-                    $flash = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαρισμό αυτού του χρήστη;";
-                    echo $html->link('Ban',
-                        array('action' => 'ban', $profile['Profile']['id']),
-                        array('class' => 'ban-button'), $flash);
-                }else{
-                    echo $html->link('Unban',
-                        array('action' => 'unban', $profile['Profile']['id']),
-                        array('class' => 'unban-button'));
-                }
-            }*/
-        ?>
     <div class='profileBlock profileClear'>
         <div id='myName' class='profileTitle'>
             <h2><?php echo $name; ?></h2>
@@ -239,7 +266,7 @@
 			    if($prefgender != 2) echoDetail('Ζευγάρι', $prefcouple);
 		    ?></span>
         </div>
-        <div class='profileTitle'>
+        <div class='profileTitle profileClear'>
 	        <h2>Προτιμήσεις σπιτιού</h2>
         </div>
         <div id='housePrefs' class='profileInfo'>
@@ -296,13 +323,12 @@
             </div>
             <div id='myHouse' class='profileInfo'>
                 <?php
-                    echo $this->Html->image($houseThumb,
-                        array('alt' => $houseAddress));
-                        echo '<br />';
-                    echo $this->Html->link($houseAddress,
-                        array('controller' => 'houses', 'action' => 'view', $houseId));
-                    echo '<br />'.$houseType.', '.$houseArea.' τ.μ.<br />';
-                    echo $houseFurnished.', '.$housePrice.' €/μήνα';
+                    echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
+                ?>
+            </div>
+            <div id='myHousePic' class='profilePic'>
+                <?php
+                    echo $houseThumbLink;
                 ?>
             </div>
         </div>

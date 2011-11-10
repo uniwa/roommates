@@ -24,6 +24,11 @@ class UsersController extends AppController{
     }
 
     function login() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'login');
+        $this->set('title_for_layout', 'Σύνδεση χρήστη');
+
         /*In case user try to login with some credentials
          *and terms has not accepted redirect him in terms action.
          *If rules has accepted redirect him to main page
@@ -122,8 +127,31 @@ class UsersController extends AppController{
         $this->Profile->begin();
         $this->Profile->create();
 
-       $ldap_data = $this->Session->read('LdapData');
-        
+        $ldap_data = $this->Session->read('LdapData');
+
+        /*
+         * On production mode we expect users that log-in to the service
+         * (not real-estate or users that only rent houses) to have their
+         * data retreived from ldap.
+         *
+         * This isn't the case on development as we need to insert users
+         * directly in database.
+         *
+         * If we are on development and ldap does not supply data we insert
+         * dummy data for testing.
+         *
+         * Warning: if no data are sent from ldap on production mode we
+         * end up with a broken user (no profile). We need to handle this
+         * more gracefully. * FIXME *
+         */
+        if (Configure::read('debug') != 0 ) {
+            if (! isset($ldap_data) ) {
+                $ldap_data['first_name'] = 'firsname';
+                $ldap_data['last_name'] = 'lastname';
+                $ldap_data['email'] = 'roommates@teiath.gr';
+            }
+        }
+
         $profile["Profile"]["firstname"] = $ldap_data['first_name'];
         $profile["Profile"]["lastname"] = $ldap_data['last_name'];
         $profile["Profile"]["email"] = $ldap_data['email'];

@@ -623,15 +623,16 @@
                     <div class='result-desc'>
                         <div class='desc-title'>
                             <?php
-                                echo $this->Html->link($house['House']['address'],
+                                echo $this->Html->link("{$house_types[$house['House']['house_type_id']]}, {$house['House']['area']}τμ",
                                     array('controller' => 'houses','action' => 'view',$house['House']['id']));
                             ?>
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο '.$house['House']['price'].'€, Εμβαδόν '.$house['House']['area'].' τ.μ. ';
+                                echo 'Ενοίκιο '.$house['House']['price'].'€ ';
                                 echo $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
                                 echo '<br />Δήμος '.$municipality_options[$house['House']['municipality_id']].'<br />';
+                                echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 echo 'Διαθέσιμες θέσεις '.$house['House']['free_places'].'<br />';
                             ?>

@@ -10,6 +10,7 @@ class HousesController extends AppController {
     var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time', 'Html');
     var $paginate = array('limit' => 15);
+    var $uses = array('House', 'HouseType');
 
     function index() {
         $this->set('title_for_layout','Σπίτια');
@@ -416,8 +417,13 @@ class HousesController extends AppController {
             $results = $this->simpleSearch($prefs['house_prefs'],
                                            $prefs['mates_prefs'], null, false);
 
+            // return municipality names
             $municipalities = $this->House->Municipality->find('list');
             $this->set('municipalities', $municipalities);
+
+            // return house type names
+            $house_types = $this->HouseType->find('list', array('fields' => array('type')));
+            $this->set('house_types', $house_types);
 
             return $this->set(compact('results'));
         } // RSS
@@ -470,10 +476,12 @@ class HousesController extends AppController {
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
-            
-    		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
-		    $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
-		    $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+
+            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
+            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+
+            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if(isset($this->params['url']['load'])) {

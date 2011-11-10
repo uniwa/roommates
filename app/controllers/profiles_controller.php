@@ -6,7 +6,7 @@ class ProfilesController extends AppController {
     var $name = 'Profiles';
     var $components = array('RequestHandler', 'Email');
     var $paginate = array('limit' => 15);
-    var $uses = array("Profile", "House", "Municipality");
+    var $uses = array('Profile', 'House', 'Municipality', 'Image');
 
     function index() {
         // Block access for all
@@ -72,13 +72,9 @@ class ProfilesController extends AppController {
             }
         }
 
-        // Deny access to real estates
-        if ($this->Auth->User('role') == 'realestate')
-            $this->cakeError('error403');
-
         $this->set('profile', $profile);
 
-            $pref_municipality = $profile['Preference']['pref_municipality'];
+        $pref_municipality = $profile['Preference']['pref_municipality'];
         if(isset($pref_municipality)){
             $options['fields'] = array('Municipality.name');
             $options['conditions'] = array('Municipality.id = '.$pref_municipality);
@@ -88,19 +84,14 @@ class ProfilesController extends AppController {
         }
         /* get house id of this user - NULL if he doesn't own one */
         if(isset($profile["User"]["House"][0]["id"])){
+            $imgDir = 'uploads/houses/';
             $houseid = $profile["User"]["House"][0]["id"];
             $this->House->id = $houseid;
             $house = $this->House->read();
-            $image = $this->House->Image->find('first',array('conditions' => array(
-                'house_id' => $house['House']['default_image_id'])));
-            $this->set('image', $image);
-//            $thumb = $images[]
-/*            foreach($images as $image){
-                if($image['Image']['id'] == $house['House']['default_image_id']){
-                    $this->set('default_image_location', $image['Image']['location']);
-                    $this->set('default_image_id', $image['Image']['id']);
-                }
-            }*/
+            $image = $this->Image->find('first',array('conditions' => array(
+                'Image.id' => $house['House']['default_image_id'])));
+            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+            $this->set('image', $imageFile);
         }else{
             $houseid = NULL;
             $house = NULL;
@@ -150,6 +141,9 @@ class ProfilesController extends AppController {
         $this->checkExistence($id);
     	$this->checkAccess( $id );
         $this->Profile->id = $id;
+        $this->Profile->recursive = 2;
+        $profile = $this->Profile->read();
+        $this->set('profile', $profile);
 
         if (empty($this->data)) {
              $this->data = $this->Profile->read();
@@ -165,6 +159,25 @@ class ProfilesController extends AppController {
             $dob[$year] = $year;
         }
         $this->set('available_birth_dates', $dob);
+
+        /* hide banned users unless we are admin */
+        if ($this->Auth->User('role') != 'admin' &&
+            $this->Auth->User('id') != $profile['Profile']['user_id']) {
+            if ($profile["User"]["banned"] == 1) {
+                $this->cakeError('error404');
+            }
+        }
+
+        if(isset($profile["User"]["House"][0]["id"])){
+            $imgDir = 'uploads/houses/';
+            $houseid = $profile["User"]["House"][0]["id"];
+            $this->House->id = $houseid;
+            $house = $this->House->read();
+            $image = $this->Image->find('first',array('conditions' => array(
+                'Image.id' => $house['House']['default_image_id'])));
+            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+            $this->set('image', $imageFile);
+        }
      }
 
     function search() {
@@ -433,13 +446,13 @@ class ProfilesController extends AppController {
         }
         $success = $this->set_ban_status($id, 1);
         if ($success) {
-            $this->Session->setFlash('Ο λογαριασμός χρήστη απενεργοποιηθηκε με επιτυχία.',
+            $this->Session->setFlash('Ο λογαριασμός χρήστη απενεργοποιήθηκε με επιτυχία.',
                 'default', array('class' => 'flashBlue'));
             $this->email_banned_user($id);
         } else {
             $this->Session->setFlash(
-                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.',
-                'deafult', array('class' => 'flashRed'));
+                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριασμού του χρήστη.',
+                'default', array('class' => 'flashRed'));
         }
         $this->redirect(array('action'=> "view", $id));
     }
@@ -455,8 +468,8 @@ class ProfilesController extends AppController {
             'default', array('class' => 'flashBlue'));
         } else {
             $this->Session->setFlash(
-                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριαμού του χρήστη.',
-                'default', array('class' => 'flashBlue'));
+                'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριασμού του χρήστη.',
+                'default', array('class' => 'flashRed'));
         }
         $this->redirect(array('action'=> "view", $id));
 
