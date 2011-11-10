@@ -210,6 +210,10 @@ class HousesController extends AppController {
         }
 
         if (!empty($this->data)) {
+            if ($this->Auth->User('role') == 'realestate') {
+                $this->data['House']['currently_hosting'] = 1;
+                $this->data['House']['total_places'] = 9;
+            }
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
