@@ -16,6 +16,13 @@ class ImagesController extends AppController {
         // the selected element on header
         $this->set('selected_action', 'houses_view');
 
+        /* get max allowed upload size from php conf */
+        $max_upload = (int)(ini_get('upload_max_filesize'));
+        $max_post = (int)(ini_get('post_max_size'));
+        $memory_limit = (int)(ini_get('memory_limit'));
+        $upload_mb = min($max_upload, $max_post, $memory_limit);
+        $this->set('max_size', $upload_mb);
+
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
