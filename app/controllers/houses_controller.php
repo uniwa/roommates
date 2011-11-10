@@ -394,8 +394,13 @@ class HousesController extends AppController {
             $results = $this->simpleSearch($prefs['house_prefs'],
                                            $prefs['mates_prefs'], null, false);
 
+            // return municipality names
             $municipalities = $this->House->Municipality->find('list');
             $this->set('municipalities', $municipalities);
+
+            // return house type names
+            $house_types = $this->HouseType->find('list', array('fields' => array('type')));
+            $this->set('house_types', $house_types);
 
             return $this->set(compact('results'));
         } // RSS
