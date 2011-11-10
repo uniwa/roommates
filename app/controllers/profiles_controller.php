@@ -84,20 +84,14 @@ class ProfilesController extends AppController {
         }
         /* get house id of this user - NULL if he doesn't own one */
         if(isset($profile["User"]["House"][0]["id"])){
+            $imgDir = 'uploads/houses/';
             $houseid = $profile["User"]["House"][0]["id"];
             $this->House->id = $houseid;
             $house = $this->House->read();
-            $image = $this->Image->find('all',array('conditions' => array(
+            $image = $this->Image->find('first',array('conditions' => array(
                 'Image.id' => $house['House']['default_image_id'])));
-showDebug('image: '.$image['Image']['location']);
-            $this->set('image', $image);
-//            $thumb = $images[]
-/*            foreach($images as $image){
-                if($image['Image']['id'] == $house['House']['default_image_id']){
-                    $this->set('default_image_location', $image['Image']['location']);
-                    $this->set('default_image_id', $image['Image']['id']);
-                }
-            }*/
+            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+            $this->set('image', $imageFile);
         }else{
             $houseid = NULL;
             $house = NULL;
@@ -147,6 +141,9 @@ showDebug('image: '.$image['Image']['location']);
         $this->checkExistence($id);
     	$this->checkAccess( $id );
         $this->Profile->id = $id;
+        $this->Profile->recursive = 2;
+        $profile = $this->Profile->read();
+        $this->set('profile', $profile);
 
         if (empty($this->data)) {
              $this->data = $this->Profile->read();
@@ -162,6 +159,25 @@ showDebug('image: '.$image['Image']['location']);
             $dob[$year] = $year;
         }
         $this->set('available_birth_dates', $dob);
+
+        /* hide banned users unless we are admin */
+        if ($this->Auth->User('role') != 'admin' &&
+            $this->Auth->User('id') != $profile['Profile']['user_id']) {
+            if ($profile["User"]["banned"] == 1) {
+                $this->cakeError('error404');
+            }
+        }
+
+        if(isset($profile["User"]["House"][0]["id"])){
+            $imgDir = 'uploads/houses/';
+            $houseid = $profile["User"]["House"][0]["id"];
+            $this->House->id = $houseid;
+            $house = $this->House->read();
+            $image = $this->Image->find('first',array('conditions' => array(
+                'Image.id' => $house['House']['default_image_id'])));
+            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+            $this->set('image', $imageFile);
+        }
      }
 
     function search() {
