@@ -24,16 +24,24 @@ class UsersController extends AppController{
     }
 
     function login() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'login');
+        $this->set('title_for_layout', 'Σύνδεση χρήστη');
+
         /*In case user try to login with some credentials
          *and terms has not accepted redirect him in terms action.
          *If rules has accepted redirect him to main page
          */
-
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
-
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
 
         } else if( isset( $this->data ) &&  $this->Auth->user( 'terms_accepted' === "1" ) ) {
+            if ($this->Auth->user('enabled') == '0') {
+                $this->Session->setFlash('Ο λογαριασμός σας δεν έχει ενεργοποιηθεί από τον διαχειριστή.',
+                        'default', array('class' => 'flashRed'));
+                $this->redirect($this->Auth->logout());
+            }
             /* redirect in pre-fixed url */
             $this->redirect( $this->Auth->redirect() );
         }
@@ -43,7 +51,8 @@ class UsersController extends AppController{
 
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
-		//and redirect them to where they need to go
+        //and redirect them to where they need to go
+        $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
 
@@ -119,8 +128,31 @@ class UsersController extends AppController{
         $this->Profile->begin();
         $this->Profile->create();
 
-       $ldap_data = $this->Session->read('LdapData');
-        
+        $ldap_data = $this->Session->read('LdapData');
+
+        /*
+         * On production mode we expect users that log-in to the service
+         * (not real-estate or users that only rent houses) to have their
+         * data retreived from ldap.
+         *
+         * This isn't the case on development as we need to insert users
+         * directly in database.
+         *
+         * If we are on development and ldap does not supply data we insert
+         * dummy data for testing.
+         *
+         * Warning: if no data are sent from ldap on production mode we
+         * end up with a broken user (no profile). We need to handle this
+         * more gracefully. * FIXME *
+         */
+        if (Configure::read('debug') != 0 ) {
+            if (! isset($ldap_data) ) {
+                $ldap_data['first_name'] = 'firsname';
+                $ldap_data['last_name'] = 'lastname';
+                $ldap_data['email'] = 'roommates@teiath.gr';
+            }
+        }
+
         $profile["Profile"]["firstname"] = $ldap_data['first_name'];
         $profile["Profile"]["lastname"] = $ldap_data['last_name'];
         $profile["Profile"]["email"] = $ldap_data['email'];
@@ -215,7 +247,7 @@ class UsersController extends AppController{
                     $this->User->commit();
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
-                    $this->Session->setFlash("Registration successfull.");
+                    $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.");
                     $this->redirect('login');
                 }
             }

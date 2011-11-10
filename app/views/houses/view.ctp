@@ -17,11 +17,12 @@
             echo $this->Html->link(
                     $this->Html->image('uploads/houses/'.
                         $house["House"]["id"]."/thumb_".
-                        $default_image_location, array('alt' => 'house image')),
-                        '/img/uploads/houses/'.$house['House']['id'].
-                        '/medium_'. $default_image_location, array(
-                        'class' => 'fancyImage', 'rel' => 'group',
-                        'title' => 'description title', 'escape' => false));
+                        $default_image_location, array('alt' => 'house image')
+                    ),
+                    '/img/uploads/houses/'.$house['House']['id'].
+                    '/medium_'. $default_image_location, array(
+                    'class' => 'fancyImage', 'rel' => 'group',
+                    'title' => 'description title', 'escape' => false));
 
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo "<div class='imageactions'>";
@@ -38,8 +39,7 @@
                 echo $this->Html->link($this->Html->image('addpic.png',
                     array('alt' => 'add house image', 'class' => 'img-placeholder')),
                     array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                    array('class' => '', 'rel' => 'group', 'title' => 'description title',
-                        'escape' => false));
+                    array('title' => 'add house image', 'escape' => false));
             } else {
                 /* empty placeholder without link to add image */
                 echo $this->Html->image('addpic.png', array(
@@ -49,6 +49,43 @@
         }
         ?>
     </div>
+    
+    <div class='facebook-post'>
+    
+        <?php 
+            /* create the link to post on Facebook */
+            
+            $furnished = null;
+            if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
+            else $furnished = ', ';
+        
+            echo '<a href='
+                . '"http://www.facebook.com/dialog/feed'
+                . '?app_id=' . $facebook->getAppId()
+                
+                . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
+                . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                . '&caption=' . urlencode( '«Συγκατοικώ»' )
+
+                . '&description=' . urlencode( 
+                    'Διεύθυνση ' . $house['House']['address'] . ', '
+                    . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                    . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
+                    . $furnished
+                    . 'Δήμος ' . $house['Municipality']['name'] ) . ', '
+                    . 'Διαθέσιμες θέσεις ' . Sanitize::html( $house['House']['free_places'] )
+
+                . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+            . '">Κοινωποίηση στο Facebook</a>';
+        ?>
+    
+    
+        <?php /*echo $this->Html->link(
+            'Δημοσίευση στο Facebook',
+            array( 'controller' => 'houses', 'action' => 'publish', $house['House']['id'] ) );*/
+        ?>
+    </div>
+    
     <div class="image-list">
         <ul>
             <?php
@@ -58,10 +95,10 @@
                     /* if we have access placeholder is a link to 'add image' */
                     if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                         echo $this->Html->link($this->Html->image('addpic.png',
-                            array('alt' => 'add house image', 'class' => 'img-placeholder')),
-                            array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                            array('class' => '', 'rel' => 'group',
-                                'title' => 'description title', 'escape' => false));
+                            array('alt' => 'add house image', 'class' => 'img-placeholder')
+                        ),
+                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                        array('title' => 'add house image', 'escape' => false));
                     /* empty placeholder without link to add image */
                     } else {
                         echo $this->Html->image('addpic.png',
@@ -273,6 +310,11 @@
         </td>
 
         <td>
+
+        <?php  // TODO fix css in order to use this check
+            // if ($house['House']['user_id'] !== $this->Session->read('Auth.User.id') ) {
+        ?>
+
         <table>
 
         <?php if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){?>
@@ -349,6 +391,11 @@
         </table>
         </td>
     </table>
+
+    <?php // TODO fix css in order to use this check
+        // }
+    ?>
+
 </div>
 <!--left collumn-->
 <div class="house-right">
