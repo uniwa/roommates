@@ -84,14 +84,16 @@ class ProfilesController extends AppController {
         }
         /* get house id of this user - NULL if he doesn't own one */
         if(isset($profile["User"]["House"][0]["id"])){
-            $imgDir = 'uploads/houses/';
-            $houseid = $profile["User"]["House"][0]["id"];
-            $this->House->id = $houseid;
-            $house = $this->House->read();
-            $image = $this->Image->find('first',array('conditions' => array(
-                'Image.id' => $house['House']['default_image_id'])));
-            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
-            $this->set('image', $imageFile);
+            if($profile['User']['House'][0]['visible'] == 1){
+                $imgDir = 'uploads/houses/';
+                $houseid = $profile["User"]["House"][0]["id"];
+                $this->House->id = $houseid;
+                $house = $this->House->read();
+                $image = $this->Image->find('first',array('conditions' => array(
+                    'Image.id' => $house['House']['default_image_id'])));
+                $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+                $this->set('image', $imageFile);
+            }
         }else{
             $houseid = NULL;
             $house = NULL;
@@ -168,15 +170,18 @@ class ProfilesController extends AppController {
             }
         }
 
-        if(isset($profile["User"]["House"][0]["id"])){
-            $imgDir = 'uploads/houses/';
-            $houseid = $profile["User"]["House"][0]["id"];
-            $this->House->id = $houseid;
-            $house = $this->House->read();
-            $image = $this->Image->find('first',array('conditions' => array(
-                'Image.id' => $house['House']['default_image_id'])));
-            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
-            $this->set('image', $imageFile);
+        if(isset($profile['User']['House'][0]['id'])){
+            if($profile['User']['House'][0]['visible'] === 1){
+                $imgDir = 'uploads/houses/';
+                $houseid = $profile["User"]["House"][0]["id"];
+                $this->House->id = $houseid;
+                $house = $this->House->read();
+                $image = $this->Image->find('first',array('conditions' => array(
+                    'Image.id' => $house['House']['default_image_id'],
+                    'Image')));
+                $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+                $this->set('image', $imageFile);
+            }
         }
      }
 
