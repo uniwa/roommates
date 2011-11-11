@@ -13,6 +13,14 @@
                         'controller' => 'users',
                         'action' => 'logout'),
                         array('class' => 'menu-item menu-user menu-login'));
+                }else{
+                    if(isset($selected_action) && ($selected_action == 'login')){
+                        echo $this->Html->link('σύνδεση', array(
+                            'controller' => 'users',
+                            'action' => 'login'),
+                            array('class' => 'menu-item menu-user menu-selected'));
+//                        echo "<div class='menu-item menu-user menu-selected'>σύνδεση</div>";
+                    }
                 }
             ?>
         </li>

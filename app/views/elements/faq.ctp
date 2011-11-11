@@ -1,6 +1,11 @@
 <?php echo $this->Html->script('jquery.easing.1.3.js'); ?>
 <?php echo $this->Html->script('jquery.ui.totop.js'); ?>
-
+<style>
+/*    h2{
+        margin: 68px 0px 0px 0px;
+    }
+*/
+</style>
 <script type="text/javascript">
 		$(document).ready(function() {
 			$().UItoTop({ easingType: 'easeOutQuart' });
