@@ -201,6 +201,9 @@ class UsersController extends AppController{
     }
 
     function register() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
         $this->set('title_for_layout','Εγγραφή νέου χρήστη');
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         if ($this->data) {
