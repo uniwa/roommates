@@ -4,107 +4,153 @@ class EmailShell extends Shell{
     var $uses = array('House', 'Preference', 'User', 'Profile');
     function main(){
         
-        //get houses created or modified today
         $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
         $from = $today; 
         $to = $today;
         App::import('Helper', 'Time');
         $time = new TimeHelper();
-        //$conditions_created = $time->daysAsSql($from, $to, "created", true);
-        //$conditions_modified = $time->daysAsSql($from, $to, "modified", true);
-        //$conditions = '(' . $conditions_created . ') OR (' .$conditions_modified . ')'; 
+        $conditions_created = $time->daysAsSql($from, $to, "created", true);
+        $conditions_modified = $time->daysAsSql($from, $to, "modified", true);
+        $conditions = '(' . $conditions_created . ') OR (' .$conditions_modified . ')'; 
         //echo($conditions);die();
 
-        $options['fields'] = array('User.*', 'Profile.*', 'Preference.*', 'House.*');
-        //$options['conditions'] = array($conditions);
-        /*$options['conditions'] = array( 'OR' => array('House.created' => $conditions_created,
-                                                      'House.modified' => $conditions_modified));*/
-
-        //$options['conditions'] = array('House.modified BETWEEN ? AND ?' => array(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')));
-        $options['joins'] = array(
-                                array('table' => 'profiles',
-                                      'alias' => 'Profile',
-                                      'type' => 'left',
-                                      'conditions' => array('Profile.user_id = User.id')
-                                ),
-                                array('table' => 'preferences',
-                                      'alias' => 'Preference',
-                                      'type' => 'left', 
-                                      'conditions' => array('Profile.preference_id = Preference.id')
-                                ),
-                                array('table' => 'houses',
-                                      'alias' => 'House',
-                                      'type' => 'inner',
-                                      'conditions' => array(
-                                                                array(
-                                                                    'OR' => array(
-                                                                                'House.modified BETWEEN ? AND ?' => array(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59')),
-                                                                                'House.created BETWEEN ? AND ?' => array(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:59'))
-                                                                    )
-                                                                ),
-
-                                                                array(
-                                                                    'OR' => array(
-                                                                        array(
-                                                                            'AND' => array(
-                                                                                    'NOT' => array('Preference.area_min' => null, 'Preference.area_max' => null),
-                                                                                    //'NOT' => array('Preference.area_max' => null),
-                                                                                    array('House.area BETWEEN ? AND ?' => array('Preference.area_min', 'Preference.area_max'))
-                                                                            )
-                                                                        ),
-                                                                        array(
-                                                                            'AND' => array( 
-                                                                                        array('Preference.area_max' => null),
-                                                                                        'NOT' => array(
-                                                                                                array('Preference.area_min' => null)
-                                                                                        ),
-                                                                                        array('House.area >' => ' Preference.area_min')
-                                                                            )
-                                                                        ),
-                                                                        array('AND' => array( 
-                                                                                   array('Preference.area_min' => null),
-                                                                                    'NOT' => array(
-                                                                                                array('Preference.area_max' => null)
-                                                                                    ),
-                                                                                    array('House.area <' => ' Preference.area_max')
-                                                                            )
-                                                                        ),
-                                                                        array('AND' => array(
-                                                                            array('Preference.area_min' => null),
-                                                                            array('Preference.area_max' => null)
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                           )
-                                 )
-        );
-
-        //pr($options);die();
-        $this->User->recursive = -1;
-        $profiles = $this->User->find('all', $options);
-        pr($profiles);die();
-
-        //pr($options);die();
-        //$houses = $this->House->find('all', $options);
-        //pr($houses);die();
-
-        //$houses = $this->House->find('all', array('conditions' => array($conditions)));
+        
+        //get houses created or modified today
+        $houses = $this->House->find('all', array('conditions' => $conditions));
         //pr($houses);die();  //House, HouseType, Floor, HeatingType, Municipality, User, Image 
+        if isset($house) count($houses);
 
-        //get users whose preferences match with today's created or modified houses data
-        //$users = $this->Profile->find('all', array('conditions' => array(   )));
+
+        //get (only) users data and preferences 
+        $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user' )));
         //pr($users);die(); //User, Preference, Profile 
+        if isset($users) count($users);
 
 
-        /***** debugging ******/
-        /*if($houses){
-            foreach($houses as $house){
-                $this->out('Created today!  ' . $house['House']['address'] . "\n");
+        for ($i=1, $i<=$users, $i++){
+            for($j=1, $j<=$houses, $j++){
+                
+                if(    ( compare_min($houses['House']['area'], $users['Preference']['area_min']))
+                    && ( compare_max($houses['House']['area'], $users['Preference']['area_max']))
+                    && ( compare_min($houses['House']['bedroom_num'], $users['Preference']['bedroom_num_min']))
+                    && ( compare_max($houses['House']['price'], $users['Preference']['price_max']))
+                    && ( compare_min($houses['House']['floor_id'], $users['Preference']['floor_id_min']) )
+            
+                    && ( compare_pref_min($houses['House']['bathroom_num'], $users['Preference']['bathroom_num_min'])) //not comp
+                    && ( compare_pref_min($houses['House']['construction_year'], $users['Preference']['construction_year_min']) ) //not comp
+                    && ( compare_pref_min($houses['House']['rent_period'], $users['Preference']['rent_period_min']) ) //not comp
+                    && ( compare_checkbox_null($houses['House']['solar_heater'], $users['Preference']['pref_solar_heater']) ) //not comp
+                    && ( compare_checkbox_null($houses['House']['aircondition'], $users['Preference']['pref_aircondition']) )
+                    && ( compare_checkbox_null($houses['House']['garden'], $users['Preference']['pref_garden']) )
+                    && ( compare_checkbox_null($houses['House']['parking'], $users['Preference']['pref_parking']) )
+                    && ( compare_checkbox_null($houses['House']['security_doors'], $users['Preference']['pref_security_doors']) )
+                    && ( compare_checkbox_null($houses['House']['storeroom'], $users['Preference']['pref_storeroom']) )
+                    
+                    && ( compare_equal($houses['House']['house_type_id'], $users['Preference']['pref_house_type_id']))
+                    && ( compare_equal($houses['House']['heating_type_id'], $users['Preference']['pref_heating_type_id']))
+                    
+                    && ( compare_equal_null($houses['House']['municipality_id'], $users['Preference']['pref_municipality'])) //not OK
+                    && ( shared_pay($houses['House']['shared_pay'], $users['Preference']['pref_shared_pay']) )
+                    
+                    && ( compare_date_min($houses['House']['availability_date'], $users['Preference']['availability_date_min']) )
+                    
+                    && ( compare_checkbox($houses['House']['furnitured'], $users['Preference']['pref_furnitured']) )
+                    && ( compare_checkbox($houses['House']['disability_facilities'], $users['Preference']['pref_disability_facilities']) )
+
+                    && ( has_photo($houses['House']['default_image_id'], $users['Preference']['pref_has_photo']))
+                    
+                )
+
+                    //$email_users[$users['Profile']['email']] = $houses['House']['id']; 
             }
         }
-        else $this->out('no new houses today');*/
-        /***** end-debugging *****/
-    }
+
+
+
+        private function compare_date_min($attr, $pref){
+            if( strtotime($attr) <= strtotime($pref){
+                return true;    
+            }else{
+                return false;    
+            }
+        }
+
+        private function compare_checkbox_null($attr, $pref){
+            if (isset($attr)){ 
+                return true;
+            }else if ( !isset($attr) && !isset($pref) ){ 
+                return true;
+            }else if ( !isset($attr) && isset($pref) ){
+                return false;
+            }
+
+        private function has_photo($attr, $pref){
+            if (!isset($attr) && ($pref)){
+                return false;
+            }else{
+                return true;    
+            }
+        }
+
+
+        private function compare_checkbox($attr, $pref){
+            if (!isset($attr) && ($pref == 1) ){ 
+                return false;
+            }else{
+                return false;
+            }
+        }
+
+        private function compare_pref_min($attr, $pref){
+            if( ( isset($attr) && !isset($pref) ) || ( !isset($attr) && !isset($pref) ) ){
+                return true;
+            }else if ( isset($attr) && isset($pref) ){
+                if ($attr >= $pref) return true;
+            }else if ( !isset($attr) && isset($pref) ){
+                return false;
+            }
+        }
+
+        private function compare_max($attr, $pref){
+            if( isset($pref) && ($attr <= $pref) ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        private function compare_min($attr, $pref){
+            if( isset($pref) && ($attr >= $pref) ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        private function compare_equal($attr, $pref){
+            if( $pref == 0  || $attr == $pref ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        private function compare_equal_null($attr, $pref){
+            if( !isset($pref)  || ( isset($pref) && $attr == $pref ) ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        private function shared_pay($attr, $pref){
+            if ( isset($pref) && ($attr == 1) ){
+                return true;
+            }else{
+                return false;    
+            }
+        }
+         
+    } 
 }
 ?>
