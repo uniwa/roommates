@@ -52,8 +52,6 @@
         text-align: right;
     }
 </style>
-
-<?php echo $this->Session->flash();?>
 <div id='main-inner'>
     <div class='loginMain'>
         <?php

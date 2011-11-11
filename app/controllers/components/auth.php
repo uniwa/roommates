@@ -977,8 +977,7 @@ class AuthComponent extends Object {
 
                 var_dump( $inside_user );
                 if( !$inside_user ) {
-                    var_dump( 'oh shit'); die();
-                    //$this->cakeError( 'ldapError');
+                    $this->cakeError( 'ldapError');
                 }
 
                 //set ldap for user's profile
@@ -992,7 +991,7 @@ class AuthComponent extends Object {
      
     }
 
-    function dbIdentify( $user ){
+    function dbIdentify( $user=null , $conditions=null ){
 
             //check for existing User( real estate ) in mysql
             /*simulate $controler->data array so hashPasswords work*/
