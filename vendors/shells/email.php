@@ -26,11 +26,11 @@ class EmailShell extends Shell{
         //pr($users);die(); //User, Preference, Profile 
         //if (isset($users)) count($users);
 
+        $compatible_houses = array();
         $email_users = array();
 
-
-        for ($i=0; $i<=count($users); $i++){
-            for($j=0; $j<=count($houses); $j++){
+        for ($i=0; $i<count($users); $i++){
+            for($j=0; $j<count($houses); $j++){
                 
                 if(    ( $this->compare_min($houses[$j]['House']['area'], $users[$i]['Preference']['area_min']))
                     && ( $this->compare_max($houses[$j]['House']['area'], $users[$i]['Preference']['area_max']))
@@ -63,9 +63,10 @@ class EmailShell extends Shell{
                     
                 )
                 {
-                    $email_users[$users['Profile']['email']] = $houses['House']['id'];
+                    array_push($compatible_houses, $houses[$j]['House']['id']);
                 }
             }
+            $email_users[$users[$i]['Profile']['email']] = $compatible_houses;
         }
 
         pr($email_users);die();
