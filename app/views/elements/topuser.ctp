@@ -15,20 +15,6 @@
                         array('class' => 'menu-item menu-user menu-login'));
                 }else{
                     if(isset($selected_action)){
-/*                        switch($selected_action){
-                            case 'login':
-                                $linkContent = 'σύνδεση';
-                                $linkAction = 'login';
-                                break;
-                            case 'register':
-                                $linkContent = 'εγγραφή';
-                                $linkAction = 'register';
-                                break;
-                            default:
-                                $linkContent = 'σύνδεση';
-                                $linkAction = 'login';
-                                break;
-                        }*/
                         $linkClass = 'menu-item menu-user';
                         $linkContent = 'σύνδεση';
                         $linkAction = 'login';
