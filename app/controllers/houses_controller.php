@@ -232,7 +232,8 @@ class HousesController extends AppController {
                 
                 /* post to facebook application wall */
                 $this->House->id = $hid;
-                $this->postToAppWall( $this->House->read() );
+                $house = $this->House->read();
+                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
                 
                 $this->redirect(array('action' => "view/$hid"));
             }
@@ -293,8 +294,8 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
                     
                 /* post updated house on application's page on Facebook */
-                
-                $this->postToAppWall( $this->House->read( ) );
+                $house = $this->House->read();
+                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
                 
                 $this->redirect(array('action' => "view/$id"));
             }
@@ -909,7 +910,10 @@ class HousesController extends AppController {
 
         } catch( FacebookApiException $e ) {
         
-            $this->Session->setFlash( $e->getMessage( ) );
+            $this->Session->setFlash(
+                'Προέκυψε ένα σφάλμα κατά την κοινωποίηση της αγγελίας.',
+                'default',
+                array('class' => 'flashRed') );
         }
     }
     
