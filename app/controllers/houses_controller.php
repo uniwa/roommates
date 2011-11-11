@@ -643,7 +643,7 @@ class HousesController extends AppController {
         }
         if ($prefs['pref_couple'] != null && $prefs['pref_couple'] < 2) {
             $mates_prefs['Profile.couple'] = $prefs['pref_couple'];
-            $defaults['child'] = $prefs['pref_couple'];
+            $defaults['couple'] = $prefs['pref_couple'];
         }
         // required for the joins
         array_push($mates_prefs, 'User.id = Profile.user_id');
