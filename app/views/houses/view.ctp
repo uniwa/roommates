@@ -59,6 +59,19 @@
             if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
             else $furnished = ', ';
         
+            
+            
+            /* don't show 'available_places' if house does not belong to a 'user' (as in role) */
+            $occupation_availability = null;
+            if( $house['User']['role'] != 'user' ) {
+            
+                $occupation_availability = '';
+            } else {
+                $occupation_availability =
+                    ', Διαθέσιμες θέσεις '
+                    . Sanitize::html( $house['House']['free_places'] );
+            }
+            
             echo '<a href='
                 . '"http://www.facebook.com/dialog/feed'
                 . '?app_id=' . $facebook->getAppId()
@@ -68,13 +81,11 @@
                 . '&caption=' . urlencode( '«Συγκατοικώ»' )
 
                 . '&description=' . urlencode( 
-                    'Διεύθυνση ' . $house['House']['address'] . ', '
+                    $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
                     . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                    . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
                     . $furnished
-                    . 'Δήμος ' . $house['Municipality']['name'] ) . ', '
-                    . 'Διαθέσιμες θέσεις ' . Sanitize::html( $house['House']['free_places'] )
-
+                    . 'Δήμος ' . $house['Municipality']['name']
+                    . $occupation_availability )
                 . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
             . '">Κοινωποίηση στο Facebook</a>';
         ?>

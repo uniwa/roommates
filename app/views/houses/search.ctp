@@ -641,7 +641,18 @@
                             <?php
                             
                                 $this_url = substr( $get_vars, 0, -1 ); //replace last character (ampersand)
-                                $furnished = $house['House']['furnitured'] ? ' Επιπλωμένο, ' : ', ';
+                                $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο, ' : 'Μη επιπλωμένο, ';
+                                
+                                $occupation_availability = null;
+                                if( $house['User']['role'] != 'user' ) {
+                                
+                                    $occupation_availability = '';
+                                } else {
+                                    $occupation_availability =
+                                        ', Διαθέσιμες θέσεις '
+                                        . Sanitize::html( $house['House']['free_places'] );
+                                }
+
                                 echo '<a href='
                                     . '"http://www.facebook.com/dialog/feed'
                                     . '?app_id=' . $facebook->getAppId()
@@ -651,12 +662,11 @@
                                     . '&caption=' . urlencode( '«Συγκατοικώ»' )
 
                                     . '&description=' . urlencode( 
-                                        'Διεύθυνση ' . $house['House']['address'] . ', '
+                                        $house_types[$house['House']['house_type_id']] . ' ' . $house['House']['area'] . 'τμ, '
                                         . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                                        . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
                                         . $furnished
-                                        . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']] . ', '
-                                        . 'Διαθέσιμες θέσεις ' . /*Sanitize::html( */$house['House']['free_places'] )
+                                        . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']]
+                                        . $occupation_availability )
 
                                     . '&redirect_uri=' . urlencode(
                                         'http://' . $_SERVER['HTTP_HOST'] . $this->here
