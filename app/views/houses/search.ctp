@@ -575,10 +575,11 @@
         </div>
         <?php
             $count = $this->Paginator->counter(array('format' => '%count%'));
-            $foundmessage = 'Δεν βρέθηκαν σπίτια';
-            if($count == 1) {
-                $foundmessage = 'Βρέθηκε '.$count.' σπίτι';
-            }else{
+            if ($count === '0') {
+                $foundmessage = 'Δεν βρέθηκαν σπίτια';
+            } else if ($count === '1') {
+                $foundmessage = 'Βρέθηκε 1 σπίτι';
+            } else {
                 $foundmessage = 'Βρέθηκαν '.$count.' σπίτια';
             }
         ?>
