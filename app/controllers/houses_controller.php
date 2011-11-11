@@ -236,7 +236,9 @@ class HousesController extends AppController {
                 
                 /* post to facebook application wall */
                 $this->House->id = $hid;
-                $this->postToAppWall( $this->House->read() );
+                $this->recursive = 2;
+                $house = $this->House->read();
+                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
                 
                 $this->redirect(array('action' => "view/$hid"));
             }
@@ -297,8 +299,9 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
                     
                 /* post updated house on application's page on Facebook */
-                
-                $this->postToAppWall( $this->House->read( ) );
+                $house = $this->House->read();
+                $this->recursive = 2;
+                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
                 
                 $this->redirect(array('action' => "view/$id"));
             }
@@ -539,9 +542,6 @@ class HousesController extends AppController {
             $options['order'] = $orderBy;
         }
 
-//         pr($options);
-//         die();
-
         // required recursive value for joins
         $this->House->recursive = -1;
         // pagination options
@@ -549,6 +549,7 @@ class HousesController extends AppController {
             $options['limit'] = 15;
             $this->paginate = $options;
             $results = $this->paginate('House');
+            $this->set('pagination_limit', $options['limit']);
         } else {
             $results = $this->House->find('all', $options);
         }
@@ -889,11 +890,23 @@ class HousesController extends AppController {
      * The supplied parameter is a two-dimensional array which 
      * contains the entries 'House' and 'Municipality'.
      */                    
-    function postToAppWall( $house = null ) {
+    protected function postToAppWall( $house ) {
+
+        if( is_null( $house ) ) return;
 
         $furnished = null;
-        if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
-        else $furnished = ', ';
+        if( $house['House']['furnitured'] )  $furnished = 'Επιπλωμένο, ';
+        else $furnished = 'Μη επιπλωμένο, ';
+
+        $occupation_availability = null;
+        if( $house['User']['role'] != 'user' ) {
+        
+            $occupation_availability = '';
+        } else {echo $house['User']['role'];
+            $occupation_availability =
+                ', Διαθέσιμες θέσεις '
+                . Sanitize::html( $house['House']['free_places'] );
+        }
         
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $facebook = $this->Session->read( 'facebook' );
@@ -902,12 +915,11 @@ class HousesController extends AppController {
             $facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
             
                 'message' =>
-                    'Διεύθυνση ' . $house['House']['address'] . ', '
+                    $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
                     . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                    . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
                     . $furnished
-                    . 'Δήμος ' . $house['Municipality']['name'] . ', '
-                    . 'Διαθέσιμες θέσεις ' . Sanitize::html( $house['House']['free_places'] ),
+                    . 'Δήμος ' . $house['Municipality']['name']
+                    . $occupation_availability,
 
                 'name' => 'Δείτε περισσότερα εδώ...',
                 'link' => $fb_app_uri . 'houses/view/' . $house['House']['id'],
@@ -916,7 +928,10 @@ class HousesController extends AppController {
 
         } catch( FacebookApiException $e ) {
         
-            $this->Session->setFlash( $e->getMessage( ) );
+            $this->Session->setFlash(
+                'Προέκυψε ένα σφάλμα κατά την κοινωποίηση της αγγελίας στο Facebook.',
+                'default',
+                array('class' => 'flashRed') );
         }
     }
     

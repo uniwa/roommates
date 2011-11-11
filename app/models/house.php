@@ -201,10 +201,24 @@ class House extends AppModel {
 
 
         'total_places' => array(
-            'rule' => '/^[1-9]{1}$/i',
+            'rule' => '/^[2-9]{1}$/i',
             'message' =>'Παρακαλώ εισάγετε τη συνολική διαθεσιμότητα θέσεων στην οικία'
         )
     );
+
+
+    function beforeValidate() {
+        if ($this->data['House']['currently_hosting'] >=
+            $this->data['House']['total_places']) {
+            $this->invalidate('total_places',
+                              'Ο αριθμός των ατόμων που μπορούν να '.
+                              'συγκατοικήσουν πρέπει να είναι μεγαλύτερος '.
+                              'του αριθμού των ατόμων που διαμένουν.');
+            return false;
+        }
+
+        return true;
+    }
 }
 
 ?>

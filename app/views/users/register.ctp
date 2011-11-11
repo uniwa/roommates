@@ -16,8 +16,13 @@
         width: 540px;
     }
 
+    .form-center{
+        margin: 8px auto;
+        text-align: center;
+    }
+    
     .form-buttons{
-        margin: 10px auto;
+        margin: 20px auto;
         width: 220px;
     }
 
@@ -61,7 +66,15 @@
         width: 220px;
     }
 
-    /* TODO: add custom class to differenciate between other views stars */
+    .formCheckbox{
+        margin: 8px 8px 8px 0px;
+    }
+    
+    .checkLabel{
+        padding: 0px 10px 0px 0px;
+    }
+
+    /* TODO: add custom class to differentiate between other views stars */
     .required {
         background: url("img/required.gif") no-repeat scroll right top transparent;
     }
@@ -146,20 +159,22 @@
                 }
             ?>
         </li>
-    <?php } // foreach ?>
-    <div>
-        <textarea rows="6" cols="80" readonly="readonly">
-            <?php echo $terms_text; ?>
-        </textarea>
-        <div class="required">
+        <?php } // foreach ?>
+        <li class='form-line'>
+            <textarea rows="6" cols="80" readonly="readonly">
+                <?php echo $terms_text; ?>
+            </textarea>
+        </li>
+        <li class='form-line form-center'>
             <?php
                 // TODO: fix "required" star's position
-                echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης.');
-                echo $this->Form->checkbox('estate_terms', array('hidden' => false, 'checked' => false));
+                echo $this->Form->checkbox('estate_terms', array('hidden' => false, 'checked' => false, 'class' => 'formCheckbox'));
+                echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης', array('class' => 'checkLabel required'));
             ?>
-        </div>
-    </div>
-    <div> <?php echo $this->Recaptcha->display(); ?> </div>
+        </li>
+        <li class='form-line form-center'>
+            <?php echo $this->Recaptcha->display(); ?>
+        </li>
         <li class='form-line form-buttons'>
             <div class='form-elem form-submit'>
                 <?php
