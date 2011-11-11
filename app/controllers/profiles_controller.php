@@ -318,6 +318,7 @@ class ProfilesController extends AppController {
         $profiles = $this->paginate('Profile');
 		$this->set('searchargs', $searchArgs);
         $this->set('profiles', $profiles);
+        $this->set('pagination_limit', $this->paginate['limit']);
 /*        $this->set('defaults', array(   'age_min' => $searchArgs['age_min'],
                                         'age_max' => $searchArgs['age_max'],
                                         'pref_gender' => $searchArgs['pref_gender'],
