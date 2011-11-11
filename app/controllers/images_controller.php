@@ -183,7 +183,7 @@ class ImagesController extends AppController {
         $new["House"]["default_image_id"] = $image_id;
 
         $this->House->begin();
-        if ($this->House->save($new) != False) {
+        if ($this->House->save($new, false) != False) {
             $this->House->commit();
             return True;
         }
