@@ -162,17 +162,19 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
-        // this variable is used to display properly
-        // the selected element on header
-        $this->set('selected_action', 'houses_view');
 
         $this->set('title_for_layout','Σπίτι');
         $this->checkExistance($id);
 
-        
         $this->House->id = $id;
         $this->House->recursive = 2;
         $house = $this->House->read();
+
+        // this variable is used to display properly
+        // the selected element on header
+        if ($house['House']['user_id'] == $this->Auth->User('id')) {
+            $this->set('selected_action', 'houses_view');
+        }
 
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $house['House']['user_id']) {
