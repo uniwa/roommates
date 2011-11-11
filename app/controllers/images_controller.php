@@ -136,7 +136,7 @@ class ImagesController extends AppController {
             }
             else {
                 $this->Session->setFlash('Η νέα προεπιλεγμένη εικόνα ορίστικε με επιτυχία.',
-                    'default', array('class' => 'flashRed'));
+                    'default', array('class' => 'flashBlue'));
             }
         }
         $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
@@ -183,7 +183,7 @@ class ImagesController extends AppController {
         $new["House"]["default_image_id"] = $image_id;
 
         $this->House->begin();
-        if ($this->House->save($new)) {
+        if ($this->House->save($new) != False) {
             $this->House->commit();
             return True;
         }

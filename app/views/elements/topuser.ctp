@@ -13,6 +13,29 @@
                         'controller' => 'users',
                         'action' => 'logout'),
                         array('class' => 'menu-item menu-user menu-login'));
+                }else{
+                    if(isset($selected_action)){
+                        $linkClass = 'menu-item menu-user';
+                        $linkContent = 'σύνδεση';
+                        $linkAction = 'login';
+                        if($selected_action == 'login'){
+                            $linkClass .= ' menu-selected';
+                        }
+                        echo $this->Html->link($linkContent, array(
+                            'controller' => 'users',
+                            'action' => $linkAction),
+                            array('class' => $linkClass));
+                        
+                        if($selected_action == 'register'){
+                            $linkContent = 'εγγραφή';
+                            $linkAction = 'register';
+                            $linkClass .= ' menu-selected';
+                            echo $this->Html->link($linkContent, array(
+                                'controller' => 'users',
+                                'action' => $linkAction),
+                                array('class' => $linkClass));
+                        }
+                    }
                 }
             ?>
         </li>
