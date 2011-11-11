@@ -49,54 +49,52 @@
         }
         ?>
     </div>
-    
-    <div class='facebook-post'>
-    
-        <?php 
-            /* create the link to post on Facebook */
-            
-            $furnished = null;
-            if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
-            else $furnished = ', ';
-        
-            
-            
-            /* don't show 'available_places' if house does not belong to a 'user' (as in role) */
-            $occupation_availability = null;
-            if( $house['User']['role'] != 'user' ) {
-            
-                $occupation_availability = '';
-            } else {
-                $occupation_availability =
-                    ', Διαθέσιμες θέσεις '
-                    . Sanitize::html( $house['House']['free_places'] );
-            }
-            
-            echo '<a href='
-                . '"http://www.facebook.com/dialog/feed'
-                . '?app_id=' . $facebook->getAppId()
-                
-                . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
-                . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                . '&caption=' . urlencode( '«Συγκατοικώ»' )
 
-                . '&description=' . urlencode( 
-                    $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
-                    . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                    . $furnished
-                    . 'Δήμος ' . $house['Municipality']['name']
-                    . $occupation_availability )
-                . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-            . '">Κοινωποίηση στο Facebook</a>';
-        ?>
-    
-    
-        <?php /*echo $this->Html->link(
-            'Δημοσίευση στο Facebook',
-            array( 'controller' => 'houses', 'action' => 'publish', $house['House']['id'] ) );*/
-        ?>
-    </div>
-    
+    <?php
+
+        /* allow posts to Facebook only by a 'user' (as in role)  */
+        if( $this->Session->read( 'Auth.User.role' ) == 'user' ) {
+
+            echo "<div class='facebook-post'>";
+
+                /* create the link to post on Facebook */
+                
+                $furnished = null;
+                if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
+                else $furnished = ', ';
+
+                /* don't show 'available_places' if house does not belong to a 'user' (as in role) */
+                $occupation_availability = null;
+                if( $house['User']['role'] != 'user' ) {
+
+                    $occupation_availability = '';
+                } else {
+                    $occupation_availability =
+                        ', Διαθέσιμες θέσεις '
+                        . Sanitize::html( $house['House']['free_places'] );
+                }
+
+                echo '<a href='
+                    . '"http://www.facebook.com/dialog/feed'
+                    . '?app_id=' . $facebook->getAppId()
+
+                    . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
+                    . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                    . '&caption=' . urlencode( '«Συγκατοικώ»' )
+
+                    . '&description=' . urlencode( 
+                        $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
+                        . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                        . $furnished
+                        . 'Δήμος ' . $house['Municipality']['name']
+                        . $occupation_availability )
+                    . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                . '">Κοινωποίηση στο Facebook</a>';
+
+            echo '</div>';
+        }
+    ?>
+
     <div class="image-list">
         <ul>
             <?php
