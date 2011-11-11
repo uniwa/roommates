@@ -17,7 +17,7 @@
     }
 
     .form-buttons{
-        margin: 10px auto;
+        margin: 20px auto;
         width: 220px;
     }
 
@@ -61,7 +61,7 @@
         width: 220px;
     }
 
-    /* TODO: add custom class to differenciate between other views stars */
+    /* TODO: add custom class to differentiate between other views stars */
     .required {
         background: url("img/required.gif") no-repeat scroll right top transparent;
     }
@@ -154,8 +154,8 @@
         <div class="required">
             <?php
                 // TODO: fix "required" star's position
-                echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης.');
                 echo $this->Form->checkbox('estate_terms', array('hidden' => false, 'checked' => false));
+                echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης.');
             ?>
         </div>
     </div>

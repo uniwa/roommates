@@ -14,12 +14,41 @@
                         'action' => 'logout'),
                         array('class' => 'menu-item menu-user menu-login'));
                 }else{
-                    if(isset($selected_action) && ($selected_action == 'login')){
-                        echo $this->Html->link('σύνδεση', array(
+                    if(isset($selected_action)){
+/*                        switch($selected_action){
+                            case 'login':
+                                $linkContent = 'σύνδεση';
+                                $linkAction = 'login';
+                                break;
+                            case 'register':
+                                $linkContent = 'εγγραφή';
+                                $linkAction = 'register';
+                                break;
+                            default:
+                                $linkContent = 'σύνδεση';
+                                $linkAction = 'login';
+                                break;
+                        }*/
+                        $linkClass = 'menu-item menu-user';
+                        $linkContent = 'σύνδεση';
+                        $linkAction = 'login';
+                        if($selected_action == 'login'){
+                            $linkClass .= ' menu-selected';
+                        }
+                        echo $this->Html->link($linkContent, array(
                             'controller' => 'users',
-                            'action' => 'login'),
-                            array('class' => 'menu-item menu-user menu-selected'));
-//                        echo "<div class='menu-item menu-user menu-selected'>σύνδεση</div>";
+                            'action' => $linkAction),
+                            array('class' => $linkClass));
+                        
+                        if($selected_action == 'register'){
+                            $linkContent = 'εγγραφή';
+                            $linkAction = 'register';
+                            $linkClass .= ' menu-selected';
+                            echo $this->Html->link($linkContent, array(
+                                'controller' => 'users',
+                                'action' => $linkAction),
+                                array('class' => $linkClass));
+                        }
                     }
                 }
             ?>
