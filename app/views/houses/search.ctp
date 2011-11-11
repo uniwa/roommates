@@ -575,10 +575,11 @@
         </div>
         <?php
             $count = $this->Paginator->counter(array('format' => '%count%'));
-            $foundmessage = 'Δεν βρέθηκαν σπίτια';
-            if($count == 1) {
-                $foundmessage = 'Βρέθηκε '.$count.' σπίτι';
-            }else{
+            if ($count === '0') {
+                $foundmessage = 'Δεν βρέθηκαν σπίτια';
+            } else if ($count === '1') {
+                $foundmessage = 'Βρέθηκε 1 σπίτι';
+            } else {
                 $foundmessage = 'Βρέθηκαν '.$count.' σπίτια';
             }
         ?>
@@ -588,6 +589,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     // set the URL
                     $paginator->options(array('url' => array('?' => $get_vars)));
                     /* show first page */
@@ -602,7 +604,8 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
-                    ?>
+                }
+                ?>
             </ul>
         </div>
         <ul>
@@ -640,33 +643,49 @@
                                 }
                             ?>
                         </div>
-                        <div class='facebook-post'>
-                            <?php
-                            
-                                $this_url = substr( $get_vars, 0, -1 ); //replace last character (ampersand)
-                                $furnished = $house['House']['furnitured'] ? ' Επιπλωμένο, ' : ', ';
-                                echo '<a href='
-                                    . '"http://www.facebook.com/dialog/feed'
-                                    . '?app_id=' . $facebook->getAppId()
-                                    
-                                    . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
-                                    . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                                    . '&caption=' . urlencode( '«Συγκατοικώ»' )
+                        
+                        <?php
 
-                                    . '&description=' . urlencode( 
-                                        'Διεύθυνση ' . $house['House']['address'] . ', '
-                                        . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                                        . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
-                                        . $furnished
-                                        . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']] . ', '
-                                        . 'Διαθέσιμες θέσεις ' . /*Sanitize::html( */$house['House']['free_places'] )
+                            /* allow posts to Facebook only by a 'user' (as in role)  */
+                            if( $this->Session->read( 'Auth.User.role' ) == 'user' ) {
 
-                                    . '&redirect_uri=' . urlencode(
-                                        'http://' . $_SERVER['HTTP_HOST'] . $this->here
-                                        . '?' . $this_url )
-                                . '">Κοινωποίηση στο Facebook</a>';
-                            ?>
-                        </div>
+                                echo '<div class=\"facebook-post\">';
+
+                                    $this_url = substr( $get_vars, 0, -1 ); //replace last character (ampersand)
+                                    $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο, ' : 'Μη επιπλωμένο, ';
+
+                                    $occupation_availability = null;
+                                    if( $house['User']['role'] != 'user' ) {
+
+                                        $occupation_availability = '';
+                                    } else {
+                                        $occupation_availability =
+                                            ', Διαθέσιμες θέσεις '
+                                            . Sanitize::html( $house['House']['free_places'] );
+                                    }
+
+                                    echo '<a href='
+                                        . '"http://www.facebook.com/dialog/feed'
+                                        . '?app_id=' . $facebook->getAppId()
+                                        
+                                        . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
+                                        . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                                        . '&caption=' . urlencode( '«Συγκατοικώ»' )
+
+                                        . '&description=' . urlencode( 
+                                            $house_types[$house['House']['house_type_id']] . ' ' . $house['House']['area'] . 'τμ, '
+                                            . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                                            . $furnished
+                                            . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']]
+                                            . $occupation_availability )
+
+                                        . '&redirect_uri=' . urlencode(
+                                            'http://' . $_SERVER['HTTP_HOST'] . $this->here
+                                            . '?' . $this_url )
+                                    . '">Κοινωποίηση στο Facebook</a>';
+                                echo '</div>';
+                            }
+                        ?>
                     </div>
                 </div>
             </li>
@@ -675,6 +694,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -687,6 +707,7 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+                }
                 ?>
             </ul>
         </div>

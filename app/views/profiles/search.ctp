@@ -276,6 +276,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -288,7 +289,8 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
-                    ?>
+                }
+                ?>
             </ul>
         </div>
         <ul>
@@ -326,6 +328,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -338,6 +341,7 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+                }
                 ?>
             </ul>
         </div>
