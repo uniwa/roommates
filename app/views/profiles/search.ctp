@@ -138,7 +138,11 @@
                         Ηλικία από
                     </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input(('age_min'), array('label' => '', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input('age_min', array('label' => '',
+                                'value' => isset($defaults['age_min'])
+                                                ? $defaults['age_min']
+                                                : '',
+                                'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
@@ -146,7 +150,11 @@
                         μέχρι
                     </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input('age_max', array('label' => '', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input('age_max', array('label' => '',
+                                'value' => isset($defaults['age_max'])
+                                                ? $defaults['age_max']
+                                                : '',
+                                'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
