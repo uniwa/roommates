@@ -542,9 +542,6 @@ class HousesController extends AppController {
             $options['order'] = $orderBy;
         }
 
-//         pr($options);
-//         die();
-
         // required recursive value for joins
         $this->House->recursive = -1;
         // pagination options
@@ -552,6 +549,7 @@ class HousesController extends AppController {
             $options['limit'] = 15;
             $this->paginate = $options;
             $results = $this->paginate('House');
+            $this->set('pagination_limit', $options['limit']);
         } else {
             $results = $this->House->find('all', $options);
         }

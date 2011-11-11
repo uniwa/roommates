@@ -575,10 +575,11 @@
         </div>
         <?php
             $count = $this->Paginator->counter(array('format' => '%count%'));
-            $foundmessage = 'Δεν βρέθηκαν σπίτια';
-            if($count == 1) {
-                $foundmessage = 'Βρέθηκε '.$count.' σπίτι';
-            }else{
+            if ($count === '0') {
+                $foundmessage = 'Δεν βρέθηκαν σπίτια';
+            } else if ($count === '1') {
+                $foundmessage = 'Βρέθηκε 1 σπίτι';
+            } else {
                 $foundmessage = 'Βρέθηκαν '.$count.' σπίτια';
             }
         ?>
@@ -588,6 +589,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     // set the URL
                     $paginator->options(array('url' => array('?' => $get_vars)));
                     /* show first page */
@@ -602,7 +604,8 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
-                    ?>
+                }
+                ?>
             </ul>
         </div>
         <ul>
@@ -691,6 +694,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -703,6 +707,7 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+                }
                 ?>
             </ul>
         </div>

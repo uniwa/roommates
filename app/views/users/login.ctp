@@ -55,7 +55,6 @@
 
 <?php echo $this->Session->flash();?>
 <div id='main-inner'>
-    <?php   echo $this->Session->flash('auth');?>
     <div class='loginMain'>
         <?php
             echo $this->Form->create('User', array('action' => 'login', 'class' => 'loginForm'));
@@ -80,7 +79,6 @@
                 <?php
                     echo $this->Form->button('Είσοδος',
                         array( 'type' => 'submit', 'class' => 'button'));
-                    echo $this->Form->end();
                 ?>
             </div>
         </div>
@@ -91,6 +89,9 @@
                 echo ' για ανάρτηση ακινήτου.';
             ?> 
         </div>
+        <?php
+            echo $this->Form->end();
+        ?>
     </div>
-    </div>
+</div>
 
