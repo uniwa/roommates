@@ -18,57 +18,61 @@ class EmailShell extends Shell{
         //get houses created or modified today
         $houses = $this->House->find('all', array('conditions' => $conditions));
         //pr($houses);die();  //House, HouseType, Floor, HeatingType, Municipality, User, Image 
-        if isset($house) count($houses);
+        if (isset($houses)) count($houses);
 
 
         //get (only) users data and preferences 
         $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user' )));
         //pr($users);die(); //User, Preference, Profile 
-        if isset($users) count($users);
+        if (isset($users)) count($users);
+
+        $email_users = array();
 
 
-        for ($i=1, $i<=$users, $i++){
-            for($j=1, $j<=$houses, $j++){
+        for ($i=0; $i<=$users; $i++){
+            for($j=0; $j<=$houses; $j++){
                 
-                if(    ( compare_min($houses['House']['area'], $users['Preference']['area_min']))
-                    && ( compare_max($houses['House']['area'], $users['Preference']['area_max']))
-                    && ( compare_min($houses['House']['bedroom_num'], $users['Preference']['bedroom_num_min']))
-                    && ( compare_max($houses['House']['price'], $users['Preference']['price_max']))
-                    && ( compare_min($houses['House']['floor_id'], $users['Preference']['floor_id_min']) )
+                if(    ( $this->compare_min($houses['House']['area'], $users['Preference']['area_min']))
+                    && ( $this->compare_max($houses['House']['area'], $users['Preference']['area_max']))
+                    && ( $this->compare_min($houses['House']['bedroom_num'], $users['Preference']['bedroom_num_min']))
+                    && ( $this->compare_max($houses['House']['price'], $users['Preference']['price_max']))
+                    && ( $this->compare_min($houses['House']['floor_id'], $users['Preference']['floor_id_min']) )
             
-                    && ( compare_pref_min($houses['House']['bathroom_num'], $users['Preference']['bathroom_num_min'])) //not comp
-                    && ( compare_pref_min($houses['House']['construction_year'], $users['Preference']['construction_year_min']) ) //not comp
-                    && ( compare_pref_min($houses['House']['rent_period'], $users['Preference']['rent_period_min']) ) //not comp
-                    && ( compare_checkbox_null($houses['House']['solar_heater'], $users['Preference']['pref_solar_heater']) ) //not comp
-                    && ( compare_checkbox_null($houses['House']['aircondition'], $users['Preference']['pref_aircondition']) )
-                    && ( compare_checkbox_null($houses['House']['garden'], $users['Preference']['pref_garden']) )
-                    && ( compare_checkbox_null($houses['House']['parking'], $users['Preference']['pref_parking']) )
-                    && ( compare_checkbox_null($houses['House']['security_doors'], $users['Preference']['pref_security_doors']) )
-                    && ( compare_checkbox_null($houses['House']['storeroom'], $users['Preference']['pref_storeroom']) )
+                    && ( $this->compare_pref_min($houses['House']['bathroom_num'], $users['Preference']['bathroom_num_min'])) //not comp
+                    && ( $this->compare_pref_min($houses['House']['construction_year'], $users['Preference']['construction_year_min']) ) //not comp
+                    && ( $this->compare_pref_min($houses['House']['rent_period'], $users['Preference']['rent_period_min']) ) //not comp
+                    && ( $this->compare_checkbox_null($houses['House']['solar_heater'], $users['Preference']['pref_solar_heater']) ) //not comp
+                    && ( $this->compare_checkbox_null($houses['House']['aircondition'], $users['Preference']['pref_aircondition']) )
+                    && ( $this->compare_checkbox_null($houses['House']['garden'], $users['Preference']['pref_garden']) )
+                    && ( $this->compare_checkbox_null($houses['House']['parking'], $users['Preference']['pref_parking']) )
+                    && ( $this->compare_checkbox_null($houses['House']['security_doors'], $users['Preference']['pref_security_doors']) )
+                    && ( $this->compare_checkbox_null($houses['House']['storeroom'], $users['Preference']['pref_storeroom']) )
                     
-                    && ( compare_equal($houses['House']['house_type_id'], $users['Preference']['pref_house_type_id']))
-                    && ( compare_equal($houses['House']['heating_type_id'], $users['Preference']['pref_heating_type_id']))
+                    && ( $this->compare_equal($houses['House']['house_type_id'], $users['Preference']['pref_house_type_id']))
+                    && ( $this->compare_equal($houses['House']['heating_type_id'], $users['Preference']['pref_heating_type_id']))
                     
-                    && ( compare_equal_null($houses['House']['municipality_id'], $users['Preference']['pref_municipality'])) //not OK
-                    && ( shared_pay($houses['House']['shared_pay'], $users['Preference']['pref_shared_pay']) )
+                    && ( $this->compare_equal_null($houses['House']['municipality_id'], $users['Preference']['pref_municipality'])) //not OK
+                    && ( $this->shared_pay($houses['House']['shared_pay'], $users['Preference']['pref_shared_pay']) )
                     
-                    && ( compare_date_min($houses['House']['availability_date'], $users['Preference']['availability_date_min']) )
+                    && ( $this->compare_date_min($houses['House']['availability_date'], $users['Preference']['availability_date_min']) )
                     
-                    && ( compare_checkbox($houses['House']['furnitured'], $users['Preference']['pref_furnitured']) )
-                    && ( compare_checkbox($houses['House']['disability_facilities'], $users['Preference']['pref_disability_facilities']) )
+                    && ( $this->compare_checkbox($houses['House']['furnitured'], $users['Preference']['pref_furnitured']) )
+                    && ( $this->compare_checkbox($houses['House']['disability_facilities'], $users['Preference']['pref_disability_facilities']) )
 
-                    && ( has_photo($houses['House']['default_image_id'], $users['Preference']['pref_has_photo']))
+                    && ( $this->has_photo($houses['House']['default_image_id'], $users['Preference']['pref_has_photo']))
                     
                 )
-
-                    //$email_users[$users['Profile']['email']] = $houses['House']['id']; 
+                {
+                    $email_users[$users['Profile']['email']] = $houses['House']['id'];
+                }
             }
         }
 
-
+        var_dump($email_users);
+    }
 
         private function compare_date_min($attr, $pref){
-            if( strtotime($attr) <= strtotime($pref){
+            if( strtotime($attr) <= strtotime($pref)){
                 return true;    
             }else{
                 return false;    
@@ -83,6 +87,7 @@ class EmailShell extends Shell{
             }else if ( !isset($attr) && isset($pref) ){
                 return false;
             }
+        }
 
         private function has_photo($attr, $pref){
             if (!isset($attr) && ($pref)){
@@ -150,7 +155,5 @@ class EmailShell extends Shell{
                 return false;    
             }
         }
-         
-    } 
 }
 ?>
