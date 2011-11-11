@@ -223,6 +223,10 @@ class HousesController extends AppController {
         }
 
         if (!empty($this->data)) {
+            if ($this->Auth->User('role') == 'realestate') {
+                $this->data['House']['currently_hosting'] = 1;
+                $this->data['House']['total_places'] = 9;
+            }
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
             if ($this->House->save($this->data)) {
@@ -324,6 +328,9 @@ class HousesController extends AppController {
             $no_mates[$i] = $i;
         }
         $this->set('places_availability', $no_mates);
+        unset($no_mates[1]);
+        $no_mates[10] = 10;
+        $this->set('places_availability_extra', $no_mates);
     }
 
 

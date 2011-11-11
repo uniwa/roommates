@@ -194,17 +194,31 @@ class House extends AppModel {
             'allowEmpty' => true
         ),
 
-	'currently_hosting' => array(
-	    'rule' => '/^[1-9]{1}$/i',
-	    'message' =>'Παρακαλώ εισάγετε τον τρέχοντα αριθμό κατοίκων της οικίας'
-	),
+        'currently_hosting' => array(
+            'rule' => '/^[1-9]{1}$/i',
+            'message' =>'Παρακαλώ εισάγετε τον τρέχοντα αριθμό κατοίκων της οικίας'
+        ),
 
 
-	'total_places' => array(
-	    'rule' => '/^[1-9]{1}$/i',
-	    'message' =>'Παρακαλώ εισάγετε τη συνολική διαθεσιμότητα θέσεων στην οικία'
-	)
+        'total_places' => array(
+            'rule' => '/^[2-9]{1}$/i',
+            'message' =>'Παρακαλώ εισάγετε τη συνολική διαθεσιμότητα θέσεων στην οικία'
+        )
     );
+
+
+    function beforeValidate() {
+        if ($this->data['House']['currently_hosting'] >=
+            $this->data['House']['total_places']) {
+            $this->invalidate('total_places',
+                              'Ο αριθμός των ατόμων που μπορούν να '.
+                              'συγκατοικήσουν πρέπει να είναι μεγαλύτερος '.
+                              'του αριθμού των ατόμων που διαμένουν.');
+            return false;
+        }
+
+        return true;
+    }
 }
 
 ?>
