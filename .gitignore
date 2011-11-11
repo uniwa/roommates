@@ -18,6 +18,7 @@
 *~
 *.swp
 *.bak
+.~*
 
 # eclipse bloat
 .project
