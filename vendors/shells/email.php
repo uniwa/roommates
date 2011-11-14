@@ -69,8 +69,23 @@ class EmailShell extends Shell{
             }
             $email_users[$users[$i]['Profile']['email']] = $compatible_houses;
         }
-        
-        $this->email($email_users);
+
+        if (count($this->args) === 0) {
+            $this->email($email_users);
+        }
+        else {
+            $emails = explode(" ", $this->args[0]);
+            foreach($emails as $email) {
+                // generate 5 random id's per user
+                $id[0] = rand(0, 100);
+                $id[1] = rand(0, 100);
+                $id[2] = rand(0, 100);
+                $id[3] = rand(0, 100);
+                $id[4] = rand(0, 100);
+                $email_users[$email] = $id;
+            }
+            $this->email($email_users);
+        }
     }
 
         //refers to the compulsory field for the owner's house (availability_date)
@@ -224,11 +239,11 @@ class EmailShell extends Shell{
             $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
             $email->sendAs = 'both';
             for($i=0; $i<count($email_addr); $i++){
-                $email->reset()
-                $email->template('cron_house_match');
+                $email->reset();
+                $email->template = 'cron_house_match';
 
                 $houses_ids = $email_all[$email_addr[$i]]; //houses ids
-                $this->set('house_count', count($houses_ids));
+                $controller->set('house_count', count($houses_ids));
 
                 for($j=0; $j<count($houses_ids); $j++){
                     array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
@@ -237,7 +252,7 @@ class EmailShell extends Shell{
                 //echo $houses_ids;
                 //echo $email_addr[$i];
                 $email->to = $email_addr[$i];
-                $this->set('links', $links);
+                $controller->set('links', $links);
                 $email->send();
             }
         }
