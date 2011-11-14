@@ -6,7 +6,7 @@
     ul.collapsible{
         display: none;
     }
-    
+
     .form-collapse{
         background-image: url('img/arrows.png');
         background-position: 98% 0px;
@@ -14,18 +14,18 @@
         height: 16px;
         cursor: pointer;
     }
-    
+
     .form-title{
         clear: both;
         margin: 20px 0px 12px 8px;
         font-size: 1.2em;
         font-weight: bold;
     }
-    
+
     .left-form ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     #leftbar{
         float: left;
 /*        background-color: #f7f7f7;*/
@@ -42,16 +42,16 @@
         padding: 0px 0px 0px 0px;
         width: 620px;
     }
-    
+
     .form-buttons{
         margin: 10px auto;
         width: 220px;
     }
-    
+
     .form-line{
 /*        margin: 0px 12px 0px 0px;*/
     }
-    
+
     .form-elem{
         margin: 2px 0px 12px 8px;
         font-size: 1.2em;
@@ -78,7 +78,7 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
     .search-title{
 /*        margin: 12px 0px 8px 48px;*/
         margin: 12px auto 0px auto;
@@ -94,12 +94,12 @@
         font-size: 1.2em;
         font-style: italic;
     }
-    
+
     .pagination{
         margin: 0px auto 12px auto;
         text-align: center;
     }
-    
+
     .pagination ul li{
         display: inline;
     }
@@ -109,7 +109,7 @@
         padding: 0px 2px 0px 2px;
         font-weight: bold;
     }
-    
+
     .pagination ul li.disabled{
         color: #aaa;
     }
@@ -338,7 +338,7 @@
 
                 <li class='form-line'>
                     <div class='form-elem form-label'>
-                        Ταξινόμηση 
+                        Ταξινόμηση
                     </div>
                     <div class='form-elem form-input'>
                         <?php
@@ -409,7 +409,7 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-	                        echo $this->Form->input('bedroom_num_min', array('label' => '', 
+	                        echo $this->Form->input('bedroom_num_min', array('label' => '',
                                 'class' => 'short-textbox',
                                 'value' => isset($defaults) ? $defaults['bedroom_num_min'] : '',
                                 'class' => 'input-elem'));
@@ -435,9 +435,9 @@
                     </div>
                 <li class='form-line'>
                     <div class='form-elem'>
-                        <?php 
+                        <?php
                             if ( isset( $defaults ) ) {
-                                $selected_date = $defaults[ 'available_from' ]; 
+                                $selected_date = $defaults[ 'available_from' ];
                             }
                             else {
                                 // TODO fix hardcoded date
@@ -643,7 +643,7 @@
                                 }
                             ?>
                         </div>
-                        
+
                         <?php
 
                             /* allow posts to Facebook only by a 'user' (as in role)  */
@@ -667,12 +667,12 @@
                                     echo '<a href='
                                         . '"http://www.facebook.com/dialog/feed'
                                         . '?app_id=' . $facebook->getAppId()
-                                        
+
                                         . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
                                         . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
                                         . '&caption=' . urlencode( '«Συγκατοικώ»' )
 
-                                        . '&description=' . urlencode( 
+                                        . '&description=' . urlencode(
                                             $house_types[$house['House']['house_type_id']] . ' ' . $house['House']['area'] . 'τμ, '
                                             . 'Ενοικίο ' . $house['House']['price'] . '€, '
                                             . $furnished
@@ -682,7 +682,7 @@
                                         . '&redirect_uri=' . urlencode(
                                             'http://' . $_SERVER['HTTP_HOST'] . $this->here
                                             . '?' . $this_url )
-                                    . '">Κοινωποίηση στο Facebook</a>';
+                                    . '">Κοινoποίηση στο Facebook</a>';
                                 echo '</div>';
                             }
                         ?>
