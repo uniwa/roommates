@@ -58,7 +58,7 @@
             echo "<div class='facebook-post'>";
 
                 /* create the link to post on Facebook */
-                
+
                 $furnished = null;
                 if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
                 else $furnished = ', ';
@@ -82,15 +82,14 @@
                     . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
                     . '&caption=' . urlencode( '«Συγκατοικώ»' )
 
-                    . '&description=' . urlencode( 
+                    . '&description=' . urlencode(
                         $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
                         . 'Ενοικίο ' . $house['House']['price'] . '€, '
                         . $furnished
                         . 'Δήμος ' . $house['Municipality']['name']
                         . $occupation_availability )
                     . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                . '">Κοινοποίηση στο Facebook</a>';
-
+                . '">Κοινoποίηση στο Facebook</a>';
             echo '</div>';
         }
     ?>
