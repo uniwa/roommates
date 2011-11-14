@@ -251,7 +251,8 @@ class EmailShell extends Shell{
                 $links = "";
                 for($j=0; $j<count($houses_ids); $j++){
                     //array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
-                    $links .= "http://roommates.edu.teiath.gr/houses/view/{$houses_ids[$j]} <br />";
+                    $house_link = "http://roommates.edu.teiath.gr/houses/view/{$houses_ids[$j]}";
+                    $links .= "<a href=\"{$house_link}\">{$house_link}</a><br />";
                 }
                 //pr($links);die();
                 //echo $houses_ids;
