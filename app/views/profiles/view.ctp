@@ -118,11 +118,13 @@
         $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
         $houseLink = $this->Html->link($houseTypeArea,
             array('controller' => 'houses', 'action' => 'view', $houseId));
-        $houseThumb = $this->Html->image($image,
-            array('alt' => $houseTypeArea));
-        $houseThumbLink = $this->Html->link($houseThumb,
-            array('controller' => 'houses', 'action' => 'view', $houseId),
-            array('escape' => false));
+        if(isset($image)){
+            $houseThumb = $this->Html->image($image,
+                array('alt' => $houseTypeArea));
+            $houseThumbLink = $this->Html->link($houseThumb,
+                array('controller' => 'houses', 'action' => 'view', $houseId),
+                array('escape' => false));
+        }
     }
 	function echoDetail($title, $option){
 		$span = array("open" => "<span class='profile-strong'>", "close" => "</span>");
@@ -316,10 +318,18 @@
 		    ?></span>
         </div>
     </div>
-    <?php if(isset($house)){ ?>
+    <?php
+        if(isset($house)){
+            $houseTitle = 'Το σπίτι ';
+            if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
+                $houseTitle .= 'μου';
+            }else{
+                $houseTitle .= ($profile['Profile']['gender'])?'της':'του';
+            }
+    ?>
         <div class='profileBlock profileClear'>
             <div class='profileTitle'>
-	            <h2>Το σπίτι μου</h2>
+	            <h2><?php echo $houseTitle; ?></h2>
             </div>
             <div id='myHouse' class='profileInfo'>
                 <?php
@@ -328,7 +338,9 @@
             </div>
             <div id='myHousePic' class='profilePic'>
                 <?php
-                    echo $houseThumbLink;
+                    if(isset($houseThumbLink)){
+                        echo $houseThumbLink;
+                    }
                 ?>
             </div>
         </div>

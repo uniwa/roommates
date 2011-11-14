@@ -91,8 +91,10 @@ class ProfilesController extends AppController {
                 $house = $this->House->read();
                 $image = $this->Image->find('first',array('conditions' =>
                     array('Image.id' => $house['House']['default_image_id'])));
-                $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
-                $this->set('image', $imageFile);
+                if($image != ''){
+                    $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+                    $this->set('image', $imageFile);
+                }
             }
         }else{
             $houseid = NULL;
