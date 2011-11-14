@@ -239,6 +239,7 @@ class EmailShell extends Shell{
             $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
             $email->sendAs = 'both';
             for($i=0; $i<count($email_addr); $i++){
+                $links = array();
                 $email->reset();
                 $email->template = 'cron_house_match';
 
