@@ -1,10 +1,11 @@
 #!/bin/sh
 
-app_path="/home/devel/roommates/"
-cake_bin="${app_path}cake/console/cake"
-cake_script= "email"
+roommates_path="/home/devel/roommates/"
+app_path="${roommates_path}app/"
+cake_bin="${roommates_path}cake/console/cake"
+cake_console="${roommates_path}cake/console"
 
 cd "$app_path"
-$cake_bin $cake_script $@
+$cake_bin -app "$app_path" -console $cake_console "email" "tlatsas2000@gmail.com"
 
 exit 0
