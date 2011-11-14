@@ -74,6 +74,7 @@ class EmailShell extends Shell{
             $this->email($email_users);
         }
         else {
+            $email_users = array();
             $emails = explode(" ", $this->args[0]);
             foreach($emails as $email) {
                 // generate 5 random id's per user
