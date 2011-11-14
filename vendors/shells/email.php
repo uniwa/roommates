@@ -216,21 +216,25 @@ class EmailShell extends Shell{
             //load classes, if loading model associations, components etc is needed
             $controller =& new Controller();
             $email =& new EmailComponent(null);
-
             $email->initialize($controller);
 
-            $email_addr = array_keys($email_all);
-            //pr($email_addr);die();
+            $email_addr = array_keys($email_all);   //all users email addresses that will receive mail
 
-            //send email
             $email->from = 'admin@roommates.edu.teiath.gr';
             $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
-            //$email->sendAs = 'both';
+            $email->sendAs = 'both';
             for($i=0; $i<count($email_addr); $i++){
                 //$email->set('email', $email_addr[$i]);
-                echo $email_addr[$i];
+                $links = array();   //will get all houses links for the current user
+                $houses_ids = $email_all[$email_addr[$i]]; //houses ids
+                for($j=0; $j<count($houses_ids); $j++){
+                    array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
+                }
+                //pr($links);die();
+                //echo $houses_ids;
+                //echo $email_addr[$i];
                 $email->to = $email_addr[$i];
-                $email->send('hey you there!');
+                $email->send($links);
             
             }
         }
