@@ -410,14 +410,13 @@
                 if($checkbox){
                     $value = ($hp['check'])?'ναι':'όχι';
                 }else{
+                    $value = '-';
                     if(isset($hp['value'])){
-                        if(isset($hp['value'])){
+                        if($hp['value'] != ''){
                             $value = $hp['value'];
                             if(isset($hp['suffix'])){
                                 $value .= " {$hp['suffix']}";
                             }
-                        }else{
-                            $value = '-';
                         }
                     }
                 }
