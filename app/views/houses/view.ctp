@@ -68,6 +68,7 @@
     
     .liimage{
         float: left;
+        margin: 0px 0px 0px 6px;
     }
     
     #imageList{
@@ -160,6 +161,19 @@
                 'alt' => 'προσθήκη εικόνας σπιτιού', 'class' => 'img-placeholder'));
         }
         $empty_slots -= 1;
+    }
+    
+    if($loggedUser == $userid){
+        $placeholders = '';
+        for($i = 0; $i < $empty_slots; $i++){
+                // placeholder with link to add image
+                $placeholders .= "<li class='liimage'>";
+                $placeholders .= $this->Html->link($this->Html->image('addpic.png',
+                    array('alt' => 'προσθήκη εικόνας σπιτιού ['.$i.']', 'class' => 'img-placeholder')),
+                    array('controller' => 'images', 'action' =>'add', $houseid),
+                    array('title' => 'προσθήκη εικόνας σπιτιού', 'escape' => false));
+                $placeholders .= "<li>";
+        }
     }
     
     $imageLines = array();
@@ -370,6 +384,7 @@
                 for($i = 1; $i <= count($imageLines); $i++){
                     echo $imageLines[$i];
                 }
+                if(isset($placeholders)) echo $placeholders;
             ?>
         </ul>
     </div>
