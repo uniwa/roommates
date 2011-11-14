@@ -69,8 +69,23 @@ class EmailShell extends Shell{
             }
             $email_users[$users[$i]['Profile']['email']] = $compatible_houses;
         }
-        
-        $this->email($email_users);
+
+        if (count($this->args) === 0) {
+            $this->email($email_users);
+        }
+        else {
+            $emails = explode(" ", $this->args[0]);
+            foreach($emails as $email) {
+                // generate 5 random id's per user
+                $id[0] = rand(0, 100);
+                $id[1] = rand(0, 100);
+                $id[2] = rand(0, 100);
+                $id[3] = rand(0, 100);
+                $id[4] = rand(0, 100);
+                $email_users[$email] = $id;
+            }
+            $this->email($email_users);
+        }
     }
 
         //refers to the compulsory field for the owner's house (availability_date)
