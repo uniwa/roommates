@@ -1,4 +1,4 @@
-!#/bin/sh
+#!/bin/sh
 
 app_path="/home/devel/roommates/"
 cake_bin="${app_path}cake/console/cake"
