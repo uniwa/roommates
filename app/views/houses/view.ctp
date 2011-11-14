@@ -218,6 +218,10 @@
             $imageLine .= $this->Html->link(__('Διαγραφή', true),
                 array('controller' => 'images', 'action' => 'delete', $imageid),
                 array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
+            $imageLine .= ' ';
+            $imageLine .= $this->Html->link('Προεπιλεγμένη',
+                array('controller' => 'images', 'action' => 'set_default', $imageid),
+                array('class' => 'thumb_img_thumb'), null);
             $imageLine .= "</div>";
         }
         $imageLine .= "</li>";
