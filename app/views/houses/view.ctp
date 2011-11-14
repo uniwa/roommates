@@ -90,7 +90,6 @@
                         . $occupation_availability )
                     . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
                 . '">Κοινoποίηση στο Facebook</a>';
-
             echo '</div>';
         }
     ?>
