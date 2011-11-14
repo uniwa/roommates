@@ -247,9 +247,11 @@ class EmailShell extends Shell{
                 $houses_ids = $email_all[$email_addr[$i]]; //houses ids
                 $controller->set('house_count', count($houses_ids));
 
-                $links = array();
+                //$links = array();
+                $links = "";
                 for($j=0; $j<count($houses_ids); $j++){
-                    array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
+                    //array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
+                    $links .= $links . "http://roommates.edu.teiath.gr/houses/view/{$houses_ids[$j]} <br />";
                 }
                 //pr($links);die();
                 //echo $houses_ids;
