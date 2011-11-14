@@ -2,12 +2,15 @@
     <ul>
         <li>
             <?php
-                $linkClass = 'menu-item menu-main';
-                if(isset($selected_action) && $selected_action == 'profiles_search'){
-                    $linkClass .= ' menu-selected';
+                // Only students can search for roommates
+                if ($this->Session->read('Auth.User.role') != 'realestate') {
+                    $linkClass = 'menu-item menu-main';
+                    if(isset($selected_action) && $selected_action == 'profiles_search'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('Αναζήτηση συγκατοίκων', array('controller' => 'profiles',
+                        'action' => 'search'), array('class' => $linkClass));
                 }
-                echo $this->Html->link('Αναζήτηση συγκατοίκων', array('controller' => 'profiles',
-                    'action' => 'search'), array('class' => $linkClass));
             ?>
         </li>
         <li>

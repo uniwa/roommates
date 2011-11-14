@@ -24,7 +24,7 @@ foreach ($results as $house) {
         $house['House']['id']
     );
     /* set title */
-    $houseTitle = $house['House']['address'];
+    $houseTitle = "{$house_types[$house['House']['house_type_id']]}, {$house['House']['area']}τ.μ.";
 
     /* set image if exists */
     if (isset($house['Image']['location'])) {
@@ -38,8 +38,8 @@ foreach ($results as $house) {
     /* set the rest rss body */
     $_furnitured = $house['House']['furnitured'] ? '<strong>Είναι</strong> επιπλωμένο.' : '<strong>Μη</strong> επιπλωμένο.';
     $bodyText = "<strong>Δήμος:</strong> {$municipalities[$house['House']['municipality_id']]}<br />
+                 <strong>Διεύθυνση:</strong> {$house['House']['address']}<br />
                  <strong>Ενοίκιο:</strong> {$house['House']['price']}€<br />
-                 <strong>Τετραγωνικά:</strong> {$house['House']['area']}τ.μ. <br />
                  {$_furnitured} <br />
                  <strong>Διαθέσιμες θέσεις:</strong> {$house['House']['free_places']}τ.μ. <br />
                  <strong>Διαθεσιμότητα:</strong> {$time->format(

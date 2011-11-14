@@ -1,0 +1,10 @@
+<?php 
+
+$config['Ldap']['server'] = 'example.com';
+$config['Ldap']['port'] = '389';
+$config['Ldap']['suffix'] = '@example.com';
+$config['Ldap']['baseDN'] = 'dc=example, dc=com';
+$config['Ldap']['user'] = 'cn=admin, dc=example, dc=com';
+$config['Ldap']['password'] = 'my_code';
+
+?>

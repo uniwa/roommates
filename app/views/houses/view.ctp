@@ -15,17 +15,20 @@
         /* defaukt image */
         if (isset($images[0])) {
             echo $this->Html->link(
-                    $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $default_image_location, array('alt' => 'house image')),
-                    '/img/uploads/houses/' . $house['House']['id'] . '/medium_'. $default_image_location,
-                    array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-                    );
+                    $this->Html->image('uploads/houses/'.
+                        $house["House"]["id"]."/thumb_".
+                        $default_image_location, array('alt' => 'house image')
+                    ),
+                    '/img/uploads/houses/'.$house['House']['id'].
+                    '/medium_'. $default_image_location, array(
+                    'class' => 'fancyImage', 'rel' => 'group',
+                    'title' => 'description title', 'escape' => false));
 
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 echo "<div class='imageactions'>";
-                echo $this->Html->link(__('Διαγραφή', true),
-                                    array('controller' => 'images', 'action' => 'delete', $default_image_id),
-                                        array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true))
-                                    );
+                echo $this->Html->link(__('Διαγραφή', true), array(
+                    'controller' => 'images', 'action' => 'delete', $default_image_id),
+                    array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
                 echo "</div>";
             }
         }
@@ -33,19 +36,65 @@
         else {
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
                 /* placeholder with link to add image */
-                echo $this->Html->link(
-                        $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
-                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                        array('class' => '', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-                        );
+                echo $this->Html->link($this->Html->image('addpic.png',
+                    array('alt' => 'add house image', 'class' => 'img-placeholder')),
+                    array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                    array('title' => 'add house image', 'escape' => false));
             } else {
                 /* empty placeholder without link to add image */
-                echo $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder'));
+                echo $this->Html->image('addpic.png', array(
+                    'alt' => 'add house image', 'class' => 'img-placeholder'));
             }
             $empty_slots -= 1;
         }
         ?>
     </div>
+
+    <?php
+
+        /* allow posts to Facebook only by a 'user' (as in role)  */
+        if( $this->Session->read( 'Auth.User.role' ) == 'user' ) {
+
+            echo "<div class='facebook-post'>";
+
+                /* create the link to post on Facebook */
+                
+                $furnished = null;
+                if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
+                else $furnished = ', ';
+
+                /* don't show 'available_places' if house does not belong to a 'user' (as in role) */
+                $occupation_availability = null;
+                if( $house['User']['role'] != 'user' ) {
+
+                    $occupation_availability = '';
+                } else {
+                    $occupation_availability =
+                        ', Διαθέσιμες θέσεις '
+                        . Sanitize::html( $house['House']['free_places'] );
+                }
+
+                echo '<a href='
+                    . '"http://www.facebook.com/dialog/feed'
+                    . '?app_id=' . $facebook->getAppId()
+
+                    . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
+                    . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                    . '&caption=' . urlencode( '«Συγκατοικώ»' )
+
+                    . '&description=' . urlencode( 
+                        $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
+                        . 'Ενοικίο ' . $house['House']['price'] . '€, '
+                        . $furnished
+                        . 'Δήμος ' . $house['Municipality']['name']
+                        . $occupation_availability )
+                    . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
+                . '">Κοινωποίηση στο Facebook</a>';
+
+            echo '</div>';
+        }
+    ?>
+
     <div class="image-list">
         <ul>
             <?php
@@ -54,14 +103,15 @@
                     echo '<li class="liimage">';
                     /* if we have access placeholder is a link to 'add image' */
                     if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                        echo $this->Html->link(
-                            $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder')),
-                            array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                            array('class' => '', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-                        );
+                        echo $this->Html->link($this->Html->image('addpic.png',
+                            array('alt' => 'add house image', 'class' => 'img-placeholder')
+                        ),
+                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
+                        array('title' => 'add house image', 'escape' => false));
                     /* empty placeholder without link to add image */
                     } else {
-                        echo $this->Html->image('addpic.png', array('alt' => 'add house image', 'class' => 'img-placeholder'));
+                        echo $this->Html->image('addpic.png',
+                            array('alt' => 'add house image', 'class' => 'img-placeholder'));
                     }
                     echo '<div class="imageactions">&nbsp;</div>';
                     echo "</li>\n";
@@ -77,22 +127,27 @@
             ?>
             <li class="liimage">
                 <?php echo $this->Html->link(
-                    $this->Html->image('uploads/houses/' . $house["House"]["id"] . "/thumb_" . $image['Image']['location'], array('alt' => 'house image')),
-                    '/img/uploads/houses/' . $house['House']['id'] . '/medium_'. $image['Image']['location'],
-                    array('class' => 'fancyImage', 'rel' => 'group', 'title' => 'description title', 'escape' => false)
-                    );
+                    $this->Html->image('uploads/houses/'.$house["House"]["id"].
+                        "/thumb_" . $image['Image']['location'],
+                        array('alt' => 'house image')), '/img/uploads/houses/'.
+                        $house['House']['id'] . '/medium_'.
+                        $image['Image']['location'],
+                        array('class' => 'fancyImage', 'rel' => 'group',
+                        'title' => 'description title', 'escape' => false));
                 ?>
 
                 <div class="imageactions">
                     <?php
                         /* image actions: set as default and delete */
                         if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                            echo $this->Html->link(__('Διαγραφή', true),
-                                array('controller' => 'images', 'action' => 'delete',
-                                    $image['Image']['id']),
-                                    array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
+                            echo $this->Html->link(__('Διαγραφή', true), array(
+                                'controller' => 'images', 'action' => 'delete',
+                                $image['Image']['id']), array('class' => 'thumb_img_delete'),
+                                sprintf(__('Είστε σίγουρος;', true)));
                             echo $this->Html->link('Προεπιλεγμένη',
-                                    array('controller' => 'images', 'action' => 'set_default', $image['Image']['id']),
+                                    array('controller' => 'images',
+                                        'action' => 'set_default',
+                                        $image['Image']['id']),
                                     array('class' => 'thumb_img_thumb'), null);
                         } else {
                             /* dummy div to align image actions */
@@ -226,6 +281,11 @@
         </tr>
 
         <!-- availability -->
+        <?php // if the house belongs to real estate, don't
+              // display availability info
+            if ($house['User']['role'] != 'realestate') {
+        ?>
+
         <tr>
             <th>Διαμένουν:</th>
             <td>
@@ -240,6 +300,8 @@
                 (από <?php echo Sanitize::html($house['House']['total_places'])?> συνολικά θέσεις)
             </td>
         </tr>
+
+        <?php } ?>
 
         <tr>
             <th>Ορατότητα:</th>
@@ -264,71 +326,114 @@
         </td>
 
         <td>
+
+        <?php  // TODO fix css in order to use this check
+            // if ($house['House']['user_id'] !== $this->Session->read('Auth.User.id') ) {
+        ?>
+
         <table>
 
-        <?php if($house['User']['Profile']){?>
+        <?php if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){?>
 
         <tr>
-        <th><?php echo $this->Html->link($house['User']['Profile']['firstname'] . ' ' . $house['User']['Profile']['lastname'],
-                                        array('controller' => 'profiles', 'action' => 'view', $house['User']['Profile']['id']));?></th>
+        <th>
+            <?php
+                echo $this->Html->link($house['User']['Profile']['firstname'].' '.
+                    $house['User']['Profile']['lastname'],
+                    array('controller' => 'profiles', 'action' => 'view',
+                    $house['User']['Profile']['id']));
+            ?>
+        </th>
         </tr>
         <tr>
-            <td> <?php echo Sanitize::html($house['User']['Profile']['age'] . ' ετών, ' . ($house['User']['Profile']['gender']?'γυναίκα':'άνδρας'))?></td>
+            <td>
+                <?php
+                    echo Sanitize::html($house['User']['Profile']['age'].' ετών, '.
+                    ($house['User']['Profile']['gender']?'γυναίκα':'άνδρας'));
+                ?>
+            </td>
         </tr>
         <tr>
             <td>e-mail:</td>
-            <td> <?php echo Sanitize::html($house['User']['Profile']['email'])?></td>
+            <td>
+                <?php
+                    echo Sanitize::html($house['User']['Profile']['email']);
+                ?>
+            </td>
         </tr>
         <tr>
             <td>επιθυμητοί συγκάτοικοι:</td>
-            <td> <?php echo Sanitize::html($house['User']['Profile']['max_roommates'])?></td>
+            <td>
+                <?php
+                    echo Sanitize::html($house['User']['Profile']['max_roommates'])
+                ?>
+            </td>
         </tr>
-
         <?php }elseif($house['User']['RealEstate']){ ?>
         <tr>
-        <th><?php echo $this->Html->link($house['User']['RealEstate']['company_name'],
-                                        array('controller' => 'realEstates', 'action' => 'view', $house['User']['RealEstate']['id']));?></th>
+        <th>
+            <?php
+                echo $this->Html->link($house['User']['RealEstate']['company_name'],
+                    array('controller' => 'realEstates', 'action' => 'view',
+                    $house['User']['RealEstate']['id']));
+            ?>
+        </th>
         </tr>
-        <tr><td>e-mail:</td>
-            <td> <?php echo Sanitize::html($house['User']['RealEstate']['email'])?></td>
+        <tr>
+            <td>e-mail:</td>
+            <td>
+                <?php
+                    echo Sanitize::html($house['User']['RealEstate']['email']);
+                ?>
+            </td>
         </tr>
         <tr>
             <td>τηλέφωνο επικοινωνίας:</td>
-            <td> <?php echo Sanitize::html($house['User']['RealEstate']['phone'])?></td>
+            <td>
+                <?php
+                    echo Sanitize::html($house['User']['RealEstate']['phone']);
+                ?>
+            </td>
         </tr>
         <tr>
             <td>φαξ:</td>
-            <td> <?php echo Sanitize::html($house['User']['RealEstate']['fax'])?></td>
+            <td>
+                <?php
+                    echo Sanitize::html($house['User']['RealEstate']['fax']);
+                ?>
+            </td>
         </tr>
         <?php } ?>
-
         </table>
         </td>
-
     </table>
+
+    <?php // TODO fix css in order to use this check
+        // }
+    ?>
 
 </div>
 <!--left collumn-->
-
 <div class="house-right">
     <div class="houseactions">
         <?php
             if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                echo $html->link('Επεξεργασία', array('action' => 'edit', $house['House']['id']));
-                echo $html->link('Διαγραφή', array('action' => 'delete', $house['House']['id']), null, 'Είστε σίγουρος/η;');
+                echo $html->link('Επεξεργασία', array(
+                    'action' => 'edit', $house['House']['id']));
+                echo $html->link('Διαγραφή', array('action' => 'delete',
+                    $house['House']['id']), null, 'Είστε σίγουρος/η;');
             }
 
-            if ($this->Session->read('Auth.User.id') != $house['User']['id']) {
-                echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας', "/profiles/view/{$house['User']['Profile']['id']}");
+            if ($this->Session->read('Auth.User.id') != $house['User']['id'] &&
+                $this->Session->read('Auth.User.role' != 'realestate')) {
+                echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας',
+                            "/profiles/view/{$house['User']['Profile']['id']}");
             }
             ?>
 
 
     </div>
-
-
 </div>
 <!--right column-->
-
 </div>
 

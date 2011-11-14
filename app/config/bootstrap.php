@@ -53,10 +53,9 @@ Configure::write('YNI', array('0' => 'Ναι', '1' => 'Όχι', '2' => 'Αδιά
 
 Configure::write('debugging', 'Debugging view');
 function showDebug($msg){
-    $new = '['.date('H:i:s').'] '.$msg.' [php]<br />';
+    $new = '['.date('H:i:s').'] '.$msg.' [php]<br /><br />';
     $old = Configure::read('debugging');
     Configure::write('debugging', $new.$old);
 }
 
-Configure::write('Recaptcha.publicKey', '6Ld7vMkSAAAAALw4jfDEI6LLyCxTN4pOIQ7GvPZx');
-Configure::write('Recaptcha.privateKey', '6Ld7vMkSAAAAAPpRf4v0_zcyS24RLPE1iu9zbOfh');
+include_once('captcha.php');

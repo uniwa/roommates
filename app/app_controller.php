@@ -5,7 +5,19 @@ class  AppController extends Controller{
 	var $helpers  = array('Html', 'Form', 'Session','Auth');
 	var $uses = array('User', 'Profile');
 
-	function beforeFilter(){
+    function beforeFilter(){
+        /*
+         *  we redirect only if user requests a specific page and is not logged in
+         */
+         // tells the Auth component the location of login action
+        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
+
+        // tells the Auth component where to redirect after successful login
+        $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => '/');
+
+        // tells the Auth component where to redirect after logout
+        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
+
 		$this->Auth->loginError = "Δώστε έγκυρο όνομα χρήστη και συνθηματικό.";
 		$this->Auth->authError = " ";
 
@@ -54,10 +66,12 @@ class  AppController extends Controller{
 
 		$user = $this->User->read();
 
-
-		return array(  	'User' => array( 'id' => $user['User']['id'], 'banned' => $user['User']['banned'] ),
-				'Profile' =>array( 'id' => $user['Profile']['id'] ),
-				'House' => array('id' => isset( $user['House'][0]['id'] )?$user['House'][0]['id']:NULL ),
+		return array(  	'User' => array('id' => $user['User']['id'],
+                                        'banned' => $user['User']['banned'] ),
+                        'Profile' =>array( 'id' => $user['Profile']['id'] ),
+                        'House' => array('id' => isset($user['House'][0]['id']) ?
+                                                 $user['House'][0]['id'] : NULL),
+                        'RealEstate' => array('id' => $user['RealEstate']['id'])
         );
 
 	}

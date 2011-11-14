@@ -4,10 +4,21 @@
 # database configuration
 /app/config/database.php
 
+#ldap configuration
+/app/config/ldap.php
+
+# captcha keys
+/app/config/captcha.php
+
+# facebook configuration
+/app/config/facebook.php
+
+
 # swap et al
 *~
 *.swp
 *.bak
+.~*
 
 # eclipse bloat
 .project
