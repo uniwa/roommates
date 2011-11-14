@@ -1,5 +1,89 @@
+<style>
+    #leftbar{
+        float: left;
+        margin: 0px 0px 0px 32px;
+        padding: 32px;
+    }
+    
+    #main-inner{
+        float: left;
+        border-left: 1px dotted #333;
+        margin: 10px 0px 20px 0px;
+        padding: 24px;
+    }
+    
+    .housePic{
+        float: left;
+        width: 128px;
+        height: 128px;
+        padding: 2px;
+    }
+    
+    #houseEdit{
+        margin: 64px 0px 0px 12px;
+    }
+    
+    .houseTitle{
+        margin: 0px 0px 16px 18px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .houseClear{
+        clear: both;
+    }
+    
+    .houseLine{
+        padding: 6px;
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    .houseProperty{
+        float: left;
+        text-align: right;
+    }
+
+    .houseV{
+        width: 130px;
+    }
+    
+    .houseC{
+        width: 150px;
+    }
+       
+    .houseValue{
+        float: left;
+        margin: 0px 0px 0px 8px;
+    }
+    
+    .houseOdd{
+        background-color: #eef;
+    }
+    
+    .housePropertiesCol{
+        float: left;
+        margin: 0px 0px 0px 48px;
+    }
+    
+    .liimage{
+        float: left;
+        margin: 0px 0px 0px 6px;
+    }
+    
+    #imageList{
+        margin: 0px 0px 0px 24px;
+        padding: 0px 8px 0px 8px;
+    }
+    
+    #houseInfo{
+        margin: 0px 0px 0px 0px;
+        padding: 24px 0px 0px 0px;
+    }
+</style>
+
 <?php
-    /* fancybox: js image gallery  */
+    // fancybox: js image gallery
     echo $this->Html->script('jquery.fancybox-1.3.4.pack');
     echo $this->Html->script('jquery.easing-1.3.pack');
     echo $this->Html->script('jquery.mousewheel-3.0.4.pack');
@@ -7,305 +91,230 @@
     echo $this->Html->script('jquery.autogrowtextarea');
     echo $this->Html->script('main');
     echo $this->Html->css('fancybox/jquery.fancybox-1.3.4.css', 'stylesheet', array("media"=>"all" ), false);
-?>
-<div class="house-gallery">
-    <div class="default-image">
-        <?php
-        $empty_slots = 4 - count($images);
-        /* defaukt image */
-        if (isset($images[0])) {
-            echo $this->Html->link(
-                    $this->Html->image('uploads/houses/'.
-                        $house["House"]["id"]."/thumb_".
-                        $default_image_location, array('alt' => 'house image')
-                    ),
-                    '/img/uploads/houses/'.$house['House']['id'].
-                    '/medium_'. $default_image_location, array(
-                    'class' => 'fancyImage', 'rel' => 'group',
-                    'title' => 'description title', 'escape' => false));
 
-            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                echo "<div class='imageactions'>";
-                echo $this->Html->link(__('Διαγραφή', true), array(
-                    'controller' => 'images', 'action' => 'delete', $default_image_id),
-                    array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
-                echo "</div>";
-            }
+    $role = $this->Session->read('Auth.User.role');
+
+    $loggedUser = $this->Session->read('Auth.User.id');
+    $houseid = $house['House']['id'];
+    $userid = $house['User']['id'];
+    $ownerRole = $house['User']['role'];
+    if($ownerRole == 'user'){
+        $profileid = $house['User']['Profile']['id'];
+    }else if($ownerRole == 'realestate'){
+        $realestateid = $house['User']['RealEstate']['id'];
+    }
+    $houseAddress = $house['House']['address'];
+    $housePostalCode = $house['House']['postal_code'];
+    $houseType = $house['HouseType']['type'];
+    $houseFloorType = $house['Floor']['type'];
+    $housePrice = $house['House']['price'];
+    $houseArea = $house['House']['area'];
+    $houseFurnished = $house['House']['furnitured'];
+    $houseMunicipality = $house['Municipality']['name'];
+    $houseBedrooms = $house['House']['bedroom_num'];
+    $houseBathrooms = $house['House']['bathroom_num'];
+    $houseGarden = $house['House']['garden'];
+    $houseParking = $house['House']['parking'];
+    $houseShared = $house['House']['shared_pay'];
+    $houseSolar = $house['House']['solar_heater'];
+    $houseAircondition = $house['House']['aircondition'];
+    $houseYear = $house['House']['construction_year'];
+    $houseDoor = $house['House']['security_doors'];
+    $houseHeating = $house['HeatingType']['type'];
+    $houseStorage = $house['House']['storeroom'];
+    $houseDisability = $house['House']['disability_facilities'];
+    $houseHosting = $house['House']['currently_hosting'];
+    $houseRentPeriod = $house['House']['rent_period'];
+    $houseFreePlaces = $house['House']['free_places'];
+    $houseTotalPlaces = $house['House']['total_places'];
+    $houseAvailable = $time->format($format = 'd-m-Y', $house['House']['availability_date']);
+
+    $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+    $empty_slots = 4 - count($images);
+
+    // default image
+    if(isset($images[0])){
+        $imageThumbLocation = 'uploads/houses/'.$houseid.'/thumb_'.$default_image_location;
+        $imageMediumLocation = '/img/uploads/houses/'.$houseid.'/medium_'. $default_image_location;
+        $imageThumb = $this->Html->image($imageThumbLocation, array('alt' => $houseTypeArea));
+
+        $housePic = $this->Html->link($imageThumb, $imageMediumLocation,
+                array('class' => 'fancyImage', 'rel' => 'group',
+                'title' => $houseTypeArea, 'escape' => false));
+
+        if($loggedUser == $userid){
+            $housePic .= "<div class='imageactions'>";
+            $housePic .= $this->Html->link(__('Διαγραφή', true),
+                array('controller' => 'images', 'action' => 'delete', $default_image_id),
+                array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
+            $housePic .= "</div>";
         }
-        /* if don't have an image put placeholder */
-        else {
-            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                /* placeholder with link to add image */
-                echo $this->Html->link($this->Html->image('addpic.png',
-                    array('alt' => 'add house image', 'class' => 'img-placeholder')),
-                    array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                    array('title' => 'add house image', 'escape' => false));
-            } else {
-                /* empty placeholder without link to add image */
-                echo $this->Html->image('addpic.png', array(
-                    'alt' => 'add house image', 'class' => 'img-placeholder'));
-            }
-            $empty_slots -= 1;
+    }else{ // if don't have an image put placeholder
+        if($loggedUser == $userid){
+            // placeholder with link to add image
+            $housePic = $this->Html->link($this->Html->image('addpic.png',
+                array('alt' => 'add house image', 'class' => 'img-placeholder')),
+                array('controller' => 'images', 'action' =>'add', $houseid),
+                array('title' => 'προσθήκη εικόνας σπιτιού', 'escape' => false));
+        }else{ // empty placeholder without link to add image
+            $housePic = $this->Html->image('addpic.png', array(
+                'alt' => 'προσθήκη εικόνας σπιτιού', 'class' => 'img-placeholder'));
         }
-        ?>
-    </div>
-
-    <?php
-
-        /* allow posts to Facebook only by a 'user' (as in role)  */
-        if( $this->Session->read( 'Auth.User.role' ) == 'user' ) {
-
-            echo "<div class='facebook-post'>";
-
-                /* create the link to post on Facebook */
-
-                $furnished = null;
-                if( $house['House']['furnitured'] )  $furnished = ' Επιπλωμένο, ';
-                else $furnished = ', ';
-
-                /* don't show 'available_places' if house does not belong to a 'user' (as in role) */
-                $occupation_availability = null;
-                if( $house['User']['role'] != 'user' ) {
-
-                    $occupation_availability = '';
-                } else {
-                    $occupation_availability =
-                        ', Διαθέσιμες θέσεις '
-                        . Sanitize::html( $house['House']['free_places'] );
-                }
-
-                echo '<a href='
-                    . '"http://www.facebook.com/dialog/feed'
-                    . '?app_id=' . $facebook->getAppId()
-
-                    . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
-                    . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                    . '&caption=' . urlencode( '«Συγκατοικώ»' )
-
-                    . '&description=' . urlencode(
-                        $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
-                        . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                        . $furnished
-                        . 'Δήμος ' . $house['Municipality']['name']
-                        . $occupation_availability )
-                    . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                . '">Κοινoποίηση στο Facebook</a>';
-            echo '</div>';
+        $empty_slots -= 1;
+    }
+    
+    if($loggedUser == $userid){
+        $placeholders = '';
+        for($i = 0; $i < $empty_slots; $i++){
+                // placeholder with link to add image
+                $placeholders .= "<li class='liimage'>";
+                $placeholders .= $this->Html->link($this->Html->image('addpic.png',
+                    array('alt' => 'προσθήκη εικόνας σπιτιού ['.$i.']', 'class' => 'img-placeholder')),
+                    array('controller' => 'images', 'action' =>'add', $houseid),
+                    array('title' => 'προσθήκη εικόνας σπιτιού', 'escape' => false));
+                $placeholders .= "<li>";
         }
-    ?>
+    }
+    
+    $imageLines = array();
+    $i = 1;
+    foreach($images as $image){
+        if($image['Image']['location'] == $default_image_location){
+            continue;
+        }
+        $imageid = $image['Image']['id'];
+        $imageLocation = $image['Image']['location'];
+        $imageThumbLocation = 'uploads/houses/'.$houseid.'/thumb_'.$imageLocation;
+        $imageMediumLocation = '/img/uploads/houses/'.$houseid.'/medium_'. $imageLocation;
+        $imageThumb = $this->Html->image($imageThumbLocation,
+            array('alt' => ' '.$houseTypeArea.'['.$i.']'));
+        $imageLink = $this->Html->link($imageThumb, $imageMediumLocation,
+                array('class' => 'fancyImage', 'rel' => 'group',
+                'title' => $houseTypeArea, 'escape' => false));
+        $imageLine = "<li class='liimage'>";
+        $imageLine .= $imageLink;
+        if($loggedUser == $userid){
+            $imageLine .= "<div class='imageactions'>";
+            $imageLine .= $this->Html->link(__('Διαγραφή', true),
+                array('controller' => 'images', 'action' => 'delete', $imageid),
+                array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
+            $imageLine .= "</div>";
+        }
+        $imageLine .= "</li>";
+        $imageLines[$i] = $imageLine;
+        $i++;
+    }
+    
+    if($loggedUser == $userid){
+        //edit house
+        $editHouse = $html->link('Επεξεργασία', array('action' => 'edit', $houseid));
+        // delete house
+        $deleteHouse = $html->link('Διαγραφή', array('action' => 'delete', $houseid),
+            null, 'Είστε σίγουρος/η;');
+    }
+    // owner's profile (not available to real estate)
+    if(($loggedUser != $userid) && ($role != 'realestate')){
+        if($ownerRole == 'user'){
+            $linkAction = "/profiles/view/{$profileid}";
+        }else if($ownerRole == 'realestate'){
+            $linkAction = "/real_estates/view/{$realestateid}";
+        }
+        $profileLink =  $this->Html->link('Προφίλ ιδιοκτήτη', $linkAction);
+    }
 
-    <div class="image-list">
-        <ul>
-            <?php
-                /* image placeholder */
-                for ($i = 1; $i <= $empty_slots; $i++) {
-                    echo '<li class="liimage">';
-                    /* if we have access placeholder is a link to 'add image' */
-                    if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                        echo $this->Html->link($this->Html->image('addpic.png',
-                            array('alt' => 'add house image', 'class' => 'img-placeholder')
-                        ),
-                        array('controller' => 'images', 'action' =>'add', $house['House']['id']),
-                        array('title' => 'add house image', 'escape' => false));
-                    /* empty placeholder without link to add image */
-                    } else {
-                        echo $this->Html->image('addpic.png',
-                            array('alt' => 'add house image', 'class' => 'img-placeholder'));
-                    }
-                    echo '<div class="imageactions">&nbsp;</div>';
-                    echo "</li>\n";
-                }
-                $i = 0;
-                foreach ($images as $image):
-                    /* skip image if is the default one
-                       the default image is shown on the left side of the image bar
-                    */
-                    if ($image['Image']['location'] == $default_image_location) {
-                        continue;
-                    }
-            ?>
-            <li class="liimage">
-                <?php echo $this->Html->link(
-                    $this->Html->image('uploads/houses/'.$house["House"]["id"].
-                        "/thumb_" . $image['Image']['location'],
-                        array('alt' => 'house image')), '/img/uploads/houses/'.
-                        $house['House']['id'] . '/medium_'.
-                        $image['Image']['location'],
-                        array('class' => 'fancyImage', 'rel' => 'group',
-                        'title' => 'description title', 'escape' => false));
-                ?>
+    // allow posts to Facebook only by a 'user' (as in role)
+    if($role == 'user'){
+        // create the link to post on Facebook
+        $furnished = null;
+        if($house['House']['furnitured']){
+            $furnished = ' Επιπλωμένο, ';
+        }else{
+            $furnished = ', ';
+        }
+        // don't show 'available_places' if house does not belong to a 'user' (as in role)
+        $occupation_availability = null;
+        if($role != 'user'){
+            $occupation_availability = '';
+        }else{
+            $occupation_availability = ', Διαθέσιμες θέσεις ';
+            $occupation_availability .= Sanitize::html($house['House']['free_places']);
+        }
+        $fbUrl = "http://www.facebook.com/dialog/feed";
+        $fbUrl .= "?app_id=".$facebook->getAppId();
+        $fbUrl .= "&name=".urlencode('Δείτε περισσότερα εδώ...');
+        $fbUrl .= "&link={$fb_app_uri}houses/view/{$houseid}";
+        $fbUrl .= "&caption=".urlencode('«Συγκατοικώ»');
+        $fbUrl .= "&description=".urlencode($houseTypeArea.'Ενοικίο '.$housePrice.' €,'
+            .$furnished.'Δήμος '.$houseMunicipality.$occupation_availability);
+        $fbUrl .= "&redirect_uri={$fb_app_uri}houses/view/{$houseid}";
+        $fbLink = $this->Html->link('Κοινoποίηση στο Facebook', $fbUrl,
+            array('title' => 'κοινοποίηση στο facebook'));
+        $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
+    }
 
-                <div class="imageactions">
-                    <?php
-                        /* image actions: set as default and delete */
-                        if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                            echo $this->Html->link(__('Διαγραφή', true), array(
-                                'controller' => 'images', 'action' => 'delete',
-                                $image['Image']['id']), array('class' => 'thumb_img_delete'),
-                                sprintf(__('Είστε σίγουρος;', true)));
-                            echo $this->Html->link('Προεπιλεγμένη',
-                                    array('controller' => 'images',
-                                        'action' => 'set_default',
-                                        $image['Image']['id']),
-                                    array('class' => 'thumb_img_thumb'), null);
-                        } else {
-                            /* dummy div to align image actions */
-                            echo '<div class="imageactions">&nbsp;</div>';
-                        }
-                    ?>
-                </div>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-
-        <div class="actions">
-        <?php
-        /*
-            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                echo $this->Html->link(__('Προσθήκη νέας εικόνας', true), array('controller' => 'images', 'action' => 'add', $house['House']['id']));
-            }
-        */
-        ?>
-        </div>
-    </div> <!-- end image-list -->
-</div> <!-- end house-gallery -->
-
-<div class="profile houseProfile">
-
-<div class="house-left">
-    <table class="house-info">
-        <td>
-        <table>
-        <tr>
-            <th>Διεύθυνση:</th>
-            <td><?php echo $house['House']['address']?></td>
-        </tr>
-        <tr>
-            <th>Δήμος:</th>
-            <td> <?php echo $house['Municipality']['name']?></td>
-        </tr>
-        <tr>
-            <th>Τ.Κ.:</th>
-            <td> <?php echo $house['House']['postal_code']?></td>
-        </tr>
-        <tr>
-            <th>Τύπος:</th>
-            <td> <?php echo $house['HouseType']['type']?></td>
-        </tr>
-        <tr>
-            <th>Εμβαδόν:</th>
-            <td> <?php echo $house['House']['area']?> τ.μ.</td>
-        </tr>
-        <tr>
-            <th>Υπνοδωμάτια:</th>
-            <td> <?php echo $house['House']['bedroom_num']?></td>
-        </tr>
-        <tr>
-            <th>Μπάνια:</th>
-            <td> <?php echo $house['House']['bathroom_num']?></td>
-        </tr>
-        <tr>
-            <th>Όροφος:</th>
-            <td> <?php echo $house['Floor']['type']?></td>
-        </tr>
-        <tr>
-            <th>Έτος κατασκευής:</th>
-            <td> <?php echo $house['House']['construction_year']?></td>
-        </tr>
-        <tr>
-            <th>Θέρμανση:</th>
-            <td> <?php echo $house['HeatingType']['type']?></td>
-        </tr>
-        <tr>
-            <th>Ενοίκιο:</th>
-            <td> <?php echo $house['House']['price']?>€</td>
-        </tr>
-        <tr>
-            <th>Διαθέσιμο από:</th>
-            <td> <?php echo $time->format($format = 'd / m / Y', $house['House']['availability_date'])?></td>
-        </tr>
-        <tr>
-            <th>Περίοδος ενοικίασης:</th>
-            <td> <?php echo ($house['House']['rent_period']) ? $house['House']['rent_period'] . " μήνες"
-                    : '-' ?></td>
-        </tr>
-        <tr>
-            <th>Ηλιακός:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['solar_heater']?>">&nbsp;</td>
-        </tr>
-
-        <tr>
-            <th>Επιπλωμένο:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['furnitured']?>">&nbsp;</td>
-        </tr>
-
-        <tr>
-            <th>Κλιματισμός:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['aircondition']?>">&nbsp;</td>
-        </tr>
-
-        <tr>
-            <th>Κήπος:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['garden']?>">&nbsp;</td>
-        </tr>
-        <tr>
-            <th>Parking:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['parking']?>">&nbsp;</td>
-        </tr>
-        <tr>
-            <th>Κοινόχρηστα:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['shared_pay']?>">&nbsp;</td>
-        </tr>
-        <tr>
-            <th>Πόρτα ασφαλείας:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['security_doors']?>">&nbsp;</td>
-        </tr>
-
-        <tr>
-            <th>Προσβάσιμο από ΑΜΕΑ:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['disability_facilities']?>">&nbsp;</td>
-        </tr>
-        <tr>
-            <th>Αποθήκη:</th>
-            <td>
-                <span class="checkbox cb<?php echo $house['House']['storeroom']?>">&nbsp;</td>
-        </tr>
-
-        <!-- availability -->
-        <?php // if the house belongs to real estate, don't
-              // display availability info
-            if ($house['User']['role'] != 'realestate') {
-        ?>
-
-        <tr>
-            <th>Διαμένουν:</th>
-            <td>
-                <?php echo Sanitize::html($house['House']['currently_hosting'])?>
-                <?php echo $house['House']['currently_hosting'] == 1 ? 'άτομο' : 'άτομα'?>
-            </td>
-        </tr>
-
-        <tr>
-            <th>Διαθέσιμες θέσεις</th>
-            <td> <?php echo Sanitize::html($house['House']['free_places'])?>
-                (από <?php echo Sanitize::html($house['House']['total_places'])?> συνολικά θέσεις)
-            </td>
-        </tr>
-
-        <?php } ?>
-
-        <tr>
-            <th>Ορατότητα:</th>
-            <td>
-                <?php
+    // House properties
+    $houseProperties['address']['label'] = 'Διεύθυνση';
+    $houseProperties['municipality']['label'] = 'Δήμος';
+    $houseProperties['postal_code']['label'] = 'Τ.Κ.';
+    $houseProperties['type']['label'] = 'Τύπος';
+    $houseProperties['area']['label'] = 'Εμβαδόν';
+    $houseProperties['area']['suffix'] = 'τ.μ.';
+    $houseProperties['bedrooms']['label'] = 'Υπνοδωμάτια';
+    $houseProperties['bathrooms']['label'] = 'Μπάνια';
+    $houseProperties['floor']['label'] = 'Όροφος';
+    $houseProperties['year']['label'] = 'Έτος κατασκευής';
+    $houseProperties['heating']['label'] = 'Θέρμανση';
+    $houseProperties['price']['label'] = 'Ενοίκιο';
+    $houseProperties['price']['suffix'] = '€';
+    $houseProperties['available']['label'] = 'Διαθέσιμο από';
+    $houseProperties['rent_period']['label'] = 'Περίοδος ενοικίασης';
+    $houseProperties['rent_period']['suffix'] = 'μήνες';
+    // if the house belongs to real estate, don't display availability info
+    if($role != 'realestate'){
+        $houseProperties['hosting']['label'] = 'Διαμένουν';
+        $houseProperties['hosting']['suffix'] = ($houseHosting > 1)?'άτομα':'άτομο';
+        $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
+        $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά θέσεις)";
+    }
+    $houseProperties['solar']['label'] = 'Ηλιακός';
+    $houseProperties['furnished']['label'] = 'Επιπλωμένο';
+    $houseProperties['aircondition']['label'] = 'Κλιματισμός';
+    $houseProperties['garden']['label'] = 'Κήπος';
+    $houseProperties['parking']['label'] = 'Θέση στάθμευσης';
+    $houseProperties['shared']['label'] = 'Κοινόχρηστα';
+    $houseProperties['door']['label'] = 'Πόρτα ασφαλείας';
+    $houseProperties['disability']['label'] = 'Προσβάσιμο από ΑΜΕΑ';
+    $houseProperties['storage']['label'] = 'Αποθήκη';
+    
+    $houseProperties['address']['value'] = $houseAddress;
+    $houseProperties['municipality']['value'] = $houseMunicipality;
+    $houseProperties['postal_code']['value'] = $housePostalCode;
+    $houseProperties['type']['value'] = $houseType;
+    $houseProperties['area']['value'] = $houseArea;
+    $houseProperties['bedrooms']['value'] = $houseBedrooms;
+    $houseProperties['bathrooms']['value'] = $houseBathrooms;
+    $houseProperties['floor']['value'] = $houseFloorType;
+    $houseProperties['year']['value'] = $houseYear;
+    $houseProperties['heating']['value'] = $houseHeating;
+    $houseProperties['price']['value'] = $housePrice;
+    $houseProperties['available']['value'] = $houseAvailable;
+    $houseProperties['rent_period']['value'] = $houseRentPeriod;
+    // if the house belongs to real estate, don't display availability info
+    if($role != 'realestate'){
+        $houseProperties['hosting']['value'] = $houseHosting;
+        $houseProperties['free_places']['value'] = $houseFreePlaces;
+    }
+    $houseProperties['solar']['check'] = $houseSolar;
+    $houseProperties['furnished']['check'] = $houseFurnished;
+    $houseProperties['aircondition']['check'] = $houseAircondition;
+    $houseProperties['garden']['check'] = $houseGarden;
+    $houseProperties['parking']['check'] = $houseParking;
+    $houseProperties['shared']['check'] = $houseShared;
+    $houseProperties['door']['check'] = $houseDoor;
+    $houseProperties['disability']['check'] = $houseDisability;
+    $houseProperties['storage']['check'] = $houseStorage;
+/*
+            Ορατότητα:                
                     if($this->Session->read('Auth.User.id') == $house['User']['id']) {
                         if($house['House']['visible']) {
                             echo 'Είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
@@ -313,126 +322,123 @@
                             echo 'Δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
                         }
                     }
-                ?>
-            </td>
-        </tr>
+                            Περιγραφή:
+              echo Sanitize::html($house['House']['description'])
 
-        <tr>
-            <th>Περιγραφή:</th>
-            <td> <?php echo Sanitize::html($house['House']['description'])?></td>
-        </tr>
-        </table>
-        </td>
-
-        <td>
-
-        <?php  // TODO fix css in order to use this check
+          // TODO fix css in order to use this check
             // if ($house['House']['user_id'] !== $this->Session->read('Auth.User.id') ) {
-        ?>
-
-        <table>
-
-        <?php if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){?>
-
-        <tr>
-        <th>
-            <?php
+        
+         if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){
+            
                 echo $this->Html->link($house['User']['Profile']['firstname'].' '.
                     $house['User']['Profile']['lastname'],
                     array('controller' => 'profiles', 'action' => 'view',
                     $house['User']['Profile']['id']));
-            ?>
-        </th>
-        </tr>
-        <tr>
-            <td>
-                <?php
+            
+                        
                     echo Sanitize::html($house['User']['Profile']['age'].' ετών, '.
                     ($house['User']['Profile']['gender']?'γυναίκα':'άνδρας'));
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td>e-mail:</td>
-            <td>
-                <?php
+                            e-mail:                
                     echo Sanitize::html($house['User']['Profile']['email']);
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td>επιθυμητοί συγκάτοικοι:</td>
-            <td>
-                <?php
+                            επιθυμητοί συγκάτοικοι:                
                     echo Sanitize::html($house['User']['Profile']['max_roommates'])
-                ?>
-            </td>
-        </tr>
-        <?php }elseif($house['User']['RealEstate']){ ?>
-        <tr>
-        <th>
-            <?php
+                        
+         }elseif($house['User']['RealEstate']){         
+            
                 echo $this->Html->link($house['User']['RealEstate']['company_name'],
                     array('controller' => 'realEstates', 'action' => 'view',
                     $house['User']['RealEstate']['id']));
-            ?>
-        </th>
-        </tr>
-        <tr>
-            <td>e-mail:</td>
-            <td>
-                <?php
+            
+            e-mail:                
                     echo Sanitize::html($house['User']['RealEstate']['email']);
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td>τηλέφωνο επικοινωνίας:</td>
-            <td>
-                <?php
+                            τηλέφωνο επικοινωνίας:                
                     echo Sanitize::html($house['User']['RealEstate']['phone']);
-                ?>
-            </td>
-        </tr>
-        <tr>
-            <td>φαξ:</td>
-            <td>
-                <?php
-                    echo Sanitize::html($house['User']['RealEstate']['fax']);
-                ?>
-            </td>
-        </tr>
-        <?php } ?>
-        </table>
-        </td>
-    </table>
+φαξ:
+                    echo Sanitize::html($house['User']['RealEstate']['fax']);*/
+?>
 
-    <?php // TODO fix css in order to use this check
-        // }
-    ?>
-
-</div>
-<!--left collumn-->
-<div class="house-right">
-    <div class="houseactions">
+<div id='leftbar'>
+    <div class='housePic liimage'>
         <?php
-            if ($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                echo $html->link('Επεξεργασία', array(
-                    'action' => 'edit', $house['House']['id']));
-                echo $html->link('Διαγραφή', array('action' => 'delete',
-                    $house['House']['id']), null, 'Είστε σίγουρος/η;');
+            echo $housePic;
+        ?>
+    </div>
+    <div id='houseEdit'>
+        <?php
+            if($this->Session->read('Auth.User.id') == $userid){
+                echo $editHouse.'<br />';
+                echo $deleteHouse.'<br />';
             }
-
-            if ($this->Session->read('Auth.User.id') != $house['User']['id'] &&
-                $this->Session->read('Auth.User.role' != 'realestate')) {
-                echo $this->Html->link('Προφίλ ιδιοκτήτη Αγγελίας',
-                            "/profiles/view/{$house['User']['Profile']['id']}");
+            if(($loggedUser != $userid) && ($role != 'realestate')){
+                echo $profileLink.'<br />';
             }
-            ?>
-
-
+            echo $fbPost.'<br />';
+            
+        ?>
     </div>
 </div>
-<!--right column-->
+<div id='main-inner'>
+    <div id='imageList' class='houseClear'>
+        <ul>
+            <?php
+                for($i = 1; $i <= count($imageLines); $i++){
+                    echo $imageLines[$i];
+                }
+                if(isset($placeholders)) echo $placeholders;
+            ?>
+        </ul>
+    </div>
+    <div id='houseInfo' class='houseClear'>
+        <div class='houseTitle'>
+            Στοιχεία σπιτιού
+        </div>
+        <?php
+            $odd = false;
+            $propertiesValues = '';
+            $propertiesChecks = '';
+            foreach($houseProperties as $hp){
+                $checkbox = isset($hp['check']);
+                $propertyLine = '';
+                $odd = !$odd;
+                $lineClass = ($odd)?'houseOdd ':' ';
+                $propertyLine .= "<li class='houseClear houseLine {$lineClass}'>\n";
+                $lineClass = ($checkbox)?'houseC':'houseV';
+                $propertyLine .= "<div class='houseProperty {$lineClass}'>\n";
+                $property = "{$hp['label']} : ";
+                $propertyLine .= $property;
+                $propertyLine .= "</div>\n<div class='houseValue'>\n";
+                if($checkbox){
+                    $value = ($hp['check'])?'ναι':'όχι';
+                }else{
+                    $value = '-';
+                    if(isset($hp['value'])){
+                        if($hp['value'] != ''){
+                            $value = $hp['value'];
+                            if(isset($hp['suffix'])){
+                                $value .= " {$hp['suffix']}";
+                            }
+                        }
+                    }
+                }
+                $propertyLine .= $value;
+                $propertyLine .= "</div>\n</li>\n";
+                if($checkbox){
+                    $propertiesChecks .= $propertyLine;
+                }else{
+                    $propertiesValues .= $propertyLine;
+                }
+            } //foreach $houseProperties
+        ?>
+        <ul class='housePropertiesCol'>
+            <?php
+                echo $propertiesValues;
+            ?>
+        </ul>
+        <ul class='housePropertiesCol'>
+            <?php
+                echo $propertiesChecks;
+            ?>
+        </ul>
+    </div>
 </div>
 
