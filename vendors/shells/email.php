@@ -236,17 +236,18 @@ class EmailShell extends Shell{
 
             $email_addr = array_keys($email_all);   //all users email addresses that will receive mail
 
-            $email->from = 'admin@roommates.edu.teiath.gr';
-            $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
-            $email->sendAs = 'both';
             for($i=0; $i<count($email_addr); $i++){
-                $links = array();
                 $email->reset();
+
+                $email->from = 'admin@roommates.edu.teiath.gr';
+                $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
+                $email->sendAs = 'both';
                 $email->template = 'cron_house_match';
 
                 $houses_ids = $email_all[$email_addr[$i]]; //houses ids
                 $controller->set('house_count', count($houses_ids));
 
+                $links = array();
                 for($j=0; $j<count($houses_ids); $j++){
                     array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
                 }
