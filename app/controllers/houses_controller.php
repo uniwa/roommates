@@ -202,7 +202,9 @@ class HousesController extends AppController {
 		$this->set('images', $images);
 		
 		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
-		$this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+        $fb_app_uri = Configure::read( 'fb_app_uri' );
+        $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
+		$this->set( 'fb_app_uri', $fb_app_uri );
 		$this->set( 'facebook', $this->Session->read( 'facebook' ) );
     }
  
@@ -490,7 +492,9 @@ class HousesController extends AppController {
             $this->set('defaults', $this->params['url']);
 
             /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+            $fb_app_uri = Configure::read( 'fb_app_uri' );
+            $fb_app_uri = $this->appendIfAbsent( Configure::read('fb_app_uri'), '/' );
+            $this->set( 'fb_app_uri', $fb_app_uri );
             $this->set( 'facebook', $this->Session->read( 'facebook' ) );
 
             $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
@@ -911,6 +915,7 @@ class HousesController extends AppController {
         }
         
         $fb_app_uri = Configure::read( 'fb_app_uri' );
+        $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
         $facebook = $this->Session->read( 'facebook' );
 
         try {    
@@ -931,12 +936,21 @@ class HousesController extends AppController {
         } catch( FacebookApiException $e ) {
         
             $this->Session->setFlash(
-                'Προέκυψε ένα σφάλμα κατά την κοινωποίηση της αγγελίας στο Facebook.',
+                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο Facebook.',
                 'default',
                 array('class' => 'flashRed') );
         }
     }
-    
+
+    protected function appendIfAbsent( $string, $char ) {
+
+        if( strpos ( $string, $char, strlen( $string ) - 1 ) == false ) {
+
+            $string = $string . $char;
+        }
+        return $string;
+    }
+
     /**
      * Creates a Facebook instance which is then made available though
      * the Session.

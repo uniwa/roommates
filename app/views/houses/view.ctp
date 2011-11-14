@@ -89,7 +89,7 @@
                         . 'Δήμος ' . $house['Municipality']['name']
                         . $occupation_availability )
                     . '&redirect_uri=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                . '">Κοινωποίηση στο Facebook</a>';
+                . '">Κοινοποίηση στο Facebook</a>';
 
             echo '</div>';
         }

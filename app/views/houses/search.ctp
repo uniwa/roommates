@@ -682,7 +682,7 @@
                                         . '&redirect_uri=' . urlencode(
                                             'http://' . $_SERVER['HTTP_HOST'] . $this->here
                                             . '?' . $this_url )
-                                    . '">Κοινωποίηση στο Facebook</a>';
+                                    . '">Κοινοποίηση στο Facebook</a>';
                                 echo '</div>';
                             }
                         ?>
