@@ -128,6 +128,11 @@
     $houseFreePlaces = $house['House']['free_places'];
     $houseTotalPlaces = $house['House']['total_places'];
     $houseAvailable = $time->format($format = 'd-m-Y', $house['House']['availability_date']);
+    $houseDescription = Sanitize::html($house['House']['description']);
+    $houseVisible = $house['House']['visible'];
+    $houseVisibility = (($loggedUser == $userid) && ($houseVisible))?
+        'Το σπίτι είναι ορατό σε άλλους χρήστες και στις αναζητήσεις':
+        'Το σπίτι δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις';
 
     $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
     $empty_slots = 4 - count($images);
@@ -313,21 +318,10 @@
     $houseProperties['door']['check'] = $houseDoor;
     $houseProperties['disability']['check'] = $houseDisability;
     $houseProperties['storage']['check'] = $houseStorage;
-/*
-            Ορατότητα:                
-                    if($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                        if($house['House']['visible']) {
-                            echo 'Είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
-                        } else {
-                            echo 'Δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
-                        }
-                    }
-                            Περιγραφή:
-              echo Sanitize::html($house['House']['description'])
 
-          // TODO fix css in order to use this check
-            // if ($house['House']['user_id'] !== $this->Session->read('Auth.User.id') ) {
-        
+// TODO fix css in order to use this check
+// if ($house['House']['user_id'] !== $this->Session->read('Auth.User.id') ) {
+/*        
          if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){
             
                 echo $this->Html->link($house['User']['Profile']['firstname'].' '.
@@ -433,6 +427,18 @@
             <?php
                 echo $propertiesValues;
             ?>
+            <li class='houseClear houseLine'>
+                <?php
+                    echo '<br />'.$houseVisibility;
+                ?>
+            </li>
+            <li class='houseClear houseLine'>
+                <?php
+                    if($houseDescription != ''){
+                        echo 'Περιγραφή: '.$houseDescription;
+                    }
+                ?>
+            </li>
         </ul>
         <ul class='housePropertiesCol'>
             <?php
