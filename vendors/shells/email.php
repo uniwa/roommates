@@ -239,11 +239,11 @@ class EmailShell extends Shell{
             $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
             $email->sendAs = 'both';
             for($i=0; $i<count($email_addr); $i++){
-                $email->reset()
-                $email->template('cron_house_match');
+                $email->reset();
+                $email->template = 'cron_house_match';
 
                 $houses_ids = $email_all[$email_addr[$i]]; //houses ids
-                $this->set('house_count', count($houses_ids));
+                $controller->set('house_count', count($houses_ids));
 
                 for($j=0; $j<count($houses_ids); $j++){
                     array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
@@ -252,7 +252,7 @@ class EmailShell extends Shell{
                 //echo $houses_ids;
                 //echo $email_addr[$i];
                 $email->to = $email_addr[$i];
-                $this->set('links', $links);
+                $controller->set('links', $links);
                 $email->send();
             }
         }
