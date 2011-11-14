@@ -6,6 +6,6 @@ cake_bin="${roommates_path}cake/console/cake"
 cake_console="${roommates_path}cake/console"
 
 cd "$app_path"
-$cake_bin -app "$app_path" -console $cake_console "email" "tlatsas2000@gmail.com"
+$cake_bin -app "$app_path" -console $cake_console "email"
 
 exit 0
