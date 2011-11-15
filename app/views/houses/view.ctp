@@ -29,7 +29,7 @@
     }
     
     .houseTitle{
-        margin: 0px 0px 16px 18px;
+        margin: 0px 0px 16px 30px;
         font-size: 1.2em;
         font-weight: bold;
     }
