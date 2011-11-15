@@ -12,10 +12,16 @@
         padding: 24px;
     }
     
+    #houseCont{
+        margin: 0px 0px 64px 0px;
+        overflow: hidden;
+        height: 100%;
+    }
+    
     .housePic{
         float: left;
-        width: 128px;
-        height: 128px;
+/*        width: 128px;
+        height: 128px;*/
         padding: 2px;
     }
     
@@ -25,7 +31,8 @@
     }
     
     #houseEdit{
-        margin: 64px 0px 0px 12px;
+        clear: both;
+        margin: 0px 0px 0px 12px;
     }
     
     .houseTitle{
@@ -349,10 +356,12 @@
 ?>
 
 <div id='leftbar'>
-    <div class='housePic liimage'>
-        <?php
-            echo $housePic;
-        ?>
+    <div id='houseCont'>
+        <div class='housePic liimage'>
+            <?php
+                echo $housePic;
+            ?>
+        </div>
     </div>
     <div id='houseEdit'>
         <?php
