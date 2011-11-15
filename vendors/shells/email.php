@@ -67,6 +67,10 @@ class EmailShell extends Shell{
                     array_push($compatible_houses, $houses[$j]['House']['id']);
                 }
             }
+            // skip if no houses found
+            if (empty($compatible_houses)) {
+                continue;
+            }
             $email_users[$users[$i]['Profile']['email']] = $compatible_houses;
         }
 
