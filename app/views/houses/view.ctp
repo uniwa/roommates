@@ -243,7 +243,7 @@
                 'controller' => 'profiles', 'action' => 'view',
                 $profileid));
             $profileInfo .= '<br />'.$profileAge.' ετών, '.$profileGender;
-            $profileInfo .= '<br />email: '.$profileEmail;
+            $profileInfo .= '<br />'.$this->Html->link($profileEmail, 'mailto:'.$profileEmail);
             $profileInfo .= '<br />επιθυμητοί συγκάτοικοι: '.$profileWanted;
         }elseif($ownerRole == 'realestate'){
             $profileInfo = $this->Html->link($realestateCompany,
