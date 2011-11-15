@@ -22,7 +22,7 @@ class EmailShell extends Shell{
 
 
         //get (only) users data and preferences 
-        $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user' )));
+        $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user', 'Profile.get_mail' => 1)));
         //pr($users);die(); //User, Preference, Profile 
 
         $email_users = array();
