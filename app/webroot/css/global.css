@@ -49,7 +49,7 @@ q:before, q:after{
 
 a, a:link, a:visited {
     text-decoration: none;
-    color: #21759B;
+    color: #339/*21759B*/;
 }
 table{
     border-collapse: collapse;
@@ -63,7 +63,7 @@ body{
     margin: 0;
     padding: 0;
     height: 100%;
-    color: #59a4d8;
+    color: #000/*59a4d8*/;
 }
 
 img{

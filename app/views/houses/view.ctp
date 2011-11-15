@@ -1,7 +1,7 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 0px 0px 32px;
+        margin: 0px 20px 0px 32px;
         padding: 32px;
     }
     
