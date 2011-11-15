@@ -249,7 +249,7 @@
             $profileInfo = $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
                 $realestateid));
-            $profileInfo .= '<br />e-mail: '.$realestateEmail;
+            $profileInfo .= '<br />email: '.$this->Html->link($realestateEmail, 'mailto:'.$realestateEmail);
             $profileInfo .= '<br />τηλέφωνο: '.$realestatePhone;
             $profileInfo .= '<br />φαξ: '.$realestateFax;
         }
