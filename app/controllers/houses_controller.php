@@ -162,8 +162,7 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
-
-        $this->set('title_for_layout','Σπίτι');
+        $this->set('title_for_layout','Εμφάνιση σπιτιού');
         $this->checkExistance($id);
 
         $this->House->id = $id;
@@ -295,7 +294,19 @@ class HousesController extends AppController {
         $this->House->id = $id;
 
         if (empty($this->data)) {
-            $this->data = $this->House->read();
+            $house = $this->House->read();;
+            $this->data = $house;
+            $this->set('house', $house);
+
+            $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
+            $imageThumbLocation = 'house.gif';
+            foreach ($images as $image) {
+                if($image['Image']['id'] == $house['House']['default_image_id']){
+                    $defaultImageLocation = $image['Image']['location'];
+                    $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
+                }
+            }
+		    $this->set('imageThumbLocation', $imageThumbLocation);
         }
         else {
             if ($this->House->save($this->data)) {

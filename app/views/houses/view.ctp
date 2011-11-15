@@ -1,7 +1,7 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 0px 0px 32px;
+        margin: 0px 20px 0px 32px;
         padding: 32px;
     }
     
@@ -29,7 +29,7 @@
     }
     
     .houseTitle{
-        margin: 0px 0px 16px 18px;
+        margin: 0px 0px 16px 30px;
         font-size: 1.2em;
         font-weight: bold;
     }
