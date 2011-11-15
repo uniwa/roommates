@@ -250,13 +250,13 @@
                 'controller' => 'profiles', 'action' => 'view',
                 $profileid));
             $profileInfo .= '<br />'.$profileAge.' ετών, '.$profileGender;
-            $profileInfo .= '<br />email: '.$profileEmail;
+            $profileInfo .= '<br />email: '.$this->Html->link($profileEmail, 'mailto:'.$profileEmail);
             $profileInfo .= '<br />επιθυμητοί συγκάτοικοι: '.$profileWanted;
         }elseif($ownerRole == 'realestate'){
             $profileInfo = $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
                 $realestateid));
-            $profileInfo .= '<br />e-mail: '.$realestateEmail;
+            $profileInfo .= '<br />email: '.$this->Html->link($realestateEmail, 'mailto:'.$realestateEmail);
             $profileInfo .= '<br />τηλέφωνο: '.$realestatePhone;
             $profileInfo .= '<br />φαξ: '.$realestateFax;
         }
