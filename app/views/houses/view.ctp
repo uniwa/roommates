@@ -145,7 +145,7 @@
     $houseAvailable = $time->format($format = 'd-m-Y', $house['House']['availability_date']);
     $houseDescription = Sanitize::html($house['House']['description']);
     $houseVisible = $house['House']['visible'];
-    $houseVisibility = (($loggedUser == $userid) && ($houseVisible))?
+    $houseVisibility = ($houseVisible == 1)?
         'Το σπίτι είναι ορατό σε άλλους χρήστες και στις αναζητήσεις':
         'Το σπίτι δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις';
 
@@ -426,11 +426,13 @@
             <?php
                 echo $propertiesValues;
             ?>
+            <?php if ($loggedUser == $userid) { ?>
             <li class='houseClear houseLine'>
                 <?php
                     echo '<br />'.$houseVisibility;
                 ?>
             </li>
+            <?php } ?>
             <li class='houseClear houseLine'>
                 <?php
                     if($houseDescription != ''){
