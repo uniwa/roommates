@@ -123,7 +123,8 @@
         $realestateCompany = $house['User']['RealEstate']['company_name'];
         $realestateEmail = Sanitize::html($house['User']['RealEstate']['email']);
         $realestatePhone = Sanitize::html($house['User']['RealEstate']['phone']);
-        $realestateFax = Sanitize::html($house['User']['RealEstate']['fax']);
+        $realestateFax = (!empty($house['User']['RealEstate']['fax']))?
+            Sanitize::html($house['User']['RealEstate']['fax']):'-';
     }
     $houseAddress = $house['House']['address'];
     $housePostalCode = $house['House']['postal_code'];
