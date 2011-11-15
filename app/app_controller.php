@@ -19,7 +19,7 @@ class  AppController extends Controller{
         $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
 
 		$this->Auth->loginError = "Δώστε έγκυρο όνομα χρήστη και συνθηματικό.";
-		$this->Auth->authError = " ";
+		$this->Auth->authError = "";
 
 		// Define variables for active profiles and houses
 		$active['houses'] = $this->Profile->find('count');//, array('conditions' => array('House.visible' => '1')));
