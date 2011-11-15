@@ -389,7 +389,7 @@ class AuthComponent extends Object {
 			$user = $this->user();
 			if (!$user) {
 				if (!$this->RequestHandler->isAjax()) {
-					$this->Session->setFlash($this->authError, $this->flashElement, array(), 'auth');
+				//	$this->Session->setFlash($this->authError, $this->flashElement, array(), 'auth');
 					if (!empty($controller->params['url']) && count($controller->params['url']) >= 2) {
 						$query = $controller->params['url'];
 						unset($query['url'], $query['ext']);
@@ -451,7 +451,7 @@ class AuthComponent extends Object {
 			return true;
 		}
 
-		$this->Session->setFlash($this->authError, $this->flashElement, array(), 'auth');
+//		$this->Session->setFlash($this->authError, $this->flashElement, array(), 'auth');
 		$controller->redirect($controller->referer(), null, true);
 		return false;
 	}
