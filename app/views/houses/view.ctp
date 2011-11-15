@@ -19,6 +19,11 @@
         padding: 2px;
     }
     
+    #ownerInfo{
+        margin: 48px 0px 0px 8px;
+        padding: 2px;
+    }
+    
     #houseEdit{
         margin: 64px 0px 0px 12px;
     }
@@ -63,7 +68,7 @@
     
     .housePropertiesCol{
         float: left;
-        margin: 0px 0px 0px 48px;
+        margin: 0px 0px 0px 32px;
     }
     
     .liimage{
@@ -72,7 +77,7 @@
     }
     
     #imageList{
-        margin: 0px 0px 0px 24px;
+        margin: 0px 0px 0px 16px;
         padding: 0px 8px 0px 8px;
     }
     
@@ -100,8 +105,18 @@
     $ownerRole = $house['User']['role'];
     if($ownerRole == 'user'){
         $profileid = $house['User']['Profile']['id'];
+        $profileName = $house['User']['Profile']['firstname'].' '
+            .$house['User']['Profile']['lastname'];
+        $profileAge = Sanitize::html($house['User']['Profile']['age']);
+        $profileGender = ($house['User']['Profile']['gender'])?'γυναίκα':'άνδρας';
+        $profileEmail = Sanitize::html($house['User']['Profile']['email']);
+        $profileWanted = Sanitize::html($house['User']['Profile']['max_roommates']);
     }else if($ownerRole == 'realestate'){
         $realestateid = $house['User']['RealEstate']['id'];
+        $realestateCompany = $house['User']['RealEstate']['company_name'];
+        $realestateEmail = Sanitize::html($house['User']['RealEstate']['email']);
+        $realestatePhone = Sanitize::html($house['User']['RealEstate']['phone']);
+        $realestateFax = Sanitize::html($house['User']['RealEstate']['fax']);
     }
     $houseAddress = $house['House']['address'];
     $housePostalCode = $house['House']['postal_code'];
@@ -128,6 +143,11 @@
     $houseFreePlaces = $house['House']['free_places'];
     $houseTotalPlaces = $house['House']['total_places'];
     $houseAvailable = $time->format($format = 'd-m-Y', $house['House']['availability_date']);
+    $houseDescription = Sanitize::html($house['House']['description']);
+    $houseVisible = $house['House']['visible'];
+    $houseVisibility = (($loggedUser == $userid) && ($houseVisible))?
+        'Το σπίτι είναι ορατό σε άλλους χρήστες και στις αναζητήσεις':
+        'Το σπίτι δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις';
 
     $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
     $empty_slots = 4 - count($images);
@@ -198,6 +218,10 @@
             $imageLine .= $this->Html->link(__('Διαγραφή', true),
                 array('controller' => 'images', 'action' => 'delete', $imageid),
                 array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
+            $imageLine .= ' ';
+            $imageLine .= $this->Html->link('Προεπιλεγμένη',
+                array('controller' => 'images', 'action' => 'set_default', $imageid),
+                array('class' => 'thumb_img_thumb'), null);
             $imageLine .= "</div>";
         }
         $imageLine .= "</li>";
@@ -215,11 +239,20 @@
     // owner's profile (not available to real estate)
     if(($loggedUser != $userid) && ($role != 'realestate')){
         if($ownerRole == 'user'){
-            $linkAction = "/profiles/view/{$profileid}";
-        }else if($ownerRole == 'realestate'){
-            $linkAction = "/real_estates/view/{$realestateid}";
+            $profileInfo = $this->Html->link($profileName, array(
+                'controller' => 'profiles', 'action' => 'view',
+                $profileid));
+            $profileInfo .= '<br />'.$profileAge.' ετών, '.$profileGender;
+            $profileInfo .= '<br />email: '.$profileEmail;
+            $profileInfo .= '<br />επιθυμητοί συγκάτοικοι: '.$profileWanted;
+        }elseif($ownerRole == 'realestate'){
+            $profileInfo = $this->Html->link($realestateCompany,
+                array('controller' => 'realEstates', 'action' => 'view',
+                $realestateid));
+            $profileInfo .= '<br />e-mail: '.$realestateEmail;
+            $profileInfo .= '<br />τηλέφωνο: '.$realestatePhone;
+            $profileInfo .= '<br />φαξ: '.$realestateFax;
         }
-        $profileLink =  $this->Html->link('Προφίλ ιδιοκτήτη', $linkAction);
     }
 
     // allow posts to Facebook only by a 'user' (as in role)
@@ -270,7 +303,7 @@
     $houseProperties['rent_period']['label'] = 'Περίοδος ενοικίασης';
     $houseProperties['rent_period']['suffix'] = 'μήνες';
     // if the house belongs to real estate, don't display availability info
-    if($role != 'realestate'){
+    if($ownerRole != 'realestate'){
         $houseProperties['hosting']['label'] = 'Διαμένουν';
         $houseProperties['hosting']['suffix'] = ($houseHosting > 1)?'άτομα':'άτομο';
         $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
@@ -300,7 +333,7 @@
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
     // if the house belongs to real estate, don't display availability info
-    if($role != 'realestate'){
+    if($ownerRole != 'realestate'){
         $houseProperties['hosting']['value'] = $houseHosting;
         $houseProperties['free_places']['value'] = $houseFreePlaces;
     }
@@ -313,48 +346,6 @@
     $houseProperties['door']['check'] = $houseDoor;
     $houseProperties['disability']['check'] = $houseDisability;
     $houseProperties['storage']['check'] = $houseStorage;
-/*
-            Ορατότητα:                
-                    if($this->Session->read('Auth.User.id') == $house['User']['id']) {
-                        if($house['House']['visible']) {
-                            echo 'Είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
-                        } else {
-                            echo 'Δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις.';
-                        }
-                    }
-                            Περιγραφή:
-              echo Sanitize::html($house['House']['description'])
-
-          // TODO fix css in order to use this check
-            // if ($house['House']['user_id'] !== $this->Session->read('Auth.User.id') ) {
-        
-         if($house['User']['Profile'] && $this->Session->read('Auth.User.role') != 'realestate'){
-            
-                echo $this->Html->link($house['User']['Profile']['firstname'].' '.
-                    $house['User']['Profile']['lastname'],
-                    array('controller' => 'profiles', 'action' => 'view',
-                    $house['User']['Profile']['id']));
-            
-                        
-                    echo Sanitize::html($house['User']['Profile']['age'].' ετών, '.
-                    ($house['User']['Profile']['gender']?'γυναίκα':'άνδρας'));
-                            e-mail:                
-                    echo Sanitize::html($house['User']['Profile']['email']);
-                            επιθυμητοί συγκάτοικοι:                
-                    echo Sanitize::html($house['User']['Profile']['max_roommates'])
-                        
-         }elseif($house['User']['RealEstate']){         
-            
-                echo $this->Html->link($house['User']['RealEstate']['company_name'],
-                    array('controller' => 'realEstates', 'action' => 'view',
-                    $house['User']['RealEstate']['id']));
-            
-            e-mail:                
-                    echo Sanitize::html($house['User']['RealEstate']['email']);
-                            τηλέφωνο επικοινωνίας:                
-                    echo Sanitize::html($house['User']['RealEstate']['phone']);
-φαξ:
-                    echo Sanitize::html($house['User']['RealEstate']['fax']);*/
 ?>
 
 <div id='leftbar'>
@@ -367,12 +358,14 @@
         <?php
             if($this->Session->read('Auth.User.id') == $userid){
                 echo $editHouse.'<br />';
-                echo $deleteHouse.'<br />';
+                echo $deleteHouse.'<br /><br />';
             }
             if(($loggedUser != $userid) && ($role != 'realestate')){
-                echo $profileLink.'<br />';
+                echo $profileInfo.'<br /><br />';
             }
-            echo $fbPost.'<br />';
+            if($role != 'realestate'){
+                echo $fbPost.'<br />';
+            }
             
         ?>
     </div>
@@ -433,6 +426,18 @@
             <?php
                 echo $propertiesValues;
             ?>
+            <li class='houseClear houseLine'>
+                <?php
+                    echo '<br />'.$houseVisibility;
+                ?>
+            </li>
+            <li class='houseClear houseLine'>
+                <?php
+                    if($houseDescription != ''){
+                        echo 'Περιγραφή: '.$houseDescription;
+                    }
+                ?>
+            </li>
         </ul>
         <ul class='housePropertiesCol'>
             <?php
