@@ -288,9 +288,8 @@
         $fbUrl .= "&description=".urlencode($houseTypeArea.'Ενοικίο '.$housePrice.' €,'
             .$furnished.'Δήμος '.$houseMunicipality.$occupation_availability);
         $fbUrl .= "&redirect_uri={$fb_app_uri}houses/view/{$houseid}";
-        $fbIcon = $this->Html->image('fbpost.jpg', array('alt' => 'Κοινoποίηση στο Facebook'));
-        $fbLink = $this->Html->link($fbIcon, $fbUrl,
-            array('title' => 'κοινοποίηση στο facebook', 'escape' => false));
+        $fbLink = $this->Html->link('Κοινoποίηση στο Facebook', $fbUrl,
+            array('title' => 'κοινοποίηση στο facebook'));
         $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
     }
 
