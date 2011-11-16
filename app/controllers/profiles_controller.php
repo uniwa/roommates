@@ -497,6 +497,7 @@ class ProfilesController extends AppController {
         //$this->Email->replyTo = 'support@example.com';
         $this->Email->from = 'admin@roommates.edu.teiath.gr';
         $this->Email->template = 'banned';
+        $this->Email->layout = 'default';
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
