@@ -375,7 +375,7 @@
             if(($loggedUser != $userid) && ($role != 'realestate')){
                 echo $profileInfo.'<br /><br />';
             }
-            if($role != 'realestate'){
+            if($role == 'user'){
                 echo $fbPost.'<br />';
             }
 
