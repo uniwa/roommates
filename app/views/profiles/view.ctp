@@ -4,37 +4,37 @@
         margin: 0px 0px 0px 32px;
         padding: 32px;
     }
-    
+
     #main-inner{
         float: left;
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
         padding: 24px;
     }
-    
+
     .profilePic{
         float: left;
         width: 128px;
         height: 128px;
         padding: 2px;
     }
-    
+
     #profileEdit{
         margin: 64px 0px 0px 12px;
     }
-    
+
     #profileRss,#profileBan{
         margin: 16px 0px 0px 0px;
     }
-    
+
     #profileRss img,#profileBan img{
         margin: 0px 4px 0px 0px;
     }
-    
+
     .profileClear{
         clear: both;
     }
-    
+
     .profileBlock{
         float: left;
         margin: 0px 64px 64px 16px;
@@ -52,11 +52,11 @@
         margin: 0px 0px 16px 24px;
         font-size: 1.0em;
     }
-    
+
     #myHousePic{
         margin: 0px 0px 0px 24px;
     }
-    
+
     #myHouse{
         margin: 24px 0px 0px 24px;
     }
@@ -199,7 +199,7 @@
         <div id='myName' class='profileTitle'>
             <h2><?php echo $name; ?></h2>
         </div>
-        <div id='myProfile' class='profileInfo'>    
+        <div id='myProfile' class='profileInfo'>
 		    <span class='profile-strong'><?php echo $age; ?></span> ετών,
 		    <span class='profile-strong'><?php echo $gender; ?></span>
 		    <br />
