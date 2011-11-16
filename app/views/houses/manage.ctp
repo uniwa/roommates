@@ -347,16 +347,18 @@
         </div>
         <div class='admpaginator'>
             <?php
-                /* pagination anv*/
-                echo $paginator->prev('« Προηγούμενη ',null, null,
-                    array( 'class' => 'disabled' ) );
-                /* show pages */
-                echo $paginator->numbers(array(
-                    'first' => 3, 'last' => 3,
-                    'modulus' => '4', 'separator' => ' '));
-                /* Shows the next link */
-                echo $paginator->next(' Επόμενη » ', null, null,
-                    array('class' => 'disabled'));
+                if($page_num > 1){
+                    /* pagination anv*/
+                    echo $paginator->prev('« Προηγούμενη ',null, null,
+                        array( 'class' => 'disabled' ) );
+                    /* show pages */
+                    echo $paginator->numbers(array(
+                        'first' => 3, 'last' => 3,
+                        'modulus' => '4', 'separator' => ' '));
+                    /* Shows the next link */
+                    echo $paginator->next(' Επόμενη » ', null, null,
+                        array('class' => 'disabled'));
+                }
             ?>
         </div>
     <?php } //isset results ?>
