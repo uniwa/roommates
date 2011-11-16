@@ -380,7 +380,7 @@ class HousesController extends AppController {
         // this variable is used to properly display
         // the selected element on header
         $this->set('selected_action', 'houses_manage');
-        $this->set('title_for_layout','Διαχείρηση σπιτιών');
+        $this->set('title_for_layout','Διαχείριση σπιτιών');
 
         $this->checkRole('realestate');
 
