@@ -635,7 +635,7 @@
                                 echo 'Ενοίκιο '.$house['House']['price'].'€ ';
                                 echo $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
                                 echo '<br />Δήμος '.$municipality_options[$house['House']['municipality_id']].'<br />';
-                                echo 'Διεύθυνση '.$house['House']['address'].'<br />';
+                                //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 if ($house['User']['role'] != 'realestate') {
                                     echo 'Διαθέσιμες θέσεις '.

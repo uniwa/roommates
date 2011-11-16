@@ -4,37 +4,37 @@
         margin: 0px 20px 0px 32px;
         padding: 32px;
     }
-    
+
     #main-inner{
         float: left;
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
         padding: 24px;
     }
-    
+
     #houseCont{
         margin: 0px 0px 64px 0px;
         overflow: hidden;
         height: 100%;
     }
-    
+
     .housePic{
         float: left;
 /*        width: 128px;
         height: 128px;*/
         padding: 2px;
     }
-    
+
     #ownerInfo{
         margin: 48px 0px 0px 8px;
         padding: 2px;
     }
-    
+
     #houseEdit{
         clear: both;
         margin: 0px 0px 0px 12px;
     }
-    
+
     .houseTitle{
         margin: 0px 0px 16px 30px;
         font-size: 1.2em;
@@ -44,13 +44,13 @@
     .houseClear{
         clear: both;
     }
-    
+
     .houseLine{
         padding: 6px;
         overflow: hidden;
         width: 100%;
     }
-    
+
     .houseProperty{
         float: left;
         text-align: right;
@@ -59,35 +59,35 @@
     .houseV{
         width: 130px;
     }
-    
+
     .houseC{
         width: 150px;
     }
-       
+
     .houseValue{
         float: left;
         margin: 0px 0px 0px 8px;
     }
-    
+
     .houseOdd{
         background-color: #eef;
     }
-    
+
     .housePropertiesCol{
         float: left;
         margin: 0px 0px 0px 32px;
     }
-    
+
     .liimage{
         float: left;
         margin: 0px 0px 0px 6px;
     }
-    
+
     #imageList{
         margin: 0px 0px 0px 16px;
         padding: 0px 8px 0px 8px;
     }
-    
+
     #houseInfo{
         margin: 0px 0px 0px 0px;
         padding: 24px 0px 0px 0px;
@@ -190,7 +190,7 @@
         }
         $empty_slots -= 1;
     }
-    
+
     if($loggedUser == $userid){
         $placeholders = '';
         for($i = 0; $i < $empty_slots; $i++){
@@ -203,7 +203,7 @@
                 $placeholders .= "<li>";
         }
     }
-    
+
     $imageLines = array();
     $i = 1;
     foreach($images as $image){
@@ -236,7 +236,7 @@
         $imageLines[$i] = $imageLine;
         $i++;
     }
-    
+
     if($loggedUser == $userid){
         //edit house
         $editHouse = $html->link('Επεξεργασία', array('action' => 'edit', $houseid));
@@ -294,7 +294,10 @@
     }
 
     // House properties
-    $houseProperties['address']['label'] = 'Διεύθυνση';
+    if ($userid == $this->Session->read('Auth.User.id')) {
+        $houseProperties['address']['label'] = 'Διεύθυνση';
+        $houseProperties['address']['value'] = $houseAddress;
+    }
     $houseProperties['municipality']['label'] = 'Δήμος';
     $houseProperties['postal_code']['label'] = 'Τ.Κ.';
     $houseProperties['type']['label'] = 'Τύπος';
@@ -326,8 +329,7 @@
     $houseProperties['door']['label'] = 'Πόρτα ασφαλείας';
     $houseProperties['disability']['label'] = 'Προσβάσιμο από ΑΜΕΑ';
     $houseProperties['storage']['label'] = 'Αποθήκη';
-    
-    $houseProperties['address']['value'] = $houseAddress;
+
     $houseProperties['municipality']['value'] = $houseMunicipality;
     $houseProperties['postal_code']['value'] = $housePostalCode;
     $houseProperties['type']['value'] = $houseType;
@@ -376,7 +378,7 @@
             if($role != 'realestate'){
                 echo $fbPost.'<br />';
             }
-            
+
         ?>
     </div>
 </div>
