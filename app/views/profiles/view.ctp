@@ -105,6 +105,16 @@
 	$price_max = $profile['Preference']['price_max'];
 	$area_min = $profile['Preference']['area_min'];
 	$area_max = $profile['Preference']['area_max'];
+    // check if the owner of this profile has
+    // any saved house preferences
+    if ($prefFurnished == 2  && $prefAccessibility == 0 &&
+        $prefHousePhoto == 0 && $price_max == '' &&
+        $area_max == ''      && $area_min == '')
+    {
+        $has_house_prefs = false;
+    } else {
+        $has_house_prefs = true;
+    }
     // House info
     if(isset($house)){
         $houseAddress = $house['House']['address'];
@@ -269,7 +279,12 @@
 		    ?></span>
         </div>
         <div class='profileTitle profileClear'>
-	        <h2>Προτιμήσεις σπιτιού</h2>
+            <?php
+                if ($has_house_prefs)
+                    echo "<h2>Προτιμήσεις σπιτιού</h2>";
+                else
+                    echo "<h2>Δεν έχουν οριστεί<br/>προτιμήσεις σπιτιού";
+            ?>
         </div>
         <div id='housePrefs' class='profileInfo'>
 		    <?php

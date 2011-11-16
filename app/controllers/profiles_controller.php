@@ -11,7 +11,7 @@ class ProfilesController extends AppController {
     function index() {
         // Block access for all
         $this->cakeError('error403');
-        
+
         $this->set('title_for_layout','Δημόσια προφίλ');
         /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
@@ -500,7 +500,7 @@ class ProfilesController extends AppController {
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
-    
+
     private function denyRole($role){
         if($this->Session->read('Auth.User.role') == $role){
             $this->cakeError('error403');
