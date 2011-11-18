@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<realestate id="8">
+    <firstname>foo</firstname>
+    <lastname>bar</lastname>
+    <company_name>foo bar inc.</company_name>
+    <email>foo@bar.net</email>
+    <phone>2104567890</phone>
+    <fax>2104433555</fax>
+    <afm>123456789</afm>
+    <doy>somewhere</doy>
+    <address>34 Lost str</address>
+    <postal_code>12234</postal_code>
+    <!--   <municipality_id>18</municipality_id> -->
+    <!-- <user_id>12</user_id> -->
+</realestate>
