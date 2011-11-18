@@ -113,6 +113,12 @@
     .pagination ul li.disabled{
         color: #aaa;
     }
+
+    .form-comment {
+        font-size: 0.8em;
+        font-style: italic;
+        margin: 0px 0px 0px 22px;
+    }
 </style>
 
 <div id='leftbar'>
@@ -241,6 +247,22 @@
                         ?>
                     </div>
                 </li>
+
+            <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+                            echo $this->Form->checkbox('realestate_only',
+                                array('hiddenField' => false,
+                                    'checked' => isset($defaults['realestate_only']))).' Σπίτια χωρίς συγκάτοικο';
+                        ?>
+                        <div class='form-comment'>
+                            (Δεν θα ληφθούν υπ' όψη τα χαρακτηριστικά συγκατοίκου)
+                        </div>
+                    </div>
+                </li>
+            <?php } ?>
+
             </ul>
 
             <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
