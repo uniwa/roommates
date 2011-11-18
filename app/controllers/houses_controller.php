@@ -162,8 +162,7 @@ class HousesController extends AppController {
     }
 
     function view($id = null) {
-
-        $this->set('title_for_layout','Σπίτι');
+        $this->set('title_for_layout','Εμφάνιση σπιτιού');
         $this->checkExistance($id);
 
         $this->House->id = $id;
@@ -295,7 +294,19 @@ class HousesController extends AppController {
         $this->House->id = $id;
 
         if (empty($this->data)) {
-            $this->data = $this->House->read();
+            $house = $this->House->read();;
+            $this->data = $house;
+            $this->set('house', $house);
+
+            $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
+            $imageThumbLocation = 'house.gif';
+            foreach ($images as $image) {
+                if($image['Image']['id'] == $house['House']['default_image_id']){
+                    $defaultImageLocation = $image['Image']['location'];
+                    $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
+                }
+            }
+		    $this->set('imageThumbLocation', $imageThumbLocation);
         }
         else {
             if ($this->House->save($this->data)) {
@@ -369,7 +380,7 @@ class HousesController extends AppController {
         // this variable is used to properly display
         // the selected element on header
         $this->set('selected_action', 'houses_manage');
-        $this->set('title_for_layout','Διαχείρηση σπιτιών');
+        $this->set('title_for_layout','Διαχείριση σπιτιών');
 
         $this->checkRole('realestate');
 
@@ -501,10 +512,18 @@ class HousesController extends AppController {
                                                 $this->getOrderCondition($this->params['url']['order_by'])
                                               );
             } else {
-                $results = $this->simpleSearch( $this->getHouseConditions(),
-                                                $this->getMatesConditions(),
-                                                $this->getOrderCondition($this->params['url']['order_by'])
-                                              );
+                if (isset($this->params['url']['with_roommate'])) {
+                    $results = $this->simpleSearch( $this->getHouseConditions(),
+                                                    null,
+                                                    $this->getOrderCondition($this->params['url']['order_by']),
+                                                    true, true
+                                                  );
+                } else {
+                    $results = $this->simpleSearch( $this->getHouseConditions(),
+                                                    $this->getMatesConditions(),
+                                                    $this->getOrderCondition($this->params['url']['order_by'])
+                                                  );
+                }
             }
             $this->set('results', $results);
             // store user's input
@@ -547,7 +566,8 @@ class HousesController extends AppController {
 
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
-                                    $orderBy = null, $pagination = true ) {
+                                    $orderBy = null, $pagination = true,
+                                    $with_roommate = false) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -560,11 +580,16 @@ class HousesController extends AppController {
 
         $options['fields'] = array('House.*', 'Image.location', 'User.role');
 
+        $user_conditions = array('House.user_id = User.id');
+        if ($with_roommate) {
+            array_push($user_conditions, 'User.role = "user"');
+        }
+
         $options['joins'] = array(
             array(  'table' => 'users',
                     'alias' => 'User',
                     'type'  => 'left',
-                    'conditions' => array('House.user_id = User.id')
+                    'conditions' => $user_conditions
             ),
             array(  'table' => 'images',
                     'alias' => 'Image',

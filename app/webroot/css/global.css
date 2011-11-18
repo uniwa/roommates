@@ -49,7 +49,7 @@ q:before, q:after{
 
 a, a:link, a:visited {
     text-decoration: none;
-    color: #21759B;
+    color: #339/*21759B*/;
 }
 table{
     border-collapse: collapse;
@@ -63,7 +63,7 @@ body{
     margin: 0;
     padding: 0;
     height: 100%;
-    color: #59a4d8;
+    color: #000/*59a4d8*/;
 }
 
 img{
@@ -295,16 +295,39 @@ img{
     float: left;
     background-color: #eaeaea;
     margin: 12px 0px 0px 14px;
-    width: 166px;
-    height: 96px;
+    width: 177px;
+    height: 100px;
+}
+
+.result-photo-wrap{
+    display: table;
+	vertical-align: middle;
+}
+
+.result-photo-cont{
+	position: relative;
+	vertical-align: middle;
+	display: table-cell;
+	height: 100px;
+}
+
+.result-photo-inner{
+	width: 177px;
+	overflow: hidden;
+}
+
+.result-photo-inner img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .result-desc{
     float: left;
     background-color: #eaeaea;
-    margin: 12px 0px 0px 8px;
+    margin: 12px 0px 0px 4px;
     width: 380px;
-    height: 96px;
+    height: 100px;
 }
 
 .desc-title{

@@ -1,35 +1,42 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 0px 0px 32px;
+        margin: 0px 20px 0px 32px;
         padding: 32px;
+        width: 180px;
     }
-    
+
     #main-inner{
         float: left;
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
-        padding: 24px;
+        padding: 24px 24px 24px 16px;
+        width: 580px;
     }
-    
+
+    #houseCont{
+        margin: 0px 0px 32px 0px;
+        overflow: hidden;
+        height: 100%;
+    }
+
     .housePic{
         float: left;
-        width: 128px;
-        height: 128px;
         padding: 2px;
     }
-    
+
     #ownerInfo{
         margin: 48px 0px 0px 8px;
         padding: 2px;
     }
-    
+
     #houseEdit{
-        margin: 64px 0px 0px 12px;
+        clear: both;
+        margin: 0px 0px 0px 12px;
     }
-    
+
     .houseTitle{
-        margin: 0px 0px 16px 18px;
+        margin: 0px 0px 16px 30px;
         font-size: 1.2em;
         font-weight: bold;
     }
@@ -37,11 +44,18 @@
     .houseClear{
         clear: both;
     }
-    
+
     .houseLine{
         padding: 6px;
         overflow: hidden;
-        width: 100%;
+    }
+
+    .houseLineLong{
+        width: 300px;
+    }
+    
+    .houseLineShort{
+        width: 180px;
     }
     
     .houseProperty{
@@ -52,38 +66,57 @@
     .houseV{
         width: 130px;
     }
-    
+
     .houseC{
-        width: 150px;
+        width: 120px;
     }
-       
+
     .houseValue{
         float: left;
         margin: 0px 0px 0px 8px;
     }
-    
+
     .houseOdd{
         background-color: #eef;
     }
-    
+
     .housePropertiesCol{
         float: left;
         margin: 0px 0px 0px 32px;
     }
-    
+
     .liimage{
         float: left;
-        margin: 0px 0px 0px 6px;
+        margin: 0px 0px 0px 4px;
     }
-    
+
     #imageList{
-        margin: 0px 0px 0px 16px;
-        padding: 0px 8px 0px 8px;
+        margin: 0px 0px 0px 24px;
+        padding: 0px 0px 0px 0px;
     }
     
+    .imageThumbCont{
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
+    }
+
     #houseInfo{
         margin: 0px 0px 0px 0px;
         padding: 24px 0px 0px 0px;
+    }
+    
+    .fbIcon{
+        margin: 0px 4px 0px 0px;
+        vertical-align: -30%;
+    }
+    
+    .facebook-post{
+        margin: 16px 0px 0px 0px;
+    }
+    
+    .owner-info{
+        margin: 32px 0px 0px 0px;
     }
 </style>
 
@@ -116,7 +149,8 @@
         $realestateCompany = $house['User']['RealEstate']['company_name'];
         $realestateEmail = Sanitize::html($house['User']['RealEstate']['email']);
         $realestatePhone = Sanitize::html($house['User']['RealEstate']['phone']);
-        $realestateFax = Sanitize::html($house['User']['RealEstate']['fax']);
+        $realestateFax = (!empty($house['User']['RealEstate']['fax']))?
+            Sanitize::html($house['User']['RealEstate']['fax']):'-';
     }
     $houseAddress = $house['House']['address'];
     $housePostalCode = $house['House']['postal_code'];
@@ -145,7 +179,7 @@
     $houseAvailable = $time->format($format = 'd-m-Y', $house['House']['availability_date']);
     $houseDescription = Sanitize::html($house['House']['description']);
     $houseVisible = $house['House']['visible'];
-    $houseVisibility = (($loggedUser == $userid) && ($houseVisible))?
+    $houseVisibility = ($houseVisible == 1)?
         'Το σπίτι είναι ορατό σε άλλους χρήστες και στις αναζητήσεις':
         'Το σπίτι δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις';
 
@@ -182,7 +216,7 @@
         }
         $empty_slots -= 1;
     }
-    
+
     if($loggedUser == $userid){
         $placeholders = '';
         for($i = 0; $i < $empty_slots; $i++){
@@ -195,7 +229,7 @@
                 $placeholders .= "<li>";
         }
     }
-    
+
     $imageLines = array();
     $i = 1;
     foreach($images as $image){
@@ -206,13 +240,15 @@
         $imageLocation = $image['Image']['location'];
         $imageThumbLocation = 'uploads/houses/'.$houseid.'/thumb_'.$imageLocation;
         $imageMediumLocation = '/img/uploads/houses/'.$houseid.'/medium_'. $imageLocation;
-        $imageThumb = $this->Html->image($imageThumbLocation,
-            array('alt' => ' '.$houseTypeArea.'['.$i.']'));
+        $imageThumb = $this->Html->image($imageThumbLocation, array(
+            'alt' => ' '.$houseTypeArea.'['.$i.']',
+            'class' => 'imageListThumb'));
         $imageLink = $this->Html->link($imageThumb, $imageMediumLocation,
                 array('class' => 'fancyImage', 'rel' => 'group',
                 'title' => $houseTypeArea, 'escape' => false));
+        $imageThumbCont = "<div class='imageThumbCont'>{$imageLink}</div>";
         $imageLine = "<li class='liimage'>";
-        $imageLine .= $imageLink;
+        $imageLine .= $imageThumbCont;
         if($loggedUser == $userid){
             $imageLine .= "<div class='imageactions'>";
             $imageLine .= $this->Html->link(__('Διαγραφή', true),
@@ -228,7 +264,7 @@
         $imageLines[$i] = $imageLine;
         $i++;
     }
-    
+
     if($loggedUser == $userid){
         //edit house
         $editHouse = $html->link('Επεξεργασία', array('action' => 'edit', $houseid));
@@ -239,19 +275,23 @@
     // owner's profile (not available to real estate)
     if(($loggedUser != $userid) && ($role != 'realestate')){
         if($ownerRole == 'user'){
-            $profileInfo = $this->Html->link($profileName, array(
+            $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= $this->Html->link($profileName, array(
                 'controller' => 'profiles', 'action' => 'view',
                 $profileid));
             $profileInfo .= '<br />'.$profileAge.' ετών, '.$profileGender;
-            $profileInfo .= '<br />email: '.$profileEmail;
+            $profileInfo .= '<br />email: '.$this->Html->link($profileEmail, 'mailto:'.$profileEmail);
             $profileInfo .= '<br />επιθυμητοί συγκάτοικοι: '.$profileWanted;
+            $profileInfo .= "</div>";
         }elseif($ownerRole == 'realestate'){
-            $profileInfo = $this->Html->link($realestateCompany,
+            $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
                 $realestateid));
-            $profileInfo .= '<br />e-mail: '.$realestateEmail;
+            $profileInfo .= '<br />email: '.$this->Html->link($realestateEmail, 'mailto:'.$realestateEmail);
             $profileInfo .= '<br />τηλέφωνο: '.$realestatePhone;
             $profileInfo .= '<br />φαξ: '.$realestateFax;
+            $profileInfo .= "</div>";
         }
     }
 
@@ -280,13 +320,22 @@
         $fbUrl .= "&description=".urlencode($houseTypeArea.'Ενοικίο '.$housePrice.' €,'
             .$furnished.'Δήμος '.$houseMunicipality.$occupation_availability);
         $fbUrl .= "&redirect_uri={$fb_app_uri}houses/view/{$houseid}";
-        $fbLink = $this->Html->link('Κοινoποίηση στο Facebook', $fbUrl,
-            array('title' => 'κοινοποίηση στο facebook'));
+        $fbImage = 'facebook.png';
+        $fbDisplay = $this->Html->image($fbImage, array(
+            'alt' => 'Κοινoποίηση στο Facebook',
+            'class' => 'fbIcon'))
+            ." Post";
+        $fbLink = $this->Html->link($fbDisplay, $fbUrl,array(
+            'title' => 'κοινοποίηση στο facebook', 'escape' => false,
+            'target' => 'post_to_facebook'));
         $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
     }
 
     // House properties
-    $houseProperties['address']['label'] = 'Διεύθυνση';
+    if ($userid == $this->Session->read('Auth.User.id')) {
+        $houseProperties['address']['label'] = 'Διεύθυνση';
+        $houseProperties['address']['value'] = $houseAddress;
+    }
     $houseProperties['municipality']['label'] = 'Δήμος';
     $houseProperties['postal_code']['label'] = 'Τ.Κ.';
     $houseProperties['type']['label'] = 'Τύπος';
@@ -307,7 +356,7 @@
         $houseProperties['hosting']['label'] = 'Διαμένουν';
         $houseProperties['hosting']['suffix'] = ($houseHosting > 1)?'άτομα':'άτομο';
         $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
-        $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά θέσεις)";
+        $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά)";
     }
     $houseProperties['solar']['label'] = 'Ηλιακός';
     $houseProperties['furnished']['label'] = 'Επιπλωμένο';
@@ -318,8 +367,7 @@
     $houseProperties['door']['label'] = 'Πόρτα ασφαλείας';
     $houseProperties['disability']['label'] = 'Προσβάσιμο από ΑΜΕΑ';
     $houseProperties['storage']['label'] = 'Αποθήκη';
-    
-    $houseProperties['address']['value'] = $houseAddress;
+
     $houseProperties['municipality']['value'] = $houseMunicipality;
     $houseProperties['postal_code']['value'] = $housePostalCode;
     $houseProperties['type']['value'] = $houseType;
@@ -349,24 +397,25 @@
 ?>
 
 <div id='leftbar'>
-    <div class='housePic liimage'>
-        <?php
-            echo $housePic;
-        ?>
+    <div id='houseCont'>
+        <div class='housePic liimage'>
+            <?php
+                echo $housePic;
+            ?>
+        </div>
     </div>
     <div id='houseEdit'>
         <?php
             if($this->Session->read('Auth.User.id') == $userid){
                 echo $editHouse.'<br />';
-                echo $deleteHouse.'<br /><br />';
+                echo $deleteHouse;
+            }
+            if($role == 'user'){
+                echo $fbPost;
             }
             if(($loggedUser != $userid) && ($role != 'realestate')){
-                echo $profileInfo.'<br /><br />';
+                echo $profileInfo;
             }
-            if($role != 'realestate'){
-                echo $fbPost.'<br />';
-            }
-            
         ?>
     </div>
 </div>
@@ -394,6 +443,7 @@
                 $propertyLine = '';
                 $odd = !$odd;
                 $lineClass = ($odd)?'houseOdd ':' ';
+                $lineClass .= ($checkbox)?'houseLineShort':'houseLineLong';
                 $propertyLine .= "<li class='houseClear houseLine {$lineClass}'>\n";
                 $lineClass = ($checkbox)?'houseC':'houseV';
                 $propertyLine .= "<div class='houseProperty {$lineClass}'>\n";
@@ -426,12 +476,14 @@
             <?php
                 echo $propertiesValues;
             ?>
-            <li class='houseClear houseLine'>
+            <?php if ($loggedUser == $userid) { ?>
+            <li class='houseClear houseLine houseLineLong'>
                 <?php
                     echo '<br />'.$houseVisibility;
                 ?>
             </li>
-            <li class='houseClear houseLine'>
+            <?php } ?>
+            <li class='houseClear houseLine houseLineLong'>
                 <?php
                     if($houseDescription != ''){
                         echo 'Περιγραφή: '.$houseDescription;

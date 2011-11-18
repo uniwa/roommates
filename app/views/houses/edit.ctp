@@ -1,7 +1,15 @@
 <style>
+    #leftbar{
+        float: left;
+        margin: 0px 0px 0px 32px;
+        padding: 32px;
+    }
+    
     #main-inner{
-        margin: 0px 0px 0px 0px;
-        padding: 32px 128px 32px 128px;
+        float: left;
+        border-left: 1px dotted #333;
+        margin: 10px 0px 20px 32px;
+        padding: 0px 0px 24px 64px;
     }
     
     .edit-title{
@@ -12,6 +20,10 @@
 
     select{
             font-size: 12px;
+    }
+
+    .input {
+        padding: 3px 0;
     }
 
     #HouseAddForm label, #HouseEditForm label {
@@ -39,16 +51,23 @@
         width: 50px;
         text-align: right;
     }
-
-    .textarea label {
-        float: left;
-    }
-
-    .input {
-        padding: 3px 0;
-    }
 </style>
 
+<?php
+    $houseid = $house['House']['id'];
+    $houseType = $house['HouseType']['type'];
+    $houseArea = $house['House']['area'];
+    $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+    $imageThumb = $this->Html->image($imageThumbLocation, array('alt' => $houseTypeArea));
+?>
+
+<div id='leftbar'>
+    <div class='housePic liimage'>
+        <?php
+            echo $imageThumb;
+        ?>
+    </div>
+</div>
 <div id='main-inner'>
     <div class='edit-title'>
         <h2>Στοιχεία σπιτιού</h2>

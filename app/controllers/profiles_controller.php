@@ -11,7 +11,7 @@ class ProfilesController extends AppController {
     function index() {
         // Block access for all
         $this->cakeError('error403');
-        
+
         $this->set('title_for_layout','Δημόσια προφίλ');
         /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
@@ -60,11 +60,10 @@ class ProfilesController extends AppController {
     	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
-        /* get profile  contains:
-                Profile + Preference + User + House
-		*/
+        // get profile  contains:
+        //      Profile + Preference + User + House
         $profile = $this->Profile->read();
-        /* hide banned users unless we are admin */
+        // hide banned users unless we are admin
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $profile['Profile']['user_id']) {
             if ($profile["User"]["banned"] == 1) {
@@ -82,7 +81,7 @@ class ProfilesController extends AppController {
             $municipality = $municipality[$pref_municipality];
             $this->set('municipality', $municipality);
         }
-        /* get house id of this user - NULL if he doesn't own one */
+        // get house id of this user - NULL if he doesn't own one
         if(isset($profile["User"]["House"][0]["id"])){
             if($profile['User']['House'][0]['visible'] == 1){
                 $imgDir = 'uploads/houses/';
@@ -95,12 +94,12 @@ class ProfilesController extends AppController {
                     $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
                     $this->set('image', $imageFile);
                 }
+                $this->set('house', $house);
             }
         }else{
             $houseid = NULL;
             $house = NULL;
         }
-        $this->set('house', $house);
     }
 
 /*
@@ -497,10 +496,11 @@ class ProfilesController extends AppController {
         //$this->Email->replyTo = 'support@example.com';
         $this->Email->from = 'admin@roommates.edu.teiath.gr';
         $this->Email->template = 'banned';
+        $this->Email->layout = 'default';
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
-    
+
     private function denyRole($role){
         if($this->Session->read('Auth.User.role') == $role){
             $this->cakeError('error403');

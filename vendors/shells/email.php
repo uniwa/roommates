@@ -2,43 +2,43 @@
 class EmailShell extends Shell{
 
     var $uses = array('House', 'Preference', 'User', 'Profile');
-    
+
     function main(){
-        
+
         $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
-        $from = $today; 
+        $from = $today;
         $to = $today;
         App::import('Helper', 'Time');
         $time = new TimeHelper();
         $conditions_created = $time->daysAsSql($from, $to, "created", true);
         $conditions_modified = $time->daysAsSql($from, $to, "modified", true);
-        $conditions = '(' . $conditions_created . ') OR (' .$conditions_modified . ')'; 
+        $conditions = '(' . $conditions_created . ') OR (' .$conditions_modified . ')';
         //echo($conditions);die();
 
-        
+
         //get houses created or modified today
         $houses = $this->House->find('all', array('conditions' => $conditions));
-        //pr($houses);die();  //House, HouseType, Floor, HeatingType, Municipality, User, Image 
+        //pr($houses);die();  //House, HouseType, Floor, HeatingType, Municipality, User, Image
 
 
-        //get (only) users data and preferences 
+        //get (only) users data and preferences
         $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user', 'Profile.get_mail' => 1)));
-        //pr($users);die(); //User, Preference, Profile 
+        //pr($users);die(); //User, Preference, Profile
 
         $email_users = array();
 
         for ($i=0; $i<count($users); $i++){
 
             $compatible_houses = array();
-            
+
             for($j=0; $j<count($houses); $j++){
-                
+
                 if(    ( $this->compare_min($houses[$j]['House']['area'], $users[$i]['Preference']['area_min']))
                     && ( $this->compare_max($houses[$j]['House']['area'], $users[$i]['Preference']['area_max']))
                     && ( $this->compare_min($houses[$j]['House']['bedroom_num'], $users[$i]['Preference']['bedroom_num_min']))
                     && ( $this->compare_max($houses[$j]['House']['price'], $users[$i]['Preference']['price_max']))
                     && ( $this->compare_min($houses[$j]['House']['floor_id'], $users[$i]['Preference']['floor_id_min']) )
-            
+
                     && ( $this->compare_pref_min($houses[$j]['House']['bathroom_num'], $users[$i]['Preference']['bathroom_num_min']))
                     && ( $this->compare_pref_min($houses[$j]['House']['construction_year'], $users[$i]['Preference']['construction_year_min']) )
                     && ( $this->compare_pref_min($houses[$j]['House']['rent_period'], $users[$i]['Preference']['rent_period_min']) )
@@ -48,24 +48,28 @@ class EmailShell extends Shell{
                     && ( $this->compare_checkbox_null($houses[$j]['House']['parking'], $users[$i]['Preference']['pref_parking']) )
                     && ( $this->compare_checkbox_null($houses[$j]['House']['security_doors'], $users[$i]['Preference']['pref_security_doors']) )
                     && ( $this->compare_checkbox_null($houses[$j]['House']['storeroom'], $users[$i]['Preference']['pref_storeroom']) )
-                    
+
                     && ( $this->compare_equal($houses[$j]['House']['house_type_id'], $users[$i]['Preference']['pref_house_type_id']))
                     && ( $this->compare_equal($houses[$j]['House']['heating_type_id'], $users[$i]['Preference']['pref_heating_type_id']))
-                    
+
                     && ( $this->compare_equal_null($houses[$j]['House']['municipality_id'], $users[$i]['Preference']['pref_municipality']))
                     && ( $this->shared_pay($houses[$j]['House']['shared_pay'], $users[$i]['Preference']['pref_shared_pay']) )
-                    
+
                     && ( $this->compare_date_min($houses[$j]['House']['availability_date'], $users[$i]['Preference']['availability_date_min']) )
-                    
+
                     && ( $this->compare_checkbox($houses[$j]['House']['furnitured'], $users[$i]['Preference']['pref_furnitured']) )
                     && ( $this->compare_checkbox($houses[$j]['House']['disability_facilities'], $users[$i]['Preference']['pref_disability_facilities']) )
 
                     && ( $this->has_photo($houses[$j]['House']['default_image_id'], $users[$i]['Preference']['pref_has_photo']))
-                    
+
                 )
                 {
                     array_push($compatible_houses, $houses[$j]['House']['id']);
                 }
+            }
+            // skip if no houses found
+            if (empty($compatible_houses)) {
+                continue;
             }
             $email_users[$users[$i]['Profile']['email']] = $compatible_houses;
         }
@@ -96,9 +100,9 @@ class EmailShell extends Shell{
                 return true;
             }else{
                 if( strtotime($attr) <= strtotime($pref)){
-                    return true;    
+                    return true;
                 }else{
-                    return false;    
+                    return false;
                 }
             }
         }
@@ -120,7 +124,7 @@ class EmailShell extends Shell{
 
 
 
-        //refers to optional checkbox fields (furnitured, disability_facilities)  
+        //refers to optional checkbox fields (furnitured, disability_facilities)
         //default in Preferences --> 2, 0
         //default in Houses --> NULL
         private function compare_checkbox($attr, $pref){
@@ -131,12 +135,12 @@ class EmailShell extends Shell{
                     return false;
                 }
             }else{
-                return true;    
+                return true;
             }
         }
 
 
-        //refers to optional checkbox field shared_pay  
+        //refers to optional checkbox field shared_pay
         //default in Preferences --> NULL
         //default in Houses --> NULL
         private function shared_pay($attr, $pref){
@@ -147,11 +151,11 @@ class EmailShell extends Shell{
                     return false;
                 }
             }else{
-                return true;    
-            } 
+                return true;
+            }
         }
 
-  
+
         //default in Preferences --> 0
         //default in Houses --> NULL
         private function has_photo($attr, $pref){
@@ -162,7 +166,7 @@ class EmailShell extends Shell{
                     return false;
                 }
             }else{
-                return true;    
+                return true;
             }
         }
 
@@ -171,12 +175,12 @@ class EmailShell extends Shell{
         private function compare_pref_min($attr, $pref){
             if( isset($pref) ){
               if( isset($attr) && ($attr >= $pref) ){
-                return true;    
+                return true;
               }else{
                 return false;
               }
             }else{
-                return true;    
+                return true;
             }
         }
 
@@ -185,7 +189,7 @@ class EmailShell extends Shell{
             if( isset($pref) ){
                 if ($attr <= $pref) return true;
                 else return false;
-            }else{   
+            }else{
                 return true;
             }
         }
@@ -195,7 +199,7 @@ class EmailShell extends Shell{
             if( isset($pref) ){
                 if ($attr >= $pref) return true;
                 else return false;
-            }else{   
+            }else{
                 return true;
             }
         }
@@ -215,12 +219,12 @@ class EmailShell extends Shell{
         private function compare_equal_null($attr, $pref){
             if(isset($pref)){
                 if($pref == $attr){
-                    return true;    
+                    return true;
                 }else{
                     return false;
                 }
             }else{
-                return true;    
+                return true;
             }
         }
 
@@ -243,6 +247,7 @@ class EmailShell extends Shell{
                 $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
                 $email->sendAs = 'both';
                 $email->template = 'cron_house_match';
+                $email->layout = 'default';
 
                 $houses_ids = $email_all[$email_addr[$i]]; //houses ids
                 $controller->set('house_count', count($houses_ids));

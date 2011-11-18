@@ -37,8 +37,8 @@ foreach ($results as $house) {
 
     /* set the rest rss body */
     $_furnitured = $house['House']['furnitured'] ? '<strong>Είναι</strong> επιπλωμένο.' : '<strong>Μη</strong> επιπλωμένο.';
+//     <strong>Διεύθυνση:</strong> {$house['House']['address']}<br />
     $bodyText = "<strong>Δήμος:</strong> {$municipalities[$house['House']['municipality_id']]}<br />
-                 <strong>Διεύθυνση:</strong> {$house['House']['address']}<br />
                  <strong>Ενοίκιο:</strong> {$house['House']['price']}€<br />
                  {$_furnitured} <br />
                  <strong>Διαθέσιμες θέσεις:</strong> {$house['House']['free_places']}τ.μ. <br />
