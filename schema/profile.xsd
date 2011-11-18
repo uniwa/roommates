@@ -25,6 +25,7 @@
             <!-- <xs:element name="preference_id" type="" /> -->
             <!-- <xs:element name="user_id" type="" /> -->
         </xs:sequence>
+        <xs:attribute name="id" type="xs:integer" />
     </xs:complexType>
 
     <!-- email type -->
@@ -58,7 +59,7 @@
     </xs:simpleType>
 
     <!-- token type -->
-    <xs:simpleType name="maxroommatesType">
+    <xs:simpleType name="tokenType">
         <xs:restriction base="xs:string">
             <xs:pattern value="[a-z0-9]{40}" />
         </xs:restriction>
