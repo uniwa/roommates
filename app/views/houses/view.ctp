@@ -94,6 +94,12 @@
         margin: 0px 0px 0px 16px;
         padding: 0px 8px 0px 8px;
     }
+    
+    .imageThumbCont{
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
+    }
 
     #houseInfo{
         margin: 0px 0px 0px 0px;
@@ -234,13 +240,15 @@
         $imageLocation = $image['Image']['location'];
         $imageThumbLocation = 'uploads/houses/'.$houseid.'/thumb_'.$imageLocation;
         $imageMediumLocation = '/img/uploads/houses/'.$houseid.'/medium_'. $imageLocation;
-        $imageThumb = $this->Html->image($imageThumbLocation,
-            array('alt' => ' '.$houseTypeArea.'['.$i.']'));
+        $imageThumb = $this->Html->image($imageThumbLocation, array(
+            'alt' => ' '.$houseTypeArea.'['.$i.']',
+            'class' => 'imageListThumb'));
         $imageLink = $this->Html->link($imageThumb, $imageMediumLocation,
                 array('class' => 'fancyImage', 'rel' => 'group',
                 'title' => $houseTypeArea, 'escape' => false));
+        $imageThumbCont = "<div class='imageThumbCont'>{$imageLink}</div>";
         $imageLine = "<li class='liimage'>";
-        $imageLine .= $imageLink;
+        $imageLine .= $imageThumbCont;
         if($loggedUser == $userid){
             $imageLine .= "<div class='imageactions'>";
             $imageLine .= $this->Html->link(__('Διαγραφή', true),
