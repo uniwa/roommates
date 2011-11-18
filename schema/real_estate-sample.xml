@@ -10,6 +10,6 @@
     <doy>somewhere</doy>
     <address>34 Lost str</address>
     <postal_code>12234</postal_code>
-    <municipality_id>18</municipality_id>
-    <user_id>12</user_id>
+    <!--   <municipality_id>18</municipality_id> -->
+    <!-- <user_id>12</user_id> -->
 </realestate>
