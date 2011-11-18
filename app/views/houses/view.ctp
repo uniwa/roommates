@@ -87,12 +87,12 @@
 
     .liimage{
         float: left;
-        margin: 0px 0px 0px 6px;
+        margin: 0px 0px 0px 4px;
     }
 
     #imageList{
-        margin: 0px 0px 0px 16px;
-        padding: 0px 8px 0px 8px;
+        margin: 0px 0px 0px 24px;
+        padding: 0px 0px 0px 0px;
     }
     
     .imageThumbCont{
