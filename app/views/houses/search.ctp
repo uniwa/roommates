@@ -624,6 +624,9 @@
             <li class='result-cont'>
                 <div class='result'>
                     <div class='result-photo'>
+                    <div class='result-photo-wrap'>
+                    <div class='result-photo-cont'>
+                    <div class='result-photo-inner'>
                         <?php
 							// thumbnail icon if found
 							$house_id = $house['House']['id'];
@@ -639,6 +642,9 @@
 							    'action' => 'view', $house['House']['id']),
 							    array('title' => $altText, 'escape' => false));
 						?>
+                    </div>
+                    </div>
+                    </div>
                     </div>
                     <div class='result-desc'>
                         <?php
