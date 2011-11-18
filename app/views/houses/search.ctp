@@ -113,6 +113,17 @@
     .pagination ul li.disabled{
         color: #aaa;
     }
+
+    .fbIcon{
+        margin: 0px 4px 0px 0px;
+        vertical-align: -30%;
+    }
+    
+    .facebook-post{
+        float: right;
+        margin: 8px 12px 0px 0px;
+    }
+    
 </style>
 
 <div id='leftbar'>
@@ -630,17 +641,56 @@
 						?>
                     </div>
                     <div class='result-desc'>
-                        <div class='desc-title'>
+                        <?php
+
+                            // allow posts to Facebook only by a 'user' (as in role)
+                            if($this->Session->read('Auth.User.role') == 'user'){
+                                $this_url = substr($get_vars, 0, -1); //replace last character (ampersand)
+                                $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
+                                $houseid = $house['House']['id'];
+                                $housePrice = $house['House']['price'];
+                                $houseMunicipality = $municipality_options[$house['House']['municipality_id']];
+                                $houseType = $house_types[$house['House']['house_type_id']];
+                                $houseArea = $house['House']['area'];
+                                $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+                                $occupation_availability = null;
+                                if($house['User']['role'] != 'user') {
+                                    $occupation_availability = '';
+                                }else{
+                                    $occupation_availability = ', Διαθέσιμες θέσεις '
+                                        .Sanitize::html($house['House']['free_places']);
+                                }
+                                $fbUrl = "http://www.facebook.com/dialog/feed";
+                                $fbUrl .= "?app_id=".$facebook->getAppId();
+                                $fbUrl .= "&name=".urlencode('Δείτε περισσότερα εδώ...');
+                                $fbUrl .= "&link={$fb_app_uri}houses/view/{$houseid}";
+                                $fbUrl .= "&caption=".urlencode('«Συγκατοικώ»');
+                                $fbUrl .= "&description=".urlencode($houseTypeArea.'Ενοικίο '.$housePrice.' €,'
+                                    .$furnished.', Δήμος '.$houseMunicipality.$occupation_availability);
+                                $fbUrl .= "&redirect_uri={$fb_app_uri}houses/view/{$houseid}";
+                                $fbImage = 'facebook.png';
+                                $fbDisplay = $this->Html->image($fbImage, array(
+                                    'alt' => 'Κοινoποίηση στο Facebook',
+                                    'class' => 'fbIcon'))
+                                    ." Post";
+                                $fbLink = $this->Html->link($fbDisplay, $fbUrl,array(
+                                    'title' => 'κοινοποίηση στο facebook', 'escape' => false,
+                                    'target' => 'post_to_facebook'));
+                                $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
+                                echo $fbPost;
+                            }
+                        ?>
+                        <div class='desc-title houseClear'>
                             <?php
-                                echo $this->Html->link("{$house_types[$house['House']['house_type_id']]}, {$house['House']['area']}τμ",
-                                    array('controller' => 'houses','action' => 'view',$house['House']['id']));
+                                echo $this->Html->link("{$houseType}, {$houseArea} τ.μ.",
+                                    array('controller' => 'houses','action' => 'view',$houseid));
                             ?>
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο '.$house['House']['price'].'€ ';
-                                echo $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
-                                echo '<br />Δήμος '.$municipality_options[$house['House']['municipality_id']].'<br />';
+                                echo 'Ενοίκιο '.$housePrice.'€, ';
+                                echo $furnished;
+                                echo '<br />Δήμος '.$houseMunicipality.'<br />';
                                 //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 if ($house['User']['role'] != 'realestate') {
@@ -649,49 +699,6 @@
                                 }
                             ?>
                         </div>
-
-                        <?php
-
-                            /* allow posts to Facebook only by a 'user' (as in role)  */
-                            if( $this->Session->read( 'Auth.User.role' ) == 'user' ) {
-
-                                echo '<div class=\"facebook-post\">';
-
-                                    $this_url = substr( $get_vars, 0, -1 ); //replace last character (ampersand)
-                                    $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο, ' : 'Μη επιπλωμένο, ';
-
-                                    $occupation_availability = null;
-                                    if( $house['User']['role'] != 'user' ) {
-
-                                        $occupation_availability = '';
-                                    } else {
-                                        $occupation_availability =
-                                            ', Διαθέσιμες θέσεις '
-                                            . Sanitize::html( $house['House']['free_places'] );
-                                    }
-
-                                    echo '<a href='
-                                        . '"http://www.facebook.com/dialog/feed'
-                                        . '?app_id=' . $facebook->getAppId()
-
-                                        . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
-                                        . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                                        . '&caption=' . urlencode( '«Συγκατοικώ»' )
-
-                                        . '&description=' . urlencode(
-                                            $house_types[$house['House']['house_type_id']] . ' ' . $house['House']['area'] . 'τμ, '
-                                            . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                                            . $furnished
-                                            . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']]
-                                            . $occupation_availability )
-
-                                        . '&redirect_uri=' . urlencode(
-                                            'http://' . $_SERVER['HTTP_HOST'] . $this->here
-                                            . '?' . $this_url )
-                                    . '">Κοινoποίηση στο Facebook</a>';
-                                echo '</div>';
-                            }
-                        ?>
                     </div>
                 </div>
             </li>
