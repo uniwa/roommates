@@ -113,12 +113,6 @@
     .pagination ul li.disabled{
         color: #aaa;
     }
-
-    .form-comment {
-        font-size: 0.8em;
-        font-style: italic;
-        margin: 0px 0px 0px 22px;
-    }
 </style>
 
 <div id='leftbar'>
@@ -608,6 +602,10 @@
         <div class='search-subtitle'>
             <?php echo $foundmessage; ?>
         </div>
+        <?php if (isset($extra_results)) {
+
+            echo $this->Html->link("click me!", array('controller' => 'houses', 'action' => 'search', '?' => $get_vars.'extra=1'));
+         } ?>
         <div class="pagination">
             <ul>
                 <?php
