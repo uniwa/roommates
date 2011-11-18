@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="realestate" type="realestateType" />
+
+    <xs:complexType name="realestateType">
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string"/>
+            <xs:element name="lastname" type="xs:string"/>
+            <xs:element name="company_name" type="xs:string"/>
+            <xs:element name="email" type="emailType" />
+            <xs:element name="phone" type="phoneType" />
+            <xs:element name="fax" type="phoneType" />
+            <xs:element name="afm" type="afmType" />
+            <xs:element name="doy" type="xs:string" />
+            <xs:element name="address" type="xs:string" />
+            <xs:element name="postal_code" type="postalType" />
+            <!-- <xs:element name="visible" type="xs:boolean" /> -->
+
+            <!-- <xs:element name="municipality_id" type="" /> -->
+            <!-- <xs:element name="user_id" type="" /> -->
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:integer" />
+    </xs:complexType>
+
+    <!-- email type -->
+    <xs:simpleType name="emailType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[^@]+@[^\.]+\..+" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- phone type -->
+    <xs:simpleType name="phoneType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{10}" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- afm type -->
+    <xs:simpleType name="afmType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{9}" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- postal code type -->
+    <xs:simpleType name="postalType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{5}" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
