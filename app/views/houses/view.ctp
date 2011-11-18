@@ -3,13 +3,15 @@
         float: left;
         margin: 0px 20px 0px 32px;
         padding: 32px;
+        width: 180px;
     }
 
     #main-inner{
         float: left;
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
-        padding: 24px;
+        padding: 24px 24px 24px 16px;
+        width: 580px;
     }
 
     #houseCont{
@@ -48,9 +50,16 @@
     .houseLine{
         padding: 6px;
         overflow: hidden;
-        width: 100%;
     }
 
+    .houseLineLong{
+        width: 300px;
+    }
+    
+    .houseLineShort{
+        width: 180px;
+    }
+    
     .houseProperty{
         float: left;
         text-align: right;
@@ -61,7 +70,7 @@
     }
 
     .houseC{
-        width: 150px;
+        width: 120px;
     }
 
     .houseValue{
@@ -318,7 +327,7 @@
         $houseProperties['hosting']['label'] = 'Διαμένουν';
         $houseProperties['hosting']['suffix'] = ($houseHosting > 1)?'άτομα':'άτομο';
         $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
-        $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά θέσεις)";
+        $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά)";
     }
     $houseProperties['solar']['label'] = 'Ηλιακός';
     $houseProperties['furnished']['label'] = 'Επιπλωμένο';
@@ -406,6 +415,7 @@
                 $propertyLine = '';
                 $odd = !$odd;
                 $lineClass = ($odd)?'houseOdd ':' ';
+                $lineClass .= ($checkbox)?'houseLineShort':'houseLineLong';
                 $propertyLine .= "<li class='houseClear houseLine {$lineClass}'>\n";
                 $lineClass = ($checkbox)?'houseC':'houseV';
                 $propertyLine .= "<div class='houseProperty {$lineClass}'>\n";
@@ -439,13 +449,13 @@
                 echo $propertiesValues;
             ?>
             <?php if ($loggedUser == $userid) { ?>
-            <li class='houseClear houseLine'>
+            <li class='houseClear houseLine houseLineLong'>
                 <?php
                     echo '<br />'.$houseVisibility;
                 ?>
             </li>
             <?php } ?>
-            <li class='houseClear houseLine'>
+            <li class='houseClear houseLine houseLineLong'>
                 <?php
                     if($houseDescription != ''){
                         echo 'Περιγραφή: '.$houseDescription;
