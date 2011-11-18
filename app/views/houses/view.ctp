@@ -15,15 +15,13 @@
     }
 
     #houseCont{
-        margin: 0px 0px 64px 0px;
+        margin: 0px 0px 32px 0px;
         overflow: hidden;
         height: 100%;
     }
 
     .housePic{
         float: left;
-/*        width: 128px;
-        height: 128px;*/
         padding: 2px;
     }
 
@@ -105,6 +103,14 @@
     .fbIcon{
         margin: 0px 4px 0px 0px;
         vertical-align: -30%;
+    }
+    
+    .facebook-post{
+        margin: 16px 0px 0px 0px;
+    }
+    
+    .owner-info{
+        margin: 32px 0px 0px 0px;
     }
 </style>
 
@@ -261,19 +267,23 @@
     // owner's profile (not available to real estate)
     if(($loggedUser != $userid) && ($role != 'realestate')){
         if($ownerRole == 'user'){
-            $profileInfo = $this->Html->link($profileName, array(
+            $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= $this->Html->link($profileName, array(
                 'controller' => 'profiles', 'action' => 'view',
                 $profileid));
             $profileInfo .= '<br />'.$profileAge.' ετών, '.$profileGender;
             $profileInfo .= '<br />email: '.$this->Html->link($profileEmail, 'mailto:'.$profileEmail);
             $profileInfo .= '<br />επιθυμητοί συγκάτοικοι: '.$profileWanted;
+            $profileInfo .= "</div>";
         }elseif($ownerRole == 'realestate'){
-            $profileInfo = $this->Html->link($realestateCompany,
+            $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
                 $realestateid));
             $profileInfo .= '<br />email: '.$this->Html->link($realestateEmail, 'mailto:'.$realestateEmail);
             $profileInfo .= '<br />τηλέφωνο: '.$realestatePhone;
             $profileInfo .= '<br />φαξ: '.$realestateFax;
+            $profileInfo .= "</div>";
         }
     }
 
@@ -307,8 +317,9 @@
             'alt' => 'Κοινoποίηση στο Facebook',
             'class' => 'fbIcon'))
             ." Post";
-        $fbLink = $this->Html->link($fbDisplay, $fbUrl,
-            array('title' => 'κοινοποίηση στο facebook', 'escape' => false));
+        $fbLink = $this->Html->link($fbDisplay, $fbUrl,array(
+            'title' => 'κοινοποίηση στο facebook', 'escape' => false,
+            'target' => 'post_to_facebook'));
         $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
     }
 
@@ -389,15 +400,14 @@
         <?php
             if($this->Session->read('Auth.User.id') == $userid){
                 echo $editHouse.'<br />';
-                echo $deleteHouse.'<br /><br />';
-            }
-            if(($loggedUser != $userid) && ($role != 'realestate')){
-                echo $profileInfo.'<br /><br />';
+                echo $deleteHouse;
             }
             if($role == 'user'){
-                echo $fbPost.'<br />';
+                echo $fbPost;
             }
-
+            if(($loggedUser != $userid) && ($role != 'realestate')){
+                echo $profileInfo;
+            }
         ?>
     </div>
 </div>
