@@ -252,13 +252,13 @@
                 <li class='form-line'>
                     <div class='form-elem form-input'>
                         <?php
-                            echo $this->Form->checkbox('realestate_only',
+                            echo $this->Form->checkbox('with_roommate',
                                 array('hiddenField' => false,
-                                    'checked' => isset($defaults['realestate_only']))).' Σπίτια χωρίς συγκάτοικο';
+                                    'checked' => isset($defaults['with_roommate']))).' Μόνο σπίτια με συγκάτοικο';
                         ?>
-                        <div class='form-comment'>
+                        <!--div class='form-comment'>
                             (Δεν θα ληφθούν υπ' όψη τα χαρακτηριστικά συγκατοίκου)
-                        </div>
+                        </div-->
                     </div>
                 </li>
             <?php } ?>

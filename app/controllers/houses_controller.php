@@ -512,7 +512,7 @@ class HousesController extends AppController {
                                                 $this->getOrderCondition($this->params['url']['order_by'])
                                               );
             } else {
-                if (isset($this->params['url']['realestate_only'])) {
+                if (isset($this->params['url']['with_roommate'])) {
                     $results = $this->simpleSearch( $this->getHouseConditions(),
                                                     null,
                                                     $this->getOrderCondition($this->params['url']['order_by']),
@@ -567,7 +567,7 @@ class HousesController extends AppController {
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true,
-                                    $real_estate_only = false) {
+                                    $with_roommate = false) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -581,8 +581,8 @@ class HousesController extends AppController {
         $options['fields'] = array('House.*', 'Image.location', 'User.role');
 
         $user_conditions = array('House.user_id = User.id');
-        if ($real_estate_only) {
-            array_push($user_conditions, 'User.role = "realestate"');
+        if ($with_roommate) {
+            array_push($user_conditions, 'User.role = "user"');
         }
 
         $options['joins'] = array(
