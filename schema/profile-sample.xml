@@ -15,8 +15,8 @@
     <visible>1</visible>
     <get_mail>0</get_mail>
     <token>7bda39fdf3c95f73587f16b710a83a1e30578133</token>
-    <created>2011-11-10 10:58:46</created>
-    <modified>2011-11-28 16:40:05</modified>
-    <preference_id>9</preference_id>
-    <user_id>11</user_id>
+    <created>2011-11-10T10:58:46</created>
+    <modified>2011-11-28T16:40:05</modified>
+    <!--   <preference_id>9</preference_id> -->
+    <!-- <user_id>11</user_id> -->
 </profile>
