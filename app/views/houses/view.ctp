@@ -101,6 +101,11 @@
         margin: 0px 0px 0px 0px;
         padding: 24px 0px 0px 0px;
     }
+    
+    .fbIcon{
+        margin: 0px 4px 0px 0px;
+        vertical-align: -30%;
+    }
 </style>
 
 <?php
@@ -297,8 +302,13 @@
         $fbUrl .= "&description=".urlencode($houseTypeArea.'Ενοικίο '.$housePrice.' €,'
             .$furnished.'Δήμος '.$houseMunicipality.$occupation_availability);
         $fbUrl .= "&redirect_uri={$fb_app_uri}houses/view/{$houseid}";
-        $fbLink = $this->Html->link('Κοινoποίηση στο Facebook', $fbUrl,
-            array('title' => 'κοινοποίηση στο facebook'));
+        $fbImage = 'facebook.png';
+        $fbDisplay = $this->Html->image($fbImage, array(
+            'alt' => 'Κοινoποίηση στο Facebook',
+            'class' => 'fbIcon'))
+            ." Post";
+        $fbLink = $this->Html->link($fbDisplay, $fbUrl,
+            array('title' => 'κοινοποίηση στο facebook', 'escape' => false));
         $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
     }
 

@@ -3,6 +3,7 @@
         float: left;
         margin: 0px 0px 0px 32px;
         padding: 32px;
+        width: 150px;
     }
 
     #main-inner{
