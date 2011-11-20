@@ -24,7 +24,7 @@
                 <type>Υπόγα</type>
         </floor>
         <house_type id="12">
-            <type>Μπουρδέλο</type>
+            <type>Μεζονέτα</type>
         </house_type>
 
         <heating_type id="2">
@@ -40,7 +40,7 @@
         </municipality>
 
         <image id="30">
-            <location>http://tomounithsmanasou.com/anoixtapodia.png</location>
+            <location>http://roommates.com/spiti.png</location>
         </image>
         <visible>true</visible>
     </house>
