@@ -5,19 +5,24 @@
         font-size: 1.2em;
         font-weight: bold;
     }
-    
+
     #main-inner ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     #main-inner{
         margin: 0px auto;
         padding: 0px 0px 0px 0px;
         width: 540px;
     }
 
+    .form-center{
+        margin: 8px auto;
+        text-align: center;
+    }
+
     .form-buttons{
-        margin: 10px auto;
+        margin: 20px auto;
         width: 220px;
     }
 
@@ -47,21 +52,35 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
     .form-input input.input-elem{
         border: 1px solid #ddd;
         padding: 2px;
         width: 220px;
         height: 14px;
     }
-    
+
     .form-input textarea.input-elem{
         border: 1px solid #ddd;
         padding: 2px;
         width: 220px;
     }
 
-    /* TODO: add custom class to differenciate between other views stars */
+    .formCheckbox{
+        margin: 8px 8px 8px 0px;
+    }
+
+    .checkLabel{
+        padding: 0px 10px 0px 0px;
+    }
+
+    .register-form-comment {
+        font-size: 0.8em;
+        font-style: italic;
+        margin: 2px 0px 0px 0px;
+    }
+
+    /* TODO: add custom class to differentiate between other views stars */
     .required {
         background: url("img/required.gif") no-repeat scroll right top transparent;
     }
@@ -102,6 +121,7 @@
     $inputelems['lname']['label'] = 'Επίθετο';
     $inputelems['cname']['input'] = $this->Form->input('RealEstate.company_name', array('label' => '', 'class' => 'input-elem'));
     $inputelems['cname']['label'] = 'Επωνυμία εταιρίας';
+    $inputelems['cname']['comment'] = '(Αν είστε ιδιώτης αφήστε το πεδίο κενό)';
     $inputelems['afm']['input'] = $this->Form->input('RealEstate.afm', array('label' => '', 'class' => 'input-elem'));
     $inputelems['afm']['label'] = 'ΑΦΜ';
     $inputelems['doy']['input'] = $this->Form->input('RealEstate.doy', array('label' => '', 'class' => 'input-elem'));
@@ -138,7 +158,14 @@
                 <?php echo $elem['label']; ?>
             </div>
             <div class='form-elem form-input'>
-                <?php echo $elem['input']; ?>
+                <?php
+                    echo $elem['input'];
+                    if (isset($elem['comment'])) {
+                ?>
+                <div class='register-form-comment'>
+                    <?php echo $elem['comment']; ?>
+                </div>
+                <?php } ?>
             </div>
             <?php
                 if (isset($elem['error'])) {
@@ -146,20 +173,22 @@
                 }
             ?>
         </li>
-    <?php } // foreach ?>
-    <div>
-        <textarea rows="6" cols="80" readonly="readonly">
-            <?php echo $terms_text; ?>
-        </textarea>
-        <div class="required">
+        <?php } // foreach ?>
+        <li class='form-line'>
+            <textarea rows="6" cols="80" readonly="readonly">
+                <?php echo $terms_text; ?>
+            </textarea>
+        </li>
+        <li class='form-line form-center'>
             <?php
                 // TODO: fix "required" star's position
-                echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης.');
-                echo $this->Form->checkbox('estate_terms', array('hidden' => false, 'checked' => false));
+                echo $this->Form->checkbox('estate_terms', array('hidden' => false, 'checked' => false, 'class' => 'formCheckbox'));
+                echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης', array('class' => 'checkLabel required'));
             ?>
-        </div>
-    </div>
-    <div> <?php echo $this->Recaptcha->display(); ?> </div>
+        </li>
+        <li class='form-line form-center'>
+            <?php echo $this->Recaptcha->display(); ?>
+        </li>
         <li class='form-line form-buttons'>
             <div class='form-elem form-submit'>
                 <?php

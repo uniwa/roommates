@@ -49,7 +49,7 @@ q:before, q:after{
 
 a, a:link, a:visited {
     text-decoration: none;
-    color: #21759B;
+    color: #339/*21759B*/;
 }
 table{
     border-collapse: collapse;
@@ -63,13 +63,17 @@ body{
     margin: 0;
     padding: 0;
     height: 100%;
-    color: #59a4d8;
+    color: #000/*59a4d8*/;
 }
 
 img{
     -moz-user-select: none;
     -khtml-user-select: none;
     user-select: none;
+}
+
+.bold{
+    font-weight: bold;
 }
 
 #debug{
@@ -96,26 +100,14 @@ img{
     margin: 0px 0px 4px 0px;
 }
 
-/*
-#flashMessage{
-    border: 1px solid;
-    margin: 10px 0;
-    padding: 15px 10px 15px 50px;
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    color: #00529B;
-    background-color: #d3e3fa;
-    background-image: url(../img/info.png);
-}
-*/
 
-#flashMessage{
+#flashMessage,#authMessage{
     border-left: 2px;
     border-right: 2px;
     border-bottom: 2px;
     border-style: solid;
     border-color: #fff;
-    margin: -20px auto 4px auto;
+    margin: 0px auto 0px auto;
     padding: 4px 8px 8px 8px;
     font-weight: bold;
     text-align: center;
@@ -131,6 +123,10 @@ img{
 }
 
 .flashRed{
+    background-color: #ff5555;
+}
+
+#authMessage{
     background-color: #ff5555;
 }
 
@@ -154,7 +150,7 @@ img{
 }
 
 #container{
-    margin: 60px auto 0px auto;
+    margin: 40px auto 0px auto;
     padding: 0px 0px 0px 0px;
     width: 960px;
     min-height: 100%;
@@ -163,7 +159,7 @@ img{
 #header{
     clear: both;
     background-color: #fff;
-    margin: 0px 0px 4px 0px;
+    margin: 4px 0px 4px 0px;
     padding: 2px 0px 2px 0px;
 /*    height: 20px;*/
 }
@@ -299,16 +295,39 @@ img{
     float: left;
     background-color: #eaeaea;
     margin: 12px 0px 0px 14px;
-    width: 166px;
-    height: 96px;
+    width: 177px;
+    height: 100px;
+}
+
+.result-photo-wrap{
+    display: table;
+	vertical-align: middle;
+}
+
+.result-photo-cont{
+	position: relative;
+	vertical-align: middle;
+	display: table-cell;
+	height: 100px;
+}
+
+.result-photo-inner{
+	width: 177px;
+	overflow: hidden;
+}
+
+.result-photo-inner img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .result-desc{
     float: left;
     background-color: #eaeaea;
-    margin: 12px 0px 0px 8px;
+    margin: 12px 0px 0px 4px;
     width: 380px;
-    height: 96px;
+    height: 100px;
 }
 
 .desc-title{

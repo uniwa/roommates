@@ -33,7 +33,10 @@
         ?>
     </div>
     <div id='container'>
-        <?php echo $this->Session->flash(); ?>
+        <?php
+            echo $this->Session->flash();
+            echo $this->Session->flash('auth');
+        ?>
         <div id='header'>
             <?php
                 if($userBanned){
@@ -46,7 +49,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div id='main-cont'>
             <div id='main'>
                 <!-- /#content -->

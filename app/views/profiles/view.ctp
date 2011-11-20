@@ -3,38 +3,39 @@
         float: left;
         margin: 0px 0px 0px 32px;
         padding: 32px;
+        width: 150px;
     }
-    
+
     #main-inner{
         float: left;
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
         padding: 24px;
     }
-    
+
     .profilePic{
         float: left;
         width: 128px;
         height: 128px;
         padding: 2px;
     }
-    
+
     #profileEdit{
         margin: 64px 0px 0px 12px;
     }
-    
+
     #profileRss,#profileBan{
         margin: 16px 0px 0px 0px;
     }
-    
+
     #profileRss img,#profileBan img{
         margin: 0px 4px 0px 0px;
     }
-    
+
     .profileClear{
         clear: both;
     }
-    
+
     .profileBlock{
         float: left;
         margin: 0px 64px 64px 16px;
@@ -52,11 +53,11 @@
         margin: 0px 0px 16px 24px;
         font-size: 1.0em;
     }
-    
+
     #myHousePic{
         margin: 0px 0px 0px 24px;
     }
-    
+
     #myHouse{
         margin: 24px 0px 0px 24px;
     }
@@ -105,6 +106,16 @@
 	$price_max = $profile['Preference']['price_max'];
 	$area_min = $profile['Preference']['area_min'];
 	$area_max = $profile['Preference']['area_max'];
+    // check if the owner of this profile has
+    // any saved house preferences
+    if ($prefFurnished == 2  && $prefAccessibility == 0 &&
+        $prefHousePhoto == 0 && $price_max == '' &&
+        $area_max == ''      && $area_min == '')
+    {
+        $has_house_prefs = false;
+    } else {
+        $has_house_prefs = true;
+    }
     // House info
     if(isset($house)){
         $houseAddress = $house['House']['address'];
@@ -118,11 +129,13 @@
         $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
         $houseLink = $this->Html->link($houseTypeArea,
             array('controller' => 'houses', 'action' => 'view', $houseId));
-        $houseThumb = $this->Html->image($image,
-            array('alt' => $houseTypeArea));
-        $houseThumbLink = $this->Html->link($houseThumb,
-            array('controller' => 'houses', 'action' => 'view', $houseId),
-            array('escape' => false));
+        if(isset($image)){
+            $houseThumb = $this->Html->image($image,
+                array('alt' => $houseTypeArea));
+            $houseThumbLink = $this->Html->link($houseThumb,
+                array('controller' => 'houses', 'action' => 'view', $houseId),
+                array('escape' => false));
+        }
     }
 	function echoDetail($title, $option){
 		$span = array("open" => "<span class='profile-strong'>", "close" => "</span>");
@@ -197,7 +210,7 @@
         <div id='myName' class='profileTitle'>
             <h2><?php echo $name; ?></h2>
         </div>
-        <div id='myProfile' class='profileInfo'>    
+        <div id='myProfile' class='profileInfo'>
 		    <span class='profile-strong'><?php echo $age; ?></span> ετών,
 		    <span class='profile-strong'><?php echo $gender; ?></span>
 		    <br />
@@ -267,7 +280,12 @@
 		    ?></span>
         </div>
         <div class='profileTitle profileClear'>
-	        <h2>Προτιμήσεις σπιτιού</h2>
+            <?php
+                if ($has_house_prefs)
+                    echo "<h2>Προτιμήσεις σπιτιού</h2>";
+                else
+                    echo "<h2>Δεν έχουν οριστεί<br/>προτιμήσεις σπιτιού";
+            ?>
         </div>
         <div id='housePrefs' class='profileInfo'>
 		    <?php
@@ -316,10 +334,18 @@
 		    ?></span>
         </div>
     </div>
-    <?php if(isset($house)){ ?>
+    <?php
+        if(isset($house)){
+            $houseTitle = 'Το σπίτι ';
+            if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
+                $houseTitle .= 'μου';
+            }else{
+                $houseTitle .= ($profile['Profile']['gender'])?'της':'του';
+            }
+    ?>
         <div class='profileBlock profileClear'>
             <div class='profileTitle'>
-	            <h2>Το σπίτι μου</h2>
+	            <h2><?php echo $houseTitle; ?></h2>
             </div>
             <div id='myHouse' class='profileInfo'>
                 <?php
@@ -328,7 +354,9 @@
             </div>
             <div id='myHousePic' class='profilePic'>
                 <?php
-                    echo $houseThumbLink;
+                    if(isset($houseThumbLink)){
+                        echo $houseThumbLink;
+                    }
                 ?>
             </div>
         </div>

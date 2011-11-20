@@ -138,7 +138,11 @@
                         Ηλικία από
                     </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input(('age_min'), array('label' => '', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input('age_min', array('label' => '',
+                                'value' => isset($defaults['age_min'])
+                                                ? $defaults['age_min']
+                                                : '',
+                                'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
@@ -146,7 +150,11 @@
                         μέχρι
                     </div>
                     <div class='form-elem form-input'>
-                        <?php echo $this->Form->input('age_max', array('label' => '', 'class' => 'input-elem')); ?>
+                        <?php echo $this->Form->input('age_max', array('label' => '',
+                                'value' => isset($defaults['age_max'])
+                                                ? $defaults['age_max']
+                                                : '',
+                                'class' => 'input-elem')); ?>
                     </div>
                 </li>
                 <li class='form-line'>
@@ -276,6 +284,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -288,7 +297,8 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
-                    ?>
+                }
+                ?>
             </ul>
         </div>
         <ul>
@@ -326,6 +336,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -338,6 +349,7 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+                }
                 ?>
             </ul>
         </div>

@@ -11,7 +11,7 @@ class ProfilesController extends AppController {
     function index() {
         // Block access for all
         $this->cakeError('error403');
-        
+
         $this->set('title_for_layout','Δημόσια προφίλ');
         /*if ($this->RequestHandler->isRss()) {
             $profiles = $this->Profile->find('all', array('conditions' => array('Profile.visible' => 1),
@@ -60,11 +60,10 @@ class ProfilesController extends AppController {
     	$this->checkExistence($id);
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
-        /* get profile  contains:
-                Profile + Preference + User + House
-		*/
+        // get profile  contains:
+        //      Profile + Preference + User + House
         $profile = $this->Profile->read();
-        /* hide banned users unless we are admin */
+        // hide banned users unless we are admin
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $profile['Profile']['user_id']) {
             if ($profile["User"]["banned"] == 1) {
@@ -82,21 +81,25 @@ class ProfilesController extends AppController {
             $municipality = $municipality[$pref_municipality];
             $this->set('municipality', $municipality);
         }
-        /* get house id of this user - NULL if he doesn't own one */
+        // get house id of this user - NULL if he doesn't own one
         if(isset($profile["User"]["House"][0]["id"])){
-            $imgDir = 'uploads/houses/';
-            $houseid = $profile["User"]["House"][0]["id"];
-            $this->House->id = $houseid;
-            $house = $this->House->read();
-            $image = $this->Image->find('first',array('conditions' => array(
-                'Image.id' => $house['House']['default_image_id'])));
-            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
-            $this->set('image', $imageFile);
+            if($profile['User']['House'][0]['visible'] == 1){
+                $imgDir = 'uploads/houses/';
+                $houseid = $profile["User"]["House"][0]["id"];
+                $this->House->id = $houseid;
+                $house = $this->House->read();
+                $image = $this->Image->find('first',array('conditions' =>
+                    array('Image.id' => $house['House']['default_image_id'])));
+                if($image != ''){
+                    $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+                    $this->set('image', $imageFile);
+                }
+                $this->set('house', $house);
+            }
         }else{
             $houseid = NULL;
             $house = NULL;
         }
-        $this->set('house', $house);
     }
 
 /*
@@ -131,7 +134,7 @@ class ProfilesController extends AppController {
     }
 */
 
-    function edit($id = null) {
+    function edit($id = null){
         $this->denyRole('realestate');
         // this variable is used to display properly
         // the selected element on header
@@ -143,15 +146,17 @@ class ProfilesController extends AppController {
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
-        $this->set('profile', $profile);
 
-        if (empty($this->data)) {
-             $this->data = $this->Profile->read();
-	}
-        else {
+        if(empty($this->data)){
+             $this->data = $profile;
+	    }else{
+	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
+	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
+	        $this->data['Profile']['email'] = $profile['Profile']['email'];
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.', 'default', array('class' => 'flashBlue'));
-                    $this->redirect(array('action'=> "view", $id));
+                $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
+                    array('class' => 'flashBlue'));
+                $this->redirect(array('action'=> "view", $id));
             }
 		}
         $dob = array();
@@ -168,16 +173,20 @@ class ProfilesController extends AppController {
             }
         }
 
-        if(isset($profile["User"]["House"][0]["id"])){
-            $imgDir = 'uploads/houses/';
-            $houseid = $profile["User"]["House"][0]["id"];
-            $this->House->id = $houseid;
-            $house = $this->House->read();
-            $image = $this->Image->find('first',array('conditions' => array(
-                'Image.id' => $house['House']['default_image_id'])));
-            $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
-            $this->set('image', $imageFile);
+        if(isset($profile['User']['House'][0]['id'])){
+            if($profile['User']['House'][0]['visible'] === 1){
+                $imgDir = 'uploads/houses/';
+                $houseid = $profile["User"]["House"][0]["id"];
+                $this->House->id = $houseid;
+                $house = $this->House->read();
+                $image = $this->Image->find('first',array('conditions' => array(
+                    'Image.id' => $house['House']['default_image_id'],
+                    'Image')));
+                $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+                $this->set('image', $imageFile);
+            }
         }
+        $this->set('profile', $profile['Profile']);
      }
 
     function search() {
@@ -256,7 +265,9 @@ class ProfilesController extends AppController {
         $searchconditions = array('Profile.visible' => 1, 'User.banned' => 0);
 
 		if(isset($searchArgs['has_house'])){
-			$ownerId = $this->Profile->User->House->find('all', array('fields' => 'DISTINCT user_id'));
+			$ownerId = $this->Profile->User->House->find('all', array(
+			    'fields' => 'DISTINCT user_id',
+			    'conditions' => array('House.visible' => 1)));
 			$ownerId = Set::extract($ownerId, '/House/user_id');
 			$searchconditions['Profile.user_id'] = $ownerId;
 		};
@@ -308,6 +319,7 @@ class ProfilesController extends AppController {
         $profiles = $this->paginate('Profile');
 		$this->set('searchargs', $searchArgs);
         $this->set('profiles', $profiles);
+        $this->set('pagination_limit', $this->paginate['limit']);
 /*        $this->set('defaults', array(   'age_min' => $searchArgs['age_min'],
                                         'age_max' => $searchArgs['age_max'],
                                         'pref_gender' => $searchArgs['pref_gender'],
@@ -484,10 +496,11 @@ class ProfilesController extends AppController {
         //$this->Email->replyTo = 'support@example.com';
         $this->Email->from = 'admin@roommates.edu.teiath.gr';
         $this->Email->template = 'banned';
+        $this->Email->layout = 'default';
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
-    
+
     private function denyRole($role){
         if($this->Session->read('Auth.User.role') == $role){
             $this->cakeError('error403');

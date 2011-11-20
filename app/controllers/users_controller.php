@@ -201,6 +201,9 @@ class UsersController extends AppController{
     }
 
     function register() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
         $this->set('title_for_layout','Εγγραφή νέου χρήστη');
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         if ($this->data) {
@@ -247,7 +250,7 @@ class UsersController extends AppController{
                     $this->User->commit();
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
-                    $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.");
+                    $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
                     $this->redirect('login');
                 }
             }

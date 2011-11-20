@@ -6,7 +6,7 @@
     ul.collapsible{
         display: none;
     }
-    
+
     .form-collapse{
         background-image: url('img/arrows.png');
         background-position: 98% 0px;
@@ -14,18 +14,18 @@
         height: 16px;
         cursor: pointer;
     }
-    
+
     .form-title{
         clear: both;
         margin: 20px 0px 12px 8px;
         font-size: 1.2em;
         font-weight: bold;
     }
-    
+
     .left-form ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     #leftbar{
         float: left;
 /*        background-color: #f7f7f7;*/
@@ -42,16 +42,16 @@
         padding: 0px 0px 0px 0px;
         width: 620px;
     }
-    
+
     .form-buttons{
         margin: 10px auto;
         width: 220px;
     }
-    
+
     .form-line{
 /*        margin: 0px 12px 0px 0px;*/
     }
-    
+
     .form-elem{
         margin: 2px 0px 12px 8px;
         font-size: 1.2em;
@@ -78,7 +78,7 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
     .search-title{
 /*        margin: 12px 0px 8px 48px;*/
         margin: 12px auto 0px auto;
@@ -94,12 +94,12 @@
         font-size: 1.2em;
         font-style: italic;
     }
-    
+
     .pagination{
         margin: 0px auto 12px auto;
         text-align: center;
     }
-    
+
     .pagination ul li{
         display: inline;
     }
@@ -109,10 +109,21 @@
         padding: 0px 2px 0px 2px;
         font-weight: bold;
     }
-    
+
     .pagination ul li.disabled{
         color: #aaa;
     }
+
+    .fbIcon{
+        margin: 0px 4px 0px 0px;
+        vertical-align: -30%;
+    }
+
+    .facebook-post{
+        float: right;
+        margin: 8px 12px 0px 0px;
+    }
+
 </style>
 
 <div id='leftbar'>
@@ -241,9 +252,22 @@
                         ?>
                     </div>
                 </li>
+
+            <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+                <li class='form-line'>
+                    <div class='form-elem form-input'>
+                        <?php
+                            echo $this->Form->checkbox('with_roommate',
+                                array('hiddenField' => false,
+                                    'checked' => isset($defaults['with_roommate']))).' Μόνο σπίτια με συγκάτοικο';
+                        ?>
+                    </div>
+                </li>
+            <?php } ?>
+
             </ul>
 
-<?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+            <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
 
             <div class='form-title'>
                 <h2>Χαρακτηριστικά συγκατοίκων</h2>
@@ -334,11 +358,11 @@
                     </div>
                 </li>
 
-<?php } // role != realestate ?>
+                <?php } // role != realestate ?>
 
                 <li class='form-line'>
                     <div class='form-elem form-label'>
-                        Ταξινόμηση 
+                        Ταξινόμηση
                     </div>
                     <div class='form-elem form-input'>
                         <?php
@@ -351,7 +375,7 @@
                 </li>
             </ul>
 
-<?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+            <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
 
             <div class='form-title'>
                 <h2>Οι προτιμήσεις μου</h2>
@@ -371,7 +395,7 @@
                 </li>
             </ul>
 
-<?php } // role != realestate ?>
+            <?php } // role != realestate ?>
 
             <div class='form-title form-collapse expand'>
                 <h2>Πρόσθετα χαρακτηριστικά σπιτιών</h2>
@@ -409,7 +433,7 @@
                     </div>
                     <div class='form-elem form-input'>
                         <?php
-	                        echo $this->Form->input('bedroom_num_min', array('label' => '', 
+	                        echo $this->Form->input('bedroom_num_min', array('label' => '',
                                 'class' => 'short-textbox',
                                 'value' => isset($defaults) ? $defaults['bedroom_num_min'] : '',
                                 'class' => 'input-elem'));
@@ -435,9 +459,9 @@
                     </div>
                 <li class='form-line'>
                     <div class='form-elem'>
-                        <?php 
+                        <?php
                             if ( isset( $defaults ) ) {
-                                $selected_date = $defaults[ 'available_from' ]; 
+                                $selected_date = $defaults[ 'available_from' ];
                             }
                             else {
                                 // TODO fix hardcoded date
@@ -575,10 +599,11 @@
         </div>
         <?php
             $count = $this->Paginator->counter(array('format' => '%count%'));
-            $foundmessage = 'Δεν βρέθηκαν σπίτια';
-            if($count == 1) {
-                $foundmessage = 'Βρέθηκε '.$count.' σπίτι';
-            }else{
+            if ($count === '0') {
+                $foundmessage = 'Δεν βρέθηκαν σπίτια';
+            } else if ($count === '1') {
+                $foundmessage = 'Βρέθηκε 1 σπίτι';
+            } else {
                 $foundmessage = 'Βρέθηκαν '.$count.' σπίτια';
             }
         ?>
@@ -588,6 +613,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     // set the URL
                     $paginator->options(array('url' => array('?' => $get_vars)));
                     /* show first page */
@@ -602,7 +628,8 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
-                    ?>
+                }
+                ?>
             </ul>
         </div>
         <ul>
@@ -610,6 +637,9 @@
             <li class='result-cont'>
                 <div class='result'>
                     <div class='result-photo'>
+                    <div class='result-photo-wrap'>
+                    <div class='result-photo-cont'>
+                    <div class='result-photo-inner'>
                         <?php
 							// thumbnail icon if found
 							$house_id = $house['House']['id'];
@@ -617,51 +647,74 @@
                             if(!empty($house['Image']['location'])) {
                                 $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
                             }
-							echo $this->Html->image($house_image, array('alt' => 'εικόνα '.$house['House']['address']));
+                            $altText = 'εικόνα '.$house['House']['address'];
+							$houseImage = $this->Html->image($house_image,
+							    array('alt' => $altText));
+							echo $this->Html->link($houseImage, array(
+							    'controller' => 'houses',
+							    'action' => 'view', $house['House']['id']),
+							    array('title' => $altText, 'escape' => false));
 						?>
                     </div>
+                    </div>
+                    </div>
+                    </div>
                     <div class='result-desc'>
-                        <div class='desc-title'>
+                        <?php
+                            $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
+                            $houseid = $house['House']['id'];
+                            $housePrice = $house['House']['price'];
+                            $houseMunicipality = $municipality_options[$house['House']['municipality_id']];
+                            $houseType = $house_types[$house['House']['house_type_id']];
+                            $houseArea = $house['House']['area'];
+                            $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+                            // allow posts to Facebook only by a 'user' (as in role)
+                            if($this->Session->read('Auth.User.role') == 'user'){
+                                $this_url = substr($get_vars, 0, -1); //replace last character (ampersand)
+                                $occupation_availability = null;
+                                if($house['User']['role'] != 'user') {
+                                    $occupation_availability = '';
+                                }else{
+                                    $occupation_availability = ', Διαθέσιμες θέσεις '
+                                        .Sanitize::html($house['House']['free_places']);
+                                }
+                                $fbUrl = "http://www.facebook.com/dialog/feed";
+                                $fbUrl .= "?app_id=".$facebook->getAppId();
+                                $fbUrl .= "&name=".urlencode('Δείτε περισσότερα εδώ...');
+                                $fbUrl .= "&link={$fb_app_uri}houses/view/{$houseid}";
+                                $fbUrl .= "&caption=".urlencode('«Συγκατοικώ»');
+                                $fbUrl .= "&description=".urlencode($houseTypeArea.'Ενοικίο '.$housePrice.' €,'
+                                    .$furnished.', Δήμος '.$houseMunicipality.$occupation_availability);
+                                $fbUrl .= "&redirect_uri={$fb_app_uri}houses/view/{$houseid}";
+                                $fbImage = 'facebook.png';
+                                $fbDisplay = $this->Html->image($fbImage, array(
+                                    'alt' => 'Κοινoποίηση στο Facebook',
+                                    'class' => 'fbIcon'))
+                                    ." Post";
+                                $fbLink = $this->Html->link($fbDisplay, $fbUrl,array(
+                                    'title' => 'κοινοποίηση στο facebook', 'escape' => false,
+                                    'target' => 'post_to_facebook'));
+                                $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
+                                echo $fbPost;
+                            }
+                        ?>
+                        <div class='desc-title houseClear'>
                             <?php
-                                echo $this->Html->link("{$house_types[$house['House']['house_type_id']]}, {$house['House']['area']}τμ",
-                                    array('controller' => 'houses','action' => 'view',$house['House']['id']));
+                                echo $this->Html->link("{$houseType}, {$houseArea} τ.μ.",
+                                    array('controller' => 'houses','action' => 'view',$houseid));
                             ?>
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο '.$house['House']['price'].'€ ';
-                                echo $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
-                                echo '<br />Δήμος '.$municipality_options[$house['House']['municipality_id']].'<br />';
-                                echo 'Διεύθυνση '.$house['House']['address'].'<br />';
+                                echo 'Ενοίκιο '.$housePrice.'€, ';
+                                echo $furnished;
+                                echo '<br />Δήμος '.$houseMunicipality.'<br />';
+                                //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
-                                echo 'Διαθέσιμες θέσεις '.$house['House']['free_places'].'<br />';
-                            ?>
-                        </div>
-                        <div class='facebook-post'>
-                            <?php
-                            
-                                $this_url = substr( $get_vars, 0, -1 ); //replace last character (ampersand)
-                                $furnished = $house['House']['furnitured'] ? ' Επιπλωμένο, ' : ', ';
-                                echo '<a href='
-                                    . '"http://www.facebook.com/dialog/feed'
-                                    . '?app_id=' . $facebook->getAppId()
-                                    
-                                    . '&name=' . urlencode( 'Δείτε περισσότερα εδώ...' )
-                                    . '&link=' . $fb_app_uri . 'houses/view/' . $house['House']['id']
-                                    . '&caption=' . urlencode( '«Συγκατοικώ»' )
-
-                                    . '&description=' . urlencode( 
-                                        'Διεύθυνση ' . $house['House']['address'] . ', '
-                                        . 'Ενοικίο ' . $house['House']['price'] . '€, '
-                                        . 'Εμβαδόν ' . $house['House']['area'] . 'τ.μ.'
-                                        . $furnished
-                                        . 'Δήμος ' . $municipality_options[$house['House']['municipality_id']] . ', '
-                                        . 'Διαθέσιμες θέσεις ' . /*Sanitize::html( */$house['House']['free_places'] )
-
-                                    . '&redirect_uri=' . urlencode(
-                                        'http://' . $_SERVER['HTTP_HOST'] . $this->here
-                                        . '?' . $this_url )
-                                . '">Κοινωποίηση στο Facebook</a>';
+                                if ($house['User']['role'] != 'realestate') {
+                                    echo 'Διαθέσιμες θέσεις '.
+                                        $house['House']['free_places'].'<br />';
+                                }
                             ?>
                         </div>
                     </div>
@@ -672,6 +725,7 @@
         <div class="pagination">
             <ul>
                 <?php
+                if ($count > $pagination_limit) {
                     /* show first page */
                     //echo $paginator->first('⇤ Πρώτη ');
                     /* show the previous link */
@@ -684,6 +738,7 @@
                     //echo $paginator->last('Τελευτευταία ⇥');
                     /* prints X of Y, where X is current page and Y is number of pages */
                     //echo " Σελίδα ".$paginator->counter(array('separator' => ' από '));
+                }
                 ?>
             </ul>
         </div>
