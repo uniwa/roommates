@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<preferences>
+    <preference>
+        <age_min>25</age_min>
+        <age_max>40</age_max>
+        <pref_gender>1</pref_gender>
+        <pref_smoker>0</pref_smoker>
+        <pref_pet>1</pref_pet>
+        <pref_child>2</pref_child>
+        <pref_couple>2</pref_couple>
+    </preference>
+    <preference>
+        <age_min>25</age_min>
+        <age_max>50</age_max>
+        <pref_gender>1</pref_gender>
+        <pref_smoker>1</pref_smoker>
+        <pref_pet>1</pref_pet>
+        <pref_child>1</pref_child>
+        <pref_couple>1</pref_couple>
+    </preference>
+</preferences>
+
+<!--<price_min></price_min>
+    <price_max></price_max>
+    <area_min></area_min>
+    <area_max></area_max>
+    <pref_municipality></pref_municipality>
+    <bedroom_num_min></bedroom_num_min>
+    <bathroom_num_min></bathroom_num_min>
+    <construction_year_min></construction_year_min>
+    <pref_solar_heater></pref_solar_heater>
+    <pref_furnitured></pref_furnitured>
+    <pref_aircondition></pref_aircondition>
+    <pref_garden></pref_garden>
+    <pref_parking></pref_parking>
+    <pref_shared_pay></pref_shared_pay>
+    <pref_security_doors></pref_security_doors>
+    <pref_disability_facilities></pref_disability_facilities>
+    <pref_storeroom></pref_storeroom>
+    <availability_date_min></availability_day_min>
+    <rent_period_min></rent_period_min>
+    <floor_id_min></floor_id_min>
+    <pref_house_type_id></pref_house_type_id>
+    <pref_heating_type_id></pref_heating_type_id>
+    <pref_has_photo></pref_has_photo> -->
