@@ -192,7 +192,7 @@
             echo $this->Form->create( 'Admin', array(
                 'type' => 'get',
                 'controller' => 'admins',
-                'action' => 'search'));
+                'action' => 'manage_users'));
         ?>
         <ul>
             <li class='form-line'>
@@ -270,7 +270,7 @@
                         $queryString = "name={$this->params['url']['name']}&
                             banned={$this->params['url']['banned']}";
                         $options = array('url' => array(
-                            'controller' => 'admins', 'action' => 'search', '?' => $queryString));
+                            'controller' => 'admins', 'action' => 'manage_users', '?' => $queryString));
                         $this->Paginator->options($options);
                     }
                     

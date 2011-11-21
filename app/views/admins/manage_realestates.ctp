@@ -296,7 +296,7 @@
                         $queryString = "name={$this->params['url']['name']}&
                             banned={$this->params['url']['banned']}";
                         $options = array('url' => array(
-                            'controller' => 'admins', 'action' => 'search', '?' => $queryString));
+                            'controller' => 'admins', 'action' => 'manage_realestates', '?' => $queryString));
                         $this->Paginator->options($options);
                     }
                     
