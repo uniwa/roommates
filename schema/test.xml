@@ -21,14 +21,14 @@
         <created>2011-11-18T09:00:00</created>
         <modified>2011-11-19T09:00:00</modified>
         <floor id="10">
-                <type>Υπόγα</type>
+                <type>Υπόγειο</type>
         </floor>
         <house_type id="12">
-            <type>Μπουρδέλο</type>
+            <type>Γκαρσονιέρα</type>
         </house_type>
 
         <heating_type id="2">
-            <type>Σόμπα απο μαντέμι</type>
+            <type>Κεντρική</type>
         </heating_type>
 
         <currently_hosting>2</currently_hosting>
@@ -36,11 +36,11 @@
         <user_id>5</user_id>
 
         <municipality id="10">
-            <name>Καβάλας</name>
+            <name>Αθήνας</name>
         </municipality>
 
         <image id="30">
-            <location>http://tomounithsmanasou.com/anoixtapodia.png</location>
+            <location>img.png</location>
         </image>
         <visible>true</visible>
     </house>
