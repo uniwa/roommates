@@ -14,7 +14,7 @@ class HousesController extends AppController {
 
     function index() {
         $this->set('title_for_layout','Σπίτια');
-        if ($this->RequestHandler->isRss()) {
+        if ($this->RequestHandler->isRss() || $this->RequestHandler->isXml()) {
             $conditions = array("User.banned" => 0, 'House.visible' => 1);
             $houses = $this->House->find('all',
                         array('limit' => 50,
