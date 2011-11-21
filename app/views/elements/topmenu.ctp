@@ -2,7 +2,8 @@
     <ul>
         <li>
             <?php
-                // Only students can search for roommates
+                // Roommates search
+                // realestates cannot search for roommates
                 if ($this->Session->read('Auth.User.role') != 'realestate') {
                     $linkClass = 'menu-item menu-main';
                     if(isset($selected_action) && $selected_action == 'profiles_search'){
@@ -15,6 +16,7 @@
         </li>
         <li>
             <?php
+                // Houses search
                 $linkClass = 'menu-item menu-main';
                 if(isset($selected_action) && $selected_action == 'houses_search'){
                     $linkClass .= ' menu-selected';
@@ -25,13 +27,27 @@
         </li>
         <li>
             <?php
+                // Users administration
                 if($this->Session->read('Auth.User.role') == 'admin'){
                     $linkClass = 'menu-item menu-main';
-                    if(isset($selected_action) && $selected_action == 'admin_search'){
+                    if(isset($selected_action) && $selected_action == 'manage_user'){
                         $linkClass .= ' menu-selected';
                     }
-                    echo $this->Html->link('Αναζήτηση χρηστών', array('controller' => 'admins',
-                        'action' => 'search'), array('class' => $linkClass));
+                    echo $this->Html->link('Διαχείρηση χρηστών', array('controller' => 'admins',
+                        'action' => 'manage_users'), array('class' => $linkClass));
+                }
+            ?>
+        </li>
+        <li>
+            <?php
+                // RealEstates administration
+                if($this->Session->read('Auth.User.role') == 'admin'){
+                    $linkClass = 'menu-item menu-main';
+                    if(isset($selected_action) && $selected_action == 'manage_realestate'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('Διαχείρηση ενοικιαστών', array('controller' => 'admins',
+                        'action' => 'manage_realestates'), array('class' => $linkClass));
                 }
             ?>
         </li>

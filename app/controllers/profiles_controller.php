@@ -165,7 +165,7 @@ class ProfilesController extends AppController {
         }
         $this->set('available_birth_dates', $dob);
 
-        /* hide banned users unless we are admin */
+        // hide banned users unless we are admin
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $profile['Profile']['user_id']) {
             if ($profile["User"]["banned"] == 1) {
@@ -425,13 +425,13 @@ class ProfilesController extends AppController {
     }
 
     private function set_ban_status($id, $status) {
-        /* sets ban status for user with the given profile id */
+        // sets ban status for user with the given profile id
         $this->Profile->id = $id;
         $profile = $this->Profile->read();
 
-        /* exit if this profile belongs to another admin */
+        // exit if this profile belongs to another admin
         if ($profile["User"]["role"] == "admin") {
-            $this->Session->setFlash('Ο διαχειριστής δεν μπορεί να μπλοκάρει άλλο διαχειριστή.',
+            $this->Session->setFlash('Ο διαχειριστής δεν μπορεί να κλειδώσει άλλο διαχειριστή.',
                 'default', array('class' => 'flashBlue'));
             $this->redirect(array("action" => "view", $id));
         }
@@ -458,7 +458,7 @@ class ProfilesController extends AppController {
         }
         $success = $this->set_ban_status($id, 1);
         if ($success) {
-            $this->Session->setFlash('Ο λογαριασμός χρήστη απενεργοποιήθηκε με επιτυχία.',
+            $this->Session->setFlash('Ο λογαριασμός χρήστη κλειδώθηκε με επιτυχία.',
                 'default', array('class' => 'flashBlue'));
             $this->email_banned_user($id);
         } else {
@@ -476,7 +476,7 @@ class ProfilesController extends AppController {
         }
         $success = $this->set_ban_status($id, 0);
         if ($success) {
-            $this->Session->setFlash('Ο λογαριασμός χρήστη ενεργοποιήθηκε με επιτυχία.',
+            $this->Session->setFlash('Ο λογαριασμός χρήστη ξεκλειδώθηκε με επιτυχία.',
             'default', array('class' => 'flashBlue'));
         } else {
             $this->Session->setFlash(
@@ -488,11 +488,11 @@ class ProfilesController extends AppController {
     }
 
     private function email_banned_user($id) {
-        /* TODO: make more abstract to use in other use cases */
+        // TODO: make more abstract to use in other use cases
         $this->Profile->id = $id;
         $profile = $this->Profile->read();
         $this->Email->to = $profile["Profile"]["email"];
-        $this->Email->subject = 'Απενεργοποίηση λογαριασμού της υπηρεσίας roommates ΤΕΙ Αθήνας';
+        $this->Email->subject = 'Κλείδωμα λογαριασμού της υπηρεσίας roommates ΤΕΙ Αθήνας';
         //$this->Email->replyTo = 'support@example.com';
         $this->Email->from = 'admin@roommates.edu.teiath.gr';
         $this->Email->template = 'banned';
