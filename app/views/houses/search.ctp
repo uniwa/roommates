@@ -113,6 +113,13 @@
     .pagination ul li.disabled{
         color: #aaa;
     }
+
+    h3 {
+        font-size: 12px;
+        font-style: italic;
+        text-align: center;
+        margin: -10px auto 24px;
+    }
 </style>
 
 <div id='leftbar'>
@@ -603,8 +610,13 @@
             <?php echo $foundmessage; ?>
         </div>
         <?php if (isset($extra_results) && !isset($this->params['url']['extra'])) {
-
-            echo $this->Html->link("click me!", array('controller' => 'houses', 'action' => 'search', '?' => $get_vars.'extra=1'));
+            echo "<h3>";
+            echo "Επίσης βρέθηκαν ορισμένα σπίτια χωρίς συγκάτοικο,<br/>που ίσως να σας ενδιαφέρουν.";
+            echo $this->Html->link(" Περισσότερα...",
+                                   array('controller' => 'houses',
+                                         'action' => 'search',
+                                         '?' => $get_vars.'extra=1'));
+            echo "</h3>";
          } ?>
         <div class="pagination">
             <ul>
