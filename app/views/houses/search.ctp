@@ -661,17 +661,16 @@
                     </div>
                     <div class='result-desc'>
                         <?php
-
+                            $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
+                            $houseid = $house['House']['id'];
+                            $housePrice = $house['House']['price'];
+                            $houseMunicipality = $municipality_options[$house['House']['municipality_id']];
+                            $houseType = $house_types[$house['House']['house_type_id']];
+                            $houseArea = $house['House']['area'];
+                            $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
                             // allow posts to Facebook only by a 'user' (as in role)
                             if($this->Session->read('Auth.User.role') == 'user'){
                                 $this_url = substr($get_vars, 0, -1); //replace last character (ampersand)
-                                $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
-                                $houseid = $house['House']['id'];
-                                $housePrice = $house['House']['price'];
-                                $houseMunicipality = $municipality_options[$house['House']['municipality_id']];
-                                $houseType = $house_types[$house['House']['house_type_id']];
-                                $houseArea = $house['House']['area'];
-                                $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
                                 $occupation_availability = null;
                                 if($house['User']['role'] != 'user') {
                                     $occupation_availability = '';

@@ -31,7 +31,7 @@
             <type>Κεντρική</type>
         </heating_type>
 
-        <currently_hosting>2</currently_hosting>
+        <currently_hosting>8</currently_hosting>
         <total_places>3</total_places>
         <user_id>5</user_id>
 
@@ -40,7 +40,7 @@
         </municipality>
 
         <image id="30">
-            <location>img.png</location>
+            <location>http://roommates.com/spiti.png</location>
         </image>
         <visible>true</visible>
     </house>
