@@ -5,11 +5,11 @@
         font-size: 1.2em;
         font-weight: bold;
     }
-    
+
     #main-inner ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     #main-inner{
         margin: 0px auto;
         padding: 0px 0px 0px 0px;
@@ -20,7 +20,7 @@
         margin: 8px auto;
         text-align: center;
     }
-    
+
     .form-buttons{
         margin: 20px auto;
         width: 220px;
@@ -52,14 +52,14 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
     .form-input input.input-elem{
         border: 1px solid #ddd;
         padding: 2px;
         width: 220px;
         height: 14px;
     }
-    
+
     .form-input textarea.input-elem{
         border: 1px solid #ddd;
         padding: 2px;
@@ -69,9 +69,15 @@
     .formCheckbox{
         margin: 8px 8px 8px 0px;
     }
-    
+
     .checkLabel{
         padding: 0px 10px 0px 0px;
+    }
+
+    .register-form-comment {
+        font-size: 0.8em;
+        font-style: italic;
+        margin: 2px 0px 0px 0px;
     }
 
     /* TODO: add custom class to differentiate between other views stars */
@@ -115,6 +121,7 @@
     $inputelems['lname']['label'] = 'Επίθετο';
     $inputelems['cname']['input'] = $this->Form->input('RealEstate.company_name', array('label' => '', 'class' => 'input-elem'));
     $inputelems['cname']['label'] = 'Επωνυμία εταιρίας';
+    $inputelems['cname']['comment'] = '(Αν είστε ιδιώτης αφήστε το πεδίο κενό)';
     $inputelems['afm']['input'] = $this->Form->input('RealEstate.afm', array('label' => '', 'class' => 'input-elem'));
     $inputelems['afm']['label'] = 'ΑΦΜ';
     $inputelems['doy']['input'] = $this->Form->input('RealEstate.doy', array('label' => '', 'class' => 'input-elem'));
@@ -151,7 +158,14 @@
                 <?php echo $elem['label']; ?>
             </div>
             <div class='form-elem form-input'>
-                <?php echo $elem['input']; ?>
+                <?php
+                    echo $elem['input'];
+                    if (isset($elem['comment'])) {
+                ?>
+                <div class='register-form-comment'>
+                    <?php echo $elem['comment']; ?>
+                </div>
+                <?php } ?>
             </div>
             <?php
                 if (isset($elem['error'])) {
