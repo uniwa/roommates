@@ -32,5 +32,6 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
-    /* enable rss */
-    Router::parseExtensions('rss');
+    /* enable rss & xml*/
+    Router::mapResources(array('houses'));
+    Router::parseExtensions('rss', 'xml');
