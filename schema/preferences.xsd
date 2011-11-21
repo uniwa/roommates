@@ -12,13 +12,13 @@
 
     <xs:complexType name="pref_type">
         <xs:sequence>
-            <xs:element name="age_min" type="age_type" minOccurs="0" maxOccurs="1"/>  
-            <xs:element name="age_max" type="age_type" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="pref_gender" type="gender_yni_type" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="pref_smoker" type="gender_yni_type" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="pref_pet" type="gender_yni_type" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="pref_child" type="gender_yni_type" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="pref_couple" type="gender_yni_type" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="age_min" type="age_type" minOccurs="0"/>  
+            <xs:element name="age_max" type="age_type" minOccurs="0"/>
+            <xs:element name="pref_gender" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_smoker" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_pet" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_child" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_couple" type="gender_yni_type" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
