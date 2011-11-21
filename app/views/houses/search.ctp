@@ -416,7 +416,7 @@
                         <?php
                             echo $this->Form->input('house_type', array('label' => '',
                                 'options' => $house_type_options,
-                                'value' => isset($defaults) ? $defaults['house_type'] : '',
+                                'value' => isset($defaults['house_type']) ? $defaults['house_type'] : '',
                                 'empty' => 'Αδιάφορο' ));
                         ?>
                     </div>
@@ -429,7 +429,7 @@
                         <?php
 	                        echo $this->Form->input('heating_type', array('label' => '',
                                 'options' => $heating_type_options,
-                                'value' => isset($defaults) ? $defaults['heating_type'] : '',
+                                'value' => isset($defaults['heating_type']) ? $defaults['heating_type'] : '',
                                 'empty' => 'Αδιάφορο' ));
                         ?>
                     </div>
@@ -442,7 +442,7 @@
                         <?php
 	                        echo $this->Form->input('bedroom_num_min', array('label' => '',
                                 'class' => 'short-textbox',
-                                'value' => isset($defaults) ? $defaults['bedroom_num_min'] : '',
+                                'value' => isset($defaults['bedroom_num_min']) ? $defaults['bedroom_num_min'] : '',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -455,7 +455,7 @@
                         <?php
 	                        echo $this->Form->input('bathroom_num_min', array('label' => '',
                                 'class' => 'short-textbox',
-                                'value' => isset($defaults) ? $defaults['bathroom_num_min'] : '',
+                                'value' => isset($defaults['bathroom_num_min']) ? $defaults['bathroom_num_min'] : '',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -467,7 +467,7 @@
                 <li class='form-line'>
                     <div class='form-elem'>
                         <?php
-                            if ( isset( $defaults ) ) {
+                            if ( isset( $defaults['available_from'] ) ) {
                                 $selected_date = $defaults[ 'available_from' ];
                             }
                             else {
@@ -492,7 +492,7 @@
                         <?php
 	                        echo $this->Form->input('rent_period_min', array('label' => '',
                                 'class' => 'short-textbox',
-                                'value' => isset($defaults) ? $defaults['rent_period_min'] : '',
+                                'value' => isset($defaults['rent_period_min']) ? $defaults['rent_period_min'] : '',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -505,7 +505,7 @@
                         <?php
 	                        echo $this->Form->input('floor_min', array('label' => '',
                                 'options' => $floor_options,
-                                'value' => isset($defaults) ? $defaults['floor_min'] : '',
+                                'value' => isset($defaults['floor_min']) ? $defaults['floor_min'] : '',
                                 'empty' => 'Αδιάφορο' ));
                         ?>
                     </div>
@@ -518,7 +518,7 @@
                         <?php
 	                        echo $this->Form->input('construction_year_min', array('label' => '',
                                 'options' => $construction_year_options,
-                                'value' => isset($defaults) ? $defaults['construction_year_min'] : '',
+                                'value' => isset($defaults['construction_year_min']) ? $defaults['construction_year_min'] : '',
                                 'empty' => 'Αδιάφορο' ));
                         ?>
                     </div>
