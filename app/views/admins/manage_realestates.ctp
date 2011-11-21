@@ -153,6 +153,62 @@
         margin: 20px auto 20px auto;
         text-align: center;
     }
+    
+    .optionUnbanned{
+        background-image: url('img/unlock_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionUnbanned:hover{
+        background-image: url('img/lock_16.png');
+    }
+    
+    .optionBanned{
+        background-image: url('img/lock_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionBanned:hover{
+        background-image: url('img/unlock_16.png');
+    }
+
+    .optionEnabled{
+        background-image: url('img/accept_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionEnabled:hover{
+        background-image: url('img/delete_16.png');
+    }
+    
+    .optionDisabled{
+        background-image: url('img/delete_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionDisabled:hover{
+        background-image: url('img/accept_16.png');
+    }
 </style>
 
 <div id='leftbar'>
@@ -261,10 +317,10 @@
                     #
                 </div>
                 <div class='col uname'>
-                    <?php echo $this->Paginator->sort('Username', 'User.username'); ?>
+                    <?php echo $this->Paginator->sort('χρήστης', 'User.username'); ?>
                 </div>
                 <div class='col cname'>
-                    <?php echo $this->Paginator->sort('Επωνυμία', 'RealEstate.firstname'); ?>
+                    <?php echo $this->Paginator->sort('επωνυμία', 'RealEstate.firstname'); ?>
                 </div>
                 <div class='col email'>
                     email
@@ -273,7 +329,7 @@
                     κλείδωμα
                 </div>
                 <div class='col enabled'>
-                    ενεργοποίηση
+                    ενεργός
                 </div>
             </div>
             <?php
@@ -302,32 +358,44 @@
                     <?php echo $user['RealEstate']['company_name']; ?>
                 </div>
                 <div class='col email'>
-                    <?php echo $user['Profile']['email']; ?>
+                    <?php echo $user['RealEstate']['email']; ?>
                 </div>
                 <div class='col banned'>
                     <?php
+                        $textUnbanned = "<div class='optionUnbanned'>κλείδωμα</div>";
+                        $textBanned = "<div class='optionBanned'>ξεκλείδωμα</div>";
                         echo (($user['User']['banned'])?
-                            $this->Html->link('ξεκλείδωμα',array(
+                            $this->Html->link($textBanned,array(
                                 'controller' => 'real_estates',
                                 'action' => 'unban',
-                                $user['RealEstate']['id'])):
-                            $this->Html->link('κλείδωμα',array(
+                                $user['RealEstate']['id']),
+                                array('title' => 'ξεκλείδωμα', 'escape' => false)):
+                            $this->Html->link($textUnbanned,array(
                                 'controller' => 'real_estates',
                                 'action' => 'ban',
-                                $user['RealEstate']['id'])));
+                                $user['RealEstate']['id']),
+                                array('title' => 'κλείδωμα', 'escape' => false)));
                     ?>
                 </div>
                 <div class='col enabled'>
                     <?php
+                        $iconEnabled = $this->Html->image('accept_16.png',
+                            array('alt' => 'ενεργός'));
+                        $iconDisabled = $this->Html->image('delete_16.png',
+                            array('alt' => 'ανενεργός'));
+                        $textEnabled = "<div class='optionEnabled'>απενεργοποίηση</div>";
+                        $textDisabled = "<div class='optionDisabled'>ενεργοποίηση</div>";
                         echo (($user['User']['enabled'])?
-                            $this->Html->link('απενεργοποίηση',array(
+                            $this->Html->link($textEnabled,array(
                                 'controller' => 'real_estates',
                                 'action' => 'disable',
-                                $user['RealEstate']['id'])):
-                            $this->Html->link('ενεργοποίηση',array(
+                                $user['RealEstate']['id']),
+                                array('title' => 'απενεργοποίηση', 'escape' => false)):
+                            $this->Html->link($textDisabled,array(
                                 'controller' => 'real_estates',
                                 'action' => 'enable',
-                                $user['RealEstate']['id'])));
+                                $user['RealEstate']['id']),
+                                array('title' => 'ενεργοποίηση', 'escape' => false)));
                     ?>
                 </div>
             </div>

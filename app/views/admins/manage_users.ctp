@@ -153,6 +153,34 @@
         margin: 20px auto 20px auto;
         text-align: center;
     }
+    
+    .optionUnbanned{
+        background-image: url('img/unlock_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionUnbanned:hover{
+        background-image: url('img/lock_16.png');
+    }
+    
+    .optionBanned{
+        background-image: url('img/lock_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionBanned:hover{
+        background-image: url('img/unlock_16.png');
+    }
 </style>
 
 <div id='leftbar'>
@@ -310,15 +338,19 @@
                 </div>
                 <div class='col banned'>
                     <?php
+                        $textUnbanned = "<div class='optionUnbanned'>κλείδωμα</div>";
+                        $textBanned = "<div class='optionBanned'>ξεκλείδωμα</div>";
                         echo (($user['User']['banned'])?
-                            $this->Html->link('ξεκλείδωμα',array(
+                            $this->Html->link($textBanned,array(
                                 'controller' => 'profiles',
                                 'action' => 'unban',
-                                $user["Profile"]["id"])):
-                            $this->Html->link('κλείδωμα',array(
+                                $user["Profile"]["id"]),
+                                array('title' => 'ξεκλείδωμα', 'escape' => false)):
+                            $this->Html->link($textUnbanned,array(
                                 'controller' => 'profiles',
                                 'action' => 'ban',
-                                $user["Profile"]["id"])));
+                                $user["Profile"]["id"]),
+                                array('title' => 'κλείδωμα', 'escape' => false)));
                     ?>
                 </div>
             </div>
