@@ -602,7 +602,7 @@
         <div class='search-subtitle'>
             <?php echo $foundmessage; ?>
         </div>
-        <?php if (isset($extra_results)) {
+        <?php if (isset($extra_results) && !isset($this->params['url']['extra'])) {
 
             echo $this->Html->link("click me!", array('controller' => 'houses', 'action' => 'search', '?' => $get_vars.'extra=1'));
          } ?>
