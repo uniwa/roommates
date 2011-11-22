@@ -4,7 +4,7 @@
     elementFormDefault="quilified"
     targetNamespace="http://localhost/roommates/hr/schemas">
 
-    <xs:element name="HousesRequest">
+    <xs:element name="houses_request">
         <complexType>
             <xs:all>
                 <xs:element name="house_basic" type="hr:house_basic_type"/>
