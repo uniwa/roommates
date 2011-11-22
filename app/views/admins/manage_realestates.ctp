@@ -245,7 +245,20 @@
                         $check = 'unchecked';
                     }
                     echo $this->Form->checkbox('banned', array('checked' => $check));
-                    echo $this->Form->label(' Banned');
+                    echo $this->Form->label(' Κλειδωμένοι');
+                ?>
+                </div>
+            </li>
+            <li class='form-line'>
+                <div class='form-elem form-input'>
+                <?php
+                    if(isset($this->params['url']['disabled']) && $this->params['url']['disabled'] == 1){
+                        $check = 'checked';
+                    }else{
+                        $check = 'unchecked';
+                    }
+                    echo $this->Form->checkbox('disabled', array('checked' => $check));
+                    echo $this->Form->label(' Ανενεργοί');
                 ?>
                 </div>
             </li>
@@ -264,7 +277,7 @@
 <div id='main-inner'>
     <div class='results'>
     <?php
-        if (isset($results)) {
+        if(isset($results)){
     ?>
         <div class='search-title'>
             <h2>Εγγεγραμμένοι ενοικιαστές</h2>
@@ -279,11 +292,11 @@
         <div class='admpaginator'>
             <?php
                 // records per page
-                $current_recs = $this->Paginator->counter( array( 'format' => '%count%' ) ); 
+                $current_recs = $this->Paginator->counter(array('format' => '%count%')); 
                 // change type from String to int
-                settype( $current_recs, "integer");
+                settype($current_recs, 'integer');
 
-                $page_num = $this->Paginator->counter( array( 'format' => '%pages%' ) );
+                $page_num = $this->Paginator->counter(array('format' => '%pages%'));
                 settype($page_num, 'integer');
 
                 $page = $this->Paginator->current();
@@ -292,9 +305,11 @@
                 if($page_num > 1){
                      // Pass params in paginator options in case form is submited
                      // so as to hold params in new page
-                    if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])){
+                    if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])
+                        || isset($this->params['url']['disabled'])){
                         $queryString = "name={$this->params['url']['name']}&
-                            banned={$this->params['url']['banned']}";
+                            banned={$this->params['url']['banned']}&
+                            disabled={$this->params['url']['disabled']}";
                         $options = array('url' => array(
                             'controller' => 'admins', 'action' => 'manage_realestates', '?' => $queryString));
                         $this->Paginator->options($options);
@@ -418,3 +433,5 @@
         } //isset results
     ?>
 </div>
+
+
