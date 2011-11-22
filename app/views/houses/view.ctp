@@ -92,9 +92,21 @@
         margin: 0px 0px 0px 0px;
         padding: 24px 0px 0px 0px;
     }
+    .map {
+        clear: both;
+        width: 450px;/*100%;*/
+        height: 350px;
+    }
+    .noMap{
+        clear: both;
+        width: auto;
+        height: auto;
+    }
 </style>
 
 <?php
+    echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
+    echo $this->Html->script(array( 'jquery', 'gmap3.min', 'jquery.houseviewgmap'));
     // fancybox: js image gallery
     echo $this->Html->script('jquery.fancybox-1.3.4.pack');
     echo $this->Html->script('jquery.easing-1.3.pack');
@@ -356,6 +368,7 @@
     $houseProperties['door']['check'] = $houseDoor;
     $houseProperties['disability']['check'] = $houseDisability;
     $houseProperties['storage']['check'] = $houseStorage;
+
 ?>
 
 <div id='leftbar'>
@@ -458,6 +471,21 @@
                 echo $propertiesChecks;
             ?>
         </ul>
+
+        <?php
+            $latDeviation = 0;//rand(-4, 4) * 0.0;
+            $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
+        ?>
+
+        <input
+            id="houseLatitude"
+            type="hidden"
+            value="<?php echo $house['House']['latitude'] + $latDeviation ?>" />
+        <input
+            id="houseLongitude"
+            type="hidden"
+            value="<?php echo $house['House']['longitude'] + $lngDeviation ?>" />
+        <div class="map" id="viewMap"></div>
     </div>
 </div>
 
