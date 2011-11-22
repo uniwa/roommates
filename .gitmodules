@@ -1,0 +1,3 @@
+[submodule "plugins/rest"]
+	path = plugins/rest
+	url = git://github.com/kvz/cakephp-rest-plugin.git
