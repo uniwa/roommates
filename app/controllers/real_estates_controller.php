@@ -163,6 +163,7 @@ class RealEstatesController extends AppController {
         if($success){
             $this->Session->setFlash('Ο λογαριασμός χρήστη ενεργοποιήθηκε με επιτυχία.',
             'default', array('class' => 'flashBlue'));
+            $this->email_enabled_user($id);
         }else{
             $this->Session->setFlash(
                 'Παρουσιάστηκε σφάλμα κατά την αλλαγή στοιχείων του λογαριασμού του χρήστη.',
@@ -185,6 +186,19 @@ class RealEstatesController extends AppController {
         $this->Email->send();
     }
     
+    private function email_enabled_user($id){
+        // TODO: make more abstract to use in other use cases
+        $this->RealEstate->id = $id;
+        $realEstate = $this->RealEstate->read();
+        $this->Email->to = $realEstate['RealEstate']['email'];
+        $this->Email->subject = 'Ενεργοποίηση λογαριασμού της υπηρεσίας roommates ΤΕΙ Αθήνας';
+        //$this->Email->replyTo = 'support@example.com';
+        $this->Email->from = 'admin@roommates.edu.teiath.gr';
+        $this->Email->template = 'enabled';
+        $this->Email->sendAs = 'both';
+        $this->Email->send();
+    }
+
     private function email_disabled_user($id){
         // TODO: make more abstract to use in other use cases
         $this->RealEstate->id = $id;
