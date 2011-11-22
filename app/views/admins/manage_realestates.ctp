@@ -132,39 +132,95 @@
     }
 
     .uname{
-        width: 110px;
+        width: 60px;
     }
 
-    .fname,.lname{
-        width: 100px;
+    .fname,.lname,.cname{
+        width: 120px;
     }
 
     .email{
         width: 180px;
     }
 
-    .banned{
+    .banned,.enabled{
         border-right: 0px;
-        width: 40px;
+        width: 80px;
     }
-    
+
     .admpaginator{
         clear: both;
         margin: 20px auto 20px auto;
         text-align: center;
+    }
+    
+    .optionUnbanned{
+        background-image: url('img/unlock_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionUnbanned:hover{
+        background-image: url('img/lock_16.png');
+    }
+    
+    .optionBanned{
+        background-image: url('img/lock_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionBanned:hover{
+        background-image: url('img/unlock_16.png');
+    }
+
+    .optionEnabled{
+        background-image: url('img/accept_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionEnabled:hover{
+        background-image: url('img/delete_16.png');
+    }
+    
+    .optionDisabled{
+        background-image: url('img/delete_16.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+    }
+    
+    .optionDisabled:hover{
+        background-image: url('img/accept_16.png');
     }
 </style>
 
 <div id='leftbar'>
     <div class='left-form-cont'>
         <div class='form-title'>
-            <h2>Αναζήτηση χρηστών</h2>
+            <h2>Αναζήτηση</h2>
         </div>
         <?php
             echo $this->Form->create( 'Admin', array(
                 'type' => 'get',
                 'controller' => 'admins',
-                'action' => 'search'));
+                'action' => 'manage_realestates'));
         ?>
         <ul>
             <li class='form-line'>
@@ -211,47 +267,45 @@
         if (isset($results)) {
     ?>
         <div class='search-title'>
-            <h2>Εγγεγραμμένοι χρήστες</h2>
+            <h2>Εγγεγραμμένοι ενοικιαστές</h2>
         </div>
         <div class='search-subtitle'>
         <?php
             $count = $this->Paginator->counter(array('format' => '%count%'));
-            $foundmessage = $count." χρήστες";
+            $foundmessage = $count." ενοικιαστές";
             echo $foundmessage;
         ?>
         </div>
-        <div class='admpaginator' >
+        <div class='admpaginator'>
             <?php
-                /*records per page*/
+                // records per page
                 $current_recs = $this->Paginator->counter( array( 'format' => '%count%' ) ); 
-                /*change type from String to int*/
+                // change type from String to int
                 settype( $current_recs, "integer");
 
                 $page_num = $this->Paginator->counter( array( 'format' => '%pages%' ) );
-                settype( $page_num, "integer" );
+                settype($page_num, 'integer');
 
                 $page = $this->Paginator->current();
                 $count = ($page-1)*$limit;
 
                 if($page_num > 1){
-                    /*
-                     *Pass params in paginator options in case form is submited
-                     *so as to hold params in new page
-                     */
+                     // Pass params in paginator options in case form is submited
+                     // so as to hold params in new page
                     if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])){
                         $queryString = "name={$this->params['url']['name']}&
                             banned={$this->params['url']['banned']}";
                         $options = array('url' => array(
-                            'controller' => 'admins', 'action' => 'search', '?' => $queryString));
+                            'controller' => 'admins', 'action' => 'manage_realestates', '?' => $queryString));
                         $this->Paginator->options($options);
                     }
                     
-                    /* pagination anv*/
+                    // pagination anv
                     echo $paginator->prev('« Προηγούμενη ',null, null, array('class' => 'disabled'));
-                    /* show pages */
+                    // show pages
                     echo $paginator->numbers(array(
                         'first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' '));
-                    /* Shows the next link */
+                    // Shows the next link
                     echo $paginator->next(' Επόμενη » ', null, null, array('class' => 'disabled'));
                 }
             ?>
@@ -263,19 +317,19 @@
                     #
                 </div>
                 <div class='col uname'>
-                    <?php echo $this->Paginator->sort('Username', 'User.username'); ?>
+                    <?php echo $this->Paginator->sort('χρήστης', 'User.username'); ?>
                 </div>
-                <div class='col fname'>
-                    <?php echo $this->Paginator->sort('Όνομα', 'Profile.firstname'); ?>
-                </div>
-                <div class='col lname'>
-                    <?php echo $this->Paginator->sort('Επίθετο', 'Profile.lastname'); ?>
+                <div class='col cname'>
+                    <?php echo $this->Paginator->sort('επωνυμία', 'RealEstate.firstname'); ?>
                 </div>
                 <div class='col email'>
                     email
                 </div>
                 <div class='col banned'>
-                    banned
+                    κλείδωμα
+                </div>
+                <div class='col enabled'>
+                    ενεργός
                 </div>
             </div>
             <?php
@@ -296,29 +350,52 @@
                 <div class='col uname'>
                     <?php
                         echo $this->Html->link($user['User']['username'],
-                            "/profiles/view/{$user['Profile']['id']}");
+                            array('controller' => 'real_estates',
+                            'action' => 'view', $user['RealEstate']['id']));
                     ?>
                 </div>
-                <div class='col fname'>
-                    <?php echo $user['Profile']['firstname']; ?>
-                </div>
-                <div class='col lname'>
-                    <?php echo $user['Profile']['lastname']; ?>
+                <div class='col cname'>
+                    <?php echo $user['RealEstate']['company_name']; ?>
                 </div>
                 <div class='col email'>
-                    <?php echo $user['Profile']['email']; ?>
+                    <?php echo $user['RealEstate']['email']; ?>
                 </div>
                 <div class='col banned'>
                     <?php
+                        $textUnbanned = "<div class='optionUnbanned'>κλείδωμα</div>";
+                        $textBanned = "<div class='optionBanned'>ξεκλείδωμα</div>";
                         echo (($user['User']['banned'])?
-                            $this->Html->link('unban',array(
-                                'controller' => 'profiles',
+                            $this->Html->link($textBanned,array(
+                                'controller' => 'real_estates',
                                 'action' => 'unban',
-                                $user["Profile"]["id"])):
-                            $this->Html->link('ban',array(
-                                'controller' => 'profiles',
+                                $user['RealEstate']['id']),
+                                array('title' => 'ξεκλείδωμα', 'escape' => false)):
+                            $this->Html->link($textUnbanned,array(
+                                'controller' => 'real_estates',
                                 'action' => 'ban',
-                                $user["Profile"]["id"])));
+                                $user['RealEstate']['id']),
+                                array('title' => 'κλείδωμα', 'escape' => false)));
+                    ?>
+                </div>
+                <div class='col enabled'>
+                    <?php
+                        $iconEnabled = $this->Html->image('accept_16.png',
+                            array('alt' => 'ενεργός'));
+                        $iconDisabled = $this->Html->image('delete_16.png',
+                            array('alt' => 'ανενεργός'));
+                        $textEnabled = "<div class='optionEnabled'>απενεργοποίηση</div>";
+                        $textDisabled = "<div class='optionDisabled'>ενεργοποίηση</div>";
+                        echo (($user['User']['enabled'])?
+                            $this->Html->link($textEnabled,array(
+                                'controller' => 'real_estates',
+                                'action' => 'disable',
+                                $user['RealEstate']['id']),
+                                array('title' => 'απενεργοποίηση', 'escape' => false)):
+                            $this->Html->link($textDisabled,array(
+                                'controller' => 'real_estates',
+                                'action' => 'enable',
+                                $user['RealEstate']['id']),
+                                array('title' => 'ενεργοποίηση', 'escape' => false)));
                     ?>
                 </div>
             </div>
@@ -326,13 +403,15 @@
         </div>
         <div class='admpaginator'>
             <?php
-                /* pagination anv*/
-                echo $paginator->prev('« Προηγούμενη ',null, null, array( 'class' => 'disabled' ) );
-                /* show pages */
-                echo $paginator->numbers(array(
-                    'first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' '));
-                /* Shows the next link */
-                echo $paginator->next(' Επόμενη » ', null, null, array('class' => 'disabled'));
+                if($page_num > 1){
+                    /* pagination anv*/
+                    echo $paginator->prev('« Προηγούμενη ',null, null, array( 'class' => 'disabled' ) );
+                    /* show pages */
+                    echo $paginator->numbers(array(
+                        'first' => 3, 'last' => 3, 'modulus' => '4', 'separator' => ' '));
+                    /* Shows the next link */
+                    echo $paginator->next(' Επόμενη » ', null, null, array('class' => 'disabled'));
+                }
             ?>
         </div>
     <?php
