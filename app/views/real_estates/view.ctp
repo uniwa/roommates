@@ -85,15 +85,15 @@
                 $realEstate['RealEstate']['user_id'] != $this->Session->read('Auth.User.id')){
                 if($realEstate['User']['banned'] == 0){
                     $banContent = $this->Html->image('ban.png', array('alt' => $company));
-                    $banContent .= ' Απενεργοποίηση χρήστη';
+                    $banContent .= ' Κλείδωμα χρήστη';
                     $banClass = 'banButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να κλειδώσετε τον λογαριασμό αυτού του χρήστη;";
                     $banCase = 'ban';
                 }else{
                     $banContent = $this->Html->image('unban.png', array('alt' => $company));
-                    $banContent .= ' Ενεργοποίηση χρήστη';
+                    $banContent .= ' Ξεκλείδωμα χρήστη';
                     $banClass = 'unbanButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να ενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να ξεκλειδώσετε τον λογαριασμό αυτού του χρήστη;";
                     $banCase = 'unban';
                 }
                 $banLink = $this->Html->link($banContent, array(
@@ -113,21 +113,6 @@
     </div>
 </div>
 <div id='main-inner'>
-        <?php
-/*            if($this->Session->read('Auth.User.role') == 'admin' &&
-                $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
-                if($profile['User']['banned'] == 0){
-                    $flash = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαρισμό αυτού του χρήστη;";
-                    echo $html->link('Ban',
-                        array('action' => 'ban', $profile['Profile']['id']),
-                        array('class' => 'ban-button'), $flash);
-                }else{
-                    echo $html->link('Unban',
-                        array('action' => 'unban', $profile['Profile']['id']),
-                        array('class' => 'unban-button'));
-                }
-            }*/
-        ?>
     <div class='profileBlock profileClear'>
         <div id='myName' class='profileTitle'>
             <h2><?php echo $company; ?></h2>
