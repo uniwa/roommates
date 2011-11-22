@@ -511,20 +511,51 @@ class HousesController extends AppController {
                                                 null,
                                                 $this->getOrderCondition($this->params['url']['order_by'])
                                               );
-            } else {
-                if (isset($this->params['url']['realestate_only'])) {
+            } else { // if user or admi
+                $mates_conds = $this->getMatesConditions();
+                if (isset($this->params['url']['with_roommate'])) {
                     $results = $this->simpleSearch( $this->getHouseConditions(),
-                                                    null,
+                                                    $mates_conds,
                                                     $this->getOrderCondition($this->params['url']['order_by']),
-                                                    true, true
+                                                    true, "user"
                                                   );
                 } else {
                     $results = $this->simpleSearch( $this->getHouseConditions(),
-                                                    $this->getMatesConditions(),
+                                                    $mates_conds,
                                                     $this->getOrderCondition($this->params['url']['order_by'])
                                                   );
                 }
+
+                if ($mates_conds != null || isset($this->params['url']['with_roommate'])) {
+                    $extra_results = $this->simpleSearch($this->getHouseConditions(),
+                                                            null, null, false, "realestate");
+                    if (!empty($extra_results)) {
+                        $this->set("extra_results", true);
+                    }
+                }
             }
+
+            $this->set('results', $results);
+            // store user's input
+            $this->set('defaults', $this->params['url']);
+
+            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
+            $fb_app_uri = Configure::read( 'fb_app_uri' );
+            $fb_app_uri = $this->appendIfAbsent( Configure::read('fb_app_uri'), '/' );
+            $this->set( 'fb_app_uri', $fb_app_uri );
+            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+
+            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
+        }
+
+        if (isset($this->params['url']['extra'])) {
+            $results = $this->simpleSearch( $this->getHouseConditions(),
+                                            null,
+                                            $this->getOrderCondition($this->params['url']['order_by']),
+                                            true,
+                                            "realestate"
+                                          );
+
             $this->set('results', $results);
             // store user's input
             $this->set('defaults', $this->params['url']);
@@ -567,7 +598,7 @@ class HousesController extends AppController {
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true,
-                                    $real_estate_only = false) {
+                                    $user_role = null) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -581,7 +612,9 @@ class HousesController extends AppController {
         $options['fields'] = array('House.*', 'Image.location', 'User.role');
 
         $user_conditions = array('House.user_id = User.id');
-        if ($real_estate_only) {
+        if ($user_role === "user") {
+            array_push($user_conditions, 'User.role = "user"');
+        } else if ($user_role === "realestate") {
             array_push($user_conditions, 'User.role = "realestate"');
         }
 

@@ -3,6 +3,7 @@
         float: left;
         margin: 0px 32px 0px 32px;
         padding: 32px;
+        width: 150px;
     }
     
     #main-inner{
@@ -18,7 +19,19 @@
         width: 128px;
         height: 128px;
     }
-
+    
+    #profileName{
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    
+    #profileEmail{
+        margin: 8px 0px 0px 0px;
+        text-align: center;
+        font-size: 1.2em;
+    }
+    
     .profileFrame{
         clear: both;
         padding: 0px 0px 24px 0px;
@@ -101,9 +114,14 @@
 <div id='leftbar'>
     <div id='profilePic'>
         <?php
-            echo $profileThumb.'<br />'.$name.'<br />'.$emailUrl;
-
+            echo $profileThumb;
         ?>
+    </div>
+    <div id='profileName'>
+        <?php echo $name; ?>
+    </div>
+    <div id='profileEmail'>
+        <?php echo $emailUrl; ?>
     </div>
 </div>
 <div id='main-inner'>

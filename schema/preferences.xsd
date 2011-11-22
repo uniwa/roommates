@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="preferences">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="preference" type="pref_type" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:element>
+
+    <xs:complexType name="pref_type">
+        <xs:sequence>
+            <xs:element name="age_min" type="age_type" minOccurs="0"/>  
+            <xs:element name="age_max" type="age_type" minOccurs="0"/>
+            <xs:element name="pref_gender" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_smoker" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_pet" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_child" type="gender_yni_type" minOccurs="0"/>
+            <xs:element name="pref_couple" type="gender_yni_type" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="age_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="18"/>
+            <xs:maxInclusive value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="gender_yni_type">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="[012]"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

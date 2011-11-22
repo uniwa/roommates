@@ -962,8 +962,6 @@ class AuthComponent extends Object {
 
             if( !$inside_user ) {
 
-                pr(  $user );
-
                 //create new user
                 $inside_user = $model->save( array( 'User' => array(
 
@@ -975,8 +973,8 @@ class AuthComponent extends Object {
                         'enabled' => 1
                     ) ), false );
 
-                var_dump( $inside_user );
                 if( !$inside_user ) {
+
                     $this->cakeError( 'ldapError');
                 }
 

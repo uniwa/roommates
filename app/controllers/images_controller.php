@@ -216,5 +216,100 @@ class ImagesController extends AppController {
         }
         return NULL;
     }
+
+    // ========================================================================
+    // image retrieval API
+    // ========================================================================
+    private function get_default_image_for_house($id) {
+        /* return default image name of house with givven id */
+        $this->House->id = $id;
+        $house = $this->House->read();
+        $img_id = $house['House']['default_image_id'];
+
+        if (empty($img_id)) {
+            return NULL;
+        }
+
+        foreach ($house['Image'] as $img) {
+            if ($img['id'] == $img_id) return $img['location'];
+        }
+    }
+
+    private function get_all_images_for_house($id) {
+        $conditions = array('house_id' => $id);
+        $this->Image->recursive = -1;
+        $images = $this->Image->find('all', array('conditions' => $conditions));
+        return $images;
+    }
+
+    function h($id) {
+        /* do not complain about missing view */
+        $this->autoRender = false;
+
+        /* process url parameters */
+        if (! empty($this->params['url']['type'])) {
+            /* get image type from url; thumb or medium */
+
+            switch($this->params['url']['type']) {
+            case 't':
+                $type = 'thumb_';
+                break;
+            case 'm':
+                $type = 'medium_';
+                break;
+            default:
+                exit('malformed request');
+            }
+        }
+        else {
+            /* return thumbs by default */
+            $type = 'thumb_';
+        }
+
+        if (! empty($this->params['url']['img'])) {
+            $img_num = $this->params['url']['img'];
+
+            if (($img_num < 1) || ($img_num > $this->max_images)) {
+                exit ('malformed request');
+            }
+        }
+        else {
+            /* return default house image (1) by default */
+            $img_num = 1;
+        }
+
+        /* get default house image */
+        $default_image = $this->get_default_image_for_house($id);
+        /* if default image in NULL then we don't have any images */
+        if ($default_image == NULL) return ''; //TODO: return bad request header ?!
+
+        /* return default image */
+        if ($img_num == 1) {
+            $path = 'img/uploads/houses/' . $id. '/' . $type . $default_image;
+            $this->redirect(Router::url('/', true). $path);
+        }
+
+        /* we need image from 2 to max_image */
+        $image_list = $this->get_all_images_for_house($id);
+
+        /* check if requested image number is within result range */
+        $count = count($image_list);
+        if ($img_num > $count) return ''; //TODO: return bad request header?!
+
+        $ordered_image_list = array();
+        // push the default image as first element
+        array_push($ordered_image_list, $default_image);
+        foreach ($image_list as $image) {
+            if (! in_array($image['Image']['location'], $ordered_image_list)) {
+                array_push($ordered_image_list, $image['Image']['location']);
+            }
+        }
+        // return image
+        $path = 'img/uploads/houses/' . $id . '/' . $type . $ordered_image_list[$img_num - 1];
+        $this->redirect(Router::url('/', true). $path);
+    }
+
+    // TODO
+    /* function u($id) { } */
 }
 ?>
