@@ -53,7 +53,7 @@
     }
 
     .map {
-        width: 450px;/*100%;*/
+        width: 450px;
         height: 350px;
     }
 </style>
@@ -61,7 +61,7 @@
 <?php
     echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
     echo $this->Html->script(array(
-        'jquery', 'gmap3.min', 'stringmanipulation', 'jquery.houseeditgmap'));
+        'jquery', 'gmap3.min', 'stringmanipulation', 'jquery.editgmap'));
 
 
     $houseid = $house['House']['id'];
@@ -90,10 +90,10 @@
         echo $form->input('address', array('label' => 'Διεύθυνση','type' => 'textarea' ,"rows" => "2"));
         echo $form->input('postal_code', array('label' => 'Τ.Κ.'));
 
-        /* map location mainly depends on [country], [municipality], [address]
-         * and [postalCode] */
-        echo '<a id="imclicker">Ενημέρωση χάρτη από πεδία</a>';
-        echo '<div class="map" id="mutatableMap"></div>';
+        // map location mainly depends on [country], [municipality], [address]
+        // and [postalCode]
+        echo '<a id="updateMap">Ενημέρωση χάρτη από πεδία</a>';
+        echo '<div class="map" id="editMap"></div>';
 
         echo $form->input( 'latitude', array( 'type' => 'hidden' ) );
         echo $form->input( 'longitude', array( 'type' => 'hidden' ) );

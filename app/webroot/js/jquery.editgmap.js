@@ -2,7 +2,7 @@ $(document).ready(function() {
     var geocoder = new google.maps.Geocoder();
 
     // initialize map zoom factor
-    $('#mutatableMap').gmap3(
+    $('#editMap').gmap3(
         {   action: 'init',
             options: {
                 zoom: 15
@@ -22,13 +22,11 @@ $(document).ready(function() {
     }
 
     //
-    repositionMarker( '#mutatableMap', mapLat, mapLng );
+    repositionMarker( '#editMap', mapLat, mapLng );
 
     // refresh map when thus directed by the user
     //(?! what if they don't, though they have changed the address!!!)
-    $('#imclicker').click(function(){
-//    });
-//    $("#HouseAddress").keyup(function(){
+    $('#updateMap').click(function(){
 
         query = getQueryAddress();
 
@@ -41,10 +39,7 @@ $(document).ready(function() {
                 lng = latLng.lng();
                 $('#HouseLatitude').val( lat );
                 $('#HouseLongitude').val( lng );
-                repositionMarker( '#mutatableMap', lat, lng );
-            } else {
-
-                alert( 'Could not resolve address!' );
+                repositionMarker( '#editMap', lat, lng );
             }
         });
     });
@@ -62,7 +57,10 @@ $(document).ready(function() {
             municipality = $('#HouseMunicipalityId option:selected').text();
         }
 
-        query = country + " " + municipality + " " + address + " " + postalCode;     
+        query = country + ", "
+            + municipality + ", "
+            + address + ", "
+            + postalCode;     
         return query;
     }
 
@@ -71,7 +69,6 @@ $(document).ready(function() {
     function repositionMarker(mapId, latitude, longitude) {
 
         $(mapId).gmap3(
-            // clear previous marker
             {   action: 'clear',
                 name: 'marker'
             },
@@ -107,23 +104,14 @@ $(document).ready(function() {
 
      // Updates [street_number], [municipality], [address] and [postal_code]
      // fields of the form, based on what was returned by the request.
-    function resolveAddress( results, status ) {
+    function resolveAddress(results, status) {
         var components;
         var streetNumber = "";
 
         if( status == google.maps.GeocoderStatus.OK ) {
 
-            var compsS = "";
-            var comps = results[0].address_components;
-
             // get most detailed description
             components = results[0].address_components;
-
-            for( i = 0 ; i < components.length ; ++i ) {
-                compsS += components[i].long_name
-                    + " [" + components[i].types[0] + "]\n";
-            }
-            //alert( compsS );
 
             $.map( components, function(n, i) {
                 type = n.types[0];
@@ -140,7 +128,7 @@ $(document).ready(function() {
                     $('#HouseAddress').val( n.long_name + streetNumber );
                 } else if( type == 'locality' ) {
 
-                    // attempt identification and selection of locality/municipality
+                    // attempt identification and selection of municipality
                     selectMunicipality( n.long_name );
                 } else if( type == 'postal_code' ) {
 
@@ -156,8 +144,6 @@ $(document).ready(function() {
         $('#HouseMunicipalityId option').each( function(){
 
             municipality = purgeIntonation( municipality );
-//        alert( municipality );
-//        alert( 'matchesMaimed: ' + matchesMaimed( municipality, $(this).val() ) );
 
             if( matchesMaimed( municipality, $(this).text() ) > -1 ) {
 
@@ -170,7 +156,5 @@ $(document).ready(function() {
 
             $('#HouseMunicipalityId').val( 0 );
         }
-
-//        $('#HouseMunicipalityId').
     }
 });

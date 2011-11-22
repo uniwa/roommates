@@ -200,6 +200,20 @@ class HousesController extends AppController {
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
 
+        $lat = $house['House']['latitude'];
+        $lng = $house['House']['longitude'];
+        if( !is_null( $lat ) && !is_null( $lng ) ) {
+
+            $from = array( 'latitude' => $lat, 'longitude' => $lng );
+            // coordinates of TEI
+            $to = array( 'latitude' => 38.004444, 'longitude' => 23.676518 );
+            $this->set( 'geo_distance', $this->haversineDistance( $from, $to) );
+
+        } else {
+
+            $this->set( 'geo_distance', null );
+        }
+
 		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
@@ -598,7 +612,7 @@ class HousesController extends AppController {
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true,
-                                    $user_role = null) {
+                                    $user_role = null, $fields = null) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -609,7 +623,11 @@ class HousesController extends AppController {
         // INNER JOIN profiles Profile ON Profile.user_id = User.id
         // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
-        $options['fields'] = array('House.*', 'Image.location', 'User.role');
+        if ($fields == null) {
+            $options['fields'] = array('House.*', 'Image.location', 'User.role');
+        } else {
+            $options['fields'] = $fields;
+        }
 
         $user_conditions = array('House.user_id = User.id');
         if ($user_role === "user") {
@@ -1071,5 +1089,25 @@ class HousesController extends AppController {
         }
     }
 
+    private function haversineDistance( $from, $to ) {
+        $radius = 6371;
+
+        $latFrom = deg2rad( $from['latitude'] );
+        $latTo = deg2rad( $to['latitude'] );
+        $latDiff = deg2rad( $to['latitude'] - $from['latitude'] );
+        $lngDiff = deg2rad( $to['longitude'] - $from['longitude'] );
+
+        $latHaversine = sin( $latDiff/2 )*sin( $latDiff/2 );
+        $lngHaversine = sin( $lngDiff/2 )*sin( $lngDiff/2 );
+
+        $root = sqrt(
+            $latHaversine +
+                cos( $latFrom )
+                *cos( $latTo )
+                *sin( $lngHaversine ) );
+
+        $distance = 2*$radius*asin( $root );
+        return $distance;
+    }
 }
 ?>
