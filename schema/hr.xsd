@@ -7,10 +7,10 @@
     <xs:element name="houses_request">
         <xs:complexType>
             <xs:all>
-                <xs:element name="house_basic" type="hr:house_basic_type"/>
-                <xs:element name="house_advanced" type="hr:house_advanced_type"/>
-                <xs:element name="roommates_preferences" type="hr:roommates_preferences_type"/>
-                <xs:element name="sort" type="hr:sort_type"/>
+                <xs:element name="house_basic" minOccurs="0" type="hr:house_basic_type"/>
+                <xs:element name="house_advanced" minOccurs="0" type="hr:house_advanced_type"/>
+                <xs:element name="roommates_preferences" minOccurs="0" type="hr:roommates_preferences_type"/>
+                <xs:element name="sort" minOccurs="0" type="hr:sort_type"/>
             </xs:all>
         </xs:complexType>
     </xs:element>
