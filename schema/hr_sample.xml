@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<houses>
+    <house id="1">
+        <address>Stef vuzantiou</address>
+        <postal_code>11144</postal_code>
+        <area>100</area>
+        <bedroom_num>2</bedroom_num>
+        <bathroom_num>2</bathroom_num>
+        <price>1000</price>
+        <construction_year>1980</construction_year>
+        <solar_heater>true</solar_heater>
+        <furnitured>true</furnitured>
+        <aircondition>true</aircondition>
+        <garden>false</garden>
+        <parking>false</parking>
+        <shared_pay>true</shared_pay>
+        <availability_date>2011-11-18</availability_date>
+        <rent_period>20</rent_period>
+        <description>sahfjkasdhfjkdfjkhsdjkfaasdjkfgsdbfhkgvbsdhk</description>
+        <created>2011-11-18T09:00:00</created>
+        <modified>2011-11-19T09:00:00</modified>
+        <floor id="10">
+                <type>Υπόγειο</type>
+        </floor>
+        <house_type id="12">
+            <type>Γκαρσονιέρα</type>
+        </house_type>
+
+        <heating_type id="2">
+            <type>Κεντρική</type>
+        </heating_type>
+
+        <currently_hosting>8</currently_hosting>
+        <total_places>3</total_places>
+        <user_id>5</user_id>
+
+        <municipality id="10">
+            <name>Αθήνας</name>
+        </municipality>
+
+        <image id="30">
+            <location>http://roommates.com/spiti.png</location>
+        </image>
+        <visible>true</visible>
+    </house>
+</houses>

@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:hr="http://localhost/roommates/hr/schemas"                              
+    elementFormDefault="quilified"
+    targetNamespace="http://localhost/roommates/hr/schemas">
+
+    <xs:element name="HousesRequest">
+        <complexType>
+            <xs:all>
+                <xs:element name="house_basic" type="hr:house_basic_type"/>
+                <xs:element name="house_advanced" type="hr:house_advanced_type"/>
+                <xs:element name="roommates_preferences" type="roommates_preferences_type"/>
+                <xs:element name="sort" type="sort_type"/>
+            </xs:all>
+        </complexType>
+    </xs:element>
+
+
+    <xs:complexType name="house_advanced_type">
+        <xs:sequence>
+            <xs:element name="house_type" minOccrs="0" type="house_type_type"/>
+            <xs:element name="heating_type" minOccurs="0" type="heating_type"/>
+            <xs:element name="bedroom_num_min" minOccurs="0" type="xs:integer"/>
+            <xs:element name="bathroom_num_min" minOccurs="0" type="xs:integer"/>
+            <xs:element name="availability_date_from" minOccurs="0" type="xs:date"/>
+            <xs:element name="rent_period" minOccurs="0" type="integer"/>
+            <xs:element name="floor_min" minOccurs="0" type="floor_min_type"/>
+            <xs:element name="construction_year_min" minOccurs="0" type="construction_year_type"/>
+            <xs:element name="solar_heater" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="aircondition" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="garden" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="parking" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="shared_pay" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="security_doors" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="storeroom" minOccurs="0" type="xs:boolean"/>
+        <xs:sequence>
+    </xs:complexType>
+   
+    <xs:complexType name="house_basic_type">
+        <xs:sequence>
+            <xs:element name="min_area" minOccurs="0" type="xs:integer"/>
+            <xs:element name="max_area" minOccurs="0" type="xs:integer"/>
+            <xs:element name="max_price" minOccurs="0" type="xs:integer"/>
+            <xs:element name="furnitured" minOccurs="0" type="custom_boolean_type"/>
+            <xs:element name="disability_facilities" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="municipality" minOccurs="0" type="municipality_type"/>
+            <xs:element name="has_photo" minOccurs="0" type="xs:boolean"/>
+            <xs:element name="with_roommate" minOccurs="0" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="roommates_preferences_type">
+        <xs:sequence>
+            <xs:element name="min_age" minOccurs="0" type="xs:integer"/>
+            <xs:element name="max_age" minOccurs="0" type="xs:integer"/>
+            <xs:element name="gender" minOccurs="0" type="custom_boolean_type"/>
+            <xs:element name="smoker" minOccurs="0" type="custom_boolean_type"/>
+            <xs:element name="pet" minOccurs="0" type="custom_boolean_type"/>
+            <xs:element name="child" miOccurs="0" type="custom_boolean_type"/>
+            <xs:element name="couple" minOccurs="0" type="custom_boolean_type"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+    <xs:simpleType name="sort_type">
+        <xs:restriction>
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="8"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="construction_year_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1950"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+        1:κεντρική
+        2:αυτόνομη
+        3:δεν διαθέτει
+    -->
+
+   <xs:simpleType name="heating_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="3"/>
+        </xs:restriction>
+    </xs:simpleType>  
+
+    <!--
+        1:υπόγειο
+        2:ημιυπόγειο
+        3:υπερυψωμένο
+        4:ισόγειο
+        5:ημιόροφος
+        6:1ος όροφος
+        7:2ος όροφος
+        8:3ος όροφος
+        9:4ος όροφος
+        10:5ος όροφος
+        11:6ος όροφος
+        12:7ος όροφος
+        13:8+ όροφος
+    -->
+   <xs:simpleType name="house_min_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="13"/>
+        </xs:restriction>
+    </xs:simpleType>  
+
+
+
+    <!--
+        1:studio
+        2:γκαρσονιέρα
+        3:διαμέρισμα
+        4:μονοκατοικία
+        5:μεζονέτα
+    -->
+    <xs:simpleType name="house_type_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="5"/>
+        </xs:restriction>
+    </xs:simpleType>  
+
+    <!--
+1.ΑΓΙΑΣ ΒΑΡΒΑΡΑΣ
+2.ΑΓΙΑΣ ΠΑΡΑΣΚΕΥΗΣ
+3.ΑΓΙΟΥ ΔΗΜΗΤΡΙΟΥ
+4.ΑΓΙΩΝ ΑΝΑΡΓΥΡΩΝ - ΚΑΜΑΤΕΡΟΥ
+5.ΑΓΚΙΣΤΡΙΟΥ
+6.ΑΘΗΝΑΙΩΝ
+7.ΑΙΓΑΛΕΩ
+8.ΑΙΓΙΝΑΣ
+9.ΑΛΙΜΟΥ
+10.ΑΜΑΡΟΥΣΙΟΥ
+11.ΑΣΠΡΟΠΥΡΓΟΥ
+12.ΑΧΑΡΝΩΝ
+13.ΒΑΡΗΣ - ΒΟΥΛΑΣ - ΒΟΥΛΙΑΓΜΕΝΗΣ
+14.ΒΡΙΛΗΣΣΙΩΝ
+15.ΒΥΡΩΝΟΣ
+16.ΓΑΛΑΤΣΙΟΥ
+17.ΓΛΥΦΑΔΑΣ
+18.ΔΑΦΝΗΣ - ΥΜΗΤΤΟΥ
+19.ΔΙΟΝΥΣΟΥ
+20.ΕΛΕΥΣΙΝΑΣ
+21.ΕΛΛΗΝΙΚΟΥ - ΑΡΓΥΡΟΥΠΟΛΗΣ
+22.ΖΩΓΡΑΦΟΥ
+23.ΗΛΙΟΥΠΟΛΕΩΣ
+24.ΗΡΑΚΛΕΙΟΥ
+25.ΙΛΙΟΥ (ΝΕΩΝ ΛΙΟΣΙΩΝ)
+26.ΚΑΙΣΑΡΙΑΝΗΣ
+27.ΚΑΛΛΙΘΕΑΣ
+28.ΚΕΡΑΤΣΙΝΙΟΥ - ΔΡΑΠΕΤΣΩΝΑΣ
+29.ΚΗΦΙΣΙΑΣ
+30.ΚΟΡΥΔΑΛΛΟΥ
+31ΚΡΩΠΙΑΣ
+32.ΚΥΘΗΡΩΝ
+33.ΛΑΥΡΕΩΤΙΚΗΣ
+34.ΛΥΚΟΒΡΥΣΗΣ - ΠΕΥΚΗΣ
+35.ΜΑΝΔΡΑΣ - ΕΙΔΥΛΛΙΑΣ
+36.ΜΑΡΑΘΩΝΟΣ
+37.ΜΑΡΚΟΠΟΥΛΟΥ ΜΕΣΟΓΑΙΑΣ
+38.ΜΕΓΑΡΕΩΝ
+39.ΜΕΤΑΜΟΡΦΩΣΕΩΣ
+40.ΜΟΣΧΑΤΟΥ - ΤΑΥΡΟΥ
+41.ΝΕΑΣ ΙΩΝΙΑΣ
+42.ΝΕΑΣ ΣΜΥΡΝΗΣ
+43.ΝΙΚΑΙΑΣ - ΑΓΙΟΥ ΙΩΑΝΝΗ ΡΕΝΤΗ
+44.ΠΑΙΑΝΙΑΣ
+45.ΠΑΛΑΙΟΥ ΦΑΛΗΡΟΥ
+46.ΠΑΛΛΗΝΗΣ
+47.ΠΑΠΑΓΟΥ - ΧΟΛΑΡΓΟΥ
+48.ΠΕΙΡΑΙΩΣ
+49.ΠΕΝΤΕΛΗΣ
+50.ΠΕΡΑΜΑΤΟΣ
+51.ΠΕΡΙΣΤΕΡΙΟΥ
+52.ΠΕΤΡΟΥΠΟΛΕΩΣ
+53.ΠΟΡΟΥ
+54.ΡΑΦΗΝΑΣ - ΠΙΚΕΡΜΙΟΥ
+55.ΣΑΛΑΜΙΝΑΣ
+56.ΣΑΡΩΝΙΚΟΥ
+57.ΣΠΑΤΩΝ - ΑΡΤΕΜΙΔΟΣ
+58.ΣΠΕΤΣΩΝ
+59.ΤΡΟΙΖΗΝΙΑΣ
+60.ΥΔΡΑΣ
+61.ΦΙΛΑΔΕΛΦΕΙΑΣ - ΧΑΛΚΗΔΟΝΟΣ
+62.ΦΙΛΟΘΕΗΣ - ΨΥΧΙΚΟΥ
+63.ΦΥΛΗΣ
+64.ΧΑΙΔΑΡΙΟΥ
+65.ΧΑΛΑΝΔΡΙΟΥ
+66.ΩΡΩΠΟΥ-->
+
+    <xs:simpleType name="municipality_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="66">
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="custom_boolean_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="2">
+        </xs:restriction>
+    </xs:simpleType>
+
