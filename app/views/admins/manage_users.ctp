@@ -217,7 +217,7 @@
                         $check = 'unchecked';
                     }
                     echo $this->Form->checkbox('banned', array('checked' => $check));
-                    echo $this->Form->label(' Banned');
+                    echo $this->Form->label(' Κλειδωμένοι');
                 ?>
                 </div>
             </li>

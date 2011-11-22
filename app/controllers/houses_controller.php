@@ -598,7 +598,7 @@ class HousesController extends AppController {
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true,
-                                    $user_role = null) {
+                                    $user_role = null, $fields = null) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -609,7 +609,11 @@ class HousesController extends AppController {
         // INNER JOIN profiles Profile ON Profile.user_id = User.id
         // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
-        $options['fields'] = array('House.*', 'Image.location', 'User.role');
+        if ($fields == null) {
+            $options['fields'] = array('House.*', 'Image.location', 'User.role');
+        } else {
+            $options['fields'] = $fields;
+        }
 
         $user_conditions = array('House.user_id = User.id');
         if ($user_role === "user") {

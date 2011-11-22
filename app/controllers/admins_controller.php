@@ -61,23 +61,27 @@ class AdminsController extends AppController
         $user = new User();
         $this->set('limit', $this->paginate['limit']);
 
-        if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])){
+        if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])
+            || isset($this->params['url']['disabled'])){
             $parameters = $this->params['url'];
-            if($parameters['banned'] != 1){
+            if(isset($parameters['name']) && ($parameters['name'] != '')){
                 $conditions = array('OR'=>array(
                     'User.username LIKE' => "%".$parameters['name']."%",
                     'RealEstate.company_name LIKE' => "%".$parameters['name']."%",));
-            }else{
+            }
+            if($parameters['banned'] == 1){
                 $conditions['banned'] = 1;
+            }
+            if($parameters['disabled'] == 1){
+                $conditions['enabled'] = 0;
             }
             $conditions['User.role'] = 'realestate';
             $results = $this->paginate('User', $conditions);
-            $this->set('results', $results);
         }else{
             $conditions['User.role'] = 'realestate';
             $results = $this->paginate('User', $conditions);
-            $this->set('results', $results);
         }
+        $this->set('results', $results);
     }
 
     private function checkAccess() {
