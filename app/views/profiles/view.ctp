@@ -178,15 +178,15 @@
                 $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
                 if($profile['User']['banned'] == 0){
                     $banContent = $this->Html->image('ban.png', array('alt' => $name));
-                    $banContent .= ' Απενεργοποίηση χρήστη';
+                    $banContent .= ' Κλείδωμα χρήστη';
                     $banClass = 'banButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να απενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να κλειδώσετε τον λογαριασμό αυτού του χρήστη;";
                     $banCase = 'ban';
                 }else{
                     $banContent = $this->Html->image('unban.png', array('alt' => $name));
-                    $banContent .= ' Ενεργοποίηση χρήστη';
+                    $banContent .= ' Ξεκλείδωμα χρήστη';
                     $banClass = 'unbanButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να ενεργοποιήσετε τον λογαριασμό αυτού του χρήστη;";
+                    $banMsg = "Είστε σίγουρος ότι θέλετε να ξεκλειδώσετε τον λογαριασμό αυτού του χρήστη;";
                     $banCase = 'unban';
                 }
                 $banLink = $this->Html->link($banContent, array(
