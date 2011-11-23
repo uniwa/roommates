@@ -374,7 +374,31 @@ class HousesController extends AppController {
     private function age_to_year($age) {
         return date('Y') - $age;
     }
+    
+    function getLastModified(){
+        $limit = 5;
+        $options['order'] = array('House.modified DESC');
+        $options['limit'] = $limit;
+        $options['conditions'] = array('House.visible' => 1);
+//        $this->House->recursive = 1;
+        $results = $this->House->find('all', $options);
+        return $results;
+    }
+    
+    function getLastPreferred(){
+        $limit = 5;
+        $prefs = $this->loadSavedPreferences();
 
+        $order = array('House.modified' => 'desc', 'House.id' => 'asc');
+        if ($this->Auth->User('role') == 'realestate') {
+            $results = $this->simpleSearch($prefs['house_prefs'], null, $order);
+        }else{
+            $results = $this->simpleSearch($prefs['house_prefs'],
+                $prefs['mates_prefs'], $order);
+        }
+        $results = array_slice($results, 0, 5);
+        return $results;
+    }
 
     function manage(){
         // this variable is used to properly display
