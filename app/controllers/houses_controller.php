@@ -323,7 +323,7 @@ class HousesController extends AppController {
 		    $this->set('imageThumbLocation', $imageThumbLocation);
         }
         else {
-            if ($this->House->save($this->data)) {
+            if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
 
