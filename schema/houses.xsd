@@ -11,7 +11,7 @@
     <xs:element name="houses">
         <xs:complexType>
             <xs:all>
-                <xs:element name="house" type="ht:house_type"/>
+                <xs:element name="house" type="ht:house_elements_type"/>
             </xs:all>
         </xs:complexType>
     </xs:element>
