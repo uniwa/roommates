@@ -105,7 +105,6 @@
         margin: 0px 0px 0px 0px;
         padding: 24px 0px 0px 0px;
     }
-    
     .fbIcon{
         margin: 0px 4px 0px 0px;
         vertical-align: -30%;
@@ -118,9 +117,17 @@
     .owner-info{
         margin: 32px 0px 0px 0px;
     }
+
+    .map {
+        clear: both;
+        width: 450px;
+        height: 350px;
+    }
 </style>
 
 <?php
+    echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
+    echo $this->Html->script(array( 'jquery', 'gmap3.min', 'jquery.viewgmap'));
     // fancybox: js image gallery
     echo $this->Html->script('jquery.fancybox-1.3.4.pack');
     echo $this->Html->script('jquery.easing-1.3.pack');
@@ -358,6 +365,8 @@
         $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
         $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά)";
     }
+    //house distance
+    $houseProperties['geo_distance']['label'] = 'Απόσταση από ΤΕΙ';
     $houseProperties['solar']['label'] = 'Ηλιακός';
     $houseProperties['furnished']['label'] = 'Επιπλωμένο';
     $houseProperties['aircondition']['label'] = 'Κλιματισμός';
@@ -385,6 +394,10 @@
         $houseProperties['hosting']['value'] = $houseHosting;
         $houseProperties['free_places']['value'] = $houseFreePlaces;
     }
+    if( !is_null( $geo_distance ) ) {
+        $houseProperties['geo_distance']['value'] =
+            number_format( $geo_distance, 2 ) . '&nbsp;χλμ.';
+    }
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
     $houseProperties['aircondition']['check'] = $houseAircondition;
@@ -394,6 +407,7 @@
     $houseProperties['door']['check'] = $houseDoor;
     $houseProperties['disability']['check'] = $houseDisability;
     $houseProperties['storage']['check'] = $houseStorage;
+
 ?>
 
 <div id='leftbar'>
@@ -496,6 +510,30 @@
                 echo $propertiesChecks;
             ?>
         </ul>
+
+        <?php
+            $latDeviation = 0;//rand(-4, 4) * 0.0;
+            $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
+        ?>
+
+        <?php
+            $houseLat = $house['House']['latitude'];
+            $houseLng = $house['House']['longitude'];
+
+            if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
+
+                echo "<input
+                    id='houseLatitude'
+                    type='hidden'
+                    value='{$house['House']['latitude']}' />";
+                echo "<input
+                    id='houseLongitude'
+                    type='hidden'
+                    value='{$house['House']['longitude']}' />";
+                echo "<div class='map' id='viewMap'></div>";
+            }
+        ?>
+
     </div>
 </div>
 
