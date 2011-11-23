@@ -208,15 +208,21 @@ class House extends AppModel {
 
 
     function beforeValidate() {
-        if ($this->data['House']['currently_hosting'] >=
-            $this->data['House']['total_places']) {
-            $this->invalidate('total_places',
-                              'Ο αριθμός των ατόμων που μπορούν να '.
-                              'συγκατοικήσουν πρέπει να είναι μεγαλύτερος '.
-                              'του αριθμού των ατόμων που διαμένουν.');
-            return false;
+        // if curently hosting and total_places keys do not exist,
+        // then user is real estate
+        if ( array_key_exists('currently_hosting', $this->data['House']) &&
+             array_key_exists('total_places', $this->data['House']))
+        {
+            if ($this->data['House']['currently_hosting'] >=
+                $this->data['House']['total_places'])
+            {
+                $this->invalidate('total_places',
+                                  'Ο αριθμός των ατόμων που μπορούν να '.
+                                  'συγκατοικήσουν πρέπει να είναι μεγαλύτερος '.
+                                  'του αριθμού των ατόμων που διαμένουν.');
+                return false;
+            }
         }
-
         return true;
     }
 }
