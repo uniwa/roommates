@@ -415,13 +415,22 @@ class HousesController extends AppController {
         $prefs = $this->loadSavedPreferences();
 
         $order = array('House.modified' => 'desc', 'House.id' => 'asc');
-        if ($this->Auth->User('role') == 'realestate') {
-            $results = $this->simpleSearch($prefs['house_prefs'], null, $order);
-        }else{
-            $results = $this->simpleSearch($prefs['house_prefs'],
-                $prefs['mates_prefs'], $order);
+        $results = $this->simpleSearch($prefs['house_prefs'],
+            $prefs['mates_prefs'], $order);
+
+        $uid = $this->Auth->User('id');
+        $house = $this->House->find('first', array('conditions' => array('user_id' => $uid)));
+        if(isset($house['House']['id'])){
+            $hid = $house['House']['id'];
+            for($i = 0; $i < $limit; $i++){
+                if($result[$i]['House']['id'] = $hid){
+                    unset($results[$i]);
+                    break;
+                }
+            }
         }
-        $results = array_slice($results, 0, 5);
+        $results = array_slice($results, 0, $limit);
+        
         return $results;
     }
 

@@ -17,13 +17,14 @@
 <div id='main-inner'>
     <?php
         if(isset($housesPreferred)){
+            if(!empty($housesPreferred)){
     ?>
     <div class='sectionTitle'>
         <h2>Σπίτια που ταιριάζουν στις προτιμήσεις μου</h2>
     </div>
     <ul id='lastPreferred'>
         <?php
-            foreach($housesPreferred as $house){
+                foreach($housesPreferred as $house){
         ?>
                 <li class='result-cont'>
                     <div class='result'>
@@ -83,10 +84,11 @@
                     </div>
                 </li>
         <?php
-            } // foreach $housesPrefs
+                } // foreach $housesPrefs
         ?>
     </ul>
     <?php
+            } // !empty $housesPrefs
         } // isset($housesPrefs)
         if(isset($housesModified)){
     ?>
