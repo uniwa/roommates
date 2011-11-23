@@ -51,9 +51,19 @@
         width: 50px;
         text-align: right;
     }
+
+    .map {
+        width: 450px;
+        height: 350px;
+    }
 </style>
 
 <?php
+    echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
+    echo $this->Html->script(array(
+        'jquery', 'gmap3.min', 'stringmanipulation', 'jquery.editgmap'));
+
+
     $houseid = $house['House']['id'];
     $houseType = $house['HouseType']['type'];
     $houseArea = $house['House']['area'];
@@ -79,6 +89,15 @@
         echo $form->input('municipality_id', array('label' => 'Δήμος', 'empty' => 'Επιλέξτε...'));
         echo $form->input('address', array('label' => 'Διεύθυνση','type' => 'textarea' ,"rows" => "2"));
         echo $form->input('postal_code', array('label' => 'Τ.Κ.'));
+
+        // map location mainly depends on [country], [municipality], [address]
+        // and [postalCode]
+        echo '<a id="updateMap">Ενημέρωση χάρτη από πεδία</a>';
+        echo '<div class="map" id="editMap"></div>';
+
+        echo $form->input( 'latitude', array( 'type' => 'hidden' ) );
+        echo $form->input( 'longitude', array( 'type' => 'hidden' ) );
+
         echo $form->input('area', array('label' => 'Εμβαδόν','after' => 'τ.μ.'));
         echo $form->input('floor_id', array('label' => 'Όροφος', 'empty' => 'Επιλέξτε...'));
         echo $form->input('bedroom_num', array('label' => 'Αριθμός δωματίων'));
