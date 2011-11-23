@@ -32,6 +32,11 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
+    // REST URI mapping
+    Router::connect(
+                '/api/houses',
+                array('controller' => 'houses', 'action' => 'index')
+    );
+
     /* enable rss & xml*/
-    Router::mapResources(array('houses'));
-    Router::parseExtensions('rss', 'xml');
+    Router::parseExtensions('rss');
