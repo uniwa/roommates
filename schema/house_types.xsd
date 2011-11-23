@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:h="http://localhost/roommates/h/schemas"                              
+    xmlns:ht="http://localhost/roommates/ht/schemas"                              
     elementFormDefault="qualified"
-    targetNamespace="http://localhost/roommates/h/schemas">
+    targetNamespace="http://localhost/roommates/ht/schemas">
 
 
         <!--type for house field-->
