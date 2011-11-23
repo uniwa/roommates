@@ -6,12 +6,12 @@
     targetNamespace="http://localhost/roommates/hr/schemas">
 
     <xs:import schemaLocation="house_types.xsd"
-        namespace="http://localhost/roommates/h/schemas"/>
+        namespace="http://localhost/roommates/ht/schemas"/>
 
     <xs:element name="houses">
         <xs:complexType>
             <xs:all>
-                <xs:element name="house" type="house_type"/>
+                <xs:element name="house" type="ht:house_type"/>
             </xs:all>
         </xs:complexType>
     </xs:element>
