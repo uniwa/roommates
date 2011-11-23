@@ -4,7 +4,6 @@
     elementFormDefault="qualified"
     targetNamespace="http://localhost/roommates/h/schemas">
 
-    <xs:element name="house">
 
         <!--type for house field-->
         <xs:complexType name="house_type">
@@ -41,7 +40,6 @@
             </xs:sequence>
 
         </xs:complexType>
-    </xs:element>
 
     <!--restrictions about address field spacing and strlen-->
     <xs:simpleType name="address_type">
