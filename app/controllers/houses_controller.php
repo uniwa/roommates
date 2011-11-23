@@ -8,11 +8,12 @@ class HousesController extends AppController {
 
     var $name = 'Houses';
     var $components = array('RequestHandler', 'Token');
-    var $helpers = array('Text', 'Time', 'Html');
+    var $helpers = array('Text', 'Time', 'Html', 'Xml');
     var $paginate = array('limit' => 15);
     var $uses = array('House', 'HouseType');
 
     function index() {
+
         $this->set('title_for_layout','Σπίτια');
         if ($this->RequestHandler->isRss()) {
             $conditions = array("User.banned" => 0, 'House.visible' => 1);
@@ -22,6 +23,15 @@ class HousesController extends AppController {
                               'conditions' => $conditions)
             );
             return $this->set(compact('houses'));
+        }
+
+        if ($this->isWebService()) {
+            $houses = $this->simpleSearch(  $this->getHouseConditions(),
+                                            null, null, false, null,
+                                            $this->getXmlFields());
+            $this->set('houses', $houses);
+            $this->layout = 'xml/default';
+            $this->render('xml/index');
         }
 
 		$order = array('House.modified' => 'desc');
@@ -141,7 +151,7 @@ class HousesController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        if( $this->RequestHandler->isRss()){
+        if( $this->RequestHandler->isRss() || $this->isWebService()){
             $this->Auth->allow( 'index' );
             $this->Auth->allow( 'search' );
         }
@@ -199,6 +209,20 @@ class HousesController extends AppController {
         $this->House->Image->recursive = 0;
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
+
+        $lat = $house['House']['latitude'];
+        $lng = $house['House']['longitude'];
+        if( !is_null( $lat ) && !is_null( $lng ) ) {
+
+            $from = array( 'latitude' => $lat, 'longitude' => $lng );
+            // coordinates of TEI
+            $to = array( 'latitude' => 38.004444, 'longitude' => 23.676518 );
+            $this->set( 'geo_distance', $this->haversineDistance( $from, $to) );
+
+        } else {
+
+            $this->set( 'geo_distance', null );
+        }
 
 		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
         $fb_app_uri = Configure::read( 'fb_app_uri' );
@@ -309,7 +333,7 @@ class HousesController extends AppController {
 		    $this->set('imageThumbLocation', $imageThumbLocation);
         }
         else {
-            if ($this->House->save($this->data)) {
+            if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
 
@@ -622,7 +646,7 @@ class HousesController extends AppController {
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true,
-                                    $user_role = null) {
+                                    $user_role = null, $fields = null) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -633,7 +657,11 @@ class HousesController extends AppController {
         // INNER JOIN profiles Profile ON Profile.user_id = User.id
         // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
-        $options['fields'] = array('House.*', 'Image.location', 'User.role');
+        if ($fields == null) {
+            $options['fields'] = array('House.*', 'Image.location', 'User.role');
+        } else {
+            $options['fields'] = $fields;
+        }
 
         $user_conditions = array('House.user_id = User.id');
         if ($user_role === "user") {
@@ -660,6 +688,37 @@ class HousesController extends AppController {
                                                 'alias' => 'Profile',
                                                 'type'  => 'inner',
                                                 'conditions' => $matesConditions
+                                               )
+                      );
+        }
+
+        // join the required tables for web service
+        if ($this->isWebService()) {
+            array_push($options['joins'], array('table' => 'floors',
+                                                'alias' => 'Floor',
+                                                'type'  => 'left',
+                                                'conditions' => 'Floor.id = House.floor_id'
+                                               )
+                      );
+
+            array_push($options['joins'], array('table' => 'heating_types',
+                                                'alias' => 'HeatingType',
+                                                'type'  => 'left',
+                                                'conditions' => 'HeatingType.id = House.heating_type_id'
+                                               )
+                      );
+
+            array_push($options['joins'], array('table' => 'house_types',
+                                                'alias' => 'HouseType',
+                                                'type'  => 'left',
+                                                'conditions' => 'HouseType.id = House.house_type_id'
+                                               )
+                      );
+
+            array_push($options['joins'], array('table' => 'municipalities',
+                                                'alias' => 'Municipality',
+                                                'type'  => 'left',
+                                                'conditions' => 'Municipality.id = House.municipality_id'
                                                )
                       );
         }
@@ -859,7 +918,7 @@ class HousesController extends AppController {
             $house_conditions['House.municipality_id'] =
                                                 $house_prefs['municipality'];
 
-        if($house_prefs['furnitured'] < 2 && $house_prefs['furnitured'] != null)
+        if (isset($house_prefs['furnitured']) && $house_prefs['furnitured'] < 2)
             $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
 
         if(isset($house_prefs['accessibility']))
@@ -1063,6 +1122,7 @@ class HousesController extends AppController {
         }
     }
 
+
     protected function appendIfAbsent( $string, $char ) {
 
         if( strpos ( $string, $char, strlen( $string ) - 1 ) == false ) {
@@ -1071,6 +1131,7 @@ class HousesController extends AppController {
         }
         return $string;
     }
+
 
     /**
      * Creates a Facebook instance which is then made available though
@@ -1089,11 +1150,78 @@ class HousesController extends AppController {
         $this->Session->write( 'facebook', $facebook );
     }
 
+
     private function checkRole($role){
         if($this->Session->read('Auth.User.role') != $role){
             $this->cakeError('error403');
         }
     }
 
+
+    /// Returns whether this is web service call or not
+    private function isWebService() {
+        if (strpos($this->params['url']['url'], 'api/houses') !== false)
+            return true;
+        else
+            return false;
+    }
+
+
+    private function getXmlFields() {
+        $fields = array('House.id',
+                        'House.postal_code',
+                        'House.area',
+                        'House.bedroom_num',
+                        'House.bathroom_num',
+                        'House.price',
+                        'House.construction_year',
+                        'House.solar_heater',
+                        'House.furnitured',
+                        'House.aircondition',
+                        'House.garden',
+                        'House.parking',
+                        'House.shared_pay',
+                        'House.security_doors',
+                        'House.disability_facilities',
+                        'House.storeroom',
+                        'House.availability_date',
+                        'House.rent_period',
+                        'House.description',
+                        'House.created',
+                        'House.modified',
+                        'House.currently_hosting',
+                        'House.total_places',
+                        'House.free_places',
+                        'Image.location',
+                        'Municipality.name',
+                        'Floor.type',
+                        'HouseType.type',
+                        'HeatingType.type'
+                        );
+
+        return $fields;
+    }
+
+
+    private function haversineDistance( $from, $to ) {
+        $radius = 6371;
+
+        $latFrom = deg2rad( $from['latitude'] );
+        $latTo = deg2rad( $to['latitude'] );
+        $latDiff = deg2rad( $to['latitude'] - $from['latitude'] );
+        $lngDiff = deg2rad( $to['longitude'] - $from['longitude'] );
+
+        $latHaversine = sin( $latDiff/2 )*sin( $latDiff/2 );
+        $lngHaversine = sin( $lngDiff/2 )*sin( $lngDiff/2 );
+
+        $root = sqrt(
+            $latHaversine +
+                cos( $latFrom )
+                *cos( $latTo )
+                *sin( $lngHaversine ) );
+
+        $distance = 2*$radius*asin( $root );
+        return $distance;
+    }
 }
 ?>

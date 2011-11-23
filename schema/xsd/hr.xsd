@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:hr="http://localhost/roommates/hr/schemas"                 
+    elementFormDefault="qualified"
+    targetNamespace="http://localhost/roommates/hr/schemas">
+
+    <xs:import schemaLocation="ht.xsd"
+        namespace="http://localhost/roommates/ht/schemas"/>
+
+    <xs:element name="houses">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="house" minOccurs="0" maxOccurs="unbounded" type="hr:house_elements_type"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

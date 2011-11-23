@@ -113,6 +113,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `municipality_id` INT NULL DEFAULT NULL ,
   `default_image_id` INT NULL DEFAULT NULL ,
   `visible` TINYINT(1) NULL DEFAULT NULL ,
+  `latitude` FLOAT DEFAULT NULL,
+  `longitude` FLOAT DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
   INDEX `fk_house_house_type1` (`house_type_id` ASC) ,
