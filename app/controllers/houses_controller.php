@@ -1160,7 +1160,7 @@ class HousesController extends AppController {
 
     /// Returns whether this is web service call or not
     private function isWebService() {
-        if (strpos($this->params['url']['url'], 'api/houses') !== false)
+        if (isset($this->params['url']['url']) && (strpos($this->params['url']['url'], 'api/houses') !== false))
             return true;
         else
             return false;
