@@ -410,6 +410,7 @@ class HousesController extends AppController {
     }
     
     function getLastPreferred(){
+        $this->checkRole('user');
         $limit = 5;
         $prefs = $this->loadSavedPreferences();
 

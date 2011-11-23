@@ -17,7 +17,10 @@ class PagesController extends AppController{
         $this->set('title_for_layout','Αρχική σελίδα');
         
         $this->lastModified();
-        $this->lastPreferred();
+        // lastPreferred only for students
+        if($this->Session->read('Auth.User.role') == 'user'){
+            $this->lastPreferred();
+        }
         $this->setHouseTypes();
         $this->setMunicipalities();
     }
