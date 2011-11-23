@@ -1,53 +1,45 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:h="http://localhost/roommates/h/schemas"                              
+    elementFormDefault="qualified"
+    targetNamespace="http://localhost/roommates/h/schemas">
 
-    <xs:element name="houses">
-        
-        <xs:complexType>
+
+        <!--type for house field-->
+        <xs:complexType name="house_type">
             <xs:sequence>
-                <xs:element name="house" minOccurs="0" maxOccurs="unbounded" type="house_type"/>
+                <xs:element name="id" type="xs:ID"/>
+                <xs:element name="postal_code" type="h:postal_code_type"/>
+                <xs:element name="area" type="xs:integer"/>
+                <xs:element name="bedroom_num" type="h:bedroom_num_type"/>
+                <xs:element name="bathroom_num" type="h:bedroom_num_type"/>
+                <xs:element name="price" type="xs:integer"/>
+                <xs:element name="construction_year" type="h:construction_year_type"/>
+                <xs:element name="solar_heater" type="xs:boolean"/>
+                <xs:element name="furnitured" type="xs:boolean"/>
+                <xs:element name="aircondition" type="xs:boolean"/>
+                <xs:element name="garden" type="xs:boolean"/>
+                <xs:element name="parking" type="xs:boolean"/>
+                <xs:element name="shared_pay" type="xs:boolean"/>
+                <xs:element name="security_doors" type="xs:boolean"/>
+                <xs:element name="disability_facilities" type="xs:boolean"/>
+                <xs:element name="storeroom" type="xs:boolean"/>
+                <xs:element name="availability_date" type="xs:date"/>
+                <xs:element name="rent_period" type="h:rent_period_type"/>
+                <xs:element name="description" type="h:description_type"/>
+                <xs:element name="created" type="xs:dateTime"/>
+                <xs:element name="modified" type="xs:dateTime"/>
+                <xs:element name="floor" type="h:heating_floor_type"/>
+                <xs:element name="house_type" type="h:house_type_type"/>
+                <xs:element name="heating_type" type="h:heating_floor_type"/>
+                <xs:element name="currently_hosting" type="h:hosting_type"/>
+                <xs:element name="total_places" type="h:hosting_type"/>
+                <xs:element name="user_id"  type="xs:integer"/>
+                <xs:element name="municipality" minOccurs="0" type="h:municipality_type"/>
+                <xs:element name="image" type="h:image_type"/>
             </xs:sequence>
+
         </xs:complexType>
-
-    </xs:element>
-
-    <!--type for house field-->
-    <xs:complexType name="house_type">
-        <xs:sequence>
-            <xs:element name="address" type="address_type"/>
-            <xs:element name="postal_code" minOccurs="0" type="postal_code_type"/>
-            <xs:element name="area" type="xs:integer"/>
-            <xs:element name="bedroom_num" type="bedroom_num_type"/>
-            <xs:element name="bathroom_num" minOccurs="0" type="bedroom_num_type"/>
-            <xs:element name="price" type="xs:integer"/>
-            <xs:element name="construction_year" minOccurs="0" type="construction_year_type"/>
-            <xs:element name="solar_heater" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="furnitured" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="aircondition" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="garden" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="parking" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="shared_pay" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="security_doors" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="disability_facilities" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="storeroom" minOccurs="0" type="xs:boolean"/>
-            <xs:element name="availability_date" type="xs:date"/>
-            <xs:element name="rent_period" minOccurs="0" type="rent_period_type"/>
-            <xs:element name="description" minOccurs="0" type="description_type"/>
-            <xs:element name="created" minOccurs="0" type="xs:dateTime"/>
-            <xs:element name="modified" minOccurs="0" type="xs:dateTime"/>
-            <xs:element name="floor" type="heating_floor_type"/>
-            <xs:element name="house_type" type="house_type_type"/>
-            <xs:element name="heating_type" type="heating_floor_type"/>
-            <xs:element name="currently_hosting" type="hosting_type"/>
-            <xs:element name="total_places" type="hosting_type"/>
-            <xs:element name="user_id"  type="xs:integer"/>
-            <xs:element name="municipality" minOccurs="0" type="municipality_type"/>
-            <xs:element name="image" minOccurs="0" maxOccurs="4" type="image_type"/>
-            <xs:element name="visible" minOccurs="0" type="xs:boolean"/>
-        </xs:sequence>
-
-            <xs:attribute name="id" type="xs:integer" use="optional"/>
-    </xs:complexType>
 
     <!--restrictions about address field spacing and strlen-->
     <xs:simpleType name="address_type">
@@ -79,7 +71,6 @@
     <xs:simpleType name="construction_year_type">
         <xs:restriction base="xs:integer">
             <xs:minInclusive value="1900"/>
-            <xs:maxInclusive value="2100"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -113,7 +104,6 @@
                 </xs:simpleType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="id" type="xs:integer" use="optional"/>
     </xs:complexType>
 
 
@@ -130,7 +120,6 @@
                 </xs:simpleType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="id" type="xs:integer" use="optional"/>
     </xs:complexType>
 
     <!--restrictions about hosting_type field  min-max value-->
@@ -154,7 +143,6 @@
                 </xs:simpleType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="id" type="xs:integer" use="optional"/>
     </xs:complexType>
 
     <!--type for image_type field: nested element name and attribute id-->
@@ -163,13 +151,12 @@
             <xs:element name="location">
                 <xs:simpleType>
                      <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="preserve"/>
+                        <xs:whiteSpace value="collapse"/>
                         <xs:minLength value="0"/>
                         <xs:maxLength value="100"/>
                      </xs:restriction>
                 </xs:simpleType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="id" type="xs:integer" use="optional"/>  
     </xs:complexType>
 </xs:schema>
