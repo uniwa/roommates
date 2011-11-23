@@ -38,5 +38,5 @@
                 array('controller' => 'houses', 'action' => 'index')
     );
 
-    /* enable rss & xml*/
+    /* enable rss*/
     Router::parseExtensions('rss');
