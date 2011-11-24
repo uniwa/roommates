@@ -317,23 +317,24 @@ class HousesController extends AppController {
         $this->checkAccess($id);
         $this->House->id = $id;
 
-        if (empty($this->data)) {
-            $house = $this->House->read();;
-            $this->data = $house;
-            $this->set('house', $house);
+        $house = $this->House->read();
+        $this->set('house', $house);
 
-            $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-            $imageThumbLocation = 'house.gif';
-            foreach ($images as $image) {
-                if($image['Image']['id'] == $house['House']['default_image_id']){
-                    $defaultImageLocation = $image['Image']['location'];
-                    $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
-                }
+        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
+        $imageThumbLocation = 'house.gif';
+        foreach ($images as $image) {
+            if($image['Image']['id'] == $house['House']['default_image_id']){
+                $defaultImageLocation = $image['Image']['location'];
+                $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
             }
-		    $this->set('imageThumbLocation', $imageThumbLocation);
+        }
+        $this->set('imageThumbLocation', $imageThumbLocation);
+
+        if (empty($this->data)) {
+            $this->data = $house;
         }
         else {
-            if ($this->House->save($this->data)) {
+            if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
 
@@ -398,7 +399,41 @@ class HousesController extends AppController {
     private function age_to_year($age) {
         return date('Y') - $age;
     }
+    
+    function getLastModified(){
+        $limit = 5;
+        $options['order'] = array('House.modified DESC');
+        $options['limit'] = $limit;
+        $options['conditions'] = array('House.visible' => 1);
+//        $this->House->recursive = 1;
+        $results = $this->House->find('all', $options);
+        return $results;
+    }
+    
+    function getLastPreferred(){
+        $this->checkRole('user');
+        $limit = 5;
+        $prefs = $this->loadSavedPreferences();
 
+        $order = array('House.modified' => 'desc', 'House.id' => 'asc');
+        $results = $this->simpleSearch($prefs['house_prefs'],
+            $prefs['mates_prefs'], $order);
+
+        $uid = $this->Auth->User('id');
+        $house = $this->House->find('first', array('conditions' => array('user_id' => $uid)));
+        if(isset($house['House']['id'])){
+            $hid = $house['House']['id'];
+            for($i = 0; $i < $limit; $i++){
+                if($result[$i]['House']['id'] = $hid){
+                    unset($results[$i]);
+                    break;
+                }
+            }
+        }
+        $results = array_slice($results, 0, $limit);
+        
+        return $results;
+    }
 
     function manage(){
         // this variable is used to properly display
@@ -1136,7 +1171,7 @@ class HousesController extends AppController {
 
     /// Returns whether this is web service call or not
     private function isWebService() {
-        if (strpos($this->params['url']['url'], 'api/houses') !== false)
+        if (isset($this->params['url']['url']) && (strpos($this->params['url']['url'], 'api/houses') !== false))
             return true;
         else
             return false;
