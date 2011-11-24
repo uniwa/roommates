@@ -31,7 +31,7 @@ class HousesController extends AppController {
                                             $this->getXmlFields());
             $this->set('houses', $houses);
             $this->layout = 'xml/default';
-            $this->render('xml/index');
+            $this->render('xml/public');
         }
 
 		$order = array('House.modified' => 'desc');
