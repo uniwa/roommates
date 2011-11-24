@@ -262,12 +262,9 @@ class HousesController extends AppController {
                 $hid = $this->House->id;
 
                 /* post to facebook application wall */
-                $this->House->id = $hid;
-                $this->recursive = 2;
-                $house = $this->House->read();
-                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
+                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
-                $this->redirect(array('action' => "view/$hid"));
+                $this->redirect(array('action' => "view", $hid));
             }
         }
 
@@ -317,20 +314,21 @@ class HousesController extends AppController {
         $this->checkAccess($id);
         $this->House->id = $id;
 
-        if (empty($this->data)) {
-            $house = $this->House->read();;
-            $this->data = $house;
-            $this->set('house', $house);
+        $house = $this->House->read();
+        $this->set('house', $house);
 
-            $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-            $imageThumbLocation = 'house.gif';
-            foreach ($images as $image) {
-                if($image['Image']['id'] == $house['House']['default_image_id']){
-                    $defaultImageLocation = $image['Image']['location'];
-                    $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
-                }
+        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
+        $imageThumbLocation = 'house.gif';
+        foreach ($images as $image) {
+            if($image['Image']['id'] == $house['House']['default_image_id']){
+                $defaultImageLocation = $image['Image']['location'];
+                $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
             }
-		    $this->set('imageThumbLocation', $imageThumbLocation);
+        }
+        $this->set('imageThumbLocation', $imageThumbLocation);
+
+        if (empty($this->data)) {
+            $this->data = $house;
         }
         else {
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
@@ -338,11 +336,9 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
 
                 /* post updated house on application's page on Facebook */
-                $house = $this->House->read();
-                $this->recursive = 2;
-                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
+                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
-                $this->redirect(array('action' => "view/$id"));
+                $this->redirect(array('action' => "view", $id));
             }
         }
 
