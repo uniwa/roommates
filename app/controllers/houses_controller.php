@@ -262,10 +262,7 @@ class HousesController extends AppController {
                 $hid = $this->House->id;
 
                 /* post to facebook application wall */
-                $this->House->id = $hid;
-                $this->recursive = 2;
-                $house = $this->House->read();
-                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
+                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
                 $this->redirect(array('action' => "view/$hid"));
             }
@@ -339,9 +336,7 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
 
                 /* post updated house on application's page on Facebook */
-                $house = $this->House->read();
-                $this->recursive = 2;
-                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
+                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
                 $this->redirect(array('action' => "view/$id"));
             }
