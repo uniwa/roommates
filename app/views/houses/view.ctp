@@ -411,6 +411,45 @@
     $houseProperties['disability']['check'] = $houseDisability;
     $houseProperties['storage']['check'] = $houseStorage;
 
+    // coordinates over which the map is to be centered (not necessarily the
+    // actual ones)
+    $houseLat = $house['House']['latitude'];
+    $houseLng = $house['House']['longitude'];
+
+    // determines whether a marker or a cirle should be positioned over the
+    // house's location (circle is used for 'user's)
+    $displayCircle = null;
+
+    // obscure exact location of house if it belongs to a 'user' (as in role)
+    // and request a circular area to be positioned over the map
+    if( $ownerRole == 'user' ) {
+        
+        $displayCircle = 1;
+        if( !is_null( $houseLat ) && !is_null( $houseLng )
+            && $ownerRole == 'user' ) {
+
+            $latDev = rand( -1, 1 );
+
+            $latDev *= 0.001;
+            $lngDev = 0.001 - $latDev;
+            $houseLat += $latDev;
+            $houseLng += $lngDev;
+        }
+    } else {
+        $displayCircle = 0;
+    }
+
+    // the coordinates and the marker "type" (circle/arrow) are passed as
+    // HTML-inline javascipt
+    echo <<<EOT
+        <script type='text/javascript'>
+            var aVar='Hi from server!';
+            var houseLat = $houseLat;
+            var houseLng = $houseLng;
+            var displayCircle = $displayCircle;
+        </script>;
+EOT;
+
 ?>
 
 <div id='leftbar'>
@@ -514,33 +553,7 @@
             ?>
         </ul>
 
-        <?php
-            $latDeviation = 0;//rand(-4, 4) * 0.0;
-            $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
-        ?>
-
-        <?php
-            $houseLat = $house['House']['latitude'];
-            $houseLng = $house['House']['longitude'];
-
-            if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
-
-                $latDev = rand(-1, 1);
-
-                // obscure exact location of house
-//                $houseLat += 
-                echo "<input
-                    id='houseLatitude'
-                    type='hidden'
-                    value='{$houseLat}' />";
-                echo "<input
-                    id='houseLongitude'
-                    type='hidden'
-                    value='{$houseLng}' />";
-                echo "<div class='map' id='viewMap'></div>";
-            }
-        ?>
-
+        <div class='map' id='viewMap'></div>
     </div>
 </div>
 

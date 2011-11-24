@@ -245,13 +245,7 @@ class HousesController extends AppController {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
 
-            // compute and store geographical distance with TEI
-/*            $location = array(
-                'latitude' => $this->data['House']['latitude'],
-                'longitude' => $this->data['House']['longitude'] );
-            $geoDistance = $this->haversineDistance( $location );
-            $this->data['House']['geo_distance'] = $geoDistance;
-*/
+            $this->computeDistance();
 
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
@@ -332,12 +326,7 @@ class HousesController extends AppController {
         }
         else {
 
-            // compute and store geographical distance with TEI
-            $location = array(
-                'latitude' => $this->data['House']['latitude'],
-                'longitude' => $this->data['House']['longitude'] );
-            $geoDistance = $this->haversineDistance( $location );
-            $this->data['House']['geo_distance'] = $geoDistance;
+            $this->computeDistance();
 
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
@@ -1056,6 +1045,7 @@ class HousesController extends AppController {
 
 
     private function getOrderCondition($selected_order) {
+        $order = '';
 
         switch($selected_order) {
             case 0:
@@ -1293,6 +1283,17 @@ class HousesController extends AppController {
         return $fields;
     }
 
+    // Computes and sets the distance between '$this' House and the default
+    // target (in private function haversinceDistance). It uses the structure
+    // $this->data.
+    private function computeDistance() {
+
+        $location = array(
+            'latitude' => $this->data['House']['latitude'],
+            'longitude' => $this->data['House']['longitude'] );
+        $geoDistance = $this->haversineDistance( $location );
+        $this->data['House']['geo_distance'] = $geoDistance;
+    }
 
     // Computes the haversine distance between the to supplied locations. Each
     // parameter must be an array that contains the keys 'latitude' and

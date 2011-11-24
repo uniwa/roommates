@@ -60,8 +60,7 @@
 
 <?php
     echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
-    echo $this->Html->script(array(
-        'jquery', 'gmap3.min', 'stringmanipulation', 'jquery.editgmap'));
+    echo $this->Html->script(array('jquery', 'gmap3.min', 'jquery.editgmap'));
 
 
     $houseid = $house['House']['id'];
