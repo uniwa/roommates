@@ -1,9 +1,9 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 20px 0px 32px;
-        padding: 32px;
-        width: 180px;
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        width: 300px;
     }
 
     #main-inner{
@@ -16,6 +16,7 @@
 
     #houseCont{
         margin: 0px 0px 32px 0px;
+        padding: 32px;
         overflow: hidden;
         height: 100%;
     }
@@ -32,7 +33,7 @@
 
     #houseEdit{
         clear: both;
-        margin: 0px 0px 0px 12px;
+        margin: 0px 0px 0px 44px;
     }
 
     .houseTitle{
@@ -118,10 +119,11 @@
         margin: 32px 0px 0px 0px;
     }
 
-    .map {
+    .map{
         clear: both;
-        width: 450px;
-        height: 350px;
+        margin: 32px auto 0px auto;
+        width: 260px;
+        height: 220px;
     }
 </style>
 
@@ -432,6 +434,26 @@
             }
         ?>
     </div>
+    <?php
+        $latDeviation = 0;//rand(-4, 4) * 0.0;
+        $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
+
+        $houseLat = $house['House']['latitude'];
+        $houseLng = $house['House']['longitude'];
+
+        if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
+
+            echo "<input
+                id='houseLatitude'
+                type='hidden'
+                value='{$house['House']['latitude']}' />";
+            echo "<input
+                id='houseLongitude'
+                type='hidden'
+                value='{$house['House']['longitude']}' />";
+            echo "<div class='map' id='viewMap'></div>";
+        }
+    ?>
 </div>
 <div id='main-inner'>
     <div id='imageList' class='houseClear'>
@@ -510,30 +532,6 @@
                 echo $propertiesChecks;
             ?>
         </ul>
-
-        <?php
-            $latDeviation = 0;//rand(-4, 4) * 0.0;
-            $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
-        ?>
-
-        <?php
-            $houseLat = $house['House']['latitude'];
-            $houseLng = $house['House']['longitude'];
-
-            if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
-
-                echo "<input
-                    id='houseLatitude'
-                    type='hidden'
-                    value='{$house['House']['latitude']}' />";
-                echo "<input
-                    id='houseLongitude'
-                    type='hidden'
-                    value='{$house['House']['longitude']}' />";
-                echo "<div class='map' id='viewMap'></div>";
-            }
-        ?>
-
     </div>
 </div>
 
