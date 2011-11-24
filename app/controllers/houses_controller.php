@@ -8,11 +8,12 @@ class HousesController extends AppController {
 
     var $name = 'Houses';
     var $components = array('RequestHandler', 'Token');
-    var $helpers = array('Text', 'Time', 'Html');
+    var $helpers = array('Text', 'Time', 'Html', 'Xml');
     var $paginate = array('limit' => 15);
     var $uses = array('House', 'HouseType');
 
     function index() {
+
         $this->set('title_for_layout','Σπίτια');
         if ($this->RequestHandler->isRss()) {
             $conditions = array("User.banned" => 0, 'House.visible' => 1);
@@ -22,6 +23,15 @@ class HousesController extends AppController {
                               'conditions' => $conditions)
             );
             return $this->set(compact('houses'));
+        }
+
+        if ($this->isWebService()) {
+            $houses = $this->simpleSearch(  $this->getHouseConditions(),
+                                            null, null, false, null,
+                                            $this->getXmlFields());
+            $this->set('houses', $houses);
+            $this->layout = 'xml/default';
+            $this->render('xml/index');
         }
 
 		$order = array('House.modified' => 'desc');
@@ -143,7 +153,7 @@ class HousesController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        if( $this->RequestHandler->isRss()){
+        if( $this->RequestHandler->isRss() || $this->isWebService()){
             $this->Auth->allow( 'index' );
             $this->Auth->allow( 'search' );
         }
@@ -304,20 +314,21 @@ class HousesController extends AppController {
         $this->checkAccess($id);
         $this->House->id = $id;
 
-        if (empty($this->data)) {
-            $house = $this->House->read();;
-            $this->data = $house;
-            $this->set('house', $house);
+        $house = $this->House->read();
+        $this->set('house', $house);
 
-            $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-            $imageThumbLocation = 'house.gif';
-            foreach ($images as $image) {
-                if($image['Image']['id'] == $house['House']['default_image_id']){
-                    $defaultImageLocation = $image['Image']['location'];
-                    $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
-                }
+        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
+        $imageThumbLocation = 'house.gif';
+        foreach ($images as $image) {
+            if($image['Image']['id'] == $house['House']['default_image_id']){
+                $defaultImageLocation = $image['Image']['location'];
+                $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
             }
-		    $this->set('imageThumbLocation', $imageThumbLocation);
+        }
+        $this->set('imageThumbLocation', $imageThumbLocation);
+
+        if (empty($this->data)) {
+            $this->data = $house;
         }
         else {
 
@@ -328,7 +339,7 @@ class HousesController extends AppController {
             $geoDistance = $this->haversineDistance( $location );
             $this->data['House']['geo_distance'] = $geoDistance;
 
-            if ($this->House->save($this->data)) {
+            if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
 
@@ -393,7 +404,41 @@ class HousesController extends AppController {
     private function age_to_year($age) {
         return date('Y') - $age;
     }
+    
+    function getLastModified(){
+        $limit = 5;
+        $options['order'] = array('House.modified DESC');
+        $options['limit'] = $limit;
+        $options['conditions'] = array('House.visible' => 1);
+//        $this->House->recursive = 1;
+        $results = $this->House->find('all', $options);
+        return $results;
+    }
+    
+    function getLastPreferred(){
+        $this->checkRole('user');
+        $limit = 5;
+        $prefs = $this->loadSavedPreferences();
 
+        $order = array('House.modified' => 'desc', 'House.id' => 'asc');
+        $results = $this->simpleSearch($prefs['house_prefs'],
+            $prefs['mates_prefs'], $order);
+
+        $uid = $this->Auth->User('id');
+        $house = $this->House->find('first', array('conditions' => array('user_id' => $uid)));
+        if(isset($house['House']['id'])){
+            $hid = $house['House']['id'];
+            for($i = 0; $i < $limit; $i++){
+                if($result[$i]['House']['id'] = $hid){
+                    unset($results[$i]);
+                    break;
+                }
+            }
+        }
+        $results = array_slice($results, 0, $limit);
+        
+        return $results;
+    }
 
     function manage(){
         // this variable is used to properly display
@@ -669,6 +714,37 @@ class HousesController extends AppController {
                       );
         }
 
+        // join the required tables for web service
+        if ($this->isWebService()) {
+            array_push($options['joins'], array('table' => 'floors',
+                                                'alias' => 'Floor',
+                                                'type'  => 'left',
+                                                'conditions' => 'Floor.id = House.floor_id'
+                                               )
+                      );
+
+            array_push($options['joins'], array('table' => 'heating_types',
+                                                'alias' => 'HeatingType',
+                                                'type'  => 'left',
+                                                'conditions' => 'HeatingType.id = House.heating_type_id'
+                                               )
+                      );
+
+            array_push($options['joins'], array('table' => 'house_types',
+                                                'alias' => 'HouseType',
+                                                'type'  => 'left',
+                                                'conditions' => 'HouseType.id = House.house_type_id'
+                                               )
+                      );
+
+            array_push($options['joins'], array('table' => 'municipalities',
+                                                'alias' => 'Municipality',
+                                                'type'  => 'left',
+                                                'conditions' => 'Municipality.id = House.municipality_id'
+                                               )
+                      );
+        }
+
         $options['conditions'] = $houseConditions;
         if ($orderBy != null) {
             $options['order'] = $orderBy;
@@ -867,7 +943,7 @@ class HousesController extends AppController {
             $house_conditions['House.municipality_id'] =
                                                 $house_prefs['municipality'];
 
-        if($house_prefs['furnitured'] < 2 && $house_prefs['furnitured'] != null)
+        if (isset($house_prefs['furnitured']) && $house_prefs['furnitured'] < 2)
             $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
 
         if(isset($house_prefs['accessibility']))
@@ -1086,9 +1162,7 @@ class HousesController extends AppController {
         if( $d1 > $d2 ) return -1;
         return 0;
     }
-
     // Manual [geo_distance] ordering. -- SECTION END
-
     
     // Facebook functions -- SECTION START
 
@@ -1155,7 +1229,6 @@ class HousesController extends AppController {
 
         $this->Session->write( 'facebook', $facebook );
     }
-
     // Facebook functions -- SECTION END
 
     private function checkRole($role){
@@ -1175,6 +1248,51 @@ class HousesController extends AppController {
         }
         return $string;
     }
+
+    /// Returns whether this is web service call or not
+    private function isWebService() {
+        if (isset($this->params['url']['url']) && (strpos($this->params['url']['url'], 'api/houses') !== false))
+            return true;
+        else
+            return false;
+    }
+
+
+    private function getXmlFields() {
+        $fields = array('House.id',
+                        'House.postal_code',
+                        'House.area',
+                        'House.bedroom_num',
+                        'House.bathroom_num',
+                        'House.price',
+                        'House.construction_year',
+                        'House.solar_heater',
+                        'House.furnitured',
+                        'House.aircondition',
+                        'House.garden',
+                        'House.parking',
+                        'House.shared_pay',
+                        'House.security_doors',
+                        'House.disability_facilities',
+                        'House.storeroom',
+                        'House.availability_date',
+                        'House.rent_period',
+                        'House.description',
+                        'House.created',
+                        'House.modified',
+                        'House.currently_hosting',
+                        'House.total_places',
+                        'House.free_places',
+                        'Image.location',
+                        'Municipality.name',
+                        'Floor.type',
+                        'HouseType.type',
+                        'HeatingType.type'
+                        );
+
+        return $fields;
+    }
+
 
     // Computes the haversine distance between the to supplied locations. Each
     // parameter must be an array that contains the keys 'latitude' and

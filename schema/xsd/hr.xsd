@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://localhost/api/roommates/hr/schemas"
+    xmlns:hr="http://www.roommates.teiath.gr/hr/schemas"                 
+    xmlns:ht="http://www.roommates.teiath.gr/ht/schemas" 
+    elementFormDefault="qualified">
+
+    <xs:import schemaLocation="ht.xsd"
+        namespace="http://www.roommates.teiath.gr/ht/schemas"/>
+
+    <xs:element name="houses">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="house" minOccurs="0" maxOccurs="unbounded" type="ht:house_elements_type"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
