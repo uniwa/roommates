@@ -32,7 +32,7 @@
                 <xs:element name="total_places" type="ht:hosting_restrictions_type"/>
                 <xs:element name="free_places" type="ht:hosting_restrictions_type"/>
                 <xs:element name="image" type="ht:image_elements_type"/>
-                <xs:element name="municipality" minOccurs="0" type="ht:municipality_elements_type"/>
+                <xs:element name="municipality" type="ht:municipality_elements_type"/>
                 <xs:element name="floor" type="ht:heating_floor_elements_type"/>
                 <xs:element name="house_type" type="ht:house_type"/>
                 <xs:element name="heating_type" type="ht:heating_floor_elements_type"/>
