@@ -1,14 +1,12 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:ht="http://localhost/roommates/ht/schemas"                              
-    elementFormDefault="qualified"
-    targetNamespace="http://localhost/roommates/ht/schemas">
-
+    targetNamespace="http://www.roommates.teiath.gr/ht/schemas"
+    xmlns:ht="http://www.roommates.teiath.gr/ht/schemas"                              
+    elementFormDefault="qualified">
 
         <!--type for house field-->
         <xs:complexType name="house_elements_type">
             <xs:sequence>
-                <xs:element name="id" type="xs:ID"/>
                 <xs:element name="postal_code" type="ht:postal_code_restrictions_type"/>
                 <xs:element name="area" type="xs:integer"/>
                 <xs:element name="bedroom_num" type="ht:bedroom_num_restrictions_type"/>
@@ -38,7 +36,7 @@
                 <xs:element name="house_type" type="ht:house_type"/>
                 <xs:element name="heating_type" type="ht:heating_floor_elements_type"/>
             </xs:sequence>
-
+            <xs:attribute name="id" type="xs:ID"/>
         </xs:complexType>
 
     <!--restrictions about address field spacing and strlen-->
