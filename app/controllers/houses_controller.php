@@ -1303,7 +1303,9 @@ class HousesController extends AppController {
     private function haversineDistance($from, $to=null) {
         $radius = 6371;
 
-        if( is_null( $from['latitude'] ) || is_null( $from['longitude']) ) {
+        if( !is_numeric( $from['latitude'] ) ||
+            !is_numeric( $from['longitude']) ) {
+
             return null;
         }
 
