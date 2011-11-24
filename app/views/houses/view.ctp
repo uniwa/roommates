@@ -37,7 +37,7 @@
     }
 
     .houseTitle{
-        margin: 0px 0px 16px 30px;
+        margin: 0px 0px 16px 18px;
         font-size: 1.2em;
         font-weight: bold;
     }
@@ -52,7 +52,7 @@
     }
 
     .houseLineLong{
-        width: 300px;
+        width: 340px;
     }
     
     .houseLineShort{
@@ -80,10 +80,14 @@
     .houseOdd{
         background-color: #eef;
     }
+    
+    #housePropertiesCont{
+        margin: 0px 0px 0px 16px;
+    }
 
     .housePropertiesCol{
         float: left;
-        margin: 0px 0px 0px 32px;
+        margin: 0px 8px 0px 0px;
     }
 
     .liimage{
@@ -92,7 +96,7 @@
     }
 
     #imageList{
-        margin: 0px 0px 0px 24px;
+        margin: 0px 0px 0px 16px;
         padding: 0px 0px 0px 0px;
     }
     
@@ -513,30 +517,32 @@
                 }
             } //foreach $houseProperties
         ?>
-        <ul class='housePropertiesCol'>
-            <?php
-                echo $propertiesValues;
-            ?>
-            <?php if ($loggedUser == $userid) { ?>
-            <li class='houseClear houseLine houseLineLong'>
+        <div id='housePropertiesCont'>
+            <ul class='housePropertiesCol'>
                 <?php
-                    echo '<br />'.$houseVisibility;
+                    echo $propertiesValues;
                 ?>
-            </li>
-            <?php } ?>
-            <li class='houseClear houseLine houseLineLong'>
+                <?php if ($loggedUser == $userid) { ?>
+                <li class='houseClear houseLine houseLineLong'>
+                    <?php
+                        echo '<br />'.$houseVisibility;
+                    ?>
+                </li>
+                <?php } ?>
+                <li class='houseClear houseLine houseLineLong'>
+                    <?php
+                        if($houseDescription != ''){
+                            echo 'Περιγραφή: '.$houseDescription;
+                        }
+                    ?>
+                </li>
+            </ul>
+            <ul class='housePropertiesCol'>
                 <?php
-                    if($houseDescription != ''){
-                        echo 'Περιγραφή: '.$houseDescription;
-                    }
+                    echo $propertiesChecks;
                 ?>
-            </li>
-        </ul>
-        <ul class='housePropertiesCol'>
-            <?php
-                echo $propertiesChecks;
-            ?>
-        </ul>
+            </ul>
+        </div>
     </div>
 </div>
 

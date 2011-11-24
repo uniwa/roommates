@@ -1,9 +1,9 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 0px 0px 32px;
-        padding: 32px;
-        width: 150px;
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        width: 300px;
     }
 
     #main-inner{
@@ -14,22 +14,30 @@
     }
 
     .profilePic{
-        float: left;
+        margin: 0px auto 0px auto;
+        padding: 2px;
         width: 128px;
         height: 128px;
-        padding: 2px;
     }
-
+    
+    #profileCont{
+        margin: 0px 0px 0px 0px;
+        padding: 32px;
+        text-align: center;
+    }
+    
     #profileEdit{
-        margin: 64px 0px 0px 12px;
+        margin: 32px 0px 0px 12px;
+        text-align: center;
     }
 
     #profileRss,#profileBan{
-        margin: 16px 0px 0px 0px;
+        margin: 32px auto 0px auto;
+        text-align: center;
     }
 
     #profileRss img,#profileBan img{
-        margin: 0px 4px 0px 0px;
+        margin: 0px auto 0px auto;
     }
 
     .profileClear{
@@ -153,56 +161,58 @@
 	}
 ?>
 <div id='leftbar'>
-    <div class='profilePic'>
-        <?php
-            $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
-            echo $profilePic;
-        ?>
-    </div>
-    <div id='profileRss' class='profileClear'>
-        <?php
-            $rssContent = $this->Html->image('rss.png', array('alt' => $name));
-            $rssContent .= ' Προσωποποιημένο RSS';
-            $rssLink = array('controller' => 'houses', 'action' => 'search.rss',
-                '?' => array('token' => $profile["Profile"]["token"]));
-            if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
-                $personalRSS = $this->Html->link(
-                    $rssContent, $rssLink, array('escape' => false));
-                echo $personalRSS;
-            }
-        ?>
-    </div>
-    <div id='profileBan'>
-        <?php
-            if($role == 'admin' &&
-                $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
-                if($profile['User']['banned'] == 0){
-                    $banContent = $this->Html->image('ban.png', array('alt' => $name));
-                    $banContent .= ' Κλείδωμα χρήστη';
-                    $banClass = 'banButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να κλειδώσετε τον λογαριασμό αυτού του χρήστη;";
-                    $banCase = 'ban';
-                }else{
-                    $banContent = $this->Html->image('unban.png', array('alt' => $name));
-                    $banContent .= ' Ξεκλείδωμα χρήστη';
-                    $banClass = 'unbanButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να ξεκλειδώσετε τον λογαριασμό αυτού του χρήστη;";
-                    $banCase = 'unban';
+    <div id='profileCont'>
+        <div class='profilePic'>
+            <?php
+                $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
+                echo $profilePic;
+            ?>
+        </div>
+        <div id='profileRss' class='profileClear'>
+            <?php
+                $rssContent = $this->Html->image('rss.png', array('alt' => $name));
+                $rssContent .= ' Προσωποποιημένο RSS';
+                $rssLink = array('controller' => 'houses', 'action' => 'search.rss',
+                    '?' => array('token' => $profile["Profile"]["token"]));
+                if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
+                    $personalRSS = $this->Html->link(
+                        $rssContent, $rssLink, array('escape' => false));
+                    echo $personalRSS;
                 }
-                $banLink = $this->Html->link($banContent, array(
-                    'controller' => 'profiles', 'action' => $banCase, $profile['Profile']['id']),
-                    array('class' => $banClass, 'escape' => false), $banMsg);
-                echo $banLink;
-            }
-        ?>
-    </div>
-    <div id='profileEdit'>
-        <?php
-            if($this->Session->read('Auth.User.id') == $profile['User']['id']){
-                echo $html->link('Επεξεργασία προφίλ',
-                    array('action' => 'edit', $profile['Profile']['id']));
-            }
-        ?>
+            ?>
+        </div>
+        <div id='profileBan'>
+            <?php
+                if($role == 'admin' &&
+                    $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
+                    if($profile['User']['banned'] == 0){
+                        $banContent = $this->Html->image('ban.png', array('alt' => $name));
+                        $banContent .= ' Κλείδωμα χρήστη';
+                        $banClass = 'banButton';
+                        $banMsg = "Είστε σίγουρος ότι θέλετε να κλειδώσετε τον λογαριασμό αυτού του χρήστη;";
+                        $banCase = 'ban';
+                    }else{
+                        $banContent = $this->Html->image('unban.png', array('alt' => $name));
+                        $banContent .= ' Ξεκλείδωμα χρήστη';
+                        $banClass = 'unbanButton';
+                        $banMsg = "Είστε σίγουρος ότι θέλετε να ξεκλειδώσετε τον λογαριασμό αυτού του χρήστη;";
+                        $banCase = 'unban';
+                    }
+                    $banLink = $this->Html->link($banContent, array(
+                        'controller' => 'profiles', 'action' => $banCase, $profile['Profile']['id']),
+                        array('class' => $banClass, 'escape' => false), $banMsg);
+                    echo $banLink;
+                }
+            ?>
+        </div>
+        <div id='profileEdit'>
+            <?php
+                if($this->Session->read('Auth.User.id') == $profile['User']['id']){
+                    echo $html->link('Επεξεργασία προφίλ',
+                        array('action' => 'edit', $profile['Profile']['id']));
+                }
+            ?>
+        </div>
     </div>
 </div>
 <div id='main-inner'>
