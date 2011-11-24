@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<houses>
-    <house>
-        <id>3</id>
+<houses xmlns="http://www.roommates.teiath.gr/hr/schemas">
+    <house id="3">
         <postal_code>11111</postal_code>
         <area>35</area>
         <bedroom_num>2</bedroom_num>
         <bathroom_num>1</bathroom_num>
         <price>280</price>
-        <construction_year />
+        <construction_year/>
         <solar_heater>1</solar_heater>
         <furnitured>1</furnitured>
         <aircondition>1</aircondition>
@@ -17,19 +16,11 @@
         <security_doors>0</security_doors>
         <disability_facilities>0</disability_facilities>
         <storeroom>0</storeroom>
-        <availability_date>
-            <![CDATA[2011-11-05]]>
-        </availability_date>
+        <availability_date><![CDATA[2011-11-05]]></availability_date>
         <rent_period />
-        <description>
-            <![CDATA[This is the second house!]]>
-        </description>
-        <created>
-            <![CDATA[2011-11-09 12:02:27]]>
-        </created>
-        <modified>
-            <![CDATA[2011-11-09 12:02:27]]>
-        </modified>
+        <description><![CDATA[This is the second house!]]></description>
+        <created><![CDATA[2011-11-09 12:02:27]]></created>
+        <modified><![CDATA[2011-11-09 12:02:27]]></modified>
         <currently_hosting>1</currently_hosting>
         <total_places>3</total_places>
         <free_places>2</free_places>
@@ -37,29 +28,20 @@
             <location />
         </image>
         <municipality>
-            <name>
-                <![CDATA[ΛΑΥΡΕΩΤΙΚΗΣ]]>
-            </name>
+            <name><![CDATA[ΛΑΥΡΕΩΤΙΚΗΣ]]></name>
         </municipality>
         <floor>
-            <type>
-                <![CDATA[1ος όροφος]]>
-            </type>
+            <type><![CDATA[1ος όροφος]]></type>
         </floor>
         <house_type>
-            <type>
-                <![CDATA[studio]]>
-            </type>
+            <type><![CDATA[studio]]></type>
         </house_type>
 
         <heating_type>
-            <type>
-                <![CDATA[Thermastra]]>
-            </type>
+            <type><![CDATA[Thermastra]]></type>
         </heating_type>
     </house>
-    <house>
-        <id>4</id>
+    <!--    <house id="4">
         <postal_code>12334</postal_code>
         <area>432</area>
         <bedroom_num>1</bedroom_num>
@@ -118,8 +100,7 @@
             </type>
         </heating_type>
     </house>
-    <house>
-        <id>5</id>
+    <house id="5">
         <postal_code />
         <area>123</area>
         <bedroom_num>1</bedroom_num>
@@ -176,5 +157,5 @@
                 <![CDATA[Thermastra]]>
             </type>
         </heating_type>
-    </house>
+    </house>-->
 </houses>
