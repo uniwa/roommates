@@ -1,9 +1,9 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 20px 0px 32px;
-        padding: 32px;
-        width: 180px;
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        width: 300px;
     }
 
     #main-inner{
@@ -16,6 +16,7 @@
 
     #houseCont{
         margin: 0px 0px 32px 0px;
+        padding: 32px;
         overflow: hidden;
         height: 100%;
     }
@@ -32,7 +33,7 @@
 
     #houseEdit{
         clear: both;
-        margin: 0px 0px 0px 12px;
+        margin: 0px 0px 0px 44px;
     }
 
     .houseTitle{
@@ -118,10 +119,11 @@
         margin: 32px 0px 0px 0px;
     }
 
-    .map {
+    .map{
         clear: both;
-        width: 450px;
-        height: 350px;
+        margin: 32px auto 0px auto;
+        width: 260px;
+        height: 220px;
     }
 </style>
 
@@ -443,11 +445,10 @@
     // HTML-inline javascipt
     echo <<<EOT
         <script type='text/javascript'>
-            var aVar='Hi from server!';
             var houseLat = $houseLat;
             var houseLng = $houseLng;
             var displayCircle = $displayCircle;
-        </script>;
+        </script>
 EOT;
 
 ?>
@@ -474,6 +475,7 @@ EOT;
             }
         ?>
     </div>
+    <div class='map' id='viewMap'></div>
 </div>
 <div id='main-inner'>
     <div id='imageList' class='houseClear'>
@@ -552,8 +554,6 @@ EOT;
                 echo $propertiesChecks;
             ?>
         </ul>
-
-        <div class='map' id='viewMap'></div>
     </div>
 </div>
 

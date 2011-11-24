@@ -26,12 +26,17 @@ class HousesController extends AppController {
         }
 
         if ($this->isWebService()) {
-            $houses = $this->simpleSearch(  $this->getHouseConditions(),
-                                            null, null, false, null,
-                                            $this->getXmlFields());
-            $this->set('houses', $houses);
-            $this->layout = 'xml/default';
-            $this->render('xml/index');
+            if ($this->RequestHandler->isGet()) {
+                $houses = $this->simpleSearch(  $this->getHouseConditions(),
+                                                null, null, false, null,
+                                                $this->getXmlFields());
+                $this->set('houses', $houses);
+                $this->layout = 'xml/default';
+                $this->render('xml/public');
+            } elseif ($this->RequestHandler->isPost()) {
+//                 $this->layout = 'xml/empty';
+//                 $this->render('xml/empty');
+            }
         }
 
 		$order = array('House.modified' => 'desc');
@@ -253,12 +258,9 @@ class HousesController extends AppController {
                 $hid = $this->House->id;
 
                 /* post to facebook application wall */
-                $this->House->id = $hid;
-                $this->recursive = 2;
-                $house = $this->House->read();
-                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
+                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
-                $this->redirect(array('action' => "view/$hid"));
+                $this->redirect(array('action' => "view", $hid));
             }
         }
 
@@ -333,11 +335,9 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
 
                 /* post updated house on application's page on Facebook */
-                $house = $this->House->read();
-                $this->recursive = 2;
-                if( $house['House']['visible'] == 1 )    $this->postToAppWall( $house );
+                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
-                $this->redirect(array('action' => "view/$id"));
+                $this->redirect(array('action' => "view", $id));
             }
         }
 
@@ -393,7 +393,7 @@ class HousesController extends AppController {
     private function age_to_year($age) {
         return date('Y') - $age;
     }
-    
+
     function getLastModified(){
         $limit = 5;
         $options['order'] = array('House.modified DESC');
@@ -403,7 +403,7 @@ class HousesController extends AppController {
         $results = $this->House->find('all', $options);
         return $results;
     }
-    
+
     function getLastPreferred(){
         $this->checkRole('user');
         $limit = 5;
@@ -425,7 +425,7 @@ class HousesController extends AppController {
             }
         }
         $results = array_slice($results, 0, $limit);
-        
+
         return $results;
     }
 
@@ -1250,6 +1250,7 @@ class HousesController extends AppController {
 
     private function getXmlFields() {
         $fields = array('House.id',
+                        'House.address',
                         'House.postal_code',
                         'House.area',
                         'House.bedroom_num',
