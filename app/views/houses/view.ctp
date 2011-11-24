@@ -15,7 +15,7 @@
     }
 
     #houseCont{
-        margin: 0px 0px 32px 0px;
+        margin: 0px 0px 0px 0px;
         padding: 32px;
         overflow: hidden;
         height: 100%;
@@ -27,7 +27,7 @@
     }
 
     #ownerInfo{
-        margin: 48px 0px 0px 8px;
+        margin: 32px 0px 0px 8px;
         padding: 2px;
     }
 
@@ -37,7 +37,7 @@
     }
 
     .houseTitle{
-        margin: 0px 0px 16px 30px;
+        margin: 0px 0px 16px 18px;
         font-size: 1.2em;
         font-weight: bold;
     }
@@ -52,7 +52,7 @@
     }
 
     .houseLineLong{
-        width: 300px;
+        width: 340px;
     }
     
     .houseLineShort{
@@ -80,10 +80,14 @@
     .houseOdd{
         background-color: #eef;
     }
+    
+    #housePropertiesCont{
+        margin: 0px 0px 0px 16px;
+    }
 
     .housePropertiesCol{
         float: left;
-        margin: 0px 0px 0px 32px;
+        margin: 0px 8px 0px 0px;
     }
 
     .liimage{
@@ -92,7 +96,7 @@
     }
 
     #imageList{
-        margin: 0px 0px 0px 24px;
+        margin: 0px 0px 0px 16px;
         padding: 0px 0px 0px 0px;
     }
     
@@ -106,6 +110,7 @@
         margin: 0px 0px 0px 0px;
         padding: 24px 0px 0px 0px;
     }
+    
     .fbIcon{
         margin: 0px 4px 0px 0px;
         vertical-align: -30%;
@@ -118,10 +123,14 @@
     .owner-info{
         margin: 32px 0px 0px 0px;
     }
-
-    .map{
+    
+    #houseMap{
         clear: both;
-        margin: 32px auto 0px auto;
+        margin: 32px 0px 32px 0px;
+    }
+    
+    .map{
+        margin: 0px auto;
         width: 260px;
         height: 220px;
     }
@@ -191,8 +200,9 @@
     $houseVisibility = ($houseVisible == 1)?
         'Το σπίτι είναι ορατό σε άλλους χρήστες και στις αναζητήσεις':
         'Το σπίτι δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις';
-
     $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+    $houseLat = $house['House']['latitude'];
+    $houseLng = $house['House']['longitude'];
     $empty_slots = 4 - count($images);
 
     // default image
@@ -367,6 +377,12 @@
         $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
         $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά)";
     }
+    if(!is_null($house['House']['geo_distance'])){
+        $geovalue = number_format($house['House']['geo_distance'], 2).' χλμ.';
+    }else{
+        $geovalue = 'δεν διατίθεται';
+    }
+
     //house distance
     $houseProperties['geo_distance']['label'] = 'Απόσταση από ΤΕΙ';
     $houseProperties['solar']['label'] = 'Ηλιακός';
@@ -379,6 +395,7 @@
     $houseProperties['disability']['label'] = 'Προσβάσιμο από ΑΜΕΑ';
     $houseProperties['storage']['label'] = 'Αποθήκη';
 
+    $houseProperties['geo_distance']['value'] = $geovalue;
     $houseProperties['municipality']['value'] = $houseMunicipality;
     $houseProperties['postal_code']['value'] = $housePostalCode;
     $houseProperties['type']['value'] = $houseType;
@@ -391,18 +408,7 @@
     $houseProperties['price']['value'] = $housePrice;
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
-    // if the house belongs to real estate, don't display availability info
-    if($ownerRole != 'realestate'){
-        $houseProperties['hosting']['value'] = $houseHosting;
-        $houseProperties['free_places']['value'] = $houseFreePlaces;
-    }
-    if( !is_null( $house['House']['geo_distance'] ) ) {
-        $houseProperties['geo_distance']['value'] =
-            number_format( $house['House']['geo_distance'], 2 ) . '&nbsp;χλμ.';
-    } else {
-        $houseProperties['geo_distance']['value'] =
-            'δεν διατίθεται';
-    }
+
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
     $houseProperties['aircondition']['check'] = $houseAircondition;
@@ -475,7 +481,9 @@ EOT;
             }
         ?>
     </div>
-    <div class='map' id='viewMap'></div>
+    <div id='houseMap'>
+        <div class='map' id='viewMap'></div>
+    </div>
 </div>
 <div id='main-inner'>
     <div id='imageList' class='houseClear'>
@@ -530,30 +538,32 @@ EOT;
                 }
             } //foreach $houseProperties
         ?>
-        <ul class='housePropertiesCol'>
-            <?php
-                echo $propertiesValues;
-            ?>
-            <?php if ($loggedUser == $userid) { ?>
-            <li class='houseClear houseLine houseLineLong'>
+        <div id='housePropertiesCont'>
+            <ul class='housePropertiesCol'>
                 <?php
-                    echo '<br />'.$houseVisibility;
+                    echo $propertiesValues;
                 ?>
-            </li>
-            <?php } ?>
-            <li class='houseClear houseLine houseLineLong'>
+                <?php if ($loggedUser == $userid) { ?>
+                <li class='houseClear houseLine houseLineLong'>
+                    <?php
+                        echo '<br />'.$houseVisibility;
+                    ?>
+                </li>
+                <?php } ?>
+                <li class='houseClear houseLine houseLineLong'>
+                    <?php
+                        if($houseDescription != ''){
+                            echo 'Περιγραφή: '.$houseDescription;
+                        }
+                    ?>
+                </li>
+            </ul>
+            <ul class='housePropertiesCol'>
                 <?php
-                    if($houseDescription != ''){
-                        echo 'Περιγραφή: '.$houseDescription;
-                    }
+                    echo $propertiesChecks;
                 ?>
-            </li>
-        </ul>
-        <ul class='housePropertiesCol'>
-            <?php
-                echo $propertiesChecks;
-            ?>
-        </ul>
+            </ul>
+        </div>
     </div>
 </div>
 
