@@ -264,7 +264,7 @@ class HousesController extends AppController {
                 /* post to facebook application wall */
                 if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
-                $this->redirect(array('action' => "view/$hid"));
+                $this->redirect(array('action' => "view", $hid));
             }
         }
 
@@ -338,7 +338,7 @@ class HousesController extends AppController {
                 /* post updated house on application's page on Facebook */
                 if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
-                $this->redirect(array('action' => "view/$id"));
+                $this->redirect(array('action' => "view", $id));
             }
         }
 
