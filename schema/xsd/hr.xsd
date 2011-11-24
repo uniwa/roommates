@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     targetNamespace="http://localhost/api/roommates/hr/schemas"
-    xmlns:hr="http://localhost/api/roommates/hr/schemas"                 
-    xmlns:ht="http://localhost/api/roommates/ht/schemas" 
-    elementFormDefault="qualified"
-    >
+    xmlns:hr="http://www.roommates.teiath.gr/hr/schemas"                 
+    xmlns:ht="http://www.roommates.teiath.gr/ht/schemas" 
+    elementFormDefault="qualified">
 
-    <xs:import schemaLocation="http://localhost/api/roommates/ht/schemas/ht.xsd"
-        namespace="http://localhost/api/roommates/schemas/ht.xsd"/>
+    <xs:import schemaLocation="ht.xsd"
+        namespace="http://www.roommates.teiath.gr/ht/schemas"/>
 
     <xs:element name="houses">
         <xs:complexType>
