@@ -13,6 +13,10 @@
 # facebook configuration
 /app/config/facebook.php
 
+# core configuration file
+# debug, session settings etc
+/app/config/core.php
+
 
 # swap et al
 *~
