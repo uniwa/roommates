@@ -399,7 +399,7 @@ class HousesController extends AppController {
     private function age_to_year($age) {
         return date('Y') - $age;
     }
-    
+
     function getLastModified(){
         $limit = 5;
         $options['order'] = array('House.modified DESC');
@@ -409,7 +409,7 @@ class HousesController extends AppController {
         $results = $this->House->find('all', $options);
         return $results;
     }
-    
+
     function getLastPreferred(){
         $this->checkRole('user');
         $limit = 5;
@@ -431,7 +431,7 @@ class HousesController extends AppController {
             }
         }
         $results = array_slice($results, 0, $limit);
-        
+
         return $results;
     }
 
@@ -1180,6 +1180,7 @@ class HousesController extends AppController {
 
     private function getXmlFields() {
         $fields = array('House.id',
+                        'House.address',
                         'House.postal_code',
                         'House.area',
                         'House.bedroom_num',
