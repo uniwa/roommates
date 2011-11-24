@@ -60,8 +60,7 @@
 
 <?php
     echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
-    echo $this->Html->script(array(
-        'jquery', 'gmap3.min', 'stringmanipulation', 'jquery.editgmap'));
+    echo $this->Html->script(array('jquery', 'gmap3.min', 'jquery.editgmap'));
 
 
     $houseid = $house['House']['id'];
@@ -91,7 +90,7 @@
         echo $form->input('postal_code', array('label' => 'Τ.Κ.'));
 
         // map location mainly depends on [country], [municipality], [address]
-        // and [postalCode]
+        // and [postalCode] form-fields
         echo '<a id="updateMap">Ενημέρωση χάρτη από πεδία</a>';
         echo '<div class="map" id="editMap"></div>';
 

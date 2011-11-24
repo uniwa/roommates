@@ -377,6 +377,12 @@
         $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
         $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά)";
     }
+    if(!is_null($house['House']['geo_distance'])){
+        $geovalue = number_format($house['House']['geo_distance'], 2).' χλμ.';
+    }else{
+        $geovalue = 'δεν διατίθεται';
+    }
+
     //house distance
     $houseProperties['geo_distance']['label'] = 'Απόσταση από ΤΕΙ';
     $houseProperties['solar']['label'] = 'Ηλιακός';
@@ -389,6 +395,7 @@
     $houseProperties['disability']['label'] = 'Προσβάσιμο από ΑΜΕΑ';
     $houseProperties['storage']['label'] = 'Αποθήκη';
 
+    $houseProperties['geo_distance']['value'] = $geovalue;
     $houseProperties['municipality']['value'] = $houseMunicipality;
     $houseProperties['postal_code']['value'] = $housePostalCode;
     $houseProperties['type']['value'] = $houseType;
@@ -401,15 +408,7 @@
     $houseProperties['price']['value'] = $housePrice;
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
-    // if the house belongs to real estate, don't display availability info
-    if($ownerRole != 'realestate'){
-        $houseProperties['hosting']['value'] = $houseHosting;
-        $houseProperties['free_places']['value'] = $houseFreePlaces;
-    }
-    if( !is_null( $geo_distance ) ) {
-        $houseProperties['geo_distance']['value'] =
-            number_format( $geo_distance, 2 ) . '&nbsp;χλμ.';
-    }
+
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
     $houseProperties['aircondition']['check'] = $houseAircondition;
@@ -419,6 +418,44 @@
     $houseProperties['door']['check'] = $houseDoor;
     $houseProperties['disability']['check'] = $houseDisability;
     $houseProperties['storage']['check'] = $houseStorage;
+
+    // coordinates over which the map is to be centered (not necessarily the
+    // actual ones)
+    $houseLat = $house['House']['latitude'];
+    $houseLng = $house['House']['longitude'];
+
+    // determines whether a marker or a cirle should be positioned over the
+    // house's location (circle is used for 'user's)
+    $displayCircle = null;
+
+    // obscure exact location of house if it belongs to a 'user' (as in role)
+    // and request a circular area to be positioned over the map
+    if( $ownerRole == 'user' ) {
+        
+        $displayCircle = 1;
+        if( !is_null( $houseLat ) && !is_null( $houseLng )
+            && $ownerRole == 'user' ) {
+
+            $latDev = rand( -1, 1 );
+
+            $latDev *= 0.001;
+            $lngDev = 0.001 - $latDev;
+            $houseLat += $latDev;
+            $houseLng += $lngDev;
+        }
+    } else {
+        $displayCircle = 0;
+    }
+
+    // the coordinates and the marker "type" (circle/arrow) are passed as
+    // HTML-inline javascipt
+    echo <<<EOT
+        <script type='text/javascript'>
+            var houseLat = $houseLat;
+            var houseLng = $houseLng;
+            var displayCircle = $displayCircle;
+        </script>
+EOT;
 
 ?>
 
@@ -445,23 +482,7 @@
         ?>
     </div>
     <div id='houseMap'>
-        <?php
-            $latDeviation = 0;//rand(-4, 4) * 0.0;
-            $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
-
-            if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
-
-                echo "<input
-                    id='houseLatitude'
-                    type='hidden'
-                    value='{$house['House']['latitude']}' />";
-                echo "<input
-                    id='houseLongitude'
-                    type='hidden'
-                    value='{$house['House']['longitude']}' />";
-                echo "<div class='map' id='viewMap'></div>";
-            }
-        ?>
+        <div class='map' id='viewMap'></div>
     </div>
 </div>
 <div id='main-inner'>
