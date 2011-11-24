@@ -26,12 +26,17 @@ class HousesController extends AppController {
         }
 
         if ($this->isWebService()) {
-            $houses = $this->simpleSearch(  $this->getHouseConditions(),
-                                            null, null, false, null,
-                                            $this->getXmlFields());
-            $this->set('houses', $houses);
-            $this->layout = 'xml/default';
-            $this->render('xml/public');
+            if ($this->RequestHandler->isGet()) {
+                $houses = $this->simpleSearch(  $this->getHouseConditions(),
+                                                null, null, false, null,
+                                                $this->getXmlFields());
+                $this->set('houses', $houses);
+                $this->layout = 'xml/default';
+                $this->render('xml/public');
+            } elseif ($this->RequestHandler->isPost()) {
+//                 $this->layout = 'xml/empty';
+//                 $this->render('xml/empty');
+            }
         }
 
 		$order = array('House.modified' => 'desc');
@@ -91,7 +96,9 @@ class HousesController extends AppController {
                                 'τετραγωνικά αύξουσα',
                                 'τετραγωνικά φθίνουσα',
                                 'διαθέσιμες θέσεις αύξουσα',
-                                'διαθέσιμες θέσεις φθίνουσα');
+                                'διαθέσιμες θέσεις φθίνουσα',
+                                'απόσταση από ΤΕΙ αύξουσα',
+                                'απόσταση από ΤΕΙ φθίνουσα');
         $this->set('order_options', array('options' => $orderOptions, 'selected' => $selectedOrder));
 
         /* using the banned condition here means that even admin cannot view
@@ -210,20 +217,6 @@ class HousesController extends AppController {
 		$this->set('House.images', $this->paginate());
 		$this->set('images', $images);
 
-        $lat = $house['House']['latitude'];
-        $lng = $house['House']['longitude'];
-        if( !is_null( $lat ) && !is_null( $lng ) ) {
-
-            $from = array( 'latitude' => $lat, 'longitude' => $lng );
-            // coordinates of TEI
-            $to = array( 'latitude' => 38.004444, 'longitude' => 23.676518 );
-            $this->set( 'geo_distance', $this->haversineDistance( $from, $to) );
-
-        } else {
-
-            $this->set( 'geo_distance', null );
-        }
-
 		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
@@ -256,6 +249,9 @@ class HousesController extends AppController {
             }
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
+
+            $this->computeDistance();
+
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
@@ -331,6 +327,9 @@ class HousesController extends AppController {
             $this->data = $house;
         }
         else {
+
+            $this->computeDistance();
+
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
@@ -449,7 +448,10 @@ class HousesController extends AppController {
                                             'δήμο - αύξουσα',
                                             'δήμο - φθίνουσα',
                                             'διαθέσιμες θέσεις - αύξουσα',
-                                            'διαθέσιμες θέσεις - φθίνουσα'));
+                                            'διαθέσιμες θέσεις - φθίνουσα',
+                                            'απόσταση από ΤΕΙ - αύξουσα',
+                                            'απόσταση από ΤΕΙ - φθίνουσα'));
+
 
         $uid = $this->Auth->User('id');
         $houseConditions['House.visible'] = 1;
@@ -532,7 +534,9 @@ class HousesController extends AppController {
                                             'δήμο - αύξουσα',
                                             'δήμο - φθίνουσα',
                                             'διαθέσιμες θέσεις - αύξουσα',
-                                            'διαθέσιμες θέσεις - φθίνουσα'));
+                                            'διαθέσιμες θέσεις - φθίνουσα',
+                                            'απόσταση από ΤΕΙ - αύξουσα',
+                                            'απόσταση από ΤΕΙ - φθίνουσα'));
 
         if(isset($this->params['url']['save'])) {
             $this->saveSearchPreferences();
@@ -573,6 +577,7 @@ class HousesController extends AppController {
                                                     $this->getOrderCondition($this->params['url']['order_by']),
                                                     true, "user"
                                                   );
+
                 } else {
                     $results = $this->simpleSearch( $this->getHouseConditions(),
                                                     $mates_conds,
@@ -745,6 +750,9 @@ class HousesController extends AppController {
         } else {
             $results = $this->House->find('all', $options);
         }
+
+        $this->orderByDistance( $results );
+
         return $results;
     }
 
@@ -1037,6 +1045,7 @@ class HousesController extends AppController {
 
 
     private function getOrderCondition($selected_order) {
+        $order = '';
 
         switch($selected_order) {
             case 0:
@@ -1066,22 +1075,90 @@ class HousesController extends AppController {
             case 8:
                 $order = array('House.free_places' => 'desc');
                 break;
+            //case 9: <order by distance - asc>
+            //case 10: <order by distance - desc>
+            // use private function orderByDistance to manually order results
+            // after they have been returned from DB
         }
 
         return $order;
     }
 
+    // Manual [geo_distance] ordering. -- SECTION START
 
-    /* ==============
-     * facebook stuff
-     * ==============
-     */
+    // The contents of the array are sorted based on their 'geo_distance' field.
+    // The sorting order is determined by the url parameter 'order_by'.
+    private function orderByDistance( &$array ) {
+        $order;
 
-    /**
-     * Posts an announcement on the application's page on Facebook.
-     * The supplied parameter is a two-dimensional array which
-     * contains the entries 'House' and 'Municipality'.
-     */
+        if( !empty( $this->params['url'] ) ) {
+
+            $order = $this->params['url']['order_by'];
+            if( isset( $order ) ) {
+                switch( $order ) {
+                    case 9:
+                        usort( $array,
+                            array( "HousesController", "distanceInAsc" ) );
+                        break;
+                    case 10:
+                        usort( $array,
+                            array( "HousesController", "distanceInDesc" ) );
+                        break;
+                }
+            }
+        }
+        return $array;
+    }
+
+    // Compares two House arrays based on their [geo_distance] attribute. This
+    // method is to be used with php function usort() or equivalent, so as to
+    // reposition the elements of an array of Houses in ascending order based on
+    // their [geo_distance] attribute.
+    static function distanceInAsc($h1, $h2) {
+        $d1 = $h1['House']['geo_distance'];
+        $d2 = $h2['House']['geo_distance'];
+
+        // both are null and, thus, equal
+        if( is_null( $d1 ) && is_null( $d2 ) )  return 0;
+
+        // house with no computed distance is sent to the bottom of the results
+        if( is_null( $d1 ) )    return 1;
+        if( is_null( $d2 ) )    return -1;
+
+        // when both distances are valid, compare them and return integer
+        if( $d1 < $d2 ) return -1;
+        if( $d1 > $d2 ) return 1;
+
+        return 0;
+    }
+
+    // Compares two House arrays based on their [geo_distance] attribute. This
+    // method is to be used with php function usort() or equivalent, so as to
+    // reposition the elements of an array of Houses in descending order based
+    // on their [geo_distance] attribute.
+    static function distanceInDesc($h1, $h2) {
+        $d1 = $h1['House']['geo_distance'];
+        $d2 = $h2['House']['geo_distance'];
+
+        // both are null and, thus, equal
+        if( is_null( $d1 ) && is_null( $d2 ) )  return 0;
+
+        // house with no computed distance is sent to the bottom of the results
+        if( is_null( $d1 ) )    return 1;
+        if( is_null( $d2 ) )    return -1;
+
+        // when both distances are valid, compare them and return integer
+        if( $d1 < $d2 ) return 1;
+        if( $d1 > $d2 ) return -1;
+        return 0;
+    }
+    // Manual [geo_distance] ordering. -- SECTION END
+    
+    // Facebook functions -- SECTION START
+
+    // Posts an announcement on the application's page on Facebook.
+    // The supplied parameter is a two-dimensional array which
+    // contains the entries 'House' and 'Municipality'.
     protected function postToAppWall( $house ) {
 
         if( is_null( $house ) ) return;
@@ -1128,22 +1205,9 @@ class HousesController extends AppController {
         }
     }
 
-
-    protected function appendIfAbsent( $string, $char ) {
-
-        if( strpos ( $string, $char, strlen( $string ) - 1 ) == false ) {
-
-            $string = $string . $char;
-        }
-        return $string;
-    }
-
-
-    /**
-     * Creates a Facebook instance which is then made available though
-     * the Session.
-     * Execute once per session. More won't hurt, but is not required.
-     */
+    // Creates a Facebook instance which is then made available though
+    // the Session.
+    // Execute once per session. More won't hurt, but is not required.
     protected function facebookInit( ) {
 
         $fb_app_id = Configure::read( 'fb_app_id' );
@@ -1155,7 +1219,7 @@ class HousesController extends AppController {
 
         $this->Session->write( 'facebook', $facebook );
     }
-
+    // Facebook functions -- SECTION END
 
     private function checkRole($role){
         if($this->Session->read('Auth.User.role') != $role){
@@ -1163,6 +1227,17 @@ class HousesController extends AppController {
         }
     }
 
+    // Appends [$char] to [$string] if the latter does not end with the
+    // character contained withing the former. [$char] <b>must</b> be
+    // one-character long.
+    protected function appendIfAbsent( $string, $char ) {
+
+        if( strpos ( $string, $char, strlen( $string ) - 1 ) == false ) {
+
+            $string = $string . $char;
+        }
+        return $string;
+    }
 
     /// Returns whether this is web service call or not
     private function isWebService() {
@@ -1209,9 +1284,32 @@ class HousesController extends AppController {
         return $fields;
     }
 
+    // Computes and sets the distance between '$this' House and the default
+    // target (in private function haversinceDistance). It uses the structure
+    // $this->data.
+    private function computeDistance() {
 
-    private function haversineDistance( $from, $to ) {
+        $location = array(
+            'latitude' => $this->data['House']['latitude'],
+            'longitude' => $this->data['House']['longitude'] );
+        $geoDistance = $this->haversineDistance( $location );
+        $this->data['House']['geo_distance'] = $geoDistance;
+    }
+
+    // Computes the haversine distance between the to supplied locations. Each
+    // parameter must be an array that contains the keys 'latitude' and
+    // 'longitude'. If the [to] parameter is omitted (i.d., is_null on it
+    // returns true), the TEI of Athen's coordinates, will be used.
+    private function haversineDistance($from, $to=null) {
         $radius = 6371;
+
+        if( is_null( $from['latitude'] ) || is_null( $from['longitude']) ) {
+            return null;
+        }
+
+        if( is_null( $to ) ) {
+            $to = array( 'latitude' => 38.004135, 'longitude' => 23.676619 );
+        }
 
         $latFrom = deg2rad( $from['latitude'] );
         $latTo = deg2rad( $to['latitude'] );
