@@ -33,7 +33,7 @@
                     if(isset($selected_action) && $selected_action == 'manage_user'){
                         $linkClass .= ' menu-selected';
                     }
-                    echo $this->Html->link('Διαχείρηση χρηστών', array('controller' => 'admins',
+                    echo $this->Html->link('Διαχείριση χρηστών', array('controller' => 'admins',
                         'action' => 'manage_users'), array('class' => $linkClass));
                 }
             ?>
@@ -46,7 +46,7 @@
                     if(isset($selected_action) && $selected_action == 'manage_realestate'){
                         $linkClass .= ' menu-selected';
                     }
-                    echo $this->Html->link('Διαχείρηση ενοικιαστών', array('controller' => 'admins',
+                    echo $this->Html->link('Διαχείριση ενοικιαστών', array('controller' => 'admins',
                         'action' => 'manage_realestates'), array('class' => $linkClass));
                 }
             ?>
