@@ -7,6 +7,7 @@
         <!--type for house field-->
         <xs:complexType name="house_elements_type">
             <xs:sequence>
+                <xs:element name="address" type="xs:string"/>
                 <xs:element name="postal_code" type="ht:postal_code_restrictions_type"/>
                 <xs:element name="area" type="xs:integer"/>
                 <xs:element name="bedroom_num" type="ht:bedroom_num_restrictions_type"/>
