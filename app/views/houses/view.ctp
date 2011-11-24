@@ -15,7 +15,7 @@
     }
 
     #houseCont{
-        margin: 0px 0px 32px 0px;
+        margin: 0px 0px 0px 0px;
         padding: 32px;
         overflow: hidden;
         height: 100%;
@@ -27,7 +27,7 @@
     }
 
     #ownerInfo{
-        margin: 48px 0px 0px 8px;
+        margin: 32px 0px 0px 8px;
         padding: 2px;
     }
 
@@ -106,6 +106,7 @@
         margin: 0px 0px 0px 0px;
         padding: 24px 0px 0px 0px;
     }
+    
     .fbIcon{
         margin: 0px 4px 0px 0px;
         vertical-align: -30%;
@@ -118,10 +119,14 @@
     .owner-info{
         margin: 32px 0px 0px 0px;
     }
-
-    .map{
+    
+    #houseMap{
         clear: both;
-        margin: 32px auto 0px auto;
+        margin: 32px 0px 32px 0px;
+    }
+    
+    .map{
+        margin: 0px auto;
         width: 260px;
         height: 220px;
     }
@@ -191,8 +196,9 @@
     $houseVisibility = ($houseVisible == 1)?
         'Το σπίτι είναι ορατό σε άλλους χρήστες και στις αναζητήσεις':
         'Το σπίτι δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις';
-
     $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+    $houseLat = $house['House']['latitude'];
+    $houseLng = $house['House']['longitude'];
     $empty_slots = 4 - count($images);
 
     // default image
@@ -434,26 +440,25 @@
             }
         ?>
     </div>
-    <?php
-        $latDeviation = 0;//rand(-4, 4) * 0.0;
-        $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
+    <div id='houseMap'>
+        <?php
+            $latDeviation = 0;//rand(-4, 4) * 0.0;
+            $lngDeviation = 0;//.01;//rand(-4, 4) * 0.01;
 
-        $houseLat = $house['House']['latitude'];
-        $houseLng = $house['House']['longitude'];
+            if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
 
-        if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
-
-            echo "<input
-                id='houseLatitude'
-                type='hidden'
-                value='{$house['House']['latitude']}' />";
-            echo "<input
-                id='houseLongitude'
-                type='hidden'
-                value='{$house['House']['longitude']}' />";
-            echo "<div class='map' id='viewMap'></div>";
-        }
-    ?>
+                echo "<input
+                    id='houseLatitude'
+                    type='hidden'
+                    value='{$house['House']['latitude']}' />";
+                echo "<input
+                    id='houseLongitude'
+                    type='hidden'
+                    value='{$house['House']['longitude']}' />";
+                echo "<div class='map' id='viewMap'></div>";
+            }
+        ?>
+    </div>
 </div>
 <div id='main-inner'>
     <div id='imageList' class='houseClear'>
