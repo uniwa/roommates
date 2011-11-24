@@ -12,39 +12,14 @@ function purgeIntonation(name) {
         .replace( /ς/gi, 'Σ' )
 }
 
+// Ignores nominative case of parameter [name] and matches it against
+// parameter [target] as a regular expression.
 function matchesMaimed(name, target) {
 
-//    name = name.replace( /[&\-\(\)]/g, '' );
-//    $('#matches').append( ' ως(' + name + ')' );
-
     maimed = name.replace(
-        /(ΟΣ|ΗΣ|ΑΣ|ΟΥ|ΕΩΣ|ΟΙ|ΙΩΝ|ΩΝ|ΕΣ|Α|Η|Ο|Ι)(\s|$)/gi, '.*' );
+        /(ΟΣ|ΗΣ|ΑΣ|ΟΥ|ΕΩΣ|ΟΙ|ΙΩΝ|ΩΝ|ΕΣ|Α|Η|ΟΝ|Ο|Ι)(\s|$)/gi, '.*' );
 
     regex = new RegExp( maimed, "gi" );
-//    $('#matches').append( '<pre>( ' + regex + ' ): </pre>' );
-//alert( regex + ' ' + target + ' ' +  );
 
     return target.search( regex );
-}
-
-function omit(name) {
-
-    name = name.replace( /[&\-\(\)]/g, '' );
-    $('#matches').append( ' ως(' + name + ')' );
-
-    maimed = name.replace( /(ΟΣ|ΗΣ|ΑΣ|ΟΥ|ΕΩΣ|ΟΙ|ΙΩΝ|ΩΝ|ΕΣ|Α|Η|Ο|Ι)(\s|$)/gi, '.*' );
-
-    regex = new RegExp( maimed, "gi" );
-    $('#matches').append( '<pre>( ' + regex + ' ): </pre>' );
-
-    for( i = 0 ; i < genitives.length ; ++i ) {
-
-        l = genitives[i];
-        if( l.search( regex ) > -1 ) {
-
-            $('#matches').append( '> ' + genitives[i] + '<br />' );
-            return;
-        }
-    }
-    $('#matches').append( '<br /><br />' );
 }

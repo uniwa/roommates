@@ -394,9 +394,12 @@
         $houseProperties['hosting']['value'] = $houseHosting;
         $houseProperties['free_places']['value'] = $houseFreePlaces;
     }
-    if( !is_null( $geo_distance ) ) {
+    if( !is_null( $house['House']['geo_distance'] ) ) {
         $houseProperties['geo_distance']['value'] =
-            number_format( $geo_distance, 2 ) . '&nbsp;χλμ.';
+            number_format( $house['House']['geo_distance'], 2 ) . '&nbsp;χλμ.';
+    } else {
+        $houseProperties['geo_distance']['value'] =
+            'δεν διατίθεται';
     }
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
@@ -522,14 +525,18 @@
 
             if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
 
+                $latDev = rand(-1, 1);
+
+                // obscure exact location of house
+//                $houseLat += 
                 echo "<input
                     id='houseLatitude'
                     type='hidden'
-                    value='{$house['House']['latitude']}' />";
+                    value='{$houseLat}' />";
                 echo "<input
                     id='houseLongitude'
                     type='hidden'
-                    value='{$house['House']['longitude']}' />";
+                    value='{$houseLng}' />";
                 echo "<div class='map' id='viewMap'></div>";
             }
         ?>

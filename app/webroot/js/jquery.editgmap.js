@@ -17,8 +17,8 @@ $(document).ready(function() {
     // focus over TEI, if coordinates were not supplied
     if( mapLat == '' || mapLng == '' ) {
 
-        mapLat = 0.0;//38.004444;
-        mapLng = 0.0;//23.676518;
+        mapLat = 38.004135;
+        mapLng = 23.676619;
     }
 
     //
