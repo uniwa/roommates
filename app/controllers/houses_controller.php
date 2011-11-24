@@ -26,12 +26,17 @@ class HousesController extends AppController {
         }
 
         if ($this->isWebService()) {
-            $houses = $this->simpleSearch(  $this->getHouseConditions(),
-                                            null, null, false, null,
-                                            $this->getXmlFields());
-            $this->set('houses', $houses);
-            $this->layout = 'xml/default';
-            $this->render('xml/public');
+            if ($this->RequestHandler->isGet()) {
+                $houses = $this->simpleSearch(  $this->getHouseConditions(),
+                                                null, null, false, null,
+                                                $this->getXmlFields());
+                $this->set('houses', $houses);
+                $this->layout = 'xml/default';
+                $this->render('xml/public');
+            } elseif ($this->RequestHandler->isPost()) {
+//                 $this->layout = 'xml/empty';
+//                 $this->render('xml/empty');
+            }
         }
 
 		$order = array('House.modified' => 'desc');
