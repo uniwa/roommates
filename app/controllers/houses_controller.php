@@ -1300,6 +1300,7 @@ class HousesController extends AppController {
                         'House.currently_hosting',
                         'House.total_places',
                         'House.free_places',
+                        'House.geo_distance',
                         'Image.location',
                         'Municipality.name',
                         'Floor.type',
