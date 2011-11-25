@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <house>
-    <address>please work 1</address>
+    <address><![CDATA[please work 1]]></address>
     <postal_code>12345</postal_code>
     <area>345</area>
     <bedroom_num>3</bedroom_num>
@@ -29,6 +29,6 @@
     <municipality_id>4</municipality_id>
     <default_image_id />
     <visible>1</visible>
-    <latitude />
-    <longitude />
+    <latitude>37.9865711339956</latitude>
+    <longitude>23.6764577301635</longitude>
 </house>
