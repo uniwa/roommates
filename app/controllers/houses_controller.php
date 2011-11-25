@@ -161,10 +161,12 @@ class HousesController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        if( $this->RequestHandler->isRss() || $this->isWebService()){
+        if( $this->RequestHandler->isRss() ){
             $this->Auth->allow( 'index' );
             $this->Auth->allow( 'search' );
         }
+
+        if ($this->isWebService()) $this->Auth->allow('webService');
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
