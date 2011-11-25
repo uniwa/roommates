@@ -1357,5 +1357,22 @@ class HousesController extends AppController {
         $distance = 2*$radius*asin( $root );
         return $distance;
     }
+
+    function webService() {
+        if ($this->RequestHandler->isGet()) {
+            $houses = $this->simpleSearch(  $this->getHouseConditions(),
+                                            null, null, false, null,
+                                            $this->getXmlFields(), true);
+            $this->set('houses', $houses);
+            $this->layout = 'xml/default';
+            $this->render('xml/public');
+        } else if ($this->RequestHandler->isPost()) {
+            if (!empty($this->data))
+                $this->House->save($this->data);
+            $this->set('results', $this->data);
+            $this->layout = 'xml/default';
+            $this->render('xml/create');
+        }
+    }
 }
 ?>
