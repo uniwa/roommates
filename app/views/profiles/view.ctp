@@ -4,6 +4,7 @@
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 300px;
+        height: 100%;
     }
 
     #main-inner{
@@ -11,13 +12,15 @@
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
         padding: 24px;
+        height: 100%;
     }
 
     .profilePic{
         margin: 0px auto 0px auto;
         padding: 2px;
-        width: 128px;
-        height: 128px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
     }
     
     #profileCont{
@@ -46,14 +49,17 @@
 
     .profileBlock{
         float: left;
-        margin: 0px 64px 64px 16px;
+        margin: 0px 32px 64px 0px;
         padding: 0px 8px 0px 8px;
+        width: 240px;
+        overflow: hidden;
     }
 
     .profileTitle{
         margin: 24px 0px 8px 18px;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .profileInfo{
@@ -62,16 +68,23 @@
         font-size: 1.0em;
     }
 
+    #myHouse{
+        width: 500px;
+    }
+    
     #myHousePic{
         margin: 0px 0px 0px 24px;
     }
 
-    #myHouse{
+    #myHouseInfo{
         margin: 24px 0px 0px 24px;
     }
 </style>
 <?php
     $role = $this->Session->read('Auth.User.role');
+    $loggedUser = $this->Session->read('Auth.User.id');
+    $profileid = $profile['Profile']['id'];
+    $userid = $profile['Profile']['user_id'];
     // Profile info
 	$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
     if($this->Session->read("Auth.User.role") == 'admin'){
@@ -89,7 +102,6 @@
 	$weAre = $profile['Profile']['we_are'];
 	$matesWanted = $profile['Profile']['max_roommates'];
 	$name = Sanitize::html($name, array('remove' => true));
-	$profileThumb = $picture;
     // Roommate preferences
 	$prefgender = $profile['Preference']['pref_gender'];
 	$prefsmoker = $profile['Preference']['pref_smoker'];
@@ -105,6 +117,15 @@
 	$prefcouple = getPrefValue($prefcouple, $ynioptions);
 	$age_min = $profile['Preference']['age_min'];
 	$age_max = $profile['Preference']['age_max'];
+    // default image
+	$defaultThumb = $picture;
+    if(isset($images[0])){
+        $imageThumbLocation = 'uploads/profiles/'.$profileid.'/thumb_'.$imageLocation;
+        $profilePic = $this->Html->image($imageThumbLocation, array('alt' => $name));
+    }else{ // if there is no image, put a placeholder
+        $profilePic = $this->Html->image($defaultThumb, array(
+            'alt' => 'προσθήκη εικόνας προφίλ'));
+    }
     // House preferences
 	$prefFurnished = $profile['Preference']['pref_furnitured'];
 	$prefAccessibility = $profile['Preference']['pref_disability_facilities'];
@@ -164,7 +185,6 @@
     <div id='profileCont'>
         <div class='profilePic'>
             <?php
-                $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
                 echo $profilePic;
             ?>
         </div>
@@ -355,16 +375,16 @@
                 $houseTitle .= ($profile['Profile']['gender'])?'της':'του';
             }
     ?>
-        <div class='profileBlock profileClear'>
+        <div id='myHouse' class='profileBlock profileClear'>
             <div class='profileTitle'>
 	            <h2><?php echo $houseTitle; ?></h2>
             </div>
-            <div id='myHouse' class='profileInfo'>
+            <div id='myHouseInfo' class='profileInfo'>
                 <?php
                     echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
                 ?>
             </div>
-            <div id='myHousePic' class='profilePic'>
+            <div id='myHousePic' class='profileInfo profilePic'>
                 <?php
                     if(isset($houseThumbLink)){
                         echo $houseThumbLink;
@@ -372,6 +392,19 @@
                 ?>
             </div>
         </div>
-    <?php } ?>
+    <?php 
+        }else{
+            $houseTitle = '+Προσθήκη σπιτιού';
+            $houseLink = $this->Html->link($houseTitle,
+                array('controller' => 'houses', 'action' => 'add'));
+    ?>
+        <div id='myHouse' class='profileBlock profileClear'>
+            <div class='profileTitle'>
+	            <h2><?php echo $houseLink; ?></h2>
+            </div>
+        </div>
+    <?php
+        } // isset $house
+    ?>
 </div>
 
