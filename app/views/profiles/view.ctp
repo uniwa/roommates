@@ -4,6 +4,7 @@
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 300px;
+        height: 100%;
     }
 
     #main-inner{
@@ -372,6 +373,19 @@
                 ?>
             </div>
         </div>
-    <?php } ?>
+    <?php 
+        }else{
+            $houseTitle = '+Προσθήκη σπιτιού';
+            $houseLink = $this->Html->link($houseTitle,
+                array('controller' => 'houses', 'action' => 'add'));
+    ?>
+        <div class='profileBlock profileClear'>
+            <div class='profileTitle'>
+	            <h2><?php echo $houseLink; ?></h2>
+            </div>
+        </div>
+    <?php
+        } // isset $house
+    ?>
 </div>
 
