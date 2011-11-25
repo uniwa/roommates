@@ -409,6 +409,8 @@
     $houseProperties['price']['value'] = $housePrice;
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
+    $houseProperties['hosting']['value'] = $houseHosting;
+    $houseProperties['free_places']['value'] = $houseFreePlaces;
 
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
