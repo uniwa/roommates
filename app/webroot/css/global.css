@@ -108,20 +108,20 @@ img{
 
 
 #flashMessage,#authMessage{
-    border-left: 2px;
+/*    border-left: 2px;
     border-right: 2px;
     border-bottom: 2px;
     border-style: solid;
-    border-color: #fff;
-    margin: 0px auto 0px auto;
+    border-color: #fff;*/
+    margin: 0px 0px 0px 0px;
     padding: 4px 8px 8px 8px;
     font-weight: bold;
     text-align: center;
     color: #fff;
     z-index: 200;
-    -moz-border-radius: 0px 0px 6px 6px;
+/*    -moz-border-radius: 0px 0px 6px 6px;
     -webkit-border-bottom-right-radius: 6px;
-    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;*/
 }
 
 .flashBlue{
@@ -161,7 +161,9 @@ img{
 }
 
 #container{
-    margin: 40px auto 0px auto;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    margin: 48px auto 24px auto;
     padding: 0px 0px 0px 0px;
     width: 960px;
     min-height: 100%;
@@ -169,14 +171,17 @@ img{
 
 #header{
     clear: both;
-    background-color: #fff;
-    margin: 4px 0px 4px 0px;
-    padding: 2px 0px 2px 0px;
-/*    height: 20px;*/
+/*    background-color: #359;*/
+    background-image: url('../img/main.png');
+    background-repeat: repeat;
+    margin: 0px 0px 0px 0px;
+    padding: 6px 0px 8px 0px;
+    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+/*    height: 32px;*/
 }
 
 #header-main{
-    margin: 4px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
 }
 
@@ -185,8 +190,9 @@ img{
     padding: 0px 0px 0px 0px;
     font-size: 1.4em;
     font-weight: bold;
-    font-style: italic;
+/*    font-style: italic;*/
     text-align: center;
+    color: #555;
 }
 
 .menu-item{
