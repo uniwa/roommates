@@ -48,8 +48,10 @@
 
     .profileBlock{
         float: left;
-        margin: 0px 64px 64px 16px;
+        margin: 0px 32px 64px 0px;
         padding: 0px 8px 0px 8px;
+        width: 240px;
+        overflow: hidden;
     }
 
     .profileTitle{
