@@ -18,8 +18,9 @@
     .profilePic{
         margin: 0px auto 0px auto;
         padding: 2px;
-        width: 128px;
-        height: 128px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
     }
     
     #profileCont{
@@ -48,14 +49,17 @@
 
     .profileBlock{
         float: left;
-        margin: 0px 64px 64px 16px;
+        margin: 0px 32px 64px 0px;
         padding: 0px 8px 0px 8px;
+        width: 240px;
+        overflow: hidden;
     }
 
     .profileTitle{
         margin: 24px 0px 8px 18px;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .profileInfo{
@@ -64,11 +68,15 @@
         font-size: 1.0em;
     }
 
+    #myHouse{
+        width: 500px;
+    }
+    
     #myHousePic{
         margin: 0px 0px 0px 24px;
     }
 
-    #myHouse{
+    #myHouseInfo{
         margin: 24px 0px 0px 24px;
     }
 </style>
@@ -115,16 +123,8 @@
         $imageThumbLocation = 'uploads/profiles/'.$profileid.'/thumb_'.$imageLocation;
         $profilePic = $this->Html->image($imageThumbLocation, array('alt' => $name));
     }else{ // if there is no image, put a placeholder
-        if($loggedUser == $userid){ // placeholder with link to add image
-            $profilePic = $this->Html->link($this->Html->image('addpic.png',
-                array('alt' => 'προσθήκη εικόνας προφίλ', 'class' => 'img-placeholder')),
-                // TODO add Image->addprofile action
-                array('controller' => 'images', 'action' =>'addprofile', $profileid),
-                array('title' => 'προσθήκη εικόνας προφίλ', 'escape' => false));
-        }else{ // empty placeholder without link to add image
-            $profilePic = $this->Html->image($defaultThumb, array(
-                'alt' => 'προσθήκη εικόνας προφίλ'));
-        }
+        $profilePic = $this->Html->image($defaultThumb, array(
+            'alt' => 'προσθήκη εικόνας προφίλ'));
     }
     // House preferences
 	$prefFurnished = $profile['Preference']['pref_furnitured'];
@@ -375,16 +375,16 @@
                 $houseTitle .= ($profile['Profile']['gender'])?'της':'του';
             }
     ?>
-        <div class='profileBlock profileClear'>
+        <div id='myHouse' class='profileBlock profileClear'>
             <div class='profileTitle'>
 	            <h2><?php echo $houseTitle; ?></h2>
             </div>
-            <div id='myHouse' class='profileInfo'>
+            <div id='myHouseInfo' class='profileInfo'>
                 <?php
                     echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
                 ?>
             </div>
-            <div id='myHousePic' class='profilePic'>
+            <div id='myHousePic' class='profileInfo profilePic'>
                 <?php
                     if(isset($houseThumbLink)){
                         echo $houseThumbLink;
@@ -398,7 +398,7 @@
             $houseLink = $this->Html->link($houseTitle,
                 array('controller' => 'houses', 'action' => 'add'));
     ?>
-        <div class='profileBlock profileClear'>
+        <div id='myHouse' class='profileBlock profileClear'>
             <div class='profileTitle'>
 	            <h2><?php echo $houseLink; ?></h2>
             </div>

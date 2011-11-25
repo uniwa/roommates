@@ -24,6 +24,9 @@
     .housePic{
         float: left;
         padding: 2px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
     }
 
     #ownerInfo{
@@ -38,8 +41,9 @@
 
     .houseTitle{
         margin: 0px 0px 16px 18px;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .houseClear{
@@ -408,6 +412,8 @@
     $houseProperties['price']['value'] = $housePrice;
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
+    $houseProperties['hosting']['value'] = $houseHosting;
+    $houseProperties['free_places']['value'] = $houseFreePlaces;
 
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
