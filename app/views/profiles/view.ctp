@@ -56,8 +56,9 @@
 
     .profileTitle{
         margin: 24px 0px 8px 18px;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .profileInfo{
