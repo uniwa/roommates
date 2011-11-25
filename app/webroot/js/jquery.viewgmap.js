@@ -1,7 +1,9 @@
 $(document).ready( function(){
-    var teiLocation = new google.maps.LatLng(38.004135, 23.676619);
 
+    // if no coordinates were supplied, no further action should be taken
     if( !houseLat || !houseLng )    return;
+
+    var teiLocation = new google.maps.LatLng(38.004135, 23.676619);
 
     houseAction = getHouseAction( displayCircle );
     teiMarker = {

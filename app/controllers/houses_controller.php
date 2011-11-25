@@ -257,6 +257,7 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
 
+//pr( $this->data ); die;
                 /* post to facebook application wall */
                 if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
 
@@ -1091,21 +1092,21 @@ class HousesController extends AppController {
     private function orderByDistance( &$array ) {
         $order;
 
-        if( !empty( $this->params['url'] ) ) {
+        if( !array_key_exists( 'url', $this->params ) ) return $array;
+        $url = $this->params['url'];
 
-            $order = $this->params['url']['order_by'];
-            if( isset( $order ) ) {
-                switch( $order ) {
-                    case 9:
-                        usort( $array,
-                            array( "HousesController", "distanceInAsc" ) );
-                        break;
-                    case 10:
-                        usort( $array,
-                            array( "HousesController", "distanceInDesc" ) );
-                        break;
-                }
-            }
+        if( !array_key_exists( 'order_by', $url ) )   return $array;
+        $order = $url['order_by'];
+
+        if( empty( $order ) )   return $array;
+ 
+       switch( $order ) {
+            case 9:
+                usort( $array, array( "HousesController", "distanceInAsc" ) );
+                break;
+            case 10:
+                usort( $array, array( "HousesController", "distanceInDesc" ) );
+                break;
         }
         return $array;
     }

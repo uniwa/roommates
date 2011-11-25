@@ -427,14 +427,19 @@
     // determines whether a marker or a cirle should be positioned over the
     // house's location (circle is used for 'user's)
     $displayCircle = null;
+    // by default, the map div-tag won't be included
+    $showMap = false;
 
-    // obscure exact location of house if it belongs to a 'user' (as in role)
-    // and request a circular area to be positioned over the map
-    if( $ownerRole == 'user' ) {
-        
-        $displayCircle = 1;
-        if( !is_null( $houseLat ) && !is_null( $houseLng )
-            && $ownerRole == 'user' ) {
+    if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
+
+        // include map div-tag in html, because coordinates were found
+        $showMap = true;
+
+        // obscure exact location of house if it belongs to a 'user' (as in
+        // role) and request a circular area to be positioned over the map
+        if( $ownerRole == 'user' ) {
+            
+            $displayCircle = 1;
 
             $latDev = rand( -1, 1 );
 
@@ -442,10 +447,14 @@
             $lngDev = 0.001 - $latDev;
             $houseLat += $latDev;
             $houseLng += $lngDev;
+        } else {
+            $displayCircle = 0;
         }
-    } else {
-        $displayCircle = 0;
     }
+
+    // if either is null, 'null' should be 'printed' (in text) in javascript
+    if( is_null( $houseLat ) )  $houseLat = 'null';
+    if( is_null( $houseLng ) )  $houseLng = 'null';
 
     // the coordinates and the marker "type" (circle/arrow) are passed as
     // HTML-inline javascipt
@@ -481,9 +490,15 @@ EOT;
             }
         ?>
     </div>
-    <div id='houseMap'>
-        <div class='map' id='viewMap'></div>
-    </div>
+        <?php
+            if($showMap) {
+                echo <<<EOM
+                <div id='houseMap'>
+                    <div class='map' id='viewMap'></div>
+                </div>
+EOM;
+            }
+        ?>
 </div>
 <div id='main-inner'>
     <div id='imageList' class='houseClear'>
