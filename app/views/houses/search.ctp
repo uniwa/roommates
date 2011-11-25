@@ -684,6 +684,7 @@
                             $houseType = $house_types[$house['House']['house_type_id']];
                             $houseArea = $house['House']['area'];
                             $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+                            $geoDistance = $house['House']['geo_distance'];
                             // allow posts to Facebook only by a 'user' (as in role)
                             if($this->Session->read('Auth.User.role') == 'user'){
                                 $this_url = substr($get_vars, 0, -1); //replace last character (ampersand)
@@ -730,6 +731,11 @@
                                 if ($house['User']['role'] != 'realestate') {
                                     echo 'Διαθέσιμες θέσεις '.
                                         $house['House']['free_places'].'<br />';
+                                }
+                                if( !empty($geoDistance) ) {
+                                    echo 'Απόσταση από ΤΕΙ '
+                                        . number_format( $geoDistance, 2 )
+                                        . '&nbsp;χλμ.';
                                 }
                             ?>
                         </div>
