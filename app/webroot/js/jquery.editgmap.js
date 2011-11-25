@@ -10,8 +10,9 @@ $(document).ready(function() {
             },
             events: {
                 click: function(map, event) {
-                    pos = event.latLng;
-                    repositionMarkers('#editMap', false, pos);
+                    latLng = event.latLng;
+                    repositionMarkers('#editMap', false, latLng);
+                    updateFormFields(latLng);
                 }
             }
         }
@@ -91,13 +92,15 @@ $(document).ready(function() {
                 marker: {
                     options: {
                         draggable: true
+                    },
+                    events: {
+                        dragend: function(marker) {
+                            updateFormFields(marker.getPosition());
+                        }
                     }
                 },
                 map: {
                     center: doCenter
-                },
-                events: {
-                    dragend: updateFormFields
                 }
             }
         );
@@ -105,8 +108,8 @@ $(document).ready(function() {
 
     // Updates the html form fields according to the coordinates specified by
     // [latLng]
-    function updateFormFields( latLng ) {
-        $('#HouseLatitude').val(marker.getPosition().lat());
-        $('#HouseLongitude').val(marker.getPosition().lng());
+    function updateFormFields(latLng) {
+        $('#HouseLatitude').val(latLng.lat());
+        $('#HouseLongitude').val(latLng.lng());
     }
 });

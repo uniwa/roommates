@@ -257,9 +257,13 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
 
-                /* post to facebook application wall */
-                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
-
+                // post requires municipality name, house type and user role
+                $this->House->recursice = 2;
+                $house = $this->House->read();
+                // post to facebook application wall
+                if ( $this->data['House']['visible'] == 1 ) {
+                    $this->postToAppWall( $house );
+                }
                 $this->redirect(array('action' => "view", $hid));
             }
         }
@@ -271,13 +275,25 @@ class HousesController extends AppController {
         $this->set('title_for_layout','Διαγραφή σπιτιού');
         $this->checkAccess( $id );
         $this->House->begin();
+        if($this->Auth->User('role') == 'realestate'){
+            $redirectTarget = array(
+                'controller' => 'houses', 'action'=> 'manage');
+        }else if($this->Auth->User('role') == 'user'){
+            $profileid = $this->Profile->find('first',
+                array('fields' => 'Profile.id', 
+                'conditions' => array(
+                    'Profile.user_id' => $this->Auth->user('id'))));
+            $profileid = $profileid['Profile']['id'];
+            $redirectTarget = array(
+                'controller' => 'profiles', 'action'=> 'view', $profileid);
+        }
         /* delete associated images first */
         $conditions = array("house_id" => $id);
         if ( ! $this->House->Image->deleteAll($conditions) ) {
             $this->House->rollback();
             $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από την βάση.',
                     'default', array('class' => 'flashRed'));
-            $this->redirect(array('action'=>'index'));
+            $this->redirect($redirectTarget);
         }
         else {
             /* remove from FS */
@@ -285,7 +301,7 @@ class HousesController extends AppController {
                 $this->House->rollback();
                 $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από το σύστημα αρχείων.',
                     'default', array('class' => 'flashRed'));
-                $this->redirect(array('action'=>'index'));
+                $this->redirect($redirectTarget);
             }
             else {
                 /* delete house */
@@ -293,14 +309,14 @@ class HousesController extends AppController {
                     $this->House->rollback();
                     $this->Session->setFlash('Αδυναμία διαγραφής σπιτιού',
                         'default', array('class' => 'flashRed'));
-                    $this->redirect(array('action'=>'index'));
+                    $this->redirect($redirectTarget);
                 }
             }
         }
         $this->House->commit();
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-        $this->redirect(array('action'=>'index'));
+        $this->redirect($redirectTarget);
     }
 
 
@@ -334,8 +350,13 @@ class HousesController extends AppController {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
 
-                /* post updated house on application's page on Facebook */
-                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
+                // post requires municipality name, house type and user role
+                $this->House->recursive = 2;
+                $house = $this->House->read();
+                // post updated house on application's page on Facebook
+                if ( $this->data['House']['visible'] == 1 ) {
+                    $this->postToAppWall( $house );
+                }
 
                 $this->redirect(array('action' => "view", $id));
             }
@@ -1091,21 +1112,21 @@ class HousesController extends AppController {
     private function orderByDistance( &$array ) {
         $order;
 
-        if( !empty( $this->params['url'] ) ) {
+        if( !array_key_exists( 'url', $this->params ) ) return $array;
+        $url = $this->params['url'];
 
-            $order = $this->params['url']['order_by'];
-            if( isset( $order ) ) {
-                switch( $order ) {
-                    case 9:
-                        usort( $array,
-                            array( "HousesController", "distanceInAsc" ) );
-                        break;
-                    case 10:
-                        usort( $array,
-                            array( "HousesController", "distanceInDesc" ) );
-                        break;
-                }
-            }
+        if( !array_key_exists( 'order_by', $url ) )   return $array;
+        $order = $url['order_by'];
+
+        if( empty( $order ) )   return $array;
+ 
+       switch( $order ) {
+            case 9:
+                usort( $array, array( "HousesController", "distanceInAsc" ) );
+                break;
+            case 10:
+                usort( $array, array( "HousesController", "distanceInDesc" ) );
+                break;
         }
         return $array;
     }
@@ -1177,6 +1198,14 @@ class HousesController extends AppController {
                 . Sanitize::html( $house['House']['free_places'] );
         }
 
+        $geo_distance = $house['House']['geo_distance'];
+        if( !is_null( $geo_distance ) ) {
+            $geo_distance = ', Αποστάση από ΤΕΙ '
+                . number_format( $geo_distance, 2 ) . ' χλμ.';
+        } else {
+            $geo_distance = '';
+        }
+
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
         $facebook = $this->Session->read( 'facebook' );
@@ -1189,7 +1218,8 @@ class HousesController extends AppController {
                     . 'Ενοικίο ' . $house['House']['price'] . '€, '
                     . $furnished
                     . 'Δήμος ' . $house['Municipality']['name']
-                    . $occupation_availability,
+                    . $occupation_availability
+                    . $geo_distance,
 
                 'name' => 'Δείτε περισσότερα εδώ...',
                 'link' => $fb_app_uri . 'houses/view/' . $house['House']['id'],
@@ -1303,7 +1333,9 @@ class HousesController extends AppController {
     private function haversineDistance($from, $to=null) {
         $radius = 6371;
 
-        if( is_null( $from['latitude'] ) || is_null( $from['longitude']) ) {
+        if( !is_numeric( $from['latitude'] ) ||
+            !is_numeric( $from['longitude']) ) {
+
             return null;
         }
 
