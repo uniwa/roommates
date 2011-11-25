@@ -12,6 +12,14 @@
         padding: 0px 0px 24px 64px;
     }
     
+    .housePic{
+        float: left;
+        padding: 2px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
+    }
+    
     .edit-title{
         margin: 12px 0px 24px 0px;
         font-size: 1.2em;

@@ -24,6 +24,9 @@
     .housePic{
         float: left;
         padding: 2px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
     }
 
     #ownerInfo{
