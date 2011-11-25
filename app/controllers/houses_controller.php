@@ -275,13 +275,25 @@ class HousesController extends AppController {
         $this->set('title_for_layout','Διαγραφή σπιτιού');
         $this->checkAccess( $id );
         $this->House->begin();
+        if($this->Auth->User('role') == 'realestate'){
+            $redirectTarget = array(
+                'controller' => 'houses', 'action'=> 'manage');
+        }else if($this->Auth->User('role') == 'user'){
+            $profileid = $this->Profile->find('first',
+                array('fields' => 'Profile.id', 
+                'conditions' => array(
+                    'Profile.user_id' => $this->Auth->user('id'))));
+            $profileid = $profileid['Profile']['id'];
+            $redirectTarget = array(
+                'controller' => 'profiles', 'action'=> 'view', $profileid);
+        }
         /* delete associated images first */
         $conditions = array("house_id" => $id);
         if ( ! $this->House->Image->deleteAll($conditions) ) {
             $this->House->rollback();
             $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από την βάση.',
                     'default', array('class' => 'flashRed'));
-            $this->redirect(array('action'=>'index'));
+            $this->redirect($redirectTarget);
         }
         else {
             /* remove from FS */
@@ -289,7 +301,7 @@ class HousesController extends AppController {
                 $this->House->rollback();
                 $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από το σύστημα αρχείων.',
                     'default', array('class' => 'flashRed'));
-                $this->redirect(array('action'=>'index'));
+                $this->redirect($redirectTarget);
             }
             else {
                 /* delete house */
@@ -297,14 +309,14 @@ class HousesController extends AppController {
                     $this->House->rollback();
                     $this->Session->setFlash('Αδυναμία διαγραφής σπιτιού',
                         'default', array('class' => 'flashRed'));
-                    $this->redirect(array('action'=>'index'));
+                    $this->redirect($redirectTarget);
                 }
             }
         }
         $this->House->commit();
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-        $this->redirect(array('action'=>'index'));
+        $this->redirect($redirectTarget);
     }
 
 
