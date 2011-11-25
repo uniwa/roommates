@@ -60,7 +60,7 @@ body{
     background-color: #f0f0f0;
     background-image: url('../img/bg.png');
     background-repeat: repeat;
-    
+    background-attachment: fixed;
     font-family: 'Open Sans', Verdana, Tahoma, Arial, sans-serif;
     font-size: 12px;
     margin: 0;
@@ -252,7 +252,7 @@ img{
 #main{
     padding: 8px;
     height: 100%;
-    overflow: visible;
+    overflow: hidden;
 }
 
 #footer{
