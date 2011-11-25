@@ -1,11 +1,19 @@
 $(document).ready(function() {
     var geocoder = new google.maps.Geocoder();
+    var teiLocation = new google.maps.LatLng(38.004135, 23.676619);
 
-    // initialize map zoom factor
+    // initialize map zoom factor and the event to move the marker on click
     $('#editMap').gmap3(
         {   action: 'init',
             options: {
                 zoom: 15
+            },
+            events: {
+                click: function(map, event) {
+                    latLng = event.latLng;
+                    repositionMarkers('#editMap', false, latLng);
+                    updateFormFields(latLng);
+                }
             }
         }
     );
@@ -15,31 +23,32 @@ $(document).ready(function() {
     mapLng = $('#HouseLongitude').val();
 
     // focus over TEI, if coordinates were not supplied
-    if( mapLat == '' || mapLng == '' ) {
+    if( !mapLat || !mapLng ) {
 
-        mapLat = 0.0;//38.004444;
-        mapLng = 0.0;//23.676518;
+        repositionMarkers('#editMap', true, teiLocation);
+    } else {
+
+        houseLoc = new google.maps.LatLng(mapLat, mapLng );
+        repositionMarkers('#editMap', true, houseLoc);
     }
 
-    //
-    repositionMarker( '#editMap', mapLat, mapLng );
-
-    // refresh map when thus directed by the user
-    //(?! what if they don't, though they have changed the address!!!)
+    // updates map when directed by the user
     $('#updateMap').click(function(){
 
         query = getQueryAddress();
+
+        // null means that no address field has been filled in
+        if( !query )    return;
 
         geocoder.geocode({'address': query}, function(results, status){
 
             if( status == google.maps.GeocoderStatus.OK ) {
 
                 latLng = results[0].geometry.location;
-                lat = latLng.lat();
-                lng = latLng.lng();
-                $('#HouseLatitude').val( lat );
-                $('#HouseLongitude').val( lng );
-                repositionMarker( '#editMap', lat, lng );
+                $('#HouseLatitude').val( latLng.lat() );
+                $('#HouseLongitude').val( latLng.lng() );
+
+                repositionMarkers( '#editMap', true, latLng );
             }
         });
     });
@@ -47,114 +56,60 @@ $(document).ready(function() {
     // Returns the full address of the house so that it may be used with the
     // Google Maps API.
     function getQueryAddress() {
-
+        query = null;
         country = "Ελλάς";
         address = $('#HouseAddress').val();
         postalCode = $('#HousePostalCode').val();
 
-        municipality = "";
+        municipality = '';
         if( $('#HouseMunicipalityId option:selected').val() > 0 ) {
             municipality = $('#HouseMunicipalityId option:selected').text();
         }
 
-        query = country + ", "
-            + municipality + ", "
-            + address + ", "
-            + postalCode;     
+        if( municipality != '' || postalCode != '' || address != ''  )  {
+            query = country + ", " 
+                + municipality + ", "
+                + address + ", "
+                + postalCode;
+        }
         return query;
     }
 
-    // Clears current marker, and positions a new one under the supplied
-    // coordinates.
-    function repositionMarker(mapId, latitude, longitude) {
+    // Clears current marker and creates a new one under the specified
+    // coordinates [loc]. The marker will be draggable as well as movable 
+    // by means of point-and-click over the map. [map] represents the element
+    // that contains the map. [doCenter] determines whether or not the map
+    // should be centered around [loc]
+    function repositionMarkers(map, doCenter, loc) {
 
-        $(mapId).gmap3(
+        $(map).gmap3(
             {   action: 'clear',
                 name: 'marker'
             },
             {   action: 'addMarker',
-                latLng: [latitude, longitude],
-                map: {
-                    center: true
-                },
+                latLng: loc,
+                tag: 'house',
                 marker: {
                     options: {
                         draggable: true
                     },
                     events: {
-                        // when the marker is manually repositioned, the
-                        // coordinates are copied into the corresponding hidden
-                        // fields, and automatic address resolution is attempted
                         dragend: function(marker) {
-
-                            $('#HouseLatitude').val(
-                                marker.getPosition().lat());
-                            $('#HouseLongitude').val(
-                                marker.getPosition().lng());
-                            geocoder.geocode(
-                                {'latLng': marker.getPosition()},
-                                resolveAddress
-                            );
+                            updateFormFields(marker.getPosition());
                         }
                     }
+                },
+                map: {
+                    center: doCenter
                 }
             }
         );
     };
 
-     // Updates [street_number], [municipality], [address] and [postal_code]
-     // fields of the form, based on what was returned by the request.
-    function resolveAddress(results, status) {
-        var components;
-        var streetNumber = "";
-
-        if( status == google.maps.GeocoderStatus.OK ) {
-
-            // get most detailed description
-            components = results[0].address_components;
-
-            $.map( components, function(n, i) {
-                type = n.types[0];
-
-                // street number is of highest priority - if it exists, it
-                // precedes the address
-                if( type == 'street_number'  ) {
-
-                    // retain only single-number (not compound) indications
-                    streetNumber = ' ' + n.long_name;
-                    if( streetNumber.search( '-' ) > -1 )    streetNumber = '';
-                } else if( type == 'route' ) {
-                    
-                    $('#HouseAddress').val( n.long_name + streetNumber );
-                } else if( type == 'locality' ) {
-
-                    // attempt identification and selection of municipality
-                    selectMunicipality( n.long_name );
-                } else if( type == 'postal_code' ) {
-
-                    $('#HousePostalCode').val( n.long_name );
-                }
-            });
-        }
-    }
-
-    function selectMunicipality(municipality) {
-
-        isFound = false;
-        $('#HouseMunicipalityId option').each( function(){
-
-            municipality = purgeIntonation( municipality );
-
-            if( matchesMaimed( municipality, $(this).text() ) > -1 ) {
-
-                $('#HouseMunicipalityId').val( $(this).val() );
-                isFound = true;
-            }
-        });
-
-        if( !isFound ) {
-
-            $('#HouseMunicipalityId').val( 0 );
-        }
+    // Updates the html form fields according to the coordinates specified by
+    // [latLng]
+    function updateFormFields(latLng) {
+        $('#HouseLatitude').val(latLng.lat());
+        $('#HouseLongitude').val(latLng.lng());
     }
 });
