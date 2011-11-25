@@ -48,8 +48,10 @@
 
     .profileBlock{
         float: left;
-        margin: 0px 64px 64px 16px;
+        margin: 0px 32px 64px 0px;
         padding: 0px 8px 0px 8px;
+        width: 240px;
+        overflow: hidden;
     }
 
     .profileTitle{
@@ -115,16 +117,8 @@
         $imageThumbLocation = 'uploads/profiles/'.$profileid.'/thumb_'.$imageLocation;
         $profilePic = $this->Html->image($imageThumbLocation, array('alt' => $name));
     }else{ // if there is no image, put a placeholder
-        if($loggedUser == $userid){ // placeholder with link to add image
-            $profilePic = $this->Html->link($this->Html->image('addpic.png',
-                array('alt' => 'προσθήκη εικόνας προφίλ', 'class' => 'img-placeholder')),
-                // TODO add Image->addprofile action
-                array('controller' => 'images', 'action' =>'addprofile', $profileid),
-                array('title' => 'προσθήκη εικόνας προφίλ', 'escape' => false));
-        }else{ // empty placeholder without link to add image
-            $profilePic = $this->Html->image($defaultThumb, array(
-                'alt' => 'προσθήκη εικόνας προφίλ'));
-        }
+        $profilePic = $this->Html->image($defaultThumb, array(
+            'alt' => 'προσθήκη εικόνας προφίλ'));
     }
     // House preferences
 	$prefFurnished = $profile['Preference']['pref_furnitured'];

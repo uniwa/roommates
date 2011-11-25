@@ -1187,6 +1187,14 @@ class HousesController extends AppController {
                 . Sanitize::html( $house['House']['free_places'] );
         }
 
+        $geo_distance = $house['House']['geo_distance'];
+        if( !is_null( $geo_distance ) ) {
+            $geo_distance = ', Αποστάση από ΤΕΙ '
+                . number_format( $geo_distance, 2 ) . ' χλμ.';
+        } else {
+            $geo_distance = '';
+        }
+
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
         $facebook = $this->Session->read( 'facebook' );
@@ -1199,7 +1207,8 @@ class HousesController extends AppController {
                     . 'Ενοικίο ' . $house['House']['price'] . '€, '
                     . $furnished
                     . 'Δήμος ' . $house['Municipality']['name']
-                    . $occupation_availability,
+                    . $occupation_availability
+                    . $geo_distance,
 
                 'name' => 'Δείτε περισσότερα εδώ...',
                 'link' => $fb_app_uri . 'houses/view/' . $house['House']['id'],

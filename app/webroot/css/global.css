@@ -138,12 +138,17 @@ img{
 
 #top-menu-cont{
     position: fixed;
+    background-color: #444;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     top: 0px;
     left: 0px;
     width: 100%;
     height: 40px;
-    background-color: #ddd;
     z-index: 100;
+}
+
+#top-menu-cont a{
+    color: #f0f0f0;
 }
 
 #top-menu{
@@ -194,31 +199,37 @@ img{
 
 .menu-main{
     float: left;
-    border-bottom: 3px solid #f0f0f0;
+    border-bottom: 3px solid #aaa;
     margin: 2px 0px 0px 4px;
 }
 
-.menu-main:hover,.menu-footer:hover{
+.menu-main:hover{
     border-bottom: 3px solid #59a4d8;
-    background-color: #f0f0f0;
+    background-color: #555;
     cursor: pointer;
 }
 
 .menu-footer{
     float: right;
-    border-bottom: 3px solid #f0f0f0;
+    border-bottom: 3px solid #aaf;
     margin: 0px 12px 0px 0px;
+}
+
+.menu-footer:hover{
+    border-bottom: 3px solid #59a4d8;
+    background-color: #57a;
+    cursor: pointer;
 }
 
 .menu-user{
     float: right;
-    border-bottom: 3px solid #f0f0f0;
+    border-bottom: 3px solid #aaa;
     margin: 2px 4px 0px 0px;
 }
 
 .menu-user:hover{
     border-bottom: 3px solid #59a4d8;
-    background-color: #f0f0f0;
+    background-color: #555;
     cursor: pointer;
 }
 
@@ -228,7 +239,7 @@ img{
 
 .menu-login:hover{
     border-bottom: 3px solid #dc6865;
-    background-color: #f0f0f0;
+    background-color: #5;
 }
 
 .menu-selected{
@@ -257,8 +268,8 @@ img{
 
 #footer{
     clear: both;
-    background-color: #ddd;
-    margin: 8px 0px 0px 0px;
+    background-color: #469;
+    margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
 /*    height: 148px;*/
 }
@@ -272,10 +283,14 @@ img{
 }
 
 #footer-menu{
-    margin: 12px 24px 0px 0px;
+    margin: 0px 24px 0px 0px;
     padding: 4px 0px 4px 0px;
     height: 28px;
     overflow: auto;
+}
+
+#footer-menu a{
+    color: #f0f0f0;
 }
 
 #results{
