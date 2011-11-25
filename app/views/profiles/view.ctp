@@ -12,6 +12,7 @@
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
         padding: 24px;
+        height: 100%;
     }
 
     .profilePic{
@@ -73,6 +74,9 @@
 </style>
 <?php
     $role = $this->Session->read('Auth.User.role');
+    $loggedUser = $this->Session->read('Auth.User.id');
+    $profileid = $profile['Profile']['id'];
+    $userid = $profile['Profile']['user_id'];
     // Profile info
 	$name = $profile['Profile']['firstname']." ".$profile['Profile']['lastname'];
     if($this->Session->read("Auth.User.role") == 'admin'){
@@ -90,7 +94,6 @@
 	$weAre = $profile['Profile']['we_are'];
 	$matesWanted = $profile['Profile']['max_roommates'];
 	$name = Sanitize::html($name, array('remove' => true));
-	$profileThumb = $picture;
     // Roommate preferences
 	$prefgender = $profile['Preference']['pref_gender'];
 	$prefsmoker = $profile['Preference']['pref_smoker'];
@@ -106,6 +109,23 @@
 	$prefcouple = getPrefValue($prefcouple, $ynioptions);
 	$age_min = $profile['Preference']['age_min'];
 	$age_max = $profile['Preference']['age_max'];
+    // default image
+	$defaultThumb = $picture;
+    if(isset($images[0])){
+        $imageThumbLocation = 'uploads/profiles/'.$profileid.'/thumb_'.$imageLocation;
+        $profilePic = $this->Html->image($imageThumbLocation, array('alt' => $name));
+    }else{ // if there is no image, put a placeholder
+        if($loggedUser == $userid){ // placeholder with link to add image
+            $profilePic = $this->Html->link($this->Html->image('addpic.png',
+                array('alt' => 'προσθήκη εικόνας προφίλ', 'class' => 'img-placeholder')),
+                // TODO add Image->addprofile action
+                array('controller' => 'images', 'action' =>'addprofile', $profileid),
+                array('title' => 'προσθήκη εικόνας προφίλ', 'escape' => false));
+        }else{ // empty placeholder without link to add image
+            $profilePic = $this->Html->image($defaultThumb, array(
+                'alt' => 'προσθήκη εικόνας προφίλ'));
+        }
+    }
     // House preferences
 	$prefFurnished = $profile['Preference']['pref_furnitured'];
 	$prefAccessibility = $profile['Preference']['pref_disability_facilities'];
@@ -165,7 +185,6 @@
     <div id='profileCont'>
         <div class='profilePic'>
             <?php
-                $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
                 echo $profilePic;
             ?>
         </div>
