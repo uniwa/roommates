@@ -29,7 +29,7 @@ class HousesController extends AppController {
             if ($this->RequestHandler->isGet()) {
                 $houses = $this->simpleSearch(  $this->getHouseConditions(),
                                                 null, null, false, null,
-                                                $this->getXmlFields());
+                                                $this->getXmlFields(), true);
                 $this->set('houses', $houses);
                 $this->layout = 'xml/default';
                 $this->render('xml/public');
@@ -283,7 +283,7 @@ class HousesController extends AppController {
                 'controller' => 'houses', 'action'=> 'manage');
         }else if($this->Auth->User('role') == 'user'){
             $profileid = $this->Profile->find('first',
-                array('fields' => 'Profile.id', 
+                array('fields' => 'Profile.id',
                 'conditions' => array(
                     'Profile.user_id' => $this->Auth->user('id'))));
             $profileid = $profileid['Profile']['id'];
@@ -681,7 +681,8 @@ class HousesController extends AppController {
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true,
-                                    $user_role = null, $fields = null) {
+                                    $user_role = null, $fields = null,
+                                    $isWebService = false) {
 
         // The following SQL query is implemented
         // mates conditions are added to the inner join with profiles table
@@ -728,7 +729,7 @@ class HousesController extends AppController {
         }
 
         // join the required tables for web service
-        if ($this->isWebService()) {
+        if ($isWebService === true) {
             array_push($options['joins'], array('table' => 'floors',
                                                 'alias' => 'Floor',
                                                 'type'  => 'left',
@@ -1122,7 +1123,7 @@ class HousesController extends AppController {
         $order = $url['order_by'];
 
         if( empty( $order ) )   return $array;
- 
+
        switch( $order ) {
             case 9:
                 usort( $array, array( "HousesController", "distanceInAsc" ) );
@@ -1177,7 +1178,7 @@ class HousesController extends AppController {
         return 0;
     }
     // Manual [geo_distance] ordering. -- SECTION END
-    
+
     // Facebook functions -- SECTION START
 
     // Posts an announcement on the application's page on Facebook.
