@@ -257,10 +257,13 @@ class HousesController extends AppController {
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
 
-//pr( $this->data ); die;
-                /* post to facebook application wall */
-                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
-
+                // post requires municipality name, house type and user role
+                $this->House->recursice = 2;
+                $house = $this->House->read();
+                // post to facebook application wall
+                if ( $this->data['House']['visible'] == 1 ) {
+                    $this->postToAppWall( $house );
+                }
                 $this->redirect(array('action' => "view", $hid));
             }
         }
@@ -335,8 +338,13 @@ class HousesController extends AppController {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
 
-                /* post updated house on application's page on Facebook */
-                if ( $this->data['House']['visible'] == 1 ) $this->postToAppWall( $house );
+                // post requires municipality name, house type and user role
+                $this->House->recursive = 2;
+                $house = $this->House->read();
+                // post updated house on application's page on Facebook
+                if ( $this->data['House']['visible'] == 1 ) {
+                    $this->postToAppWall( $house );
+                }
 
                 $this->redirect(array('action' => "view", $id));
             }
