@@ -35,7 +35,7 @@
     // REST URI mapping
     Router::connect(
                 '/api/houses',
-                array('controller' => 'houses', 'action' => 'index')
+                array('controller' => 'houses', 'action' => 'webservice')
     );
 
     /* enable rss*/
