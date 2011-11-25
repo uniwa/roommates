@@ -1276,7 +1276,7 @@ class HousesController extends AppController {
     }
 
 
-    private function getXmlFields() {
+    private function getResponseXmlFields() {
         $fields = array('House.id',
                         'House.address',
                         'House.postal_code',
@@ -1364,7 +1364,7 @@ class HousesController extends AppController {
         if ($this->RequestHandler->isGet()) {
             $houses = $this->simpleSearch(  $this->getHouseConditions(),
                                             null, null, false, null,
-                                            $this->getXmlFields(), true);
+                                            $this->getResponseXmlFields(), true);
             $this->set('houses', $houses);
             $this->layout = 'xml/default';
             $this->render('xml/public');
