@@ -145,7 +145,7 @@
         12:7ος όροφος
         13:8+ όροφος
     -->
-   <xs:simpleType name="floor_restricions_type">
+   <xs:simpleType name="floor_restrictions_type">
         <xs:restriction base="xs:integer">
             <xs:minInclusive value="1"/>
             <xs:maxInclusive value="13"/>
