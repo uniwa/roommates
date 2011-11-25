@@ -291,10 +291,12 @@
         </div>
         <div class='profileTitle profileClear'>
             <?php
-                if ($has_house_prefs)
+                if ($has_house_prefs) {
                     echo "<h2>Προτιμήσεις σπιτιού</h2>";
-                else
-                    echo "<h2>Δεν έχουν οριστεί<br/>προτιμήσεις σπιτιού";
+                }
+                else {
+                    echo "<h2>Δεν έχουν οριστεί<br/>προτιμήσεις σπιτιού</h2>";
+                }
             ?>
         </div>
         <div id='housePrefs' class='profileInfo'>
