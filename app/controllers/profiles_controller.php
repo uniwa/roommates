@@ -452,7 +452,6 @@ class ProfilesController extends AppController {
     }
 
     function ban($id) {
-        $this->denyRole('realestate');
         if ($this->Auth->user('role') != 'admin') {
             $this->cakeError('error403');
         }
@@ -470,7 +469,6 @@ class ProfilesController extends AppController {
     }
 
     function unban($id) {
-        $this->denyRole('realestate');
         if ($this->Auth->user('role') != 'admin') {
             $this->cakeError('error403');
         }
