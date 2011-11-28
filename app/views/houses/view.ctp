@@ -1,4 +1,19 @@
 <style>
+    #mainWrapper{
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .contRE{
+        border-top: 6px solid #88a;
+    }
+    
+    .contUser{
+        border-top: 6px solid #ddd;
+    }
+    
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
@@ -34,6 +49,13 @@
         padding: 2px;
     }
 
+    .profileTitle{
+        margin: 0px 0px 4px 0px;
+        font-size: 1.2em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
+    }
+    
     #houseEdit{
         clear: both;
         margin: 0px 0px 0px 44px;
@@ -60,7 +82,7 @@
     }
     
     .houseLineShort{
-        width: 180px;
+        width: 160px;
     }
     
     .houseProperty{
@@ -73,12 +95,29 @@
     }
 
     .houseC{
-        width: 120px;
+        width: 140px;
     }
 
     .houseValue{
         float: left;
         margin: 0px 0px 0px 8px;
+    }
+    
+    .houseCheck{
+        background-image: url('img/check.png');
+        background-repeat: no-repeat;
+        margin: 0px 0px 0px 8px;
+        width: 12px;
+        height: 12px;
+        text-indent: -9999px;
+    }
+    
+    .houseCheckFalse{
+        background-position: 0px -12px;
+    }
+
+    .houseCheckTrue{
+        background-position: 0px 0px;
     }
 
     .houseOdd{
@@ -107,6 +146,11 @@
     .imageThumbCont{
         width: 180px;
         height: 100px;
+        overflow: hidden;
+    }
+    
+    .default-image{
+        height: 100%;
         overflow: hidden;
     }
 
@@ -220,11 +264,11 @@
                 'title' => $houseTypeArea, 'escape' => false));
 
         if($loggedUser == $userid){
-            $housePic .= "<div class='imageactions'>";
-            $housePic .= $this->Html->link(__('Διαγραφή', true),
+            $imageActions = "<div class='imageactions'>";
+            $imageActions .= $this->Html->link('Διαγραφή',
                 array('controller' => 'images', 'action' => 'delete', $default_image_id),
                 array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
-            $housePic .= "</div>";
+            $imageActions .= "</div>";
         }
     }else{ // if don't have an image put placeholder
         if($loggedUser == $userid){
@@ -299,6 +343,7 @@
     if(($loggedUser != $userid) && ($role != 'realestate')){
         if($ownerRole == 'user'){
             $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= "<div class='profileTitle'>Στοιχεία φοιτητή</div>";
             $profileInfo .= $this->Html->link($profileName, array(
                 'controller' => 'profiles', 'action' => 'view',
                 $profileid));
@@ -308,6 +353,7 @@
             $profileInfo .= "</div>";
         }elseif($ownerRole == 'realestate'){
             $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= "<div class='profileTitle'>Στοιχεία ενοικιαστή</div>";
             $profileInfo .= $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
                 $realestateid));
@@ -355,7 +401,8 @@
     }
 
     // House properties
-    if ($userid == $this->Session->read('Auth.User.id')) {
+    if (($userid == $this->Session->read('Auth.User.id')) or
+        ($ownerRole == 'realestate')) {
         $houseProperties['address']['label'] = 'Διεύθυνση';
         $houseProperties['address']['value'] = $houseAddress;
     }
@@ -412,8 +459,12 @@
     $houseProperties['price']['value'] = $housePrice;
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
-    $houseProperties['hosting']['value'] = $houseHosting;
-    $houseProperties['free_places']['value'] = $houseFreePlaces;
+
+    // if the house belongs to real estate, don't display availability info
+    if($ownerRole != 'realestate'){
+        $houseProperties['hosting']['value'] = $houseHosting;
+        $houseProperties['free_places']['value'] = $houseFreePlaces;
+    }
 
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
@@ -444,7 +495,7 @@
         // obscure exact location of house if it belongs to a 'user' (as in
         // role) and request a circular area to be positioned over the map
         if( $ownerRole == 'user' ) {
-            
+
             $displayCircle = 1;
 
             $latDev = rand( -1, 1 );
@@ -472,13 +523,21 @@
         </script>
 EOT;
 
+if($ownerRole == 'realestate'){
+    $classCont='contRE';
+}else{
+    $classCont='contUser';
+}
+echo "<div id='mainWrapper' class='{$classCont}'>";
 ?>
-
 <div id='leftbar'>
     <div id='houseCont'>
-        <div class='housePic liimage'>
+        <div class='housePic default-image'>
             <?php
                 echo $housePic;
+                if(isset($imageActions)){
+                    echo $imageActions;
+                }
             ?>
         </div>
     </div>
@@ -536,9 +595,16 @@ EOM;
                 $propertyLine .= "<div class='houseProperty {$lineClass}'>\n";
                 $property = "{$hp['label']} : ";
                 $propertyLine .= $property;
-                $propertyLine .= "</div>\n<div class='houseValue'>\n";
+                $lineClass = 'houseValue';
                 if($checkbox){
-                    $value = ($hp['check'])?'ναι':'όχι';
+                    $lineClass .= ' houseCheck';
+                    if($hp['check']){
+                        $value = 'ναι';
+                        $lineClass .= ' houseCheckTrue';
+                    }else{
+                        $value = 'όχι';
+                        $lineClass .= ' houseCheckFalse';
+                    }
                 }else{
                     $value = '-';
                     if(isset($hp['value'])){
@@ -550,6 +616,7 @@ EOM;
                         }
                     }
                 }
+                $propertyLine .= "</div>\n<div class='{$lineClass}'>\n";
                 $propertyLine .= $value;
                 $propertyLine .= "</div>\n</li>\n";
                 if($checkbox){
@@ -587,4 +654,4 @@ EOM;
         </div>
     </div>
 </div>
-
+</div>
