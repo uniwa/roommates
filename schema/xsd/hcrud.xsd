@@ -41,11 +41,11 @@
             <xs:element name="latitude" type="hcrud:coordinates_type"/>
             <xs:element name="longitude" type="hcrud:coordinates_type"/>
         </xs:sequence>
-    </xs:complexType>
-
+        </xs:complexType>
+        
     <xs:simpleType name="coordinates_type">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([0-9]*[.][0-9]*)"/>
+            <xs:pattern value="([0-9]*[.][0-9]*){0,1}"/>
         </xs:restriction>
     </xs:simpleType>
 
