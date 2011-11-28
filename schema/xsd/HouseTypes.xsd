@@ -92,7 +92,7 @@
 
 
     <!--restrictions about hosting_type field  min-max value-->
-    <xs:simpleType name="hosting_type">
+    <xs:simpleType name="one_to_nine_type">
         <xs:restriction base="xs:integer">
             <xs:minInclusive value="1"/>
             <xs:maxInclusive value="9"/>
@@ -195,7 +195,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="υπόγειο"/>
             <xs:enumeration value="ημιυπόγειο"/>
-            <xs:enumeration value="υπερυψωμενο"/>
+            <xs:enumeration value="υπερυψωμένο"/>
             <xs:enumeration value="ισόγειο"/>
             <xs:enumeration value="ημιόροφος"/>
             <xs:enumeration value="1ος όροφος"/>
