@@ -75,6 +75,10 @@ img{
     user-select: none;
 }
 
+textarea{
+    resize: none;
+}
+
 .bold{
     font-weight: bold;
 }

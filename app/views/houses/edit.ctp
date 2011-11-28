@@ -12,6 +12,14 @@
         padding: 0px 0px 24px 64px;
     }
     
+    .housePic{
+        float: left;
+        padding: 2px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
+    }
+    
     .edit-title{
         margin: 12px 0px 24px 0px;
         font-size: 1.2em;
@@ -25,7 +33,7 @@
     .input {
         padding: 3px 0;
     }
-
+    
     #HouseAddForm label, #HouseEditForm label {
         font-size: 12px;
         font-weight: bold;
@@ -51,10 +59,16 @@
         width: 50px;
         text-align: right;
     }
-
-    .map {
+    
+    #updateMap{
+        clear: both;
+        margin: 12px 0px 8px 10px;
+    }
+    
+    .map{
+        padding: 0px 0px 0px 10px;
         width: 450px;
-        height: 350px;
+        height: 250px;
     }
 </style>
 
@@ -91,7 +105,7 @@
 
         // map location mainly depends on [country], [municipality], [address]
         // and [postalCode] form-fields
-        echo '<a id="updateMap">Ενημέρωση χάρτη από πεδία</a>';
+        echo $this->Html->link('Ενημέρωση χάρτη από πεδία', '', array('id' => 'updateMap'));
         echo '<div class="map" id="editMap"></div>';
 
         echo $form->input( 'latitude', array( 'type' => 'hidden' ) );

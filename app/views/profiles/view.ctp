@@ -18,8 +18,9 @@
     .profilePic{
         margin: 0px auto 0px auto;
         padding: 2px;
-        width: 128px;
-        height: 128px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
     }
     
     #profileCont{
@@ -67,11 +68,15 @@
         font-size: 1.0em;
     }
 
+    #myHouse{
+        width: 500px;
+    }
+    
     #myHousePic{
         margin: 0px 0px 0px 24px;
     }
 
-    #myHouse{
+    #myHouseInfo{
         margin: 24px 0px 0px 24px;
     }
 </style>
@@ -370,16 +375,16 @@
                 $houseTitle .= ($profile['Profile']['gender'])?'της':'του';
             }
     ?>
-        <div class='profileBlock profileClear'>
+        <div id='myHouse' class='profileBlock profileClear'>
             <div class='profileTitle'>
 	            <h2><?php echo $houseTitle; ?></h2>
             </div>
-            <div id='myHouse' class='profileInfo'>
+            <div id='myHouseInfo' class='profileInfo'>
                 <?php
                     echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
                 ?>
             </div>
-            <div id='myHousePic' class='profilePic'>
+            <div id='myHousePic' class='profileInfo profilePic'>
                 <?php
                     if(isset($houseThumbLink)){
                         echo $houseThumbLink;
@@ -393,7 +398,7 @@
             $houseLink = $this->Html->link($houseTitle,
                 array('controller' => 'houses', 'action' => 'add'));
     ?>
-        <div class='profileBlock profileClear'>
+        <div id='myHouse' class='profileBlock profileClear'>
             <div class='profileTitle'>
 	            <h2><?php echo $houseLink; ?></h2>
             </div>
