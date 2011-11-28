@@ -1354,17 +1354,12 @@ class HousesController extends AppController {
 
     function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
-            if ($id == null) {
-                $result = $this->simpleSearch(  $this->getHouseConditions(),
-                                                null, null, false, null,
-                                                $this->getResponseXmlFields(), true);
-            } else {
-                $house_conds = $this->getHouseConditions();
-                array_push($house_conds, array('House.id' => $id));
-                $result = $this->simpleSearch(  $house_conds, null, null, false,
-                                                null, $this->getResponseXmlFields(),
-                                                true);
-            }
+            $house_conds = $this->getHouseConditions();
+            if ($id != null) array_push($house_conds, array('House.id' => $id));
+            $result = $this->simpleSearch(  $house_conds,
+                                            null, null, false, null,
+                                            $this->getResponseXmlFields(),
+                                            true);
             $this->set('houses', $result);
             $this->layout = 'xml/default';
             $this->render('xml/public');
