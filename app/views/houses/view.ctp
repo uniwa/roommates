@@ -355,7 +355,8 @@
     }
 
     // House properties
-    if ($userid == $this->Session->read('Auth.User.id')) {
+    if (($userid == $this->Session->read('Auth.User.id')) or
+        ($ownerRole == 'realestate')) {
         $houseProperties['address']['label'] = 'Διεύθυνση';
         $houseProperties['address']['value'] = $houseAddress;
     }
