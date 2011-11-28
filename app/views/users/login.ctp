@@ -5,7 +5,10 @@
     }   
     
     .loginMain{
-        background-color: #f0f0f0;
+        border-top: 6px solid #ddd;
+        background-color: #fff;
+        background: -moz-linear-gradient(top, #f4f4f4, #fff);
+        background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#fff));
         margin: 0px auto 0px auto;
         padding: 32px 32px 16px 48px;
         width: 400px;
@@ -26,6 +29,10 @@
         display: block;
         margin: 0px 0px 4px 24px;
         padding: 4px 0px 0px 0px;
+    }
+    
+    .credential .input input{
+        border: 1px solid #ddd;
     }
     
     .inputCredential{
