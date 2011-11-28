@@ -10,7 +10,7 @@ class HousesController extends AppController {
     var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time', 'Html', 'Xml');
     var $paginate = array('limit' => 15);
-    var $uses = array('House', 'HouseType');
+    var $uses = array('House', 'HouseType', 'Image');
 
     function index() {
 
@@ -1295,8 +1295,8 @@ class HousesController extends AppController {
                         'House.total_places',
                         'House.free_places',
                         'House.geo_distance',
-                        'Image.location',
                         'Municipality.name',
+                        'Image.location',
                         'Floor.type',
                         'HouseType.type',
                         'HeatingType.type'
@@ -1352,12 +1352,22 @@ class HousesController extends AppController {
         return $distance;
     }
 
-    function webService() {
+    function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
-            $houses = $this->simpleSearch(  $this->getHouseConditions(),
-                                            null, null, false, null,
-                                            $this->getResponseXmlFields(), true);
-            $this->set('houses', $houses);
+            if ($id == null) {
+                $result = $this->simpleSearch(  $this->getHouseConditions(),
+                                                null, null, false, null,
+                                                $this->getResponseXmlFields(), true);
+            } else {
+                $this->House->recursive = 0;
+                $options['conditions'] = array('House.id' => $id);
+                $options['fields'] = $this->getResponseXmlFields();
+                $bad_key = array_search('Image.location' ,$options['fields'],true);
+//                 $options['fields'][$bad_key] = 'House.default_image_id';
+                unset($options['fields'][$bad_key]);
+                $result = $this->House->find('first', $options);
+            }
+            $this->set('houses', $result);
             $this->layout = 'xml/default';
             $this->render('xml/public');
         } else if ($this->RequestHandler->isPost()) {
