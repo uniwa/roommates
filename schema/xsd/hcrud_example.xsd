@@ -1,12 +1,52 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://www.roommates.teiath.gr/ht/schemas"
-    xmlns:ht="http://www.roommates.teiath.gr/ht/schemas"                              
+    xmlns:hce="http://www.roommates.teiath.gr/hce/schemas"
+    targetNamespace="http://www.roommates.teiath.gr/hce/schemas"
     elementFormDefault="qualified">
 
-       
+    <xs:element name="house" type="hce:house_crud_type"/>
 
-    <!--restrictions about address field spacing and strlen-->
+
+    <xs:complexType name="house_crud_type">
+        <xs:sequence>
+            <xs:element name="address" type="hce:address_restrictions_type"/>
+            <xs:element name="postal_code" type="hce:postal_code_restrictions_type"/>
+            <xs:element name="area" type="xs:integer"/>
+            <xs:element name="bedroom_num" type="hce:bedroom_num_restrictions_type"/>
+            <xs:element name="bathroom_num" type="hce:bedroom_num_restrictions_type"/>
+            <xs:element name="price" type="xs:integer"/>
+            <xs:element name="construction_year" type="hce:construction_year_restrictions_type"/>
+            <xs:element name="solar_heater" type="xs:boolean"/>
+            <xs:element name="furnitured" type="xs:boolean"/>
+            <xs:element name="aircondition" type="xs:boolean"/>
+            <xs:element name="garden" type="xs:boolean"/>
+            <xs:element name="parking" type="xs:boolean"/>
+            <xs:element name="shared_pay" type="xs:boolean"/>
+            <xs:element name="security_doors" type="xs:boolean"/>
+            <xs:element name="disability_facilities" type="xs:boolean"/>
+            <xs:element name="storeroom" type="xs:boolean"/>
+            <xs:element name="availability_date" type="xs:date"/>
+            <xs:element name="rent_period" type="hce:rent_period_restrictions_type"/>
+            <xs:element name="description" type="hce:description_restrictions_type"/>
+            <xs:element name="floor_id" type="hce:floor_restrictions_type"/>
+            <xs:element name="house_type_id" type="hce:house_type_id_restrictons_type"/>
+            <xs:element name="currently_hosting" type="hce:hosting_restrictions_type"/>
+            <xs:element name="total_places" type="hce:hosting_restrictions_type"/>
+            <xs:element name="municipality_id" type="hce:municipality_restrictions_type"/>
+            <xs:element name="visible" type="xs:boolean"/>
+            <xs:element name="latitude" type="hce:coordinates_type"/>
+            <xs:element name="longitude" type="hce:coordinates_type"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="coordinates_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]*[.][0-9]*){0,1}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+<!--restrictions about address field spacing and strlen-->
     <xs:simpleType name="address_restrictions_type">
         <xs:restriction base="xs:string">
             <xs:whiteSpace value="preserve"/>
@@ -14,7 +54,7 @@
             <xs:maxLength value="50"/>
         </xs:restriction>
     </xs:simpleType>
-
+    
     <!--restrictions about postal_code field spacing and strlen-->
     <xs:simpleType name="postal_code_restrictions_type">
         <xs:restriction base="xs:string">
@@ -39,96 +79,22 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <!--restrictions about description field spacing and strlen-->
+    <xs:simpleType name="description_restrictions_type">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="preserve"/>
+            <xs:minLength value="0"/>
+            <xs:maxLength value="256"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
     <!--restrictions about rent period field max value-->
     <xs:simpleType name="rent_period_restrictions_type">
         <xs:restriction base="xs:string">
             <xs:pattern value="([0-9]){0,4}"/>            
         </xs:restriction>
     </xs:simpleType>
-
-    <!--restrictions about description field spacing and strlen-->
-    <xs:simpleType name="description_restrictions_type">
-        <xs:restriction base="xs:string">
-            <xs:whiteSpace value="preserve"/>
-            <xs:minLength value="1"/>
-            <xs:maxLength value="256"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <!--type for heating floor field: nested element type, attribute id-->
-    <xs:complexType name="heating_floor_elements_type">
-        <xs:sequence>
-            <xs:element name="type">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="20"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-
-    <!--type for house_type field: nested element type and attribute id-->
-    <xs:complexType name="house_type">
-        <xs:sequence>
-            <xs:element name="type">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="25"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <!--restrictions about hosting_type field  min-max value-->
-    <xs:simpleType name="hosting_restrictions_type">
-        <xs:restriction base="xs:integer">
-            <xs:minInclusive value="1"/>
-            <xs:maxInclusive value="9"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="custom_DateTime_restrictions_type">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="([1-2][0-9][0-9][0-9][-][0-1][0-9][-][0-3][0-9][ ][0-2][0-9][:][0-5][0-9][:][0-5][0-9])"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <!--type for municipality type field: nested element name and attribute id-->
-    <xs:complexType name="municipality_elements_type">
-        <xs:sequence>
-            <xs:element name="name">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="preserve"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="45"/>
-                     </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <!--type for image_type field: nested element name and attribute id-->
-    <xs:complexType name="image_elements_type">
-         <xs:sequence>
-            <xs:element name="location">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="100"/>
-                     </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
 
     <!--
         1:υπόγειο
@@ -163,6 +129,15 @@
         <xs:restriction base="xs:integer">
             <xs:minInclusive value="1"/>
             <xs:maxInclusive value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+ <!--restrictions about hosting_type field  min-max value-->
+    <xs:simpleType name="hosting_restrictions_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="9"/>
         </xs:restriction>
     </xs:simpleType>
 
