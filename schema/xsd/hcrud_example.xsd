@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:hce="http://www.roommates.teiath.gr/hce/schemas"
+    targetNamespace="http://www.roommates.teiath.gr/hce/schemas"
+    elementFormDefault="qualified">
+
+    <xs:element name="house" type="hce:house_crud_type"/>
+
+
+    <xs:complexType name="house_crud_type">
+        <xs:sequence>
+            <xs:element name="address" type="hce:address_restrictions_type"/>
+            <xs:element name="postal_code" type="hce:postal_code_restrictions_type"/>
+            <xs:element name="area" type="xs:integer"/>
+            <xs:element name="bedroom_num" type="hce:bedroom_num_restrictions_type"/>
+            <xs:element name="bathroom_num" type="hce:bedroom_num_restrictions_type"/>
+            <xs:element name="price" type="xs:integer"/>
+            <xs:element name="construction_year" type="hce:construction_year_restrictions_type"/>
+            <xs:element name="solar_heater" type="xs:boolean"/>
+            <xs:element name="furnitured" type="xs:boolean"/>
+            <xs:element name="aircondition" type="xs:boolean"/>
+            <xs:element name="garden" type="xs:boolean"/>
+            <xs:element name="parking" type="xs:boolean"/>
+            <xs:element name="shared_pay" type="xs:boolean"/>
+            <xs:element name="security_doors" type="xs:boolean"/>
+            <xs:element name="disability_facilities" type="xs:boolean"/>
+            <xs:element name="storeroom" type="xs:boolean"/>
+            <xs:element name="availability_date" type="xs:date"/>
+            <xs:element name="rent_period" type="hce:rent_period_restrictions_type"/>
+            <xs:element name="description" type="hce:description_restrictions_type"/>
+            <xs:element name="floor_id" type="hce:floor_restrictions_type"/>
+            <xs:element name="house_type_id" type="hce:house_type_id_restrictons_type"/>
+            <xs:element name="currently_hosting" type="hce:hosting_restrictions_type"/>
+            <xs:element name="total_places" type="hce:hosting_restrictions_type"/>
+            <xs:element name="municipality_id" type="hce:municipality_restrictions_type"/>
+            <xs:element name="visible" type="xs:boolean"/>
+            <xs:element name="latitude" type="hce:coordinates_type"/>
+            <xs:element name="longitude" type="hce:coordinates_type"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="coordinates_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]*[.][0-9]*){0,1}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+<!--restrictions about address field spacing and strlen-->
+    <xs:simpleType name="address_restrictions_type">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="preserve"/>
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!--restrictions about postal_code field spacing and strlen-->
+    <xs:simpleType name="postal_code_restrictions_type">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="collapse"/>
+            <xs:minLength value="0"/>
+            <xs:maxLength value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about bedroom_num field min-max value-->
+    <xs:simpleType name="bedroom_num_restrictions_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about construction year field min-max value-->
+    <xs:simpleType name="construction_year_restrictions_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]){0,4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about description field spacing and strlen-->
+    <xs:simpleType name="description_restrictions_type">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="preserve"/>
+            <xs:minLength value="0"/>
+            <xs:maxLength value="256"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <!--restrictions about rent period field max value-->
+    <xs:simpleType name="rent_period_restrictions_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]){0,4}"/>            
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+        1:υπόγειο
+        2:ημιυπόγειο
+        3:υπερυψωμένο
+        4:ισόγειο
+        5:ημιόροφος
+        6:1ος όροφος
+        7:2ος όροφος
+        8:3ος όροφος
+        9:4ος όροφος
+        10:5ος όροφος
+        11:6ος όροφος
+        12:7ος όροφος
+        13:8+ όροφος
+    -->
+   <xs:simpleType name="floor_restrictions_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="13"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--
+        1:studio
+        2:γκαρσονιέρα
+        3:διαμέρισμα
+        4:μονοκατοικία
+        5:μεζονέτα
+    -->
+    <xs:simpleType name="house_type_id_restrictons_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+ <!--restrictions about hosting_type field  min-max value-->
+    <xs:simpleType name="hosting_restrictions_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+<!--
+1.ΑΓΙΑΣ ΒΑΡΒΑΡΑΣ
+2.ΑΓΙΑΣ ΠΑΡΑΣΚΕΥΗΣ
+3.ΑΓΙΟΥ ΔΗΜΗΤΡΙΟΥ
+4.ΑΓΙΩΝ ΑΝΑΡΓΥΡΩΝ - ΚΑΜΑΤΕΡΟΥ
+5.ΑΓΚΙΣΤΡΙΟΥ
+6.ΑΘΗΝΑΙΩΝ
+7.ΑΙΓΑΛΕΩ
+8.ΑΙΓΙΝΑΣ
+9.ΑΛΙΜΟΥ
+10.ΑΜΑΡΟΥΣΙΟΥ
+11.ΑΣΠΡΟΠΥΡΓΟΥ
+12.ΑΧΑΡΝΩΝ
+13.ΒΑΡΗΣ - ΒΟΥΛΑΣ - ΒΟΥΛΙΑΓΜΕΝΗΣ
+14.ΒΡΙΛΗΣΣΙΩΝ
+15.ΒΥΡΩΝΟΣ
+16.ΓΑΛΑΤΣΙΟΥ
+17.ΓΛΥΦΑΔΑΣ
+18.ΔΑΦΝΗΣ - ΥΜΗΤΤΟΥ
+19.ΔΙΟΝΥΣΟΥ
+20.ΕΛΕΥΣΙΝΑΣ
+21.ΕΛΛΗΝΙΚΟΥ - ΑΡΓΥΡΟΥΠΟΛΗΣ
+22.ΖΩΓΡΑΦΟΥ
+23.ΗΛΙΟΥΠΟΛΕΩΣ
+24.ΗΡΑΚΛΕΙΟΥ
+25.ΙΛΙΟΥ (ΝΕΩΝ ΛΙΟΣΙΩΝ)
+26.ΚΑΙΣΑΡΙΑΝΗΣ
+27.ΚΑΛΛΙΘΕΑΣ
+28.ΚΕΡΑΤΣΙΝΙΟΥ - ΔΡΑΠΕΤΣΩΝΑΣ
+29.ΚΗΦΙΣΙΑΣ
+30.ΚΟΡΥΔΑΛΛΟΥ
+31ΚΡΩΠΙΑΣ
+32.ΚΥΘΗΡΩΝ
+33.ΛΑΥΡΕΩΤΙΚΗΣ
+34.ΛΥΚΟΒΡΥΣΗΣ - ΠΕΥΚΗΣ
+35.ΜΑΝΔΡΑΣ - ΕΙΔΥΛΛΙΑΣ
+36.ΜΑΡΑΘΩΝΟΣ
+37.ΜΑΡΚΟΠΟΥΛΟΥ ΜΕΣΟΓΑΙΑΣ
+38.ΜΕΓΑΡΕΩΝ
+39.ΜΕΤΑΜΟΡΦΩΣΕΩΣ
+40.ΜΟΣΧΑΤΟΥ - ΤΑΥΡΟΥ
+41.ΝΕΑΣ ΙΩΝΙΑΣ
+42.ΝΕΑΣ ΣΜΥΡΝΗΣ
+43.ΝΙΚΑΙΑΣ - ΑΓΙΟΥ ΙΩΑΝΝΗ ΡΕΝΤΗ
+44.ΠΑΙΑΝΙΑΣ
+45.ΠΑΛΑΙΟΥ ΦΑΛΗΡΟΥ
+46.ΠΑΛΛΗΝΗΣ
+47.ΠΑΠΑΓΟΥ - ΧΟΛΑΡΓΟΥ
+48.ΠΕΙΡΑΙΩΣ
+49.ΠΕΝΤΕΛΗΣ
+50.ΠΕΡΑΜΑΤΟΣ
+51.ΠΕΡΙΣΤΕΡΙΟΥ
+52.ΠΕΤΡΟΥΠΟΛΕΩΣ
+53.ΠΟΡΟΥ
+54.ΡΑΦΗΝΑΣ - ΠΙΚΕΡΜΙΟΥ
+55.ΣΑΛΑΜΙΝΑΣ
+56.ΣΑΡΩΝΙΚΟΥ
+57.ΣΠΑΤΩΝ - ΑΡΤΕΜΙΔΟΣ
+58.ΣΠΕΤΣΩΝ
+59.ΤΡΟΙΖΗΝΙΑΣ
+60.ΥΔΡΑΣ
+61.ΦΙΛΑΔΕΛΦΕΙΑΣ - ΧΑΛΚΗΔΟΝΟΣ
+62.ΦΙΛΟΘΕΗΣ - ΨΥΧΙΚΟΥ
+63.ΦΥΛΗΣ
+64.ΧΑΙΔΑΡΙΟΥ
+65.ΧΑΛΑΝΔΡΙΟΥ
+66.ΩΡΩΠΟΥ-->
+
+    <xs:simpleType name="municipality_restrictions_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9][0-9]){0,1}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
