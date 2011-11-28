@@ -504,13 +504,11 @@ EOT;
 <div id='leftbar'>
     <div id='houseCont'>
         <div class='housePic default-image'>
-            <div class='imageThumbCont'>
-                <?php
-                    echo $housePic;
-                ?>
-            </div>
             <?php
-                echo $imageActions;
+                echo $housePic;
+                if(isset($imageActions)){
+                    echo $imageActions;
+                }
             ?>
         </div>
     </div>
