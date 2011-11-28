@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://www.roommates.teiath.gr/hr/schemas"
-    xmlns:hr="http://www.roommates.teiath.gr/hr/schemas"                
-    xmlns:ht="http://www.roommates.teiath.gr/ht/schemas"
+    targetNamespace="http://www.roommates.teiath.gr/schemas/HouseResponse"
+    xmlns:hr="http://www.roommates.teiath.gr/schemas/HouseResponse"                
+    xmlns:ht="http://www.roommates.teiath.gr/schemas/HouseTypes"
     elementFormDefault="qualified">
 
 
-    <xs:import schemaLocation="ht.xsd"
-        namespace="http://www.roommates.teiath.gr/ht/schemas"/>
+    <xs:import schemaLocation="HouseTypes.xsd"
+        namespace="http://www.roommates.teiath.gr/schemas/HouseTypes"/>
 
     <xs:element name="houses"> 
         <xs:complexType>
@@ -18,7 +18,7 @@
     </xs:element>
 
   <!--type for house field-->
-        <xs:complexType name="house_elements_type">
+        <xs:complexType name="house_type">
             <xs:sequence>
                 <xs:element name="address" type="xs:string"/>
                 <xs:element name="postal_code" type="ht:postal_code_restrictions_type"/>
@@ -39,18 +39,19 @@
                 <xs:element name="availability_date" type="xs:date"/>
                 <xs:element name="rent_period" type="ht:rent_period_restrictions_type"/>
                 <xs:element name="description" type="ht:description_restrictions_type"/>
-                <xs:element name="created" type="xs:dateTime"/>
-                <xs:element name="modified" type="xs:dateTime"/>
+                <xs:element name="created" type="ht:custom_DateTime_type"/>
+                <xs:element name="modified" type="ht:custom_DateTime_type"/>
                 <xs:element name="currently_hosting" type="ht:hosting_restrictions_type"/>
                 <xs:element name="total_places" type="ht:hosting_restrictions_type"/>
                 <xs:element name="free_places" type="ht:hosting_restrictions_type"/>
-                <xs:element name="image" type="ht:image_elements_type"/>
-                <xs:element name="municipality" type="ht:municipality_elements_type"/>
-                <xs:element name="floor" type="ht:heating_floor_elements_type"/>
-                <xs:element name="house_type" type="ht:house_type"/>
-                <xs:element name="heating_type" type="ht:heating_floor_elements_type"/>
+                <xs:element name="image" type="ht:image_type"/>
+                <xs:element name="municipality" type="ht:municipality_type"/>
+                <xs:element name="floor" type="ht:floor_enumerations_type"/>
+                <xs:element name="house_type" type="ht:house_restrictions_type"/>
+                <xs:element name="heating_type" type="ht:heating_enumerations_type"/>
             </xs:sequence>
+            
             <xs:attribute name="id" type="xs:integer"/>
-        </xs:complexType>            
+        </xs:complexType>         
 
 </xs:schema>
