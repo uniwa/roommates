@@ -332,13 +332,14 @@ class HousesController extends AppController {
         $house = $this->House->read();
         $this->set('house', $house);
 
-        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-        $imageThumbLocation = 'house.gif';
-        foreach ($images as $image) {
-            if($image['Image']['id'] == $house['House']['default_image_id']){
-                $defaultImageLocation = $image['Image']['location'];
-                $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
-            }
+        $conditions = array('is_default' => 1);
+        $def_image = $this->House->Image->find('first',array('conditions' => $conditions));
+
+        if (empty($def_image['Image'])) {
+            $imageThumbLocation = 'house.gif';
+        } else {
+            $defaultImageLocation = $def_image['Image']['location'];
+            $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
         }
         $this->set('imageThumbLocation', $imageThumbLocation);
 
