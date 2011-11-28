@@ -175,9 +175,7 @@ textarea{
 
 #header{
     clear: both;
-/*    background-color: #359;*/
-    background-image: url('../img/main.png');
-    background-repeat: repeat;
+    background-color: #eee;
     margin: 0px 0px 0px 0px;
     padding: 6px 0px 8px 0px;
     font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;

@@ -34,6 +34,13 @@
         padding: 2px;
     }
 
+    .profileTitle{
+        margin: 0px 0px 4px 0px;
+        font-size: 1.2em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
+    }
+    
     #houseEdit{
         clear: both;
         margin: 0px 0px 0px 44px;
@@ -321,6 +328,7 @@
     if(($loggedUser != $userid) && ($role != 'realestate')){
         if($ownerRole == 'user'){
             $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= "<div class='profileTitle'>Στοιχεία φοιτητή</div>";
             $profileInfo .= $this->Html->link($profileName, array(
                 'controller' => 'profiles', 'action' => 'view',
                 $profileid));
@@ -330,6 +338,7 @@
             $profileInfo .= "</div>";
         }elseif($ownerRole == 'realestate'){
             $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= "<div class='profileTitle'>Στοιχεία ενοικιαστή</div>";
             $profileInfo .= $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
                 $realestateid));
@@ -504,13 +513,11 @@ EOT;
 <div id='leftbar'>
     <div id='houseCont'>
         <div class='housePic default-image'>
-            <div class='imageThumbCont'>
-                <?php
-                    echo $housePic;
-                ?>
-            </div>
             <?php
-                echo $imageActions;
+                echo $housePic;
+                if(isset($imageActions)){
+                    echo $imageActions;
+                }
             ?>
         </div>
     </div>
