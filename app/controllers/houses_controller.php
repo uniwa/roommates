@@ -203,19 +203,15 @@ class HousesController extends AppController {
         }
 
         $this->set('house', $house);
+        $this->set('images', $house['Image']);
 
-        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-
-        foreach ($images as $image) {
-            if ($image['Image']['id'] == $house['House']['default_image_id']) {
-                $this->set('default_image_location', $image['Image']['location']);
-                $this->set('default_image_id', $image['Image']['id']);
+        foreach ($house['Image'] as $image) {
+            if ($image['is_default'] == 1) {
+                $this->set('default_image_location', $image['location']);
+                $this->set('default_image_id', $image['id']);
+                break;
             }
         }
-
-        $this->House->Image->recursive = 0;
-		$this->set('House.images', $this->paginate());
-		$this->set('images', $images);
 
 		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
         $fb_app_uri = Configure::read( 'fb_app_uri' );
