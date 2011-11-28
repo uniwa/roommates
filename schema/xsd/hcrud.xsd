@@ -17,6 +17,7 @@
             <xs:element name="postal_code" type="ht:postal_code_restrictions_type"/>
             <xs:element name="area" type="xs:integer"/>
             <xs:element name="bedroum_num" type="ht:bedroom_num_restrictions_type"/>
+             <xs:element name="bathroom_num" type="hce:bedroom_num_restrictions_type"/>
             <xs:element name="price" type="xs:integer"/>
             <xs:element name="construction_year" type="ht:construction_year_restrictions_type"/>
             <xs:element name="solar_heater" type="xs:boolean"/>
