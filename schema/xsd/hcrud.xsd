@@ -33,7 +33,6 @@
             <xs:element name="description" type="ht:description_restrictions_type"/>
             <xs:element name="floor_id" type="ht:floor_restrictions_type"/>
             <xs:element name="house_type_id" type="ht:house_type_id_restrictons_type"/>
-            <xs:element name="shared_pay" type="xs:boolean"/>
             <xs:element name="currently_hosting" type="ht:hosting_restrictions_type"/>
             <xs:element name="total_places" type="ht:hosting_restrictions_type"/>
             <xs:element name="municipality_id" type="ht:municipality_restrictions_type"/>
