@@ -60,7 +60,7 @@
     }
     
     .houseLineShort{
-        width: 180px;
+        width: 160px;
     }
     
     .houseProperty{
@@ -73,12 +73,29 @@
     }
 
     .houseC{
-        width: 120px;
+        width: 140px;
     }
 
     .houseValue{
         float: left;
         margin: 0px 0px 0px 8px;
+    }
+    
+    .houseCheck{
+        background-image: url('img/check.png');
+        background-repeat: no-repeat;
+        margin: 0px 0px 0px 8px;
+        width: 12px;
+        height: 12px;
+        text-indent: -9999px;
+    }
+    
+    .houseCheckFalse{
+        background-position: 0px -12px;
+    }
+
+    .houseCheckTrue{
+        background-position: 0px 0px;
     }
 
     .houseOdd{
@@ -536,9 +553,16 @@ EOM;
                 $propertyLine .= "<div class='houseProperty {$lineClass}'>\n";
                 $property = "{$hp['label']} : ";
                 $propertyLine .= $property;
-                $propertyLine .= "</div>\n<div class='houseValue'>\n";
+                $lineClass = 'houseValue';
                 if($checkbox){
-                    $value = ($hp['check'])?'ναι':'όχι';
+                    $lineClass .= ' houseCheck';
+                    if($hp['check']){
+                        $value = 'ναι';
+                        $lineClass .= ' houseCheckTrue';
+                    }else{
+                        $value = 'όχι';
+                        $lineClass .= ' houseCheckFalse';
+                    }
                 }else{
                     $value = '-';
                     if(isset($hp['value'])){
@@ -550,6 +574,7 @@ EOM;
                         }
                     }
                 }
+                $propertyLine .= "</div>\n<div class='{$lineClass}'>\n";
                 $propertyLine .= $value;
                 $propertyLine .= "</div>\n</li>\n";
                 if($checkbox){
