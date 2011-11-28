@@ -43,8 +43,10 @@
         font-weight: bold;
     }
 
-    select{
-            font-size: 12px;
+    .input select{
+        border: 1px solid #ddd;
+        padding: 4px;
+        font-size: 12px;
     }
 
     .textarea label {
@@ -79,8 +81,7 @@
     }
     
     .input input[type=text]{
-        border: 0px;
-        background-color: #ddd;
+        border: 1px solid #ddd;
         padding: 4px;
     }
     
