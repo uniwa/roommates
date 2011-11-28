@@ -3,7 +3,7 @@
 class Image extends AppModel {
 
     var $name = 'Image';
-
+/*
     var $belongsTo = array(
             'House' => array(
             'className' => 'House',
@@ -12,7 +12,8 @@ class Image extends AppModel {
             'fields' => '',
             'order' => ''
         )
-    );
+    );*/
+    var $belongsTo = array('House');
 
     private function has_permissions($house_id = NULL, $user_id = NULL) {
         /* check for write permissions
