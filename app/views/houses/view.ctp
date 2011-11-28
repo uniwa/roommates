@@ -126,6 +126,11 @@
         height: 100px;
         overflow: hidden;
     }
+    
+    .default-image{
+        height: 100%;
+        overflow: hidden;
+    }
 
     #houseInfo{
         margin: 0px 0px 0px 0px;
@@ -237,11 +242,11 @@
                 'title' => $houseTypeArea, 'escape' => false));
 
         if($loggedUser == $userid){
-            $housePic .= "<div class='imageactions'>";
-            $housePic .= $this->Html->link(__('Διαγραφή', true),
+            $imageActions = "<div class='imageactions'>";
+            $imageActions .= $this->Html->link('Διαγραφή',
                 array('controller' => 'images', 'action' => 'delete', $default_image_id),
                 array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
-            $housePic .= "</div>";
+            $imageActions .= "</div>";
         }
     }else{ // if don't have an image put placeholder
         if($loggedUser == $userid){
@@ -498,9 +503,14 @@ EOT;
 
 <div id='leftbar'>
     <div id='houseCont'>
-        <div class='housePic liimage'>
+        <div class='housePic default-image'>
+            <div class='imageThumbCont'>
+                <?php
+                    echo $housePic;
+                ?>
+            </div>
             <?php
-                echo $housePic;
+                echo $imageActions;
             ?>
         </div>
     </div>
