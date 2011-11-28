@@ -305,17 +305,20 @@ textarea{
 
 #results{
     clear: both;
-    border: 1px solid #00e;
-    margin: 0px 0px 0px 0px;
-    overflow: auto;
+    margin: 0px auto;
+    width: 580px;
+    overflow: hidden;
 }
 
 .result-cont{
     clear: both;
+    border-top: 3px solid #ddd;
     background-color: #fff;
-    margin: 20px auto;
+    margin: 24px 0px 0px 0px;
+    padding: 2px 0px 0px 0px;
     width: 580px;
-    height: 120px;
+    height: 100px;
+    overflow: hidden;
 }
 
 .result{
@@ -324,8 +327,8 @@ textarea{
 
 .result-photo{
     float: left;
-    background-color: #eaeaea;
-    margin: 12px 0px 0px 14px;
+    background-color: #fff;
+    margin: 0px 0px 0px 14px;
     width: 177px;
 }
 
@@ -354,8 +357,8 @@ textarea{
 
 .result-desc{
     float: left;
-    background-color: #eaeaea;
-    margin: 12px 0px 0px 4px;
+    background-color: #fff;
+    margin: 0px 0px 0px 4px;
     width: 380px;
     height: 100px;
 }

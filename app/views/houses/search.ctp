@@ -37,10 +37,11 @@
     #main-inner{
         float: left;
         border-left: 1px dotted #aaa;
-/*        background-color: #f7f7f7;*/
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
+        min-height: 800px;
+        overflow: hidden;
     }
 
     .form-buttons{
@@ -599,7 +600,7 @@
     </div>
 </div>
 <div id='main-inner'>
-    <div class='results'>
+    <div id='results'>
         <?php if(isset($results)){ ?>
         <div class='search-title'>
             <h2>Αποτελέσματα αναζήτησης</h2>
@@ -723,17 +724,17 @@
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο '.$housePrice.'€, ';
+                                echo 'Ενοίκιο: '.$housePrice.'€, ';
                                 echo $furnished;
-                                echo '<br />Δήμος '.$houseMunicipality.'<br />';
+                                echo '<br />Δήμος: '.$houseMunicipality.'<br />';
                                 //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 if ($house['User']['role'] != 'realestate') {
-                                    echo 'Διαθέσιμες θέσεις '.
+                                    echo 'Διαθέσιμες θέσεις: '.
                                         $house['House']['free_places'].'<br />';
                                 }
                                 if( !empty($geoDistance) ) {
-                                    echo 'Απόσταση από ΤΕΙ '
+                                    echo 'Απόσταση από ΤΕΙ: '
                                         . number_format( $geoDistance, 2 )
                                         . '&nbsp;χλμ.';
                                 }
