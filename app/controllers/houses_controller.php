@@ -1359,12 +1359,11 @@ class HousesController extends AppController {
                                                 null, null, false, null,
                                                 $this->getResponseXmlFields(), true);
             } else {
-                $this->House->recursive = 0;
-                $options['conditions'] = array('House.id' => $id);
-                $options['fields'] = $this->getResponseXmlFields();
-                $bad_key = array_search('Image.location' ,$options['fields'],true);
-                unset($options['fields'][$bad_key]);
-                $result = $this->House->find('first', $options);
+                $house_conds = $this->getHouseConditions();
+                array_push($house_conds, array('House.id' => $id));
+                $result = $this->simpleSearch(  $house_conds, null, null, false,
+                                                null, $this->getResponseXmlFields(),
+                                                true);
             }
             $this->set('houses', $result);
             $this->layout = 'xml/default';
