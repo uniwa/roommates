@@ -130,113 +130,104 @@
         </xs:sequence>
     </xs:complexType>
 
-    <!--
-        1:υπόγειο
-        2:ημιυπόγειο
-        3:υπερυψωμένο
-        4:ισόγειο
-        5:ημιόροφος
-        6:1ος όροφος
-        7:2ος όροφος
-        8:3ος όροφος
-        9:4ος όροφος
-        10:5ος όροφος
-        11:6ος όροφος
-        12:7ος όροφος
-        13:8+ όροφος
-    -->
-   <xs:simpleType name="floor_restrictions_type">
-        <xs:restriction base="xs:integer">
-            <xs:minInclusive value="1"/>
-            <xs:maxInclusive value="13"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <!--
-        1:studio
-        2:γκαρσονιέρα
-        3:διαμέρισμα
-        4:μονοκατοικία
-        5:μεζονέτα
-    -->
-    <xs:simpleType name="house_type_id_restrictons_type">
-        <xs:restriction base="xs:integer">
-            <xs:minInclusive value="1"/>
-            <xs:maxInclusive value="5"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-<!--
-1.ΑΓΙΑΣ ΒΑΡΒΑΡΑΣ
-2.ΑΓΙΑΣ ΠΑΡΑΣΚΕΥΗΣ
-3.ΑΓΙΟΥ ΔΗΜΗΤΡΙΟΥ
-4.ΑΓΙΩΝ ΑΝΑΡΓΥΡΩΝ - ΚΑΜΑΤΕΡΟΥ
-5.ΑΓΚΙΣΤΡΙΟΥ
-6.ΑΘΗΝΑΙΩΝ
-7.ΑΙΓΑΛΕΩ
-8.ΑΙΓΙΝΑΣ
-9.ΑΛΙΜΟΥ
-10.ΑΜΑΡΟΥΣΙΟΥ
-11.ΑΣΠΡΟΠΥΡΓΟΥ
-12.ΑΧΑΡΝΩΝ
-13.ΒΑΡΗΣ - ΒΟΥΛΑΣ - ΒΟΥΛΙΑΓΜΕΝΗΣ
-14.ΒΡΙΛΗΣΣΙΩΝ
-15.ΒΥΡΩΝΟΣ
-16.ΓΑΛΑΤΣΙΟΥ
-17.ΓΛΥΦΑΔΑΣ
-18.ΔΑΦΝΗΣ - ΥΜΗΤΤΟΥ
-19.ΔΙΟΝΥΣΟΥ
-20.ΕΛΕΥΣΙΝΑΣ
-21.ΕΛΛΗΝΙΚΟΥ - ΑΡΓΥΡΟΥΠΟΛΗΣ
-22.ΖΩΓΡΑΦΟΥ
-23.ΗΛΙΟΥΠΟΛΕΩΣ
-24.ΗΡΑΚΛΕΙΟΥ
-25.ΙΛΙΟΥ (ΝΕΩΝ ΛΙΟΣΙΩΝ)
-26.ΚΑΙΣΑΡΙΑΝΗΣ
-27.ΚΑΛΛΙΘΕΑΣ
-28.ΚΕΡΑΤΣΙΝΙΟΥ - ΔΡΑΠΕΤΣΩΝΑΣ
-29.ΚΗΦΙΣΙΑΣ
-30.ΚΟΡΥΔΑΛΛΟΥ
-31ΚΡΩΠΙΑΣ
-32.ΚΥΘΗΡΩΝ
-33.ΛΑΥΡΕΩΤΙΚΗΣ
-34.ΛΥΚΟΒΡΥΣΗΣ - ΠΕΥΚΗΣ
-35.ΜΑΝΔΡΑΣ - ΕΙΔΥΛΛΙΑΣ
-36.ΜΑΡΑΘΩΝΟΣ
-37.ΜΑΡΚΟΠΟΥΛΟΥ ΜΕΣΟΓΑΙΑΣ
-38.ΜΕΓΑΡΕΩΝ
-39.ΜΕΤΑΜΟΡΦΩΣΕΩΣ
-40.ΜΟΣΧΑΤΟΥ - ΤΑΥΡΟΥ
-41.ΝΕΑΣ ΙΩΝΙΑΣ
-42.ΝΕΑΣ ΣΜΥΡΝΗΣ
-43.ΝΙΚΑΙΑΣ - ΑΓΙΟΥ ΙΩΑΝΝΗ ΡΕΝΤΗ
-44.ΠΑΙΑΝΙΑΣ
-45.ΠΑΛΑΙΟΥ ΦΑΛΗΡΟΥ
-46.ΠΑΛΛΗΝΗΣ
-47.ΠΑΠΑΓΟΥ - ΧΟΛΑΡΓΟΥ
-48.ΠΕΙΡΑΙΩΣ
-49.ΠΕΝΤΕΛΗΣ
-50.ΠΕΡΑΜΑΤΟΣ
-51.ΠΕΡΙΣΤΕΡΙΟΥ
-52.ΠΕΤΡΟΥΠΟΛΕΩΣ
-53.ΠΟΡΟΥ
-54.ΡΑΦΗΝΑΣ - ΠΙΚΕΡΜΙΟΥ
-55.ΣΑΛΑΜΙΝΑΣ
-56.ΣΑΡΩΝΙΚΟΥ
-57.ΣΠΑΤΩΝ - ΑΡΤΕΜΙΔΟΣ
-58.ΣΠΕΤΣΩΝ
-59.ΤΡΟΙΖΗΝΙΑΣ
-60.ΥΔΡΑΣ
-61.ΦΙΛΑΔΕΛΦΕΙΑΣ - ΧΑΛΚΗΔΟΝΟΣ
-62.ΦΙΛΟΘΕΗΣ - ΨΥΧΙΚΟΥ
-63.ΦΥΛΗΣ
-64.ΧΑΙΔΑΡΙΟΥ
-65.ΧΑΛΑΝΔΡΙΟΥ
-66.ΩΡΩΠΟΥ-->
-
-    <xs:simpleType name="municipality_restrictions_type">
+   <xs:simpleType name="floor_enumerations_type">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([0-9][0-9]){0,1}"/>
+            <xs:enumeration value="1.υπόγειο"/>
+            <xs:enumeration value="2.ημιυπόγειο"/>
+            <xs:enumeration value="3.υπερυψωμενο"/>
+            <xs:enumeration value="4.ισόγειο"/>
+            <xs:enumeration value="5.ημιόροφος"/>
+            <xs:enumeration value="6.1ος όροφος"/>
+            <xs:enumeration value="7.2ος όροφος"/>
+            <xs:enumeration value="8.3ος όροφος"/>
+            <xs:enumeration value="9.4ος όροφος"/>
+            <xs:enumeration value="10.5ος όροφος"/>
+            <xs:enumeration value="11.6ος όροφος"/>
+            <xs:enumeration value="12.7ος όροφος"/>
+            <xs:enumeration value="13.8+ όροφος"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="house_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1.studio"/>
+            <xs:enumeration value="2.γκαρσονιέρα"/>
+            <xs:enumeration value="3.μονοκατοικία"/>
+            <xs:enumeration value="5.μεζονέτα"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="municipality_enumerations_type">
+        <xs:restriction base="xs:string">
+
+            <xs:enumeration value="1.ΑΓΙΑΣ ΒΑΡΒΑΡΑΣ"/>
+            <xs:enumeration value="2.ΑΓΙΑΣ ΠΑΡΑΣΚΕΥΗΣ"/>
+            <xs:enumeration value="3.ΑΓΙΟΥ ΔΗΜΗΤΡΙΟΥ"/>
+            <xs:enumeration value="4.ΑΓΙΩΝ ΑΝΑΡΓΥΡΩΝ - ΚΑΜΑΤΕΡΟΥ"/>
+            <xs:enumeration value="5.ΑΓΚΙΣΤΡΙΟΥ"/>
+            <xs:enumeration value="6.ΑΘΗΝΑΙΩΝ"/>
+            <xs:enumeration value="7.ΑΙΓΑΛΕΩ"/>
+            <xs:enumeration value="8.ΑΙΓΙΝΑΣ"/>
+            <xs:enumeration value="9.ΑΛΙΜΟΥ"/>
+            <xs:enumeration value="10.ΑΜΑΡΟΥΣΙΟΥ"/>
+            <xs:enumeration value="11.ΑΣΠΡΟΠΥΡΓΟΥ"/>
+            <xs:enumeration value="12.ΑΧΑΡΝΩΝ"/>
+            <xs:enumeration value="13.ΒΑΡΗΣ - ΒΟΥΛΑΣ - ΒΟΥΛΙΑΓΜΕΝΗΣ"/>
+            <xs:enumeration value="14.ΒΡΙΛΗΣΣΙΩΝ"/>
+            <xs:enumeration value="15.ΒΥΡΩΝΟΣ"/>
+            <xs:enumeration value="16.ΓΑΛΑΤΣΙΟΥ"/>
+            <xs:enumeration value="17.ΓΛΥΦΑΔΑΣ"/>
+            <xs:enumeration value="18.ΔΑΦΝΗΣ - ΥΜΗΤΤΟΥ"/>
+            <xs:enumeration value="19.ΔΙΟΝΥΣΟΥ"/>
+            <xs:enumeration value="20.ΕΛΕΥΣΙΝΑΣ"/>
+            <xs:enumeration value="21.ΕΛΛΗΝΙΚΟΥ - ΑΡΓΥΡΟΥΠΟΛΗΣ"/>
+            <xs:enumeration value="22.ΖΩΓΡΑΦΟΥ"/>
+            <xs:enumeration value="23.ΗΛΙΟΥΠΟΛΕΩΣ"/>
+            <xs:enumeration value="24.ΗΡΑΚΛΕΙΟΥ"/>
+            <xs:enumeration value="25.ΙΛΙΟΥ (ΝΕΩΝ ΛΙΟΣΙΩΝ)"/>
+            <xs:enumeration value="26.ΚΑΙΣΑΡΙΑΝΗΣ"/>
+            <xs:enumeration value="27.ΚΑΛΛΙΘΕΑΣ"/>
+            <xs:enumeration value="28.ΚΕΡΑΤΣΙΝΙΟΥ - ΔΡΑΠΕΤΣΩΝΑΣ"/>
+            <xs:enumeration value="29.ΚΗΦΙΣΙΑΣ"/>
+            <xs:enumeration value="30.ΚΟΡΥΔΑΛΛΟΥ"/>
+            <xs:enumeration value="31ΚΡΩΠΙΑΣ"/>
+            <xs:enumeration value="32.ΚΥΘΗΡΩΝ"/>
+            <xs:enumeration value="33.ΛΑΥΡΕΩΤΙΚΗΣ"/>
+            <xs:enumeration value="34.ΛΥΚΟΒΡΥΣΗΣ - ΠΕΥΚΗΣ"/>
+            <xs:enumeration value="35.ΜΑΝΔΡΑΣ - ΕΙΔΥΛΛΙΑΣ"/>
+            <xs:enumeration value="36.ΜΑΡΑΘΩΝΟΣ"/>
+            <xs:enumeration value="37.ΜΑΡΚΟΠΟΥΛΟΥ ΜΕΣΟΓΑΙΑΣ"/>
+            <xs:enumeration value="38.ΜΕΓΑΡΕΩΝ"/>
+            <xs:enumeration value="39.ΜΕΤΑΜΟΡΦΩΣΕΩΣ"/>
+            <xs:enumeration value="40.ΜΟΣΧΑΤΟΥ - ΤΑΥΡΟΥ"/>
+            <xs:enumeration value="41.ΝΕΑΣ ΙΩΝΙΑΣ"/>
+            <xs:enumeration value="42.ΝΕΑΣ ΣΜΥΡΝΗΣ"/>
+            <xs:enumeration value="43.ΝΙΚΑΙΑΣ - ΑΓΙΟΥ ΙΩΑΝΝΗ ΡΕΝΤΗ"/>
+            <xs:enumeration value="44.ΠΑΙΑΝΙΑΣ"/>
+            <xs:enumeration value="45.ΠΑΛΑΙΟΥ ΦΑΛΗΡΟΥ"/>
+            <xs:enumeration value="46.ΠΑΛΛΗΝΗΣ"/>
+            <xs:enumeration value="47.ΠΑΠΑΓΟΥ - ΧΟΛΑΡΓΟΥ"/>
+            <xs:enumeration value="48.ΠΕΙΡΑΙΩΣ"/>
+            <xs:enumeration value="49.ΠΕΝΤΕΛΗΣ"/>
+            <xs:enumeration value="50.ΠΕΡΑΜΑΤΟΣ"/>
+            <xs:enumeration value="51.ΠΕΡΙΣΤΕΡΙΟΥ"/>
+            <xs:enumeration value="52.ΠΕΤΡΟΥΠΟΛΕΩΣ"/>
+            <xs:enumeration value="53.ΠΟΡΟΥ"/>
+            <xs:enumeration value="54.ΡΑΦΗΝΑΣ - ΠΙΚΕΡΜΙΟΥ"/>
+            <xs:enumeration value="55.ΣΑΛΑΜΙΝΑΣ"/>
+            <xs:enumeration value="56.ΣΑΡΩΝΙΚΟΥ"/>
+            <xs:enumeration value="57.ΣΠΑΤΩΝ - ΑΡΤΕΜΙΔΟΣ"/>
+            <xs:enumeration value="58.ΣΠΕΤΣΩΝ"/>
+            <xs:enumeration value="59.ΤΡΟΙΖΗΝΙΑΣ"/>
+            <xs:enumeration value="60.ΥΔΡΑΣ"/>
+            <xs:enumeration value="61.ΦΙΛΑΔΕΛΦΕΙΑΣ - ΧΑΛΚΗΔΟΝΟΣ"/>
+            <xs:enumeration value="62.ΦΙΛΟΘΕΗΣ - ΨΥΧΙΚΟΥ"/>
+            <xs:enumeration value="63.ΦΥΛΗΣ"/>
+            <xs:enumeration value="64.ΧΑΙΔΑΡΙΟΥ"/>
+            <xs:enumeration value="65.ΧΑΛΑΝΔΡΙΟΥ"/>
+            <xs:enumeration value="66.ΩΡΩΠΟΥ"/>   
         </xs:restriction>
     </xs:simpleType>
 
