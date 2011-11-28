@@ -28,7 +28,6 @@
 
     #leftbar{
         float: left;
-/*        background-color: #f7f7f7;*/
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 320px;
@@ -37,10 +36,11 @@
     #main-inner{
         float: left;
         border-left: 1px dotted #aaa;
-/*        background-color: #f7f7f7;*/
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
+        min-height: 800px;
+        overflow: hidden;
     }
 
     .form-buttons{
@@ -130,7 +130,10 @@
         float: right;
         margin: 8px 12px 0px 0px;
     }
-
+    
+    .resultRE{
+        border-color: #88a;
+    }
 </style>
 
 <div id='leftbar'>
@@ -599,7 +602,7 @@
     </div>
 </div>
 <div id='main-inner'>
-    <div class='results'>
+    <div id='results'>
         <?php if(isset($results)){ ?>
         <div class='search-title'>
             <h2>Αποτελέσματα αναζήτησης</h2>
@@ -649,8 +652,14 @@
             </ul>
         </div>
         <ul>
-            <?php foreach($results as $house){ ?>
-            <li class='result-cont'>
+            <?php
+                foreach($results as $house){
+                    $resultClass = 'result-cont';
+                    if($house['User']['role'] == 'realestate'){
+                        $resultClass .= ' resultRE';
+                    }
+                echo "<li class='{$resultClass}'>";
+            ?>
                 <div class='result'>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>
@@ -723,17 +732,17 @@
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο '.$housePrice.'€, ';
+                                echo 'Ενοίκιο: '.$housePrice.'€, ';
                                 echo $furnished;
-                                echo '<br />Δήμος '.$houseMunicipality.'<br />';
+                                echo '<br />Δήμος: '.$houseMunicipality.'<br />';
                                 //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 if ($house['User']['role'] != 'realestate') {
-                                    echo 'Διαθέσιμες θέσεις '.
+                                    echo 'Διαθέσιμες θέσεις: '.
                                         $house['House']['free_places'].'<br />';
                                 }
                                 if( !empty($geoDistance) ) {
-                                    echo 'Απόσταση από ΤΕΙ '
+                                    echo 'Απόσταση από ΤΕΙ: '
                                         . number_format( $geoDistance, 2 )
                                         . '&nbsp;χλμ.';
                                 }

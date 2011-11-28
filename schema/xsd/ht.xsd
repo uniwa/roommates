@@ -50,29 +50,31 @@
     <xs:simpleType name="description_restrictions_type">
         <xs:restriction base="xs:string">
             <xs:whiteSpace value="preserve"/>
-            <xs:minLength value="1"/>
+            <xs:minLength value="0"/>
             <xs:maxLength value="256"/>
         </xs:restriction>
     </xs:simpleType>
 
-    <!--type for heating floor field: nested element type, attribute id-->
-    <xs:complexType name="heating_floor_elements_type">
+     <!--type for municipality type field: nested element name and attribute id-->
+    <xs:complexType name="heating_type">
         <xs:sequence>
-            <xs:element name="type">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="20"/>
-                    </xs:restriction>
-                </xs:simpleType>
+            <xs:element name="name" type="heating_enumerations_type"/>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
 
+    <!--type for heating field: nested element type, attribute id-->
+    <xs:simpleType name="heating_enumerations_type">
+        <xs:restrictions base="string">
+            <xs:enumeration value="κεντρική"/>
+            <xs:enumeration value="αυτόνομη"/> 
+            <xs:enumeration value="δεν διαθέτει"/>
+        </xs:restrictions>
+    </xs:simpleType>
+
 
     <!--type for house_type field: nested element type and attribute id-->
-    <xs:complexType name="house_type">
+    <xs:complexType name="house_restrictions_type">
         <xs:sequence>
             <xs:element name="type">
                 <xs:simpleType>
@@ -94,14 +96,14 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="custom_DateTime_restrictions_type">
+    <xs:simpleType name="custom_DateTime_type">
         <xs:restriction base="xs:string">
             <xs:pattern value="([1-2][0-9][0-9][0-9][-][0-1][0-9][-][0-3][0-9][ ][0-2][0-9][:][0-5][0-9][:][0-5][0-9])"/>
         </xs:restriction>
     </xs:simpleType>
 
     <!--type for municipality type field: nested element name and attribute id-->
-    <xs:complexType name="municipality_elements_type">
+    <xs:complexType name="municipality_type">
         <xs:sequence>
             <xs:element name="name">
                 <xs:simpleType>
@@ -115,8 +117,81 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:simpleType name="municipality_enumerations_type">
+        <xs:restriction base="xs:string">
+
+            <xs:enumeration value="ΑΓΙΑΣ ΒΑΡΒΑΡΑΣ"/>
+            <xs:enumeration value="ΑΓΙΑΣ ΠΑΡΑΣΚΕΥΗΣ"/>
+            <xs:enumeration value="ΑΓΙΟΥ ΔΗΜΗΤΡΙΟΥ"/>
+            <xs:enumeration value="ΑΓΙΩΝ ΑΝΑΡΓΥΡΩΝ - ΚΑΜΑΤΕΡΟΥ"/>
+            <xs:enumeration value="ΑΓΚΙΣΤΡΙΟΥ"/>
+            <xs:enumeration value="ΑΘΗΝΑΙΩΝ"/>
+            <xs:enumeration value="ΑΙΓΑΛΕΩ"/>
+            <xs:enumeration value="ΑΙΓΙΝΑΣ"/>
+            <xs:enumeration value="ΑΛΙΜΟΥ"/>
+            <xs:enumeration value="ΑΜΑΡΟΥΣΙΟΥ"/>
+            <xs:enumeration value="ΑΣΠΡΟΠΥΡΓΟΥ"/>
+            <xs:enumeration value="ΑΧΑΡΝΩΝ"/>
+            <xs:enumeration value="ΒΑΡΗΣ - ΒΟΥΛΑΣ - ΒΟΥΛΙΑΓΜΕΝΗΣ"/>
+            <xs:enumeration value="ΒΡΙΛΗΣΣΙΩΝ"/>
+            <xs:enumeration value="ΒΥΡΩΝΟΣ"/>
+            <xs:enumeration value="ΓΑΛΑΤΣΙΟΥ"/>
+            <xs:enumeration value="ΓΛΥΦΑΔΑΣ"/>
+            <xs:enumeration value="ΔΑΦΝΗΣ - ΥΜΗΤΤΟΥ"/>
+            <xs:enumeration value="ΔΙΟΝΥΣΟΥ"/>
+            <xs:enumeration value="ΕΛΕΥΣΙΝΑΣ"/>
+            <xs:enumeration value="ΕΛΛΗΝΙΚΟΥ - ΑΡΓΥΡΟΥΠΟΛΗΣ"/>
+            <xs:enumeration value="ΖΩΓΡΑΦΟΥ"/>
+            <xs:enumeration value="ΗΛΙΟΥΠΟΛΕΩΣ"/>
+            <xs:enumeration value="ΗΡΑΚΛΕΙΟΥ"/>
+            <xs:enumeration value="ΙΛΙΟΥ (ΝΕΩΝ ΛΙΟΣΙΩΝ)"/>
+            <xs:enumeration value="ΚΑΙΣΑΡΙΑΝΗΣ"/>
+            <xs:enumeration value="ΚΑΛΛΙΘΕΑΣ"/>
+            <xs:enumeration value="ΚΕΡΑΤΣΙΝΙΟΥ - ΔΡΑΠΕΤΣΩΝΑΣ"/>
+            <xs:enumeration value="ΚΗΦΙΣΙΑΣ"/>
+            <xs:enumeration value="ΚΟΡΥΔΑΛΛΟΥ"/>
+            <xs:enumeration value="ΚΡΩΠΙΑΣ"/>
+            <xs:enumeration value="ΚΥΘΗΡΩΝ"/>
+            <xs:enumeration value="ΛΑΥΡΕΩΤΙΚΗΣ"/>
+            <xs:enumeration value="ΛΥΚΟΒΡΥΣΗΣ - ΠΕΥΚΗΣ"/>
+            <xs:enumeration value="ΜΑΝΔΡΑΣ - ΕΙΔΥΛΛΙΑΣ"/>
+            <xs:enumeration value="ΜΑΡΑΘΩΝΟΣ"/>
+            <xs:enumeration value="ΜΑΡΚΟΠΟΥΛΟΥ ΜΕΣΟΓΑΙΑΣ"/>
+            <xs:enumeration value="ΜΕΓΑΡΕΩΝ"/>
+            <xs:enumeration value="ΜΕΤΑΜΟΡΦΩΣΕΩΣ"/>
+            <xs:enumeration value="ΜΟΣΧΑΤΟΥ - ΤΑΥΡΟΥ"/>
+            <xs:enumeration value="ΝΕΑΣ ΙΩΝΙΑΣ"/>
+            <xs:enumeration value="ΝΕΑΣ ΣΜΥΡΝΗΣ"/>
+            <xs:enumeration value="ΝΙΚΑΙΑΣ - ΑΓΙΟΥ ΙΩΑΝΝΗ ΡΕΝΤΗ"/>
+            <xs:enumeration value="ΠΑΙΑΝΙΑΣ"/>
+            <xs:enumeration value="ΠΑΛΑΙΟΥ ΦΑΛΗΡΟΥ"/>
+            <xs:enumeration value="ΠΑΛΛΗΝΗΣ"/>
+            <xs:enumeration value="ΠΑΠΑΓΟΥ - ΧΟΛΑΡΓΟΥ"/>
+            <xs:enumeration value="ΠΕΙΡΑΙΩΣ"/>
+            <xs:enumeration value="ΠΕΝΤΕΛΗΣ"/>
+            <xs:enumeration value="ΠΕΡΑΜΑΤΟΣ"/>
+            <xs:enumeration value="ΠΕΡΙΣΤΕΡΙΟΥ"/>
+            <xs:enumeration value="ΠΕΤΡΟΥΠΟΛΕΩΣ"/>
+            <xs:enumeration value="ΠΟΡΟΥ"/>
+            <xs:enumeration value="ΡΑΦΗΝΑΣ - ΠΙΚΕΡΜΙΟΥ"/>
+            <xs:enumeration value="ΣΑΛΑΜΙΝΑΣ"/>
+            <xs:enumeration value="ΣΑΡΩΝΙΚΟΥ"/>
+            <xs:enumeration value="ΣΠΑΤΩΝ - ΑΡΤΕΜΙΔΟΣ"/>
+            <xs:enumeration value="ΣΠΕΤΣΩΝ"/>
+            <xs:enumeration value="ΤΡΟΙΖΗΝΙΑΣ"/>
+            <xs:enumeration value="ΥΔΡΑΣ"/>
+            <xs:enumeration value="ΦΙΛΑΔΕΛΦΕΙΑΣ - ΧΑΛΚΗΔΟΝΟΣ"/>
+            <xs:enumeration value="ΦΙΛΟΘΕΗΣ - ΨΥΧΙΚΟΥ"/>
+            <xs:enumeration value="ΦΥΛΗΣ"/>
+            <xs:enumeration value="ΧΑΙΔΑΡΙΟΥ"/>
+            <xs:enumeration value="ΧΑΛΑΝΔΡΙΟΥ"/>
+            <xs:enumeration value="ΩΡΩΠΟΥ"/>   
+        </xs:restriction>
+    </xs:simpleType>
+
+
     <!--type for image_type field: nested element name and attribute id-->
-    <xs:complexType name="image_elements_type">
+    <xs:complexType name="image_type">
          <xs:sequence>
             <xs:element name="location">
                 <xs:simpleType>
@@ -130,114 +205,33 @@
         </xs:sequence>
     </xs:complexType>
 
-    <!--
-        1:υπόγειο
-        2:ημιυπόγειο
-        3:υπερυψωμένο
-        4:ισόγειο
-        5:ημιόροφος
-        6:1ος όροφος
-        7:2ος όροφος
-        8:3ος όροφος
-        9:4ος όροφος
-        10:5ος όροφος
-        11:6ος όροφος
-        12:7ος όροφος
-        13:8+ όροφος
-    -->
-   <xs:simpleType name="floor_restrictions_type">
-        <xs:restriction base="xs:integer">
-            <xs:minInclusive value="1"/>
-            <xs:maxInclusive value="13"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <!--
-        1:studio
-        2:γκαρσονιέρα
-        3:διαμέρισμα
-        4:μονοκατοικία
-        5:μεζονέτα
-    -->
-    <xs:simpleType name="house_type_id_restrictons_type">
-        <xs:restriction base="xs:integer">
-            <xs:minInclusive value="1"/>
-            <xs:maxInclusive value="5"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-<!--
-1.ΑΓΙΑΣ ΒΑΡΒΑΡΑΣ
-2.ΑΓΙΑΣ ΠΑΡΑΣΚΕΥΗΣ
-3.ΑΓΙΟΥ ΔΗΜΗΤΡΙΟΥ
-4.ΑΓΙΩΝ ΑΝΑΡΓΥΡΩΝ - ΚΑΜΑΤΕΡΟΥ
-5.ΑΓΚΙΣΤΡΙΟΥ
-6.ΑΘΗΝΑΙΩΝ
-7.ΑΙΓΑΛΕΩ
-8.ΑΙΓΙΝΑΣ
-9.ΑΛΙΜΟΥ
-10.ΑΜΑΡΟΥΣΙΟΥ
-11.ΑΣΠΡΟΠΥΡΓΟΥ
-12.ΑΧΑΡΝΩΝ
-13.ΒΑΡΗΣ - ΒΟΥΛΑΣ - ΒΟΥΛΙΑΓΜΕΝΗΣ
-14.ΒΡΙΛΗΣΣΙΩΝ
-15.ΒΥΡΩΝΟΣ
-16.ΓΑΛΑΤΣΙΟΥ
-17.ΓΛΥΦΑΔΑΣ
-18.ΔΑΦΝΗΣ - ΥΜΗΤΤΟΥ
-19.ΔΙΟΝΥΣΟΥ
-20.ΕΛΕΥΣΙΝΑΣ
-21.ΕΛΛΗΝΙΚΟΥ - ΑΡΓΥΡΟΥΠΟΛΗΣ
-22.ΖΩΓΡΑΦΟΥ
-23.ΗΛΙΟΥΠΟΛΕΩΣ
-24.ΗΡΑΚΛΕΙΟΥ
-25.ΙΛΙΟΥ (ΝΕΩΝ ΛΙΟΣΙΩΝ)
-26.ΚΑΙΣΑΡΙΑΝΗΣ
-27.ΚΑΛΛΙΘΕΑΣ
-28.ΚΕΡΑΤΣΙΝΙΟΥ - ΔΡΑΠΕΤΣΩΝΑΣ
-29.ΚΗΦΙΣΙΑΣ
-30.ΚΟΡΥΔΑΛΛΟΥ
-31ΚΡΩΠΙΑΣ
-32.ΚΥΘΗΡΩΝ
-33.ΛΑΥΡΕΩΤΙΚΗΣ
-34.ΛΥΚΟΒΡΥΣΗΣ - ΠΕΥΚΗΣ
-35.ΜΑΝΔΡΑΣ - ΕΙΔΥΛΛΙΑΣ
-36.ΜΑΡΑΘΩΝΟΣ
-37.ΜΑΡΚΟΠΟΥΛΟΥ ΜΕΣΟΓΑΙΑΣ
-38.ΜΕΓΑΡΕΩΝ
-39.ΜΕΤΑΜΟΡΦΩΣΕΩΣ
-40.ΜΟΣΧΑΤΟΥ - ΤΑΥΡΟΥ
-41.ΝΕΑΣ ΙΩΝΙΑΣ
-42.ΝΕΑΣ ΣΜΥΡΝΗΣ
-43.ΝΙΚΑΙΑΣ - ΑΓΙΟΥ ΙΩΑΝΝΗ ΡΕΝΤΗ
-44.ΠΑΙΑΝΙΑΣ
-45.ΠΑΛΑΙΟΥ ΦΑΛΗΡΟΥ
-46.ΠΑΛΛΗΝΗΣ
-47.ΠΑΠΑΓΟΥ - ΧΟΛΑΡΓΟΥ
-48.ΠΕΙΡΑΙΩΣ
-49.ΠΕΝΤΕΛΗΣ
-50.ΠΕΡΑΜΑΤΟΣ
-51.ΠΕΡΙΣΤΕΡΙΟΥ
-52.ΠΕΤΡΟΥΠΟΛΕΩΣ
-53.ΠΟΡΟΥ
-54.ΡΑΦΗΝΑΣ - ΠΙΚΕΡΜΙΟΥ
-55.ΣΑΛΑΜΙΝΑΣ
-56.ΣΑΡΩΝΙΚΟΥ
-57.ΣΠΑΤΩΝ - ΑΡΤΕΜΙΔΟΣ
-58.ΣΠΕΤΣΩΝ
-59.ΤΡΟΙΖΗΝΙΑΣ
-60.ΥΔΡΑΣ
-61.ΦΙΛΑΔΕΛΦΕΙΑΣ - ΧΑΛΚΗΔΟΝΟΣ
-62.ΦΙΛΟΘΕΗΣ - ΨΥΧΙΚΟΥ
-63.ΦΥΛΗΣ
-64.ΧΑΙΔΑΡΙΟΥ
-65.ΧΑΛΑΝΔΡΙΟΥ
-66.ΩΡΩΠΟΥ-->
-
-    <xs:simpleType name="municipality_restrictions_type">
+   <xs:simpleType name="floor_enumerations_type">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([0-9][0-9]){0,1}"/>
+            <xs:enumeration value="υπόγειο"/>
+            <xs:enumeration value="ημιυπόγειο"/>
+            <xs:enumeration value="υπερυψωμενο"/>
+            <xs:enumeration value="ισόγειο"/>
+            <xs:enumeration value="ημιόροφος"/>
+            <xs:enumeration value="1ος όροφος"/>
+            <xs:enumeration value="2ος όροφος"/>
+            <xs:enumeration value="3ος όροφος"/>
+            <xs:enumeration value="4ος όροφος"/>
+            <xs:enumeration value="5ος όροφος"/>
+            <xs:enumeration value="6ος όροφος"/>
+            <xs:enumeration value="7ος όροφος"/>
+            <xs:enumeration value="8+ όροφος"/>
         </xs:restriction>
     </xs:simpleType>
+
+
+    <xs:simpleType name="house_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="studio"/>
+            <xs:enumeration value="γκαρσονιέρα"/>
+            <xs:enumeration value="μονοκατοικία"/>
+            <xs:enumeration value="μεζονέτα"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 
 </xs:schema>
