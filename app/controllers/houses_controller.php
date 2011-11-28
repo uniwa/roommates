@@ -1363,7 +1363,6 @@ class HousesController extends AppController {
                 $options['conditions'] = array('House.id' => $id);
                 $options['fields'] = $this->getResponseXmlFields();
                 $bad_key = array_search('Image.location' ,$options['fields'],true);
-//                 $options['fields'][$bad_key] = 'House.default_image_id';
                 unset($options['fields'][$bad_key]);
                 $result = $this->House->find('first', $options);
             }
