@@ -60,7 +60,7 @@
     }
     
     .houseLineShort{
-        width: 180px;
+        width: 160px;
     }
     
     .houseProperty{
@@ -73,12 +73,29 @@
     }
 
     .houseC{
-        width: 120px;
+        width: 140px;
     }
 
     .houseValue{
         float: left;
         margin: 0px 0px 0px 8px;
+    }
+    
+    .houseCheck{
+        background-image: url('img/check.png');
+        background-repeat: no-repeat;
+        margin: 0px 0px 0px 8px;
+        width: 12px;
+        height: 12px;
+        text-indent: -9999px;
+    }
+    
+    .houseCheckFalse{
+        background-position: 0px -12px;
+    }
+
+    .houseCheckTrue{
+        background-position: 0px 0px;
     }
 
     .houseOdd{
@@ -107,6 +124,11 @@
     .imageThumbCont{
         width: 180px;
         height: 100px;
+        overflow: hidden;
+    }
+    
+    .default-image{
+        height: 100%;
         overflow: hidden;
     }
 
@@ -220,11 +242,11 @@
                 'title' => $houseTypeArea, 'escape' => false));
 
         if($loggedUser == $userid){
-            $housePic .= "<div class='imageactions'>";
-            $housePic .= $this->Html->link(__('Διαγραφή', true),
+            $imageActions = "<div class='imageactions'>";
+            $imageActions .= $this->Html->link('Διαγραφή',
                 array('controller' => 'images', 'action' => 'delete', $default_image_id),
                 array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
-            $housePic .= "</div>";
+            $imageActions .= "</div>";
         }
     }else{ // if don't have an image put placeholder
         if($loggedUser == $userid){
@@ -481,9 +503,14 @@ EOT;
 
 <div id='leftbar'>
     <div id='houseCont'>
-        <div class='housePic liimage'>
+        <div class='housePic default-image'>
+            <div class='imageThumbCont'>
+                <?php
+                    echo $housePic;
+                ?>
+            </div>
             <?php
-                echo $housePic;
+                echo $imageActions;
             ?>
         </div>
     </div>
@@ -541,9 +568,16 @@ EOM;
                 $propertyLine .= "<div class='houseProperty {$lineClass}'>\n";
                 $property = "{$hp['label']} : ";
                 $propertyLine .= $property;
-                $propertyLine .= "</div>\n<div class='houseValue'>\n";
+                $lineClass = 'houseValue';
                 if($checkbox){
-                    $value = ($hp['check'])?'ναι':'όχι';
+                    $lineClass .= ' houseCheck';
+                    if($hp['check']){
+                        $value = 'ναι';
+                        $lineClass .= ' houseCheckTrue';
+                    }else{
+                        $value = 'όχι';
+                        $lineClass .= ' houseCheckFalse';
+                    }
                 }else{
                     $value = '-';
                     if(isset($hp['value'])){
@@ -555,6 +589,7 @@ EOM;
                         }
                     }
                 }
+                $propertyLine .= "</div>\n<div class='{$lineClass}'>\n";
                 $propertyLine .= $value;
                 $propertyLine .= "</div>\n</li>\n";
                 if($checkbox){

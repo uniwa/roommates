@@ -25,10 +25,12 @@
     </div>
     <div id='footer-main'>
         <div class='logos'>
-            <img src='img/logos/tei.png' alt='ΤΕΙ Αθήνας' />
-            <img src='img/logos/psifiakiellada.JPG' alt='Ψηφιακή Ελλάδα' />
-            <img src='img/logos/epsa_logo_CMYK.png' alt='ΕΣΠΑ 2007-2013' />
-            <img src='img/logos/eurwpaikienwsi.jpg' alt='Ευρωπαϊκή Ένωση' />
+            <?php
+                echo $this->Html->image('logos/tei.png', array('alt' => 'ΤΕΙ Αθήνας'));
+                echo $this->Html->image('logos/psifiakiellada.JPG', array('alt' => 'Ψηφιακή Ελλάδα'));
+                echo $this->Html->image('logos/epsa_logo_CMYK.png', array('alt' => 'ΕΣΠΑ 2007-2013'));
+                echo $this->Html->image('logos/eurwpaikienwsi.jpg', array('alt' => 'Ευρωπαϊκή Ένωση'));
+            ?>
         </div>
         <div class='funding'>
             Με τη συγχρηματοδότηση της Ελλάδας και της Ευρωπαϊκής Ένωσης
@@ -39,12 +41,18 @@
                 if(isset($active)){
                     $activeusers = $active['profiles'];
                     $activehouses = $active['houses'];
-                    echo "<img src='img/group-users.png' alt='Ενεργά προφίλ χρηστών'";
-                    echo "title='Ενεργά προφίλ χρηστών' class='info' />";
-                    echo "<div class='info'>".$activeusers."</div>";
-                    echo "<img src='img/favicon.ico' alt='Καταχωρημένα σπίτια'";
-                    echo "title='Καταχωρημένα σπίτια' class='info' />";
-                    echo "<div class='info'>".$activehouses."</div>";
+                    $iconUsers = $this->Html->image('group-users.png', array(
+                        'alt' => 'Ενεργά προφίλ χρηστών',
+                        'title' => 'Ενεργά προφίλ χρηστών',
+                        'class' => 'info'));
+                    $iconHouses = $this->Html->image('favicon.ico', array(
+                        'alt' => 'Καταχωρημένα σπίτια',
+                        'title' => 'Καταχωρημένα σπίτια',
+                        'class' => 'info'));
+                    echo $iconUsers;
+                    echo "<div class='info'>{$activeusers}</div>";
+                    echo $iconHouses;
+                    echo "<div class='info'>{$activehouses}</div>";
                 } // isset active
             ?>
         </div>
