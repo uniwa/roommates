@@ -12,7 +12,7 @@
     <xs:element name="houses"> 
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="house" minOccurs="0" maxOccurs="unbounded" type="hr:house_elements_type"/>
+                <xs:element name="house" minOccurs="0" maxOccurs="unbounded" type="hr:house_type"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
