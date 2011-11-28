@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:hcrud="http://www.roommates.teiath.gr/hcrud/schemas"
-    targetNamespace="http://www.roommates.teiath.gr/hcrud/schemas"
-    xmlns:ht="http://www.roommates.teiath.gr/ht/schemas"
+    xmlns:hcrud="http://www.roommates.teiath.gr/schemas/HouseCrud"
+    targetNamespace="http://www.roommates.teiath.gr/schemas/HouseCrud"
+    xmlns:ht="http://www.roommates.teiath.gr/schemas/HouseTypes"
     elementFormDefault="qualified">
 
 <xs:import schemaLocation="ht.xsd"
-        namespace="http://www.roommates.teiath.gr/ht/schemas"/>
+    namespace="http://www.roommates.teiath.gr/schemas/HouseTypes"/>
 
-    <xs:element name="house" type="hcrud:house_crud_type"/>
+    <xs:element name="house" type="hcrud:house_type"/>
 
 
-    <xs:complexType name="house_crud_type">
+    <xs:complexType name="house_type">
         <xs:sequence>
             <xs:element name="address" type="ht:address_restrictions_type"/>
             <xs:element name="postal_code" type="ht:postal_code_restrictions_type"/>
             <xs:element name="area" type="xs:integer"/>
             <xs:element name="bedroum_num" type="ht:bedroom_num_restrictions_type"/>
-             <xs:element name="bathroom_num" type="hce:bedroom_num_restrictions_type"/>
+            <xs:element name="bathroom_num" type="hce:bedroom_num_restrictions_type"/>
             <xs:element name="price" type="xs:integer"/>
             <xs:element name="construction_year" type="ht:construction_year_restrictions_type"/>
             <xs:element name="solar_heater" type="xs:boolean"/>
@@ -32,11 +32,11 @@
             <xs:element name="availability_date" type="xs:date"/>
             <xs:element name="rent_period" type="ht:rent_period_restrictions_type"/>
             <xs:element name="description" type="ht:description_restrictions_type"/>
-            <xs:element name="floor_id" type="ht:floor_restrictions_type"/>
-            <xs:element name="house_type_id" type="ht:house_type_id_restrictons_type"/>
+            <xs:element name="floor" type="ht:floor_enumerations_type"/>
+            <xs:element name="house_type" type="ht:house_enumerations_type"/>
             <xs:element name="currently_hosting" type="ht:hosting_restrictions_type"/>
             <xs:element name="total_places" type="ht:hosting_restrictions_type"/>
-            <xs:element name="municipality_id" type="ht:municipality_restrictions_type"/>
+            <xs:element name="municipality" type="ht:municipality_enumerations_type"/>
             <xs:element name="visible" type="xs:boolean"/>
             <xs:element name="latitude" type="hcrud:coordinates_type"/>
             <xs:element name="longitude" type="hcrud:coordinates_type"/>
