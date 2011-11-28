@@ -124,7 +124,7 @@ class HousesController extends AppController {
                 array(  'table' => 'images',
                         'alias' => 'Image',
                         'type'  => 'left',
-                        'conditions' => array('House.default_image_id = Image.id')
+                        'conditions' => array('House.id = Image.house_id')
                 ),
                 array(  'table' => 'users',
                         'alias' => 'User',
@@ -276,7 +276,7 @@ class HousesController extends AppController {
                 'controller' => 'houses', 'action'=> 'manage');
         }else if($this->Auth->User('role') == 'user'){
             $profileid = $this->Profile->find('first',
-                array('fields' => 'Profile.id', 
+                array('fields' => 'Profile.id',
                 'conditions' => array(
                     'Profile.user_id' => $this->Auth->user('id'))));
             $profileid = $profileid['Profile']['id'];
@@ -1123,7 +1123,7 @@ class HousesController extends AppController {
         $order = $url['order_by'];
 
         if( empty( $order ) )   return $array;
- 
+
        switch( $order ) {
             case 9:
                 usort( $array, array( "HousesController", "distanceInAsc" ) );
@@ -1178,7 +1178,7 @@ class HousesController extends AppController {
         return 0;
     }
     // Manual [geo_distance] ordering. -- SECTION END
-    
+
     // Facebook functions -- SECTION START
 
     // Posts an announcement on the application's page on Facebook.
