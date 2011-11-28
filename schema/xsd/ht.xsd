@@ -7,7 +7,7 @@
        
 
     <!--restrictions about address field spacing and strlen-->
-    <xs:simpleType name="address_restrictions_type">
+    <xs:simpleType name="address_type">
         <xs:restriction base="xs:string">
             <xs:whiteSpace value="preserve"/>
             <xs:minLength value="1"/>
@@ -16,7 +16,7 @@
     </xs:simpleType>
 
     <!--restrictions about postal_code field spacing and strlen-->
-    <xs:simpleType name="postal_code_restrictions_type">
+    <xs:simpleType name="postal_code_type">
         <xs:restriction base="xs:string">
             <xs:whiteSpace value="collapse"/>
             <xs:minLength value="0"/>
@@ -25,7 +25,7 @@
     </xs:simpleType>
 
     <!--restrictions about bedroom_num field min-max value-->
-    <xs:simpleType name="bedroom_num_restrictions_type">
+    <xs:simpleType name="bedroom_num_type">
         <xs:restriction base="xs:integer">
             <xs:minInclusive value="1"/>
             <xs:maxInclusive value="99"/>
@@ -33,21 +33,21 @@
     </xs:simpleType>
 
     <!--restrictions about construction year field min-max value-->
-    <xs:simpleType name="construction_year_restrictions_type">
+    <xs:simpleType name="construction_year_type">
         <xs:restriction base="xs:string">
             <xs:pattern value="([0-9]){0,4}"/>
         </xs:restriction>
     </xs:simpleType>
 
     <!--restrictions about rent period field max value-->
-    <xs:simpleType name="rent_period_restrictions_type">
+    <xs:simpleType name="rent_period_type">
         <xs:restriction base="xs:string">
             <xs:pattern value="([0-9]){0,4}"/>            
         </xs:restriction>
     </xs:simpleType>
 
     <!--restrictions about description field spacing and strlen-->
-    <xs:simpleType name="description_restrictions_type">
+    <xs:simpleType name="description_type">
         <xs:restriction base="xs:string">
             <xs:whiteSpace value="preserve"/>
             <xs:minLength value="0"/>
@@ -58,8 +58,7 @@
      <!--type for municipality type field: nested element name and attribute id-->
     <xs:complexType name="heating_type">
         <xs:sequence>
-            <xs:element name="name" type="heating_enumerations_type"/>
-            </xs:element>
+            <xs:element name="type" type="ht:heating_enumerations_type"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -74,29 +73,33 @@
 
 
     <!--type for house_type field: nested element type and attribute id-->
-    <xs:complexType name="house_restrictions_type">
+    <xs:complexType name="house_type">
         <xs:sequence>
-            <xs:element name="type">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="25"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
+            <xs:element name="type" type="ht:house_enumerations_type"/>
         </xs:sequence>
     </xs:complexType>
 
+
+    <xs:simpleType name="house_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="studio"/>
+            <xs:enumeration value="γκαρσονιέρα"/>
+            <xs:enumeration value="μονοκατοικία"/>
+            <xs:enumeration value="μεζονέτα"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+
     <!--restrictions about hosting_type field  min-max value-->
-    <xs:simpleType name="hosting_restrictions_type">
+    <xs:simpleType name="hosting_type">
         <xs:restriction base="xs:integer">
             <xs:minInclusive value="1"/>
             <xs:maxInclusive value="9"/>
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="custom_DateTime_type">
+    <xs:simpleType name="dateTime_type">
         <xs:restriction base="xs:string">
             <xs:pattern value="([1-2][0-9][0-9][0-9][-][0-1][0-9][-][0-3][0-9][ ][0-2][0-9][:][0-5][0-9][:][0-5][0-9])"/>
         </xs:restriction>
@@ -105,16 +108,8 @@
     <!--type for municipality type field: nested element name and attribute id-->
     <xs:complexType name="municipality_type">
         <xs:sequence>
-            <xs:element name="name">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="preserve"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="45"/>
-                     </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
+            <xs:element name="name" type="ht:municipality_enumerations_type">
+         </xs:sequence>
     </xs:complexType>
 
     <xs:simpleType name="municipality_enumerations_type">
@@ -189,20 +184,11 @@
         </xs:restriction>
     </xs:simpleType>
 
-
-    <!--type for image_type field: nested element name and attribute id-->
-    <xs:complexType name="image_type">
-         <xs:sequence>
-            <xs:element name="location">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="100"/>
-                     </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
+    <!--type for municipality type field: nested element name and attribute id-->
+    <xs:complexType name="floor_type">
+        <xs:sequence>
+            <xs:element name="name" type="ht:floor_enumerations_type">
+         </xs:sequence>
     </xs:complexType>
 
    <xs:simpleType name="floor_enumerations_type">
@@ -224,14 +210,20 @@
     </xs:simpleType>
 
 
-    <xs:simpleType name="house_enumerations_type">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="studio"/>
-            <xs:enumeration value="γκαρσονιέρα"/>
-            <xs:enumeration value="μονοκατοικία"/>
-            <xs:enumeration value="μεζονέτα"/>
-        </xs:restriction>
-    </xs:simpleType>
+    <!--type for image_type field: nested element name and attribute id-->
+    <xs:complexType name="image_type">
+         <xs:sequence>
+            <xs:element name="location">
+                <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:whiteSpace value="collapse"/>
+                        <xs:minLength value="0"/>
+                        <xs:maxLength value="100"/>
+                     </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 
 
 </xs:schema>
