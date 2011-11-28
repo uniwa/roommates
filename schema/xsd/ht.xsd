@@ -56,23 +56,17 @@
     </xs:simpleType>
 
     <!--type for heating floor field: nested element type, attribute id-->
-    <xs:complexType name="heating_floor_elements_type">
-        <xs:sequence>
-            <xs:element name="type">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="20"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
+    <xs:simpleType name="heating_enumerations_type">
+        <xs:restrictions base="string">
+            <xs:enumeration value="1.κεντρική"/>
+            <xs:enumeration value="2.αυτόνομη"/> 
+            <xs:enumeration value="3.δεν διαθέτει"/>
+        </xs:restrictions>
     </xs:complexType>
 
 
     <!--type for house_type field: nested element type and attribute id-->
-    <xs:complexType name="house_type">
+    <xs:complexType name="house_restrictions_type">
         <xs:sequence>
             <xs:element name="type">
                 <xs:simpleType>
@@ -94,14 +88,14 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="custom_DateTime_restrictions_type">
+    <xs:simpleType name="custom_DateTime_type">
         <xs:restriction base="xs:string">
             <xs:pattern value="([1-2][0-9][0-9][0-9][-][0-1][0-9][-][0-3][0-9][ ][0-2][0-9][:][0-5][0-9][:][0-5][0-9])"/>
         </xs:restriction>
     </xs:simpleType>
 
     <!--type for municipality type field: nested element name and attribute id-->
-    <xs:complexType name="municipality_elements_type">
+    <xs:complexType name="municipality_type">
         <xs:sequence>
             <xs:element name="name">
                 <xs:simpleType>
@@ -114,50 +108,6 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-
-    <!--type for image_type field: nested element name and attribute id-->
-    <xs:complexType name="image_elements_type">
-         <xs:sequence>
-            <xs:element name="location">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="100"/>
-                     </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-   <xs:simpleType name="floor_enumerations_type">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="1.υπόγειο"/>
-            <xs:enumeration value="2.ημιυπόγειο"/>
-            <xs:enumeration value="3.υπερυψωμενο"/>
-            <xs:enumeration value="4.ισόγειο"/>
-            <xs:enumeration value="5.ημιόροφος"/>
-            <xs:enumeration value="6.1ος όροφος"/>
-            <xs:enumeration value="7.2ος όροφος"/>
-            <xs:enumeration value="8.3ος όροφος"/>
-            <xs:enumeration value="9.4ος όροφος"/>
-            <xs:enumeration value="10.5ος όροφος"/>
-            <xs:enumeration value="11.6ος όροφος"/>
-            <xs:enumeration value="12.7ος όροφος"/>
-            <xs:enumeration value="13.8+ όροφος"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-
-    <xs:simpleType name="house_enumerations_type">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="1.studio"/>
-            <xs:enumeration value="2.γκαρσονιέρα"/>
-            <xs:enumeration value="3.μονοκατοικία"/>
-            <xs:enumeration value="5.μεζονέτα"/>
-        </xs:restriction>
-    </xs:simpleType>
-
 
     <xs:simpleType name="municipality_enumerations_type">
         <xs:restriction base="xs:string">
@@ -230,5 +180,50 @@
             <xs:enumeration value="66.ΩΡΩΠΟΥ"/>   
         </xs:restriction>
     </xs:simpleType>
+
+
+    <!--type for image_type field: nested element name and attribute id-->
+    <xs:complexType name="image_type">
+         <xs:sequence>
+            <xs:element name="location">
+                <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:whiteSpace value="collapse"/>
+                        <xs:minLength value="0"/>
+                        <xs:maxLength value="100"/>
+                     </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+   <xs:simpleType name="floor_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1.υπόγειο"/>
+            <xs:enumeration value="2.ημιυπόγειο"/>
+            <xs:enumeration value="3.υπερυψωμενο"/>
+            <xs:enumeration value="4.ισόγειο"/>
+            <xs:enumeration value="5.ημιόροφος"/>
+            <xs:enumeration value="6.1ος όροφος"/>
+            <xs:enumeration value="7.2ος όροφος"/>
+            <xs:enumeration value="8.3ος όροφος"/>
+            <xs:enumeration value="9.4ος όροφος"/>
+            <xs:enumeration value="10.5ος όροφος"/>
+            <xs:enumeration value="11.6ος όροφος"/>
+            <xs:enumeration value="12.7ος όροφος"/>
+            <xs:enumeration value="13.8+ όροφος"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="house_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1.studio"/>
+            <xs:enumeration value="2.γκαρσονιέρα"/>
+            <xs:enumeration value="3.μονοκατοικία"/>
+            <xs:enumeration value="5.μεζονέτα"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 
 </xs:schema>
