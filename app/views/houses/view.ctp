@@ -413,8 +413,12 @@
     $houseProperties['price']['value'] = $housePrice;
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
-    $houseProperties['hosting']['value'] = $houseHosting;
-    $houseProperties['free_places']['value'] = $houseFreePlaces;
+
+    // if the house belongs to real estate, don't display availability info
+    if($ownerRole != 'realestate'){
+        $houseProperties['hosting']['value'] = $houseHosting;
+        $houseProperties['free_places']['value'] = $houseFreePlaces;
+    }
 
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
@@ -445,7 +449,7 @@
         // obscure exact location of house if it belongs to a 'user' (as in
         // role) and request a circular area to be positioned over the map
         if( $ownerRole == 'user' ) {
-            
+
             $displayCircle = 1;
 
             $latDev = rand( -1, 1 );
