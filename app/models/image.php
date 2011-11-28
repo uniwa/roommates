@@ -3,17 +3,8 @@
 class Image extends AppModel {
 
     var $name = 'Image';
-/*
-    var $belongsTo = array(
-            'House' => array(
-            'className' => 'House',
-            'foreignKey' => 'house_id',
-            'conditions' => '',
-            'fields' => '',
-            'order' => ''
-        )
-    );*/
-    var $belongsTo = array('House');
+
+    var $belongsTo = array('House' => array('counterCache' => true));
 
     private function has_permissions($house_id = NULL, $user_id = NULL) {
         /* check for write permissions

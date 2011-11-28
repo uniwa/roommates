@@ -115,6 +115,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `latitude` DOUBLE DEFAULT NULL,
   `longitude` DOUBLE DEFAULT NULL,
   `geo_distance` FLOAT DEFAULT NULL,
+  `image_count` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
   INDEX `fk_house_house_type1` (`house_type_id` ASC) ,
