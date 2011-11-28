@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://www.roommates.teiath.gr/ht/schemas"
-    xmlns:ht="http://www.roommates.teiath.gr/ht/schemas"                              
+    targetNamespace="http://www.roommates.teiath.gr/schemas/HouseTypes"
+    xmlns:ht="http://www.roommates.teiath.gr/schemas/HouseTypes"                              
     elementFormDefault="qualified">
 
        
