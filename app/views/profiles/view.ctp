@@ -193,7 +193,7 @@
                 $rssContent = $this->Html->image('rss.png', array('alt' => $name));
                 $rssContent .= ' Προσωποποιημένο RSS';
                 $rssLink = array('controller' => 'houses', 'action' => 'search.rss',
-                    '?' => array('token' => $profile["Profile"]["token"]));
+                    '?' => array('token' => $profile['Profile']['token']));
                 if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
                     $personalRSS = $this->Html->link(
                         $rssContent, $rssLink, array('escape' => false));
@@ -394,13 +394,21 @@
         </div>
     <?php 
         }else{
-            $houseTitle = '+Προσθήκη σπιτιού';
-            $houseLink = $this->Html->link($houseTitle,
-                array('controller' => 'houses', 'action' => 'add'));
+            if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
+                $houseTitle = '+Προσθήκη σπιτιού';
+                $houseLink = $this->Html->link($houseTitle,
+                    array('controller' => 'houses', 'action' => 'add'));
+            }
     ?>
         <div id='myHouse' class='profileBlock profileClear'>
             <div class='profileTitle'>
-	            <h2><?php echo $houseLink; ?></h2>
+	            <h2>
+	                <?php
+	                    if(isset($houseLink)){
+	                        echo $houseLink;
+                        }
+                    ?>
+	            </h2>
             </div>
         </div>
     <?php
