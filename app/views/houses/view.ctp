@@ -1,4 +1,19 @@
 <style>
+    #mainWrapper{
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .contRE{
+        border-top: 6px solid #88a;
+    }
+    
+    .contUser{
+        border-top: 6px solid #ddd;
+    }
+    
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
@@ -508,8 +523,13 @@
         </script>
 EOT;
 
+if($ownerRole == 'realestate'){
+    $classCont='contRE';
+}else{
+    $classCont='contUser';
+}
+echo "<div id='mainWrapper' class='{$classCont}'>";
 ?>
-
 <div id='leftbar'>
     <div id='houseCont'>
         <div class='housePic default-image'>
@@ -634,4 +654,4 @@ EOM;
         </div>
     </div>
 </div>
-
+</div>
