@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<house xmlns="http://www.roommates.teiath.gr/hce/schemas">
+    <address>please work 1</address>
+    <postal_code>12345</postal_code>
+    <area>345</area>
+    <bedroom_num>3</bedroom_num>
+    <bathroom_num>1</bathroom_num>
+    <price>666</price>
+    <construction_year>1821</construction_year>
+    <solar_heater>0</solar_heater>
+    <furnitured>0</furnitured>
+    <aircondition>1</aircondition>
+    <garden>0</garden>
+    <parking>1</parking>
+    <shared_pay>1</shared_pay>
+    <security_doors>0</security_doors>
+    <disability_facilities>0</disability_facilities>
+    <storeroom>1</storeroom>
+    <availability_date><![CDATA[2012-10-10]]></availability_date>
+    <rent_period>12</rent_period>
+    <description />
+    <floor_id>4</floor_id>
+    <house_type_id>2</house_type_id>
+    <currently_hosting>2</currently_hosting>
+    <total_places>3</total_places>
+    <municipality_id />
+    <visible>1</visible>
+    <latitude />
+    <longitude />
+</house>

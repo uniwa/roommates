@@ -287,6 +287,13 @@ class HousesController extends AppController {
             $redirectTarget = array(
                 'controller' => 'profiles', 'action'=> 'view', $profileid);
         }
+
+        /* hack: set default image id to NULL to avoid constraints */
+        $this->House->id = $id;
+        $house = $this->House->read();
+        $house['House']['default_image_id'] = NULL;
+        $this->House->save($house);
+
         /* delete associated images first */
         $conditions = array("house_id" => $id);
         if ( ! $this->House->Image->deleteAll($conditions) ) {
