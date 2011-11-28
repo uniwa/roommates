@@ -28,7 +28,6 @@
 
     #leftbar{
         float: left;
-/*        background-color: #f7f7f7;*/
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
         width: 320px;
@@ -131,7 +130,10 @@
         float: right;
         margin: 8px 12px 0px 0px;
     }
-
+    
+    .resultRE{
+        border-color: #88a;
+    }
 </style>
 
 <div id='leftbar'>
@@ -650,8 +652,14 @@
             </ul>
         </div>
         <ul>
-            <?php foreach($results as $house){ ?>
-            <li class='result-cont'>
+            <?php
+                foreach($results as $house){
+                    $resultClass = 'result-cont';
+                    if($house['User']['role'] == 'realestate'){
+                        $resultClass .= ' resultRE';
+                    }
+                echo "<li class='{$resultClass}'>";
+            ?>
                 <div class='result'>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>

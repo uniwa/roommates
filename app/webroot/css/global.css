@@ -314,6 +314,8 @@ textarea{
     clear: both;
     border-top: 3px solid #ddd;
     background-color: #fff;
+    background: -moz-linear-gradient(top, #f4f4f4, #fff);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#fff));
     margin: 24px 0px 0px 0px;
     padding: 2px 0px 0px 0px;
     width: 580px;
@@ -327,7 +329,7 @@ textarea{
 
 .result-photo{
     float: left;
-    background-color: #fff;
+/*    background-color: #fff;*/
     margin: 0px 0px 0px 14px;
     width: 177px;
 }
@@ -357,7 +359,7 @@ textarea{
 
 .result-desc{
     float: left;
-    background-color: #fff;
+/*    background-color: #fff;*/
     margin: 0px 0px 0px 4px;
     width: 380px;
     height: 100px;
