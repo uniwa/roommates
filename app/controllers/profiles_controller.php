@@ -88,8 +88,7 @@ class ProfilesController extends AppController {
                 $houseid = $profile["User"]["House"][0]["id"];
                 $this->House->id = $houseid;
                 $house = $this->House->read();
-                $image = $this->Image->find('first',array('conditions' =>
-                    array('Image.id' => $house['House']['default_image_id'])));
+                $image = $this->House->Image->find('first',array('conditions' => array('Image.is_default' => 1)));
                 if($image != ''){
                     $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
                     $this->set('image', $imageFile);
@@ -172,16 +171,15 @@ class ProfilesController extends AppController {
                 $this->cakeError('error404');
             }
         }
-
+        /* FIXME wtf? why ['House'][0]? */
         if(isset($profile['User']['House'][0]['id'])){
             if($profile['User']['House'][0]['visible'] === 1){
                 $imgDir = 'uploads/houses/';
                 $houseid = $profile["User"]["House"][0]["id"];
                 $this->House->id = $houseid;
                 $house = $this->House->read();
-                $image = $this->Image->find('first',array('conditions' => array(
-                    'Image.id' => $house['House']['default_image_id'],
-                    'Image')));
+                $image = $this->House->Image->find('first',array('conditions' => array(
+                    'Image.is_default' => 1, 'Image')));
                 $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
                 $this->set('image', $imageFile);
             }
