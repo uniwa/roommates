@@ -27,6 +27,8 @@
         margin: 10px 0px 20px 0px;
         padding: 24px 24px 24px 16px;
         width: 560px;
+        min-height: 600px;
+        overflow: hidden;
     }
 
     #houseCont{
@@ -278,8 +280,8 @@
                 array('controller' => 'images', 'action' =>'add', $houseid),
                 array('title' => 'προσθήκη εικόνας σπιτιού', 'escape' => false));
         }else{ // empty placeholder without link to add image
-            $housePic = $this->Html->image('addpic.png', array(
-                'alt' => 'προσθήκη εικόνας σπιτιού', 'class' => 'img-placeholder'));
+            $housePic = $this->Html->image('home.png', array(
+                'alt' => 'προσθήκη εικόνας σπιτιού'));
         }
         $empty_slots -= 1;
     }
