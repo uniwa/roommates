@@ -16,7 +16,7 @@
             <xs:element name="address" type="ht:address_type"/>
             <xs:element name="postal_code" type="ht:postal_code_type"/>
             <xs:element name="area" type="xs:integer"/>
-            <xs:element name="bedroum_num" type="ht:bedroom_num_type"/>
+            <xs:element name="bedroom_num" type="ht:bedroom_num_type"/>
             <xs:element name="bathroom_num" type="hce:bedroom_num_type"/>
             <xs:element name="price" type="xs:integer"/>
             <xs:element name="construction_year" type="ht:construction_year_type"/>
@@ -35,13 +35,13 @@
             <xs:element name="floor" type="ht:floor_type"/>
             <xs:element name="house_type" type="ht:house_type"/>
             <xs:element name="currently_hosting" type="ht:hosting_type"/>
-            <xs:element name="total_places" type="ht:hosting_rest_type"/>
-            <xs:element name="municipality" type="ht:municipality_type"/>
+            <xs:element name="total_places" type="ht:one_to_nine_type"/>
+            <xs:element name="municipality" type="ht:one_to_nine_type"/>
             <xs:element name="visible" type="xs:boolean"/>
             <xs:element name="latitude" type="hcrud:coordinates_type"/>
             <xs:element name="longitude" type="hcrud:coordinates_type"/>
         </xs:sequence>
-        </xs:complexType>
+    </xs:complexType>
         
     <xs:simpleType name="coordinates_type">
         <xs:restriction base="xs:string">
