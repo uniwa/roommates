@@ -193,7 +193,7 @@
                     'options' => $places_availability));
                 echo $form->input('total_places', array(
                     'label' => 'Μπορούν συνολικά να συγκατοικήσουν ',
-                    'type' => 'select', 'options' => $places_availability));
+                    'type' => 'select', 'options' => $places_availability, 'default' => 2));
         }
         echo $this->Form->input('visible', array(
             'label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
