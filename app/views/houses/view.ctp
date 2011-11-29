@@ -515,6 +515,9 @@
     if( is_null( $houseLat ) )  $houseLat = 'null';
     if( is_null( $houseLng ) )  $houseLng = 'null';
 
+    // php does not echo 0 either, so print it as text
+    if( $displayCircle == 0 )  $displayCircle = '0';
+
     // the coordinates and the marker "type" (circle/arrow) are passed as
     // HTML-inline javascipt
     echo <<<EOT
