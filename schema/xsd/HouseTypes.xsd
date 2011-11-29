@@ -72,11 +72,11 @@
 
     <!--type for heating field: nested element type, attribute id-->
     <xs:simpleType name="heating_enumerations_type">
-        <xs:restrictions base="xs:string">
+        <xs:restriction base="xs:string">
             <xs:enumeration value="κεντρική"/>
             <xs:enumeration value="αυτόνομη"/> 
             <xs:enumeration value="δεν διαθέτει"/>
-        </xs:restrictions>
+        </xs:restriction>
     </xs:simpleType>
 
 
