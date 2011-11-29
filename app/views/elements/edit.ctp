@@ -135,7 +135,7 @@
         $imageThumb = $this->Html->image($imageThumbLocation, array('alt' => $houseTypeArea));
     }else{
         $imageThumb = $this->Html->image('home.png', array('alt' => 'προσθήκη σπιτιού'));
-        $dateOptions['empty'] = '---';
+//        $dateOptions['empty'] = '---';
     }
 ?>
 
