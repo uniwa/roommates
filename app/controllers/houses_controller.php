@@ -1101,12 +1101,12 @@ class HousesController extends AppController {
             case 8:
                 $order = array('House.free_places' => 'desc');
                 break;
-                // order by distance - asc
             case 9:
+                // order by distance - asc
                 $order = array('geo_distance' => 'IS NULL ASC', 'House.geo_distance' => 'ASC');
                 break;
-                // order by distance - desc
             case 10:
+                // order by distance - desc
                 $order = array('House.geo_distance' => 'DESC');
                 break;
         }
