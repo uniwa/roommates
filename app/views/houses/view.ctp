@@ -1,9 +1,24 @@
 <style>
+    #mainWrapper{
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .contRE{
+        border-top: 6px solid #88a;
+    }
+    
+    .contUser{
+        border-top: 6px solid #ddd;
+    }
+    
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
-        width: 300px;
+        width: 340px;
     }
 
     #main-inner{
@@ -11,7 +26,7 @@
         border-left: 1px dotted #333;
         margin: 10px 0px 20px 0px;
         padding: 24px 24px 24px 16px;
-        width: 580px;
+        width: 560px;
     }
 
     #houseCont{
@@ -164,7 +179,7 @@
     
     .map{
         margin: 0px auto;
-        width: 260px;
+        width: 300px;
         height: 220px;
     }
 </style>
@@ -508,8 +523,13 @@
         </script>
 EOT;
 
+if($ownerRole == 'realestate'){
+    $classCont='contRE';
+}else{
+    $classCont='contUser';
+}
+echo "<div id='mainWrapper' class='{$classCont}'>";
 ?>
-
 <div id='leftbar'>
     <div id='houseCont'>
         <div class='housePic default-image'>
@@ -634,4 +654,4 @@ EOM;
         </div>
     </div>
 </div>
-
+</div>

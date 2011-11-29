@@ -5,7 +5,7 @@
     xmlns:ht="http://www.roommates.teiath.gr/schemas/HouseTypes"
     elementFormDefault="qualified">
 
-<xs:import schemaLocation="ht.xsd"
+<xs:import schemaLocation="HouseTypes.xsd"
     namespace="http://www.roommates.teiath.gr/schemas/HouseTypes"/>
 
     <xs:element name="house" type="hcrud:house_type"/>
@@ -13,13 +13,13 @@
 
     <xs:complexType name="house_type">
         <xs:sequence>
-            <xs:element name="address" type="ht:address_restrictions_type"/>
-            <xs:element name="postal_code" type="ht:postal_code_restrictions_type"/>
+            <xs:element name="address" type="ht:address_type"/>
+            <xs:element name="postal_code" type="ht:postal_code_type"/>
             <xs:element name="area" type="xs:integer"/>
-            <xs:element name="bedroum_num" type="ht:bedroom_num_restrictions_type"/>
-            <xs:element name="bathroom_num" type="hce:bedroom_num_restrictions_type"/>
+            <xs:element name="bedroum_num" type="ht:bedroom_num_type"/>
+            <xs:element name="bathroom_num" type="hce:bedroom_num_type"/>
             <xs:element name="price" type="xs:integer"/>
-            <xs:element name="construction_year" type="ht:construction_year_restrictions_type"/>
+            <xs:element name="construction_year" type="ht:construction_year_type"/>
             <xs:element name="solar_heater" type="xs:boolean"/>
             <xs:element name="furnitured" type="xs:boolean"/>
             <xs:element name="aircondition" type="xs:boolean"/>
@@ -30,13 +30,13 @@
             <xs:element name="disability_facilities" type="xs:boolean"/>
             <xs:element name="storeroom" type="xs:boolean"/>
             <xs:element name="availability_date" type="xs:date"/>
-            <xs:element name="rent_period" type="ht:rent_period_restrictions_type"/>
-            <xs:element name="description" type="ht:description_restrictions_type"/>
-            <xs:element name="floor" type="ht:floor_enumerations_type"/>
-            <xs:element name="house_type" type="ht:house_enumerations_type"/>
-            <xs:element name="currently_hosting" type="ht:hosting_restrictions_type"/>
-            <xs:element name="total_places" type="ht:hosting_restrictions_type"/>
-            <xs:element name="municipality" type="ht:municipality_enumerations_type"/>
+            <xs:element name="rent_period" type="ht:rent_period_type"/>
+            <xs:element name="description" type="ht:description_type"/>
+            <xs:element name="floor" type="ht:floor_type"/>
+            <xs:element name="house_type" type="ht:house_type"/>
+            <xs:element name="currently_hosting" type="ht:hosting_type"/>
+            <xs:element name="total_places" type="ht:hosting_rest_type"/>
+            <xs:element name="municipality" type="ht:municipality_type"/>
             <xs:element name="visible" type="xs:boolean"/>
             <xs:element name="latitude" type="hcrud:coordinates_type"/>
             <xs:element name="longitude" type="hcrud:coordinates_type"/>

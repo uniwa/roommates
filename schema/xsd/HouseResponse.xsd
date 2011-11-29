@@ -12,7 +12,7 @@
     <xs:element name="houses"> 
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="house" minOccurs="0" maxOccurs="unbounded" type="hr:house_elements_type"/>
+                <xs:element name="house" minOccurs="0" maxOccurs="unbounded" type="hr:house_type"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -21,12 +21,12 @@
         <xs:complexType name="house_type">
             <xs:sequence>
                 <xs:element name="address" type="xs:string"/>
-                <xs:element name="postal_code" type="ht:postal_code_restrictions_type"/>
+                <xs:element name="postal_code" type="ht:postal_code_type"/>
                 <xs:element name="area" type="xs:integer"/>
-                <xs:element name="bedroom_num" type="ht:bedroom_num_restrictions_type"/>
-                <xs:element name="bathroom_num" type="ht:bedroom_num_restrictions_type"/>
+                <xs:element name="bedroom_num" type="ht:bedroom_num_type"/>
+                <xs:element name="bathroom_num" type="ht:bathroom_num_type"/>
                 <xs:element name="price" type="xs:integer"/>
-                <xs:element name="construction_year" type="ht:construction_year_restrictions_type"/>
+                <xs:element name="construction_year" type="ht:construction_year_type"/>
                 <xs:element name="solar_heater" type="xs:boolean"/>
                 <xs:element name="furnitured" type="xs:boolean"/>
                 <xs:element name="aircondition" type="xs:boolean"/>
@@ -37,18 +37,18 @@
                 <xs:element name="disability_facilities" type="xs:boolean"/>
                 <xs:element name="storeroom" type="xs:boolean"/>
                 <xs:element name="availability_date" type="xs:date"/>
-                <xs:element name="rent_period" type="ht:rent_period_restrictions_type"/>
-                <xs:element name="description" type="ht:description_restrictions_type"/>
-                <xs:element name="created" type="ht:custom_DateTime_type"/>
-                <xs:element name="modified" type="ht:custom_DateTime_type"/>
-                <xs:element name="currently_hosting" type="ht:hosting_restrictions_type"/>
-                <xs:element name="total_places" type="ht:hosting_restrictions_type"/>
-                <xs:element name="free_places" type="ht:hosting_restrictions_type"/>
+                <xs:element name="rent_period" type="ht:rent_period_type"/>
+                <xs:element name="description" type="ht:description_type"/>
+                <xs:element name="created" type="ht:dateTime_type"/>
+                <xs:element name="modified" type="ht:dateTime_type"/>
+                <xs:element name="currently_hosting" type="ht:one_to_nine_type"/>
+                <xs:element name="total_places" type="ht:one_to_nine_type"/>
+                <xs:element name="free_places" type="ht:one_to_nine_type"/>
                 <xs:element name="image" type="ht:image_type"/>
                 <xs:element name="municipality" type="ht:municipality_type"/>
-                <xs:element name="floor" type="ht:floor_enumerations_type"/>
-                <xs:element name="house_type" type="ht:house_restrictions_type"/>
-                <xs:element name="heating_type" type="ht:heating_enumerations_type"/>
+                <xs:element name="floor" type="ht:floor_type"/>
+                <xs:element name="house_type" type="ht:house_type"/>
+                <xs:element name="heating_type" type="ht:heating_type"/>
             </xs:sequence>
             
             <xs:attribute name="id" type="xs:integer"/>
