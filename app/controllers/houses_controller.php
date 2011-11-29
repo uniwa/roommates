@@ -1114,8 +1114,10 @@ class HousesController extends AppController {
         return $order;
     }
 
-    // Manual [geo_distance] ordering. -- SECTION START
-
+    // ------------------------------------------------------------------------
+    // Manual [geo_distance] ordering. -- SECTION START *DEPRECATED*
+    // ------------------------------------------------------------------------
+    /*
     // The contents of the array are sorted based on their 'geo_distance' field.
     // The sorting order is determined by the url parameter 'order_by'.
     private function orderByDistance( &$array ) {
@@ -1128,7 +1130,7 @@ class HousesController extends AppController {
         $order = $url['order_by'];
 
         if( empty( $order ) )   return $array;
- 
+
        switch( $order ) {
             case 9:
                 usort( $array, array( "HousesController", "distanceInAsc" ) );
@@ -1182,8 +1184,12 @@ class HousesController extends AppController {
         if( $d1 > $d2 ) return -1;
         return 0;
     }
-    // Manual [geo_distance] ordering. -- SECTION END
-    
+    */
+    // ------------------------------------------------------------------------
+    // Manual [geo_distance] ordering. -- SECTION END *DEPRECATED*
+    // ------------------------------------------------------------------------
+
+
     // Facebook functions -- SECTION START
 
     // Posts an announcement on the application's page on Facebook.
