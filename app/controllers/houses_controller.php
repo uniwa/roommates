@@ -694,7 +694,7 @@ class HousesController extends AppController {
         // LEFT JOIN images Image ON Image.id = House.default_image_id;
 
         if ($fields == null) {
-            $options['fields'] = array('House.*', 'Image.location', 'User.role');
+            $options['fields'] = array('House.*', 'User.role');
         } else {
             $options['fields'] = $fields;
         }
@@ -706,66 +706,13 @@ class HousesController extends AppController {
             array_push($user_conditions, 'User.role = "realestate"');
         }
 
-        $options['joins'] = array(
-            array(  'table' => 'users',
-                    'alias' => 'User',
-                    'type'  => 'left',
-                    'conditions' => $user_conditions
-            ),
-            array(  'table' => 'images',
-                    'alias' => 'Image',
-                    'type'  => 'left',
-                    'conditions' => array('Image.id = House.default_image_id')
-            )
-        );
-
-        if ($matesConditions != null) {
-            array_push($options['joins'], array('table' => 'profiles',
-                                                'alias' => 'Profile',
-                                                'type'  => 'inner',
-                                                'conditions' => $matesConditions
-                                               )
-                      );
-        }
-
-        // join the required tables for web service
-        if ($this->isWebService()) {
-            array_push($options['joins'], array('table' => 'floors',
-                                                'alias' => 'Floor',
-                                                'type'  => 'left',
-                                                'conditions' => 'Floor.id = House.floor_id'
-                                               )
-                      );
-
-            array_push($options['joins'], array('table' => 'heating_types',
-                                                'alias' => 'HeatingType',
-                                                'type'  => 'left',
-                                                'conditions' => 'HeatingType.id = House.heating_type_id'
-                                               )
-                      );
-
-            array_push($options['joins'], array('table' => 'house_types',
-                                                'alias' => 'HouseType',
-                                                'type'  => 'left',
-                                                'conditions' => 'HouseType.id = House.house_type_id'
-                                               )
-                      );
-
-            array_push($options['joins'], array('table' => 'municipalities',
-                                                'alias' => 'Municipality',
-                                                'type'  => 'left',
-                                                'conditions' => 'Municipality.id = House.municipality_id'
-                                               )
-                      );
-        }
-
         $options['conditions'] = $houseConditions;
         if ($orderBy != null) {
             $options['order'] = $orderBy;
         }
 
         // required recursive value for joins
-        $this->House->recursive = -1;
+        $this->House->recursive = 2;
         // pagination options
         if($pagination) {
             $options['limit'] = 15;
@@ -829,7 +776,7 @@ class HousesController extends AppController {
             $defaults['accessibility'] = 1;
         }
         if ($prefs['pref_has_photo'] == 1) {
-            $house_prefs['House.default_image_id !='] = null;
+            $house_prefs['House.image_count'] > 0 ;
             $defaults['has_photo'] = 1;
         }
         //$house_prefs['House.user_id !='] = $this->Auth->user('id');
@@ -964,7 +911,7 @@ class HousesController extends AppController {
             $house_conditions['House.disability_facilities'] = 1;
 
         if(isset($house_prefs['has_photo']))
-            $house_conditions['House.default_image_id !='] = null;
+            $house_conditions['House.image_count >'] = 0;
 
         // secondary conditions
         if(!empty($house_prefs['house_type']))
