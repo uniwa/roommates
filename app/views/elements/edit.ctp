@@ -1,15 +1,20 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 0px 0px 32px;
-        padding: 32px;
+        margin: 0px 0px 0px 0px;
+        padding: 16px 0px 0px 36px;
+        width: 300px;
+        overflow: hidden;
     }
     
     #main-inner{
         float: left;
-        border-left: 1px dotted #333;
-        margin: 10px 0px 20px 32px;
-        padding: 0px 0px 24px 64px;
+        border-left: 1px dotted #aaa;
+        margin: 0px 0px 10px 2px;
+        padding: 0px 0px 0px 0px;
+        width: 620px;
+        min-height: 600px;
+        overflow: hidden;
     }
     
     .housePic{
@@ -21,9 +26,11 @@
     }
     
     .edit-title{
-        margin: 12px 0px 24px 0px;
-        font-size: 1.2em;
+        margin: 12px 0px 24px 24px;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.4em;
         font-weight: bold;
+        color: #333;
     }
 
     .input{
@@ -85,6 +92,7 @@
     
     .submit{
         clear: both;
+        margin: 0px 0px 0px 48px;
     }
 
     .submit input{
