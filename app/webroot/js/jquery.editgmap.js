@@ -33,8 +33,9 @@ $(document).ready(function() {
     }
 
     // updates map when directed by the user
-    $('#updateMap').click(function(){
+    $('#updateMap').click(function(e){
 
+        e.preventDefault();
         query = getQueryAddress();
 
         // null means that no address field has been filled in

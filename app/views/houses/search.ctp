@@ -29,7 +29,7 @@
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
+        padding: 16px 0px 0px 16px;
         width: 320px;
     }
 
@@ -173,6 +173,19 @@
                     <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('καθαρισμός', array('name' => 'clear', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ταξινόμηση
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+                            echo $this->Form->input('order_by', array('label' => '',
+                                'options' => $order_options,
+                                'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
+                                'class' => 'input-elem'));
                         ?>
                     </div>
                 </li>
@@ -370,19 +383,6 @@
 
                 <?php } // role != realestate ?>
 
-                <li class='form-line'>
-                    <div class='form-elem form-label'>
-                        Ταξινόμηση
-                    </div>
-                    <div class='form-elem form-input'>
-                        <?php
-                            echo $this->Form->input('order_by', array('label' => '',
-                                'options' => $order_options,
-                                'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
-                                'class' => 'input-elem'));
-                        ?>
-                    </div>
-                </li>
             </ul>
 
             <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
