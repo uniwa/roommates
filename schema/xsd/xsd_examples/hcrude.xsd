@@ -1,12 +1,52 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ht="http://www.roommates.teiath.gr/schemas/HouseTypes"
     targetNamespace="http://www.roommates.teiath.gr/schemas/HouseTypes"
-    xmlns:ht="http://www.roommates.teiath.gr/schemas/HouseTypes"                              
     elementFormDefault="qualified">
 
-       
 
-    <!--restrictions about address field spacing and strlen-->
+    <xs:element name="house" type="ht:house_type"/>
+
+
+    <xs:complexType name="house_type">
+        <xs:sequence>
+            <xs:element name="address" type="ht:address_type"/>
+            <xs:element name="postal_code" type="ht:postal_code_type"/>
+            <xs:element name="area" type="xs:integer"/>
+            <xs:element name="bedroom_num" type="ht:bedroom_num_type"/>
+            <xs:element name="bathroom_num" type="ht:bedroom_num_type"/>
+            <xs:element name="price" type="xs:integer"/>
+            <xs:element name="construction_year" type="ht:construction_year_type"/>
+            <xs:element name="solar_heater" type="xs:boolean"/>
+            <xs:element name="furnitured" type="xs:boolean"/>
+            <xs:element name="aircondition" type="xs:boolean"/>
+            <xs:element name="garden" type="xs:boolean"/>
+            <xs:element name="parking" type="xs:boolean"/>
+            <xs:element name="shared_pay" type="xs:boolean"/>
+            <xs:element name="security_doors" type="xs:boolean"/>
+            <xs:element name="disability_facilities" type="xs:boolean"/>
+            <xs:element name="storeroom" type="xs:boolean"/>
+            <xs:element name="availability_date" type="xs:date"/>
+            <xs:element name="rent_period" type="ht:rent_period_type"/>
+            <xs:element name="description" type="ht:description_type"/>
+            <xs:element name="floor" type="ht:floor_type"/>
+            <xs:element name="house_type" type="ht:type_house_type"/>
+            <xs:element name="currently_hosting" type="ht:one_to_nine_type"/>
+            <xs:element name="total_places" type="ht:one_to_nine_type"/>
+            <xs:element name="municipality" type="ht:municipality_type"/>
+            <xs:element name="visible" type="xs:boolean"/>
+            <xs:element name="latitude" type="ht:coordinates_type"/>
+            <xs:element name="longitude" type="ht:coordinates_type"/>
+        </xs:sequence>
+        </xs:complexType>
+        
+    <xs:simpleType name="coordinates_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]*[.][0-9]*){0,1}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+     <!--restrictions about address field spacing and strlen-->
     <xs:simpleType name="address_type">
         <xs:restriction base="xs:string">
             <xs:whiteSpace value="preserve"/>
@@ -81,7 +121,7 @@
 
 
     <!--type for house_type field: nested element type and attribute id-->
-    <xs:complexType name="house_type">
+    <xs:complexType name="type_house_type">
         <xs:sequence>
             <xs:element name="type" type="ht:house_enumerations_type"/>
         </xs:sequence>
@@ -233,5 +273,6 @@
         </xs:sequence>
     </xs:complexType>
 
-
 </xs:schema>
+
+
