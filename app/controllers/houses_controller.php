@@ -337,7 +337,7 @@ class HousesController extends AppController {
         $this->set('house', $house);
 
         $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-        $imageThumbLocation = 'house.gif';
+        $imageThumbLocation = 'home.png';
         foreach ($images as $image) {
             if($image['Image']['id'] == $house['House']['default_image_id']){
                 $defaultImageLocation = $image['Image']['location'];
