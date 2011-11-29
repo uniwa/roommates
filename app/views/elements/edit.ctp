@@ -1,15 +1,20 @@
 <style>
     #leftbar{
         float: left;
-        margin: 0px 0px 0px 32px;
-        padding: 32px;
+        margin: 0px 0px 0px 0px;
+        padding: 16px 0px 0px 36px;
+        width: 300px;
+        overflow: hidden;
     }
     
     #main-inner{
         float: left;
-        border-left: 1px dotted #333;
-        margin: 10px 0px 20px 32px;
-        padding: 0px 0px 24px 64px;
+        border-left: 1px dotted #aaa;
+        margin: 0px 0px 10px 2px;
+        padding: 0px 0px 0px 0px;
+        width: 620px;
+        min-height: 600px;
+        overflow: hidden;
     }
     
     .housePic{
@@ -21,9 +26,11 @@
     }
     
     .edit-title{
-        margin: 12px 0px 24px 0px;
-        font-size: 1.2em;
+        margin: 12px 0px 24px 24px;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.4em;
         font-weight: bold;
+        color: #333;
     }
 
     .input{
@@ -85,6 +92,7 @@
     
     .submit{
         clear: both;
+        margin: 0px 0px 0px 48px;
     }
 
     .submit input{
@@ -117,7 +125,8 @@
 <?php
     echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
     echo $this->Html->script(array('jquery', 'gmap3.min', 'jquery.editgmap'));
-
+    $dateOptions = array('label' => 'Διαθέσιμο από', 'separator' => '',
+        'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y') + 5);
     if(isset($house)){
         $houseid = $house['House']['id'];
         $houseType = $house['HouseType']['type'];
@@ -126,6 +135,7 @@
         $imageThumb = $this->Html->image($imageThumbLocation, array('alt' => $houseTypeArea));
     }else{
         $imageThumb = $this->Html->image('home.png', array('alt' => 'προσθήκη σπιτιού'));
+//        $dateOptions['empty'] = '---';
     }
 ?>
 
@@ -161,8 +171,7 @@
         echo $form->input('bedroom_num', array('label' => 'Αριθμός δωματίων', 'class' => 'short'));
         echo $form->input('bathroom_num', array('label' => 'Αριθμός μπάνιων', 'class' => 'short'));
         echo $form->input('price', array('label' => 'Ενοίκιο','after' => '€', 'class' => 'short'));
-        echo $form->input('availability_date', array('label' => 'Διαθέσιμο από', 'empty' => '---',
-            'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y') + 5));
+        echo $form->input('availability_date', $dateOptions);
         echo $form->input('construction_year', array('label' => 'Έτος κατασκευής', 'type' => 'select',
             'options' => $available_constr_years, 'empty' => 'Άγνωστο'));
         echo $form->input('heating_type_id', array('label' => 'Είδος θέρμανσης', 'empty' => 'Επιλέξτε...'));

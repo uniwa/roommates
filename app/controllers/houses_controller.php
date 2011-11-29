@@ -250,7 +250,7 @@ class HousesController extends AppController {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
 
-            $this->computeDistance();
+            $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
@@ -337,7 +337,7 @@ class HousesController extends AppController {
         $this->set('house', $house);
 
         $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-        $imageThumbLocation = 'house.gif';
+        $imageThumbLocation = 'home.png';
         foreach ($images as $image) {
             if($image['Image']['id'] == $house['House']['default_image_id']){
                 $defaultImageLocation = $image['Image']['location'];
@@ -351,7 +351,7 @@ class HousesController extends AppController {
         }
         else {
 
-            $this->computeDistance();
+            $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
@@ -1337,8 +1337,7 @@ class HousesController extends AppController {
         $location = array(
             'latitude' => $this->data['House']['latitude'],
             'longitude' => $this->data['House']['longitude'] );
-        $geoDistance = $this->haversineDistance( $location );
-        $this->data['House']['geo_distance'] = $geoDistance;
+        return $this->haversineDistance($location);
     }
 
     // Computes the haversine distance between the to supplied locations. Each
