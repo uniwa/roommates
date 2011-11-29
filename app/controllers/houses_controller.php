@@ -779,8 +779,6 @@ class HousesController extends AppController {
             $results = $this->House->find('all', $options);
         }
 
-        $this->orderByDistance( $results );
-
         return $results;
     }
 
@@ -1103,10 +1101,14 @@ class HousesController extends AppController {
             case 8:
                 $order = array('House.free_places' => 'desc');
                 break;
-            //case 9: <order by distance - asc>
-            //case 10: <order by distance - desc>
-            // use private function orderByDistance to manually order results
-            // after they have been returned from DB
+                // order by distance - asc
+            case 9:
+                $order = array('geo_distance' => 'IS NULL ASC', 'House.geo_distance' => 'ASC');
+                break;
+                // order by distance - desc
+            case 10:
+                $order = array('House.geo_distance' => 'DESC');
+                break;
         }
 
         return $order;
