@@ -43,11 +43,6 @@
             echo $this->Session->flash('auth');
         ?>
         <div id='header'>
-            <?php
-                if($userBanned){
-                    echo $this->element('banned');
-                }
-            ?>
             <div id='header-main'>
                 <div class='header-title'>
                     <h1><?php echo $title_for_layout; ?></h1>
@@ -57,6 +52,11 @@
 
         <div id='main-cont'>
             <div id='main'>
+                <?php
+                    if($userBanned){
+                        echo $this->element('banned');
+                    }
+                ?>
                 <!-- /#content -->
                 <?php echo $content_for_layout; ?>
             </div>
