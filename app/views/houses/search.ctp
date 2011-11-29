@@ -668,7 +668,7 @@
                         <?php
 							// thumbnail icon if found
 							$house_id = $house['House']['id'];
-							$house_image = 'house.gif';
+							$house_image = 'home.png';
                             if(!empty($house['Image']['location'])) {
                                 $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
                             }
