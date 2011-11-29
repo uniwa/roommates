@@ -22,7 +22,9 @@
         border-left: 1px dotted #aaa;
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
-        width: 660px;
+        width: 680px;
+        min-height: 800px;
+        overflow: hidden;
     }
 
     .left-form ul{
@@ -93,6 +95,11 @@
     
     .pagination ul li.disabled{
         color: #aaa;
+    }
+    
+    .thumbImage{
+        width: 100px;
+        height: 100px;
     }
 </style>
 
@@ -261,7 +268,7 @@
     </div>
 </div>
 <div id='main-inner'>
-    <div class='results'>
+    <div id='results'>
         <?php
             if (isset($profiles)) {
         ?>
@@ -309,6 +316,24 @@
             <li class='result-cont'>
                 <div class='result'>
                     <div class='result-photo'>
+                    <div class='result-photo-wrap'>
+                    <div class='result-photo-cont'>
+                    <div class='result-photo-inner'>
+                        <?php
+							$profile_id = $profile['Profile']['id'];
+							$imageLocation = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+                            $altText = "εικόνα {$profile['Profile']['firstname']}
+                                 {$profile['Profile']['lastname']}";
+							$profileImage = $this->Html->image($imageLocation,
+							    array('alt' => $altText, 'class' => 'thumbImage'));
+							echo $this->Html->link($profileImage, array(
+							    'controller' => 'profiles',
+							    'action' => 'view', $profile_id),
+							    array('title' => $altText, 'escape' => false));
+						?>
+                    </div>
+                    </div>
+                    </div>
                     </div>
                     <div class='result-desc'>
                         <div class='desc-title'>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<house xmlns="http://www.roommates.teiath.gr/hcrud/schemas">
-    <address>please work 1</address>
+<house>
+    <address>Oumpa lumpa</address>
     <postal_code>12345</postal_code>
     <area>345</area>
     <bedroom_num>3</bedroom_num>
@@ -20,12 +20,18 @@
     <availability_date><![CDATA[2012-10-10]]></availability_date>
     <rent_period>12</rent_period>
     <description />
-    <floor_id>4</floor_id>
-    <house_type_id>2</house_type_id>
+    <floor>
+        <type>1ος όροφος</type>
+    </floor>
+    <house_type>
+        <type>studio</type>
+    </house_type>
     <currently_hosting>2</currently_hosting>
     <total_places>3</total_places>
-    <municipality_id />
+    <municipality>
+        <name>ΑΘΗΝΑΙΩΝ</name>
+    </municipality>
     <visible>1</visible>
-    <latitude />
-    <longitude />
+    <latitude>37.9865711339956</latitude>
+    <longitude>23.6764577301635</longitude>
 </house>
