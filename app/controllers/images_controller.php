@@ -22,8 +22,13 @@ class ImagesController extends AppController {
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
-        $image_count = $this->imageCount($id);
-        if ( $image_count >= $this->max_images ) {
+
+        // get hosue data
+        $this->House->id = $id;
+        $house = $this->House->read();
+
+        // check if maximum image limit reached
+        if ( $house['House']['image_count'] >= $this->max_images ) {
             $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών.',
                 'default', array('class' => 'flashRed'));
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
@@ -59,17 +64,20 @@ class ImagesController extends AppController {
                     'default', array('class' => 'flashRed'));
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
-
+            // store new image name
             $this->params['data']['Image']['location'] = $newName;
+
+            // if 1st image set as default
+            if ($house['House']['image_count'] == 0) $this->params['data']['Image']['is_default'] = 1;
+
+            // save in db
             if ($this->Image->save($this->data)) {
-                /* set 1st image as default */
-                if ($image_count == 0) {
-                    $this->set_default_image($id, $this->Image->id); //TODO: check success/fail
-                }
                 $this->Session->setFlash('Η εικόνα αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-                /* IMPORTANT: $this->referer() in this redirect will break on 5th image
-                    upload due to max image count, redirect only on house view */
+
+                // *ATTENTION*
+                // $this->referer() in this redirect will break on Nth image
+                // upload due to max image count, redirect only on house view
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             } else {
                 $this->Session->setFlash('Η εικόνα ΔΕΝ αποθηκεύτηκε.',
