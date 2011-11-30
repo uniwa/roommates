@@ -218,17 +218,13 @@ class ImagesController extends AppController {
     // ========================================================================
     private function get_default_image_for_house($id) {
         /* return default image name of house with givven id */
-        $this->House->id = $id;
-        $house = $this->House->read();
-        $img_id = $house['House']['default_image_id'];
+        $conditions = array('is_default' => 1, 'house_id' => $id);
+        $image = $this->Image->find('first', array('condtitions' => $conditions));
 
-        if (empty($img_id)) {
+        if (empty($image)) {
             return NULL;
         }
-
-        foreach ($house['Image'] as $img) {
-            if ($img['id'] == $img_id) return $img['location'];
-        }
+        return $image['Image']['location'];
     }
 
     private function get_all_images_for_house($id) {
