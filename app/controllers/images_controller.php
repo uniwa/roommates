@@ -216,6 +216,15 @@ class ImagesController extends AppController {
     // ========================================================================
     // image retrieval API
     // ========================================================================
+
+    // == House Images
+    //    * URL/images/h/<house_id>
+    //    * URL/images/h/<house_id>/type={t,m}
+    //      * t: thumb (default)
+    //      * m: medium
+    //
+    //    * URL/images/h/<house_id>/type={t,m}&img={1-<max_image>}
+
     private function get_default_image_for_house($id) {
         /* return default image name of house with givven id */
         $conditions = array('is_default' => 1, 'house_id' => $id);
@@ -234,9 +243,13 @@ class ImagesController extends AppController {
         return $images;
     }
 
-    function h($id) {
+    function h($id = NULL) {
         /* do not complain about missing view */
         $this->autoRender = false;
+
+        if ($id == NULL) {
+            exit('invalid house id');
+        }
 
         /* process url parameters */
         if (! empty($this->params['url']['type'])) {
