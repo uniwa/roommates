@@ -13,8 +13,8 @@
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
-        width: 260px;
+        padding: 16px 0px 0px 36px;
+        width: 300px;
     }
 
     #main-inner{
@@ -22,7 +22,7 @@
         border-left: 1px dotted #aaa;
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
-        width: 680px;
+        width: 620px;
         min-height: 800px;
         overflow: hidden;
     }

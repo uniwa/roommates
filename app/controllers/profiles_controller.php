@@ -52,9 +52,7 @@ class ProfilesController extends AppController {
 
     function view($id = null) {
         $this->denyRole('realestate');
-        // this variable is used to display properly
-        // the selected element on header
-        $this->set('selected_action', 'profiles_view');
+
         $this->set('title_for_layout','Προφίλ χρήστη');
 
     	$this->checkExistence($id);
@@ -63,6 +61,13 @@ class ProfilesController extends AppController {
         // get profile  contains:
         //      Profile + Preference + User + House
         $profile = $this->Profile->read();
+
+        // this variable is used to display properly
+        // the selected element on header
+        if ($profile['Profile']['user_id'] == $this->Auth->User('id')) {
+            $this->set('selected_action', 'profiles_view');
+        }
+
         // hide banned users unless we are admin
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $profile['Profile']['user_id']) {

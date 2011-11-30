@@ -10,7 +10,7 @@ class HousesController extends AppController {
     var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time', 'Html', 'Xml');
     var $paginate = array('limit' => 15);
-    var $uses = array('House', 'HouseType');
+    var $uses = array('House', 'HouseType', 'Image');
 
     function index() {
 
@@ -246,7 +246,7 @@ class HousesController extends AppController {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
 
-            $this->computeDistance();
+            $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
@@ -332,14 +332,16 @@ class HousesController extends AppController {
         $house = $this->House->read();
         $this->set('house', $house);
 
-        $conditions = array('is_default' => 1);
-        $def_image = $this->House->Image->find('first',array('conditions' => $conditions));
+        // get default image for house
+        $conditions = array('is_default' => 1, 'house_id' => $id);
+        $def_image = $this->Image->find('first',array('conditions' => $conditions));
 
         if (empty($def_image['Image'])) {
-            $imageThumbLocation = 'house.gif';
+            $imageThumbLocation = 'home.png';
         } else {
             $defaultImageLocation = $def_image['Image']['location'];
             $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
+
         }
         $this->set('imageThumbLocation', $imageThumbLocation);
 
@@ -348,7 +350,7 @@ class HousesController extends AppController {
         }
         else {
 
-            $this->computeDistance();
+            $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
@@ -726,7 +728,6 @@ class HousesController extends AppController {
             $results = $this->House->find('all', $options);
         }
 
-        $this->orderByDistance( $results );
         return $results;
     }
 
@@ -1026,19 +1027,26 @@ class HousesController extends AppController {
             case 8:
                 $order = array('House.free_places' => 'desc');
                 break;
-            //case 9: <order by distance - asc>
-            //case 10: <order by distance - desc>
-            // use private function orderByDistance to manually order results
-            // after they have been returned from DB
+            case 9:
+                // order by distance - asc
+                $order = array('geo_distance' => 'IS NULL ASC', 'House.geo_distance' => 'ASC');
+                break;
+            case 10:
+                // order by distance - desc
+                $order = array('House.geo_distance' => 'DESC');
+                break;
         }
 
         return $order;
     }
 
-    // Manual [geo_distance] ordering. -- SECTION START
+    // ------------------------------------------------------------------------
+    // Manual [geo_distance] ordering. -- SECTION START *DEPRECATED*
+    // ------------------------------------------------------------------------
 
     // The contents of the array are sorted based on their 'geo_distance' field.
     // The sorting order is determined by the url parameter 'order_by'.
+    /*
     private function orderByDistance( &$array ) {
         $order;
 
@@ -1103,7 +1111,12 @@ class HousesController extends AppController {
         if( $d1 > $d2 ) return -1;
         return 0;
     }
-    // Manual [geo_distance] ordering. -- SECTION END
+     */
+
+
+    // ------------------------------------------------------------------------
+    // Manual [geo_distance] ordering. -- SECTION END *DEPRECATED*
+    // ------------------------------------------------------------------------
 
     // Facebook functions -- SECTION START
 
@@ -1251,8 +1264,7 @@ class HousesController extends AppController {
         $location = array(
             'latitude' => $this->data['House']['latitude'],
             'longitude' => $this->data['House']['longitude'] );
-        $geoDistance = $this->haversineDistance( $location );
-        $this->data['House']['geo_distance'] = $geoDistance;
+        return $this->haversineDistance($location);
     }
 
     // Computes the haversine distance between the to supplied locations. Each

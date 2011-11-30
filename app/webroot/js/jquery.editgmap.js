@@ -3,6 +3,9 @@ $(document).ready(function() {
     var teiLocation = new google.maps.LatLng(38.004135, 23.676619);
 
     // initialize map zoom factor and the event to move the marker on click
+    $('#editMap').click(function(e) {
+        e.stopPropagation();
+    });
     $('#editMap').gmap3(
         {   action: 'init',
             options: {
@@ -33,8 +36,9 @@ $(document).ready(function() {
     }
 
     // updates map when directed by the user
-    $('#updateMap').click(function(){
+    $('#updateMap').click(function(e){
 
+        e.preventDefault();
         query = getQueryAddress();
 
         // null means that no address field has been filled in
