@@ -109,7 +109,7 @@ class ImagesController extends AppController {
             }
 
             if ($this->Image->delete($id)) {
-                $this->Image->delImage($house_id, $imageData['Image']['location']);
+                $this->Image->delImage($house_id, $image['Image']['location']);
                 $this->Session->setFlash('Η εικόνα διαγραφήκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
             }
