@@ -270,7 +270,7 @@ class HousesController extends AppController {
     function delete($id) {
         $this->set('title_for_layout','Διαγραφή σπιτιού');
         $this->checkAccess( $id );
-        $this->House->begin();
+
         if($this->Auth->User('role') == 'realestate'){
             $redirectTarget = array(
                 'controller' => 'houses', 'action'=> 'manage');
@@ -284,9 +284,10 @@ class HousesController extends AppController {
                 'controller' => 'profiles', 'action'=> 'view', $profileid);
         }
 
+        $this->House->begin();
+
         /* delete associated images first */
-        $conditions = array("house_id" => $id);
-        if ( ! $this->House->Image->deleteAll($conditions) ) {
+        if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
             $this->House->rollback();
             $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από την βάση.',
                     'default', array('class' => 'flashRed'));
@@ -311,6 +312,7 @@ class HousesController extends AppController {
             }
         }
         $this->House->commit();
+
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
         $this->redirect($redirectTarget);
