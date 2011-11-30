@@ -10,7 +10,7 @@ class HousesController extends AppController {
     var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time', 'Html', 'Xml');
     var $paginate = array('limit' => 15);
-    var $uses = array('House', 'HouseType', 'Image');
+    var $uses = array('House', 'HouseType');
 
     function index() {
 
@@ -284,12 +284,6 @@ class HousesController extends AppController {
                 'controller' => 'profiles', 'action'=> 'view', $profileid);
         }
 
-        /* hack: set default image id to NULL to avoid constraints */
-        $this->House->id = $id;
-        $house = $this->House->read();
-        $house['House']['default_image_id'] = NULL;
-        $this->House->save($house);
-
         /* delete associated images first */
         $conditions = array("house_id" => $id);
         if ( ! $this->House->Image->deleteAll($conditions) ) {
@@ -330,19 +324,18 @@ class HousesController extends AppController {
         $this->House->id = $id;
 
         $house = $this->House->read();
+
         $this->set('house', $house);
 
         // get default image for house
-        $conditions = array('is_default' => 1, 'house_id' => $id);
-        $def_image = $this->Image->find('first',array('conditions' => $conditions));
-
-        if (empty($def_image['Image'])) {
-            $imageThumbLocation = 'home.png';
-        } else {
-            $defaultImageLocation = $def_image['Image']['location'];
-            $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
-
+        $imageThumbLocation = 'home.png';
+        foreach($house['Image'] as $image) {
+            if ($image['is_default'] == 1) {
+                $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$image['location'];
+                break;
+            }
         }
+
         $this->set('imageThumbLocation', $imageThumbLocation);
 
         if (empty($this->data)) {
