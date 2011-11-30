@@ -684,21 +684,15 @@ class HousesController extends AppController {
                                     $orderBy = null, $pagination = true,
                                     $user_role = null, $fields = null) {
 
-        // The following SQL query is implemented
-        // mates conditions are added to the inner join with profiles table
-        // house conditions are added to the 'where' statement
-        // ----------------------------------------------------------------
-        // SELECT House.*, Image.location FROM houses House
-        // LEFT JOIN users User ON House.user_id = User.id
-        // INNER JOIN profiles Profile ON Profile.user_id = User.id
-        // LEFT JOIN images Image ON Image.id = House.default_image_id;
+        if ($fields != null) $options['fields'] = $fields;
 
-        if ($fields == null) {
-            $options['fields'] = array('House.*', 'User.role');
-        } else {
-            $options['fields'] = $fields;
-        }
+        $options['conditions'] = $matesConditions != null ?
+                                 array_merge($houseConditions, $matesConditions) :
+                                 $houseConditions;
 
+        if ($orderBy != null) $options['order'] = $orderBy;
+
+        // used in join with users table
         $user_conditions = array('House.user_id = User.id');
         if ($user_role === "user") {
             array_push($user_conditions, 'User.role = "user"');
@@ -706,15 +700,24 @@ class HousesController extends AppController {
             array_push($user_conditions, 'User.role = "realestate"');
         }
 
-        $options['conditions'] = $houseConditions;
-        if ($orderBy != null) {
-            $options['order'] = $orderBy;
-        }
+        $this->House->bindModel(array(
+            'belongsTo' => array(
+                'User' => array(
+                    'conditions' => $user_conditions
+                ),
+                'Profile' => array(
+                    'foreignKey' => false,
+                    'conditions' => array('Profile.user_id = User.id')
+                )
+            ),
+            'hasMany' => array(
+                'Image' => array(
+                    'conditions' => array('Image.is_default = 1')
+                )
+            )
+        ), false);
 
-        // required recursive value for joins
-        $this->House->recursive = 2;
-        // pagination options
-        if($pagination) {
+        if($pagination === true) {
             $options['limit'] = 15;
             $this->paginate = $options;
             $results = $this->paginate('House');
@@ -724,7 +727,6 @@ class HousesController extends AppController {
         }
 
         $this->orderByDistance( $results );
-
         return $results;
     }
 
@@ -833,41 +835,18 @@ class HousesController extends AppController {
 		$ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
 		$ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
         // House preferences
-//		$priceMin = (isset($search_args['price_min']))?$search_args['price_min']:NULL;
 		$priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
 		$areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
 		$areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
-//		$bedroomNumMin = (isset($search_args['bedroom_num_min']))?$search_args['bedroom_num_min']:NULL;
-//		$bathroomNumMin = (isset($search_args['bathroom_num_min']))?$search_args['bathroom_num_min']:NULL;
-//		$constructionYearMin = (isset($search_args['construction_year_min']))?$search_args['construction_year_min']:NULL;
-//		$availabilityDateMin = (isset($search_args['availability_date_min']))?$search_args['availability_date_min']:NULL;
-//		$rentPeriodMin = (isset($search_args['rent_period_min']))?$search_args['rent_period_min']:NULL;
-//		$floorIdMin = (isset($search_args['floor_id_min']))?$search_args['floor_id_min']:NULL;
         $this->House->User->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
                         // House
-//                        'price_min' => $priceMin,
                         'price_max' => $priceMax,
                         'area_min' => $areaMin,
                         'area_max' => $areaMax,
-//                        'bedroom_num_min' => $bedroomNumMin,
-//                        'bathroom_num_min' => $bathroomNumMin,
-//                        'construction_year_min' => $constructionYearMin,
-//                        'availability_date_min' => $availabilityDateMin,
-//                        'rent_period_min' => $rentPeriodMin,
-//                        'floor_id_min' => $floorIdMin,
                         'pref_municipality' => $search_args['municipality'],
-//                        'pref_solar_heater' => $search_args['pref_solar_heater'],
                         'pref_furnitured' => $search_args['furnitured'],
-//                        'pref_aircondition' => $search_args['pref_aircondition'],
-//                        'pref_garden' => $search_args['pref_garden'],
-//                        'pref_parking' => $search_args['pref_parking'],
-//                        'pref_shared_pay' => $search_args['pref_shared_pay'],
-//                        'pref_security_doors' => $search_args['pref_security_doors'],
                         'pref_disability_facilities' => !empty($search_args['accessibility']),
-//                        'pref_storerooms' => $search_args['pref_storeroom'],
-//                        'pref_house_type_id' => $search_args['pref_house_type_id'],
-//                        'pref_heating_type_id' => $search_args['pref_heating_type_id'],
                         'pref_has_photo' => !empty($search_args['has_photo']),
                         // Profile
                         'age_min' => $ageMin,
@@ -1255,7 +1234,6 @@ class HousesController extends AppController {
                         'House.currently_hosting',
                         'House.total_places',
                         'House.free_places',
-                        'Image.location',
                         'Municipality.name',
                         'Floor.type',
                         'HouseType.type',
