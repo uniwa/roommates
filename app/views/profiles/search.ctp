@@ -51,6 +51,10 @@
         width: 140px;
         overflow: no-scroll;
     }
+    
+    .form-checkbox{
+        width: 220px;
+    }
 
     .form-submit{
         float: left;
@@ -237,7 +241,7 @@
                     </div>
                 </li>
                 <li class='form-line'>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-input form-checkbox'>
                         <?php
                             echo $this->Form->checkbox('has_house', array('value' => 1,
                                 'class' => 'input-elem',
