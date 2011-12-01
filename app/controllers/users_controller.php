@@ -1,12 +1,13 @@
 <?php
-
+Configure::load('authority');
 
 class UsersController extends AppController{
 
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
-    var $components = array('Token', 'Recaptcha.Recaptcha');
+    var $components = array('Token', 'Recaptcha.Recaptcha', 'Email');
     //var $helpers = array('RecaptchaPlugin.Recaptcha');
+    var $helpers = array('Auth');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -271,6 +272,21 @@ class UsersController extends AppController{
                     $this->User->commit();
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
+
+                    // get municipality (name) in order to print it onto the 
+                    // email which is to be sent for registration approval
+                    $municipality =
+                        $this->data['RealEstate']['municipality_id'];
+
+                    if( isset($municipality) ) {
+                        $municipality =
+                            $this->getMunicipalityData($municipality);
+                    }
+
+                    $this->set('data', $this->data );
+                    $this->set('municipality', $municipality);
+                    $this->notifyOfRegistration();
+
                     $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
                     $this->redirect('login');
                 }
@@ -279,6 +295,7 @@ class UsersController extends AppController{
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
+
     }
 
     private function create_estate_profile($id, $data) {
@@ -347,6 +364,31 @@ class UsersController extends AppController{
     }
     
 
+    private function notifyOfRegistration() {
+        $recipients = Configure::read('authority.activation_recipients');
+        $subject = Configure::read('authority.activation_subject');
+        if(empty($subject)) {
+            $subject = 'Αίτησης εγγραφής στο roommates';
+        }
+
+        foreach($recipients as $to) {
+            $this->Email->reset();
+            $this->Email->to = $to;
+            $this->Email->subject = $subject;
+            $this->Email->from = 'admin@roommates.edu.teiath.gr';
+            $this->Email->template = 'registered';
+            $this->Email->layout = 'registered';
+            $this->Email->sendAs = 'both';
+        }
+    }
+
+    private function getMunicipalityData($municipality_id) {
+        $this->loadModel('Municipality');
+        $data = $this->Municipality->find('first', array(
+            'conditions' => array('Municipality.id' => $municipality_id)
+        ));
+        return $data;
+    }
 }
 ?>
 
