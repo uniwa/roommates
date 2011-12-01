@@ -17,6 +17,9 @@
 # debug, session settings etc
 /app/config/core.php
 
+# registration activation emails
+/app/config/authority.php
+
 
 # swap et al
 *~
