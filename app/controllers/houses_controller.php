@@ -560,6 +560,21 @@ class HousesController extends AppController {
                                             'απόσταση από ΤΕΙ - αύξουσα',
                                             'απόσταση από ΤΕΙ - φθίνουσα'));
 
+        if(!isset($this->params['url']['search'])){
+            $results = $this->simpleSearch( $this->getHouseConditions(),
+                                                    null,
+                                                    $this->getOrderCondition(0)
+                                                  );
+
+            $this->set('results', $results);
+
+            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
+            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+
+            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
+        }
+
         if(isset($this->params['url']['save'])) {
             $this->saveSearchPreferences();
             // store user's input
@@ -674,6 +689,7 @@ class HousesController extends AppController {
 
             $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
+        
     }
 
 
