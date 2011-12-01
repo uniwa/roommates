@@ -106,12 +106,15 @@ class Image extends AppModel {
     }
 
     private function save_profile_image($base_path, $upload_path, $new_name, $thumbSizeMax,
-                                        $thumbSizeType, $thumbQuality) {
-        $original = $base_path . $new_name;
+        $thumbSizeType, $thumbQuality ) {
+
+        $original = $base_path . 'orig_' . $new_name;
+        $avatar = $base_path . $new_name;
+
         if (move_uploaded_file($upload_path, $original)) {
             $resizer = new ccImageResize;
 
-            if (! $resizer->resizeImage($original, $thumbnail, $thumbSizeMax,$thumbSizeType,$thumbQuality)) {
+            if (! $resizer->resizeImage($original, $avatar, $thumbSizeMax,$thumbSizeType,$thumbQuality)) {
                 return NULL;
             }
 
