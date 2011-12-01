@@ -17,7 +17,7 @@ class Image extends AppModel {
         }
 
         // build paths
-        if ($type = 'house') {
+        if ($type == 'house') {
             $base = WWW_ROOT . "img/uploads/houses/";
             $id_path = WWW_ROOT . "img/uploads/houses/" . $id . "/";
         } else {
@@ -35,7 +35,7 @@ class Image extends AppModel {
         $fileData['name'] = $this->getLocationName($fileData['name']);
 
         /* base path to store this file */
-        if ($type = 'house') {
+        if ($type == 'house') {
             $base_path = WWW_ROOT . "img/uploads/houses/$id/";
         } else {
             $base_path = WWW_ROOT . "img/uploads/profiles/$id/";
@@ -55,8 +55,13 @@ class Image extends AppModel {
         /* generate random photo name */
         $new_name = sha1($fileData['name'] . time()) . "." . strtolower($ext);
 
-        return $this->save_house_image($base_path, $fileData['tmp_name'], $new_name, $thumbSizeMax,
-                                        $thumbSizeType, $thumbQuality);
+        if ($type == 'house') {
+            return $this->save_house_image($base_path, $fileData['tmp_name'], $new_name, $thumbSizeMax,
+                                            $thumbSizeType, $thumbQuality);
+        } else {
+            return $this->save_profile_image($base_path, $fileData['tmp_name'], $new_name, $thumbSizeMax,
+                                            $thumbSizeType, $thumbQuality);
+        }
 
 //        /* generate photo paths */
 //        $original = $base_path . "orig_" . $new_name;
@@ -99,6 +104,24 @@ class Image extends AppModel {
         }
         return $new_name;
     }
+
+    private function save_profile_image($base_path, $upload_path, $new_name, $thumbSizeMax,
+                                        $thumbSizeType, $thumbQuality) {
+        $original = $base_path . $new_name;
+        if (move_uploaded_file($upload_path, $original)) {
+            $resizer = new ccImageResize;
+
+            if (! $resizer->resizeImage($original, $thumbnail, $thumbSizeMax,$thumbSizeType,$thumbQuality)) {
+                return NULL;
+            }
+
+        } else {
+            return NULL;
+        }
+        return $new_name;
+    }
+
+
 
 
     function delImage($house_id, $filename)
