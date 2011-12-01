@@ -10,7 +10,8 @@ class HousesController extends AppController {
     var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time', 'Html', 'Xml');
     var $paginate = array('limit' => 15);
-    var $uses = array('House', 'HouseType', 'Image');
+    var $uses = array('House', 'HouseType', 'Image',
+                      'HeatingType', 'Municipality', 'Floor');
 
     function index() {
 
@@ -1298,22 +1299,98 @@ class HousesController extends AppController {
 
     function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
-            $house_conds = $this->getHouseConditions();
-            if ($id != null) array_push($house_conds, array('House.id' => $id));
-            $result = $this->simpleSearch(  $house_conds,
-                                            null, null, false, null,
-                                            $this->getResponseXmlFields(),
-                                            true);
-            $this->set('houses', $result);
-            $this->layout = 'xml/default';
-            $this->render('xml/public');
+            $this->handleGetRequest($id);
         } else if ($this->RequestHandler->isPost()) {
-            if (!empty($this->data))
-                $this->House->save($this->data);
-            $this->set('results', $this->data);
-            $this->layout = 'xml/default';
-            $this->render('xml/create');
+            $this->handlePostRequest();
+        } else if ($this->RequestHandler->isPost()) {
+            $this->handlePutRequest($id);
+        } else if ($this->RequestHandler->isDelete()) {
+            $this->handleDeleteRequest($id);
         }
+    }
+
+    private function handleGetRequest($id) {
+        $house_conds = $this->getHouseConditions();
+        if ($id != null) array_push($house_conds, array('House.id' => $id));
+        $result = $this->simpleSearch(  $house_conds,
+                                        null, null, false, null,
+                                        $this->getResponseXmlFields(),
+                                        true);
+        $this->set('houses', $result);
+        $this->layout = 'xml/default';
+        $this->render('xml/public');
+    }
+
+    private function handlePostRequest() {
+        if (!empty($this->data)) {
+            // TODO remove hard coded user_id when
+            // authentication via web services is implemented
+            $this->data['House']['user_id'] = 4;
+            $this->setRequiredIds();
+            $this->House->save($this->data);
+        }
+        // TODO return a confirmation/failure message instead
+        $this->set('results', $this->data);
+        $this->layout = 'xml/default';
+        $this->render('xml/create');
+    }
+
+    private function handlePutRequest($id) {
+        // TODO implement
+    }
+
+    private function handleDeleteRequest($id) {
+        // TODO implement
+    }
+
+    //////////////////////////////////////////////////
+    // Set the required ID fields in House model
+    // (municipality, floor, house_type, heating_type)
+    // and remove the respective types/names from
+    // $this->data
+    //////////////////////////////////////////////////
+    private function setRequiredIds() {
+        $house = $this->data['House'];
+
+        // municipality
+        $municipality = $this->Municipality->find('first', array(
+                            'fields' => 'Municipality.id',
+                            'conditions' => array(
+                                'Municipality.name' => $house['Municipality']['name']
+                            )
+                        ));
+        $this->data['House']['municipality_id'] = $municipality['Municipality']['id'];
+        unset($this->data['House']['Municipality']);
+
+        // floor
+        $floor = $this->Floor->find('first', array(
+                    'fields' => 'Floor.id',
+                    'conditions' => array(
+                        'Floor.type' => $house['Floor']['type']
+                    )
+                 ));
+        $this->data['House']['floor_id'] = $floor['Floor']['id'];
+        unset($this->data['House']['Floor']);
+
+        // house type
+        $house_type = $this->HouseType->find('first', array(
+                        'fields' => 'HouseType.id',
+                        'conditions' => array(
+                            'HouseType.type' => $house['HouseType']['type']
+                        )
+                     ));
+        $this->data['House']['house_type_id'] = $house_type['HouseType']['id'];
+        unset($this->data['House']['HouseType']);
+
+        // heating type
+        $heating_type = $this->HeatingType->find('first', array(
+                            'fields' => 'HeatingType.id',
+                            'conditions' => array(
+                                'HeatingType.type' => $house['HeatingType']['type']
+                            )
+                        ));
+        $this->data['House']['heating_type_id'] = $heating_type['HeatingType']['id'];
+        unset($this->data['House']['HeatingType']);
     }
 }
 ?>
