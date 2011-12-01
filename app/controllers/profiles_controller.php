@@ -174,7 +174,7 @@ class ProfilesController extends AppController {
 
             // save image on FS
             $this->Image->create();
-            $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80);
+            $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
             if ($newName == NULL) {
                 $this->Profile->invalidate('avatar');
             }
