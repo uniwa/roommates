@@ -252,7 +252,8 @@ class UsersController extends AppController{
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
 
-                    // get municipality in order to print it onto the email
+                    // get municipality (name) in order to print it onto the 
+                    // email which is to be sent for registration approval
                     $municipality =
                         $this->data['RealEstate']['municipality_id'];
 
@@ -266,7 +267,7 @@ class UsersController extends AppController{
                     $this->notifyOfRegistration();
 
                     $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
-//                    $this->redirect('login');
+                    $this->redirect('login');
                 }
             }
 
