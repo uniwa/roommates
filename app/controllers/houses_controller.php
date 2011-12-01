@@ -436,7 +436,7 @@ class HousesController extends AppController {
             $prefs['mates_prefs'], $order);
 
         $uid = $this->Auth->User('id');
-        $house = $this->House->find('first', array('conditions' => array('user_id' => $uid)));
+        $house = $this->House->find('first', array('conditions' => array('House.user_id' => $uid)));
         if(isset($house['House']['id'])){
             $hid = $house['House']['id'];
             for($i = 0; $i < $limit; $i++){
