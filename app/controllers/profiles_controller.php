@@ -4,7 +4,7 @@ App::import('Sanitize');
 class ProfilesController extends AppController {
 
     var $name = 'Profiles';
-    var $components = array('RequestHandler', 'Email');
+    var $components = array('RequestHandler', 'Email', 'Common');
     var $paginate = array('limit' => 15);
     var $uses = array('Profile', 'House', 'Municipality', 'Image');
 
@@ -153,10 +153,33 @@ class ProfilesController extends AppController {
 
         if(empty($this->data)){
              $this->data = $profile;
-	    }else{
+        }else{
 	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
 	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
-	        $this->data['Profile']['email'] = $profile['Profile']['email'];
+            $this->data['Profile']['email'] = $profile['Profile']['email'];
+
+            // check if image is uploaded
+            // here we catch images not uploaded due to large file size
+            if ( ! is_uploaded_file($this->data['Profile']['avatar']['tmp_name'])) {
+                $this->Profile->invalidate('avatar');
+            }
+
+            // check avatar file type
+            $valid_types = array('png', 'jpeg', 'jpg', 'gif');
+            if (! in_array($this->Common->upload_file_type($this->data['Profile']['avatar']['tmp_name']),
+                $valid_types)) {
+
+                $this->Profile->invalidate('avatar');
+            }
+
+            // save image on FS
+            $this->Image->create();
+            $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80);
+            if ($newName == NULL) {
+                $this->Profile->invalidate('avatar');
+            }
+            $this->data['Profile']['avatar'] = $newName;
+
             if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
                     array('class' => 'flashBlue'));
