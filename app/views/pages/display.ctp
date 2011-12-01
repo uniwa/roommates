@@ -109,8 +109,11 @@
 							    // thumbnail icon if found
 							    $house_id = $house['House']['id'];
 							    $house_image = 'house.gif';
-                                if(!empty($house['Image'][0]['location'])){
-                                    $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image'][0]['location'];
+                                foreach ($house['Image'] as $image) {
+                                    if ($image['is_default'] == 1) {
+                                        $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$image['location'];
+                                        break;
+                                    }
                                 }
                                 $altText = 'εικόνα '.$house['House']['address'];
 						        $houseImage = $this->Html->image($house_image,
