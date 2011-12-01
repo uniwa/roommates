@@ -22,18 +22,22 @@ class Image extends AppModel {
         return true;
     }
 
-    function saveImage($house_id, $fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality) {
+    function saveImage($id, $fileData,$thumbSizeMax,$thumbSizeType,$thumbQuality, $type='house') {
         App::import('Vendor','ccImageResize', array('file' => 'ccImageResize.class.php'));
         $fileData['name'] = $this->getLocationName($fileData['name']);
 
         /* base path to store this file */
-        $base_path = WWW_ROOT . "img/uploads/houses/$house_id/";
+        if ($type = 'house') {
+            $base_path = WWW_ROOT . "img/uploads/houses/$id/";
+        } else {
+            $base_path = WWW_ROOT . "img/uploads/profiles/$id/";
+        }
 
         /* create destination folder if it does not exist*/
         if(!is_dir($base_path)) mkdir($base_path, 0700, true);
 
         /* catch permission errors before calling move_uploaded_file() */
-        if ($this->has_permissions($house_id) != true) {
+        if ($this->has_permissions($id) != true) {
             return NULL;
         }
 
