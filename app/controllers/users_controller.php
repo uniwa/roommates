@@ -280,5 +280,19 @@ class UsersController extends AppController{
         return $this->RealEstate->id;
     }
 
+    private function email_registration($id){
+        $this->RealEstate->id = $id;
+        $realEstate = $this->RealEstate->read();
+        $this->Email->to = $realEstate['RealEstate']['email'];
+        $this->Email->subject = 'Εγγραφή στην υπηρεσίας roommates ΤΕΙ Αθήνας';
+        //$this->Email->replyTo = 'support@example.com';
+        $this->Email->from = 'admin@roommates.edu.teiath.gr';
+        $this->Email->template = 'registration';
+        $this->Email->sendAs = 'both';
+        $this->Email->send();
+    }
+    
+
 }
 ?>
+
