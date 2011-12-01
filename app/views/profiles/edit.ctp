@@ -112,17 +112,25 @@
 	$picture = ($profile['gender'])?'female.jpg':'male.jpg';
     $profileThumb = $this->Html->image($picture, array('alt' => $name));
 ?>
+<?php echo $this->Form->create('Profile', array('type' => 'file')); ?>
 <div id='leftbar'>
     <div id='profilePic'>
         <?php
             echo $profileThumb;
         ?>
     </div>
-    <div id='profileName'>
-        <?php echo $name; ?>
+    <div id='avatarField'>
+        <?php
+            echo $this->Form->input('avatar', array('type' => 'file', 'label' => 'Επιλέξτε εικόνα προφίλ'));
+        ?>
     </div>
-    <div id='profileEmail'>
-        <?php echo $emailUrl; ?>
+    <div class='profileData'>
+        <div id='profileName'>
+            <?php echo $name; ?>
+        </div>
+        <div id='profileEmail'>
+            <?php echo $emailUrl; ?>
+        </div>
     </div>
 </div>
 <div id='main-inner'>
@@ -131,7 +139,6 @@
             <h2>Στοιχεία χρήστη</h2>
         </div>
         <?php
-            echo $this->Form->create('Profile');
             echo "<div class='radio'>".$this->Form->radio('gender',
                 array('0' => 'Άνδρας', '1' => 'Γυναίκα'),
                 array('legend' => false))."</div>";
