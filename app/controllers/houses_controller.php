@@ -670,6 +670,13 @@ class HousesController extends AppController {
                                     $user_role = null, $fields = null,
                                     $isWebService = false) {
 
+        //----- WARNING -----//
+        // $fields variable *must not* contain anything related to Image
+        // model (e.g. 'Image.location', 'Image.is_default').
+        // By default the results will contain all the fields of the default
+        // image of each house and one must filter the result to get the
+        // wanted output.
+
         if ($fields != null) $options['fields'] = $fields;
 
         $options['conditions'] = $matesConditions != null ?
@@ -698,7 +705,7 @@ class HousesController extends AppController {
             ),
             'hasMany' => array(
                 'Image' => array(
-                    'conditions' => array('Image.is_default = 1')
+                    'conditions' => array('Image.is_default' => 1)
                 )
             )
         ), false);
@@ -1234,7 +1241,6 @@ class HousesController extends AppController {
                         'House.free_places',
                         'House.geo_distance',
                         'Municipality.name',
-                        'Image.location',
                         'Floor.type',
                         'HouseType.type',
                         'HeatingType.type'
