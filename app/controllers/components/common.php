@@ -1,5 +1,5 @@
 <?php
-class SysComponent extends Object {
+class CommonComponent extends Object {
 
     function max_upload() {
         /* query php.ini and return maximum allowed upload */
