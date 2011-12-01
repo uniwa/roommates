@@ -6,19 +6,27 @@ class Image extends AppModel {
 
     var $belongsTo = array('House' => array('counterCache' => true));
 
-    private function has_permissions($house_id = NULL, $user_id = NULL) {
+    private function has_permissions($id = NULL, $type = 'house') {
         /* check for write permissions
          *
          * check in house image upload paths
          * check in user avatar image upload paths (TODO)
          */
-        if ($house_id != NULL) {
-            $house_base = WWW_ROOT . "img/uploads/houses/";
-            $house_path = WWW_ROOT . "img/uploads/houses/" . $house_id . "/";
-
-            if (! is_writable($house_base)) return false;
-            if (! is_writable($house_path)) return false;
+        if ($id == NULL) {
+            return false;
         }
+
+        // build paths
+        if ($type = 'house') {
+            $base = WWW_ROOT . "img/uploads/houses/";
+            $id_path = WWW_ROOT . "img/uploads/houses/" . $id . "/";
+        } else {
+            $base = WWW_ROOT . "img/uploads/profiles/";
+            $id_path = WWW_ROOT . "img/uploads/profiles/" . $id . "/";
+        }
+
+        if (! is_writable($base)) return false;
+        if (! is_writable($id_path)) return false;
         return true;
     }
 
@@ -37,7 +45,7 @@ class Image extends AppModel {
         if(!is_dir($base_path)) mkdir($base_path, 0700, true);
 
         /* catch permission errors before calling move_uploaded_file() */
-        if ($this->has_permissions($id) != true) {
+        if ($this->has_permissions($id, $type) != true) {
             return NULL;
         }
 
