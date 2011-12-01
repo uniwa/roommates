@@ -302,11 +302,11 @@
     $imageLines = array();
     $i = 1;
     foreach($images as $image){
-        if($image['Image']['location'] == $default_image_location){
+        if($image['location'] == $default_image_location){
             continue;
         }
-        $imageid = $image['Image']['id'];
-        $imageLocation = $image['Image']['location'];
+        $imageid = $image['id'];
+        $imageLocation = $image['location'];
         $imageThumbLocation = 'uploads/houses/'.$houseid.'/thumb_'.$imageLocation;
         $imageMediumLocation = '/img/uploads/houses/'.$houseid.'/medium_'. $imageLocation;
         $imageThumb = $this->Html->image($imageThumbLocation, array(

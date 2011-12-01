@@ -130,7 +130,7 @@
         float: right;
         margin: 8px 12px 0px 0px;
     }
-    
+
     .resultRE{
         border-color: #88a;
     }
