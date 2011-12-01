@@ -26,6 +26,9 @@
     <house_type>
         <type>studio</type>
     </house_type>
+    <heating_type>
+        <type>αυτόνομη</type>
+    </heating_type>
     <currently_hosting>2</currently_hosting>
     <total_places>3</total_places>
     <municipality>
