@@ -9,6 +9,7 @@
     }
 */
 .faqitem{
+    margin: -40px 0 0 0;
     padding: 48px 0px 0px 0px;
 }
 </style>
