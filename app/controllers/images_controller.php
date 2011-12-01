@@ -56,7 +56,7 @@ class ImagesController extends AppController {
             }
 
             $this->Image->create();
-            $newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
+            $newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80, 'profile');
 
             if ($newName == NULL) {
                 $this->Session->setFlash('Σφάλμα αποθήκευσης εικόνας, επικοινωνήστε με τον διαχειριστή.',
