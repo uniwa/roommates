@@ -70,7 +70,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `role` VARCHAR(40) NULL DEFAULT NULL ,
   `banned` TINYINT(1) NOT NULL DEFAULT 0 ,
   `terms_accepted` TINYINT(1) NOT NULL DEFAULT 0 ,
-	`enabled` TINYINT(1) NOT NULL DEFAULT 1 ,
+  `enabled` TINYINT(1) NOT NULL DEFAULT 1 ,
+  `last_login` DATE NOT NULL COMMENT '   ' ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
