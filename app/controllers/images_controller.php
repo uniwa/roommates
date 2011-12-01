@@ -22,8 +22,13 @@ class ImagesController extends AppController {
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
         }
-        $image_count = $this->imageCount($id);
-        if ( $image_count >= $this->max_images ) {
+
+        // get house data
+        $this->House->id = $id;
+        $house = $this->House->read();
+
+        // check if maximum image limit reached
+        if ( $house['House']['image_count'] >= $this->max_images ) {
             $this->Session->setFlash('Έχετε συμπληρώσει τον μέγιστο επιτρεπτό αριθμό φωτογραφιών.',
                 'default', array('class' => 'flashRed'));
             $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
@@ -53,23 +58,25 @@ class ImagesController extends AppController {
             $this->Image->create();
             $newName = $this->Image->saveImage($id, $this->params['data']['Image']['location'],100,"ht",80);
 
-
             if ($newName == NULL) {
                 $this->Session->setFlash('Σφάλμα αποθήκευσης εικόνας, επικοινωνήστε με τον διαχειριστή.',
                     'default', array('class' => 'flashRed'));
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             }
-
+            // store new image name
             $this->params['data']['Image']['location'] = $newName;
+
+            // if 1st image set as default
+            if ($house['House']['image_count'] == 0) $this->params['data']['Image']['is_default'] = 1;
+
+            // save in db
             if ($this->Image->save($this->data)) {
-                /* set 1st image as default */
-                if ($image_count == 0) {
-                    $this->set_default_image($id, $this->Image->id); //TODO: check success/fail
-                }
                 $this->Session->setFlash('Η εικόνα αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-                /* IMPORTANT: $this->referer() in this redirect will break on 5th image
-                    upload due to max image count, redirect only on house view */
+
+                // *ATTENTION*
+                // $this->referer() in this redirect will break on Nth image
+                // upload due to max image count, redirect only on house view
                 $this->redirect(array('controller' => 'houses', 'action' => 'view', $id));
             } else {
                 $this->Session->setFlash('Η εικόνα ΔΕΝ αποθηκεύτηκε.',
@@ -82,10 +89,10 @@ class ImagesController extends AppController {
 
     function delete($id = null) {
         $this->Image->id = $id;
-        $imageData = $this->Image->read();
+        $image = $this->Image->read();
 
         /* check if user owns house before removing images */
-        $house_id = $imageData['Image']['house_id'];
+        $house_id = $image['Image']['house_id'];
         if (! $this->hasAccess($house_id)) {
             $this->cakeError( 'error403' );
         }
@@ -96,13 +103,13 @@ class ImagesController extends AppController {
         }
         else {
             /* set new default image */
-            if ($this->is_default_image($id)) {
+            if ($image['Image']['is_default'] == 1) {
                 $new_img_id = $this->get_next_image($house_id, $id);
-                $this->set_default_image($house_id, $new_img_id);
+                $this->set_default_image($new_img_id);
             }
 
             if ($this->Image->delete($id)) {
-                $this->Image->delImage($house_id, $imageData['Image']['location']);
+                $this->Image->delImage($house_id, $image['Image']['location']);
                 $this->Session->setFlash('Η εικόνα διαγραφήκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
             }
@@ -115,9 +122,18 @@ class ImagesController extends AppController {
     }
 
     function set_default($id = NULL) {
-        /* handle authorization - calls private function to set default image */
+        /* handle authorization - calls private function set_default_image()
+         * to update database field is_default
+         */
         $this->Image->id = $id;
         $imageData = $this->Image->read();
+
+        // get current default image (is available)
+        $conditions = array('is_default' => 1, 'house_id' => $imageData['Image']['house_id']);
+        $current = $this->Image->find('first', array('conditions' => $conditions));
+        if (! empty($current)) {
+            $this->unset_default_image($current['Image']['id']);
+        }
 
         /* check if user owns house before setting the default on */
         $house_id = $imageData['Image']['house_id'];
@@ -129,7 +145,7 @@ class ImagesController extends AppController {
             $this->Session->setFlash('Λαθος id', 'default', array('class' => 'flashRed'));
         }
         else {
-            $ret = $this->set_default_image($house_id, $id);
+            $ret = $this->set_default_image($id);
             if ($ret == False) {
                 $this->Session->setFlash('Σφάλμα ανάθεσης προεπιλεγμένης εικόνας.',
                     'default', array('class' => 'flashRed'));
@@ -155,13 +171,6 @@ class ImagesController extends AppController {
         }
     }
 
-    private function imageCount($id) {
-        /* return number of pictures associated with given house id */
-        $this->House->id = $id;
-        $house = $this->House->read();
-        return count($house["Image"]);
-    }
-
     private function validType($file) {
         /* check if uploaded image is a valid filetype */
         $valid_types = array("png", "jpg", "jpeg");
@@ -175,31 +184,18 @@ class ImagesController extends AppController {
         return False;
     }
 
-    private function set_default_image($house_id, $image_id) {
-        $this->House->id = $house_id;
-        $house = $this->House->read();
-
-        $new["House"] = $house["House"];
-        $new["House"]["default_image_id"] = $image_id;
-
-        $this->House->begin();
-        if ($this->House->save($new, false) != False) {
-            $this->House->commit();
-            return True;
-        }
-        else {
-            $this->House->rollback();
-            return False;
-        }
+    private function set_default_image($image_id) {
+        $this->Image->id = $image_id;
+        $ret = $this->Image->saveField('is_default', 1, false);
+        if ($ret === false) return false;
+        return true;
     }
 
-    private function is_default_image($image_id) {
-        $conditions = array('House.default_image_id' => $image_id);
-        $house = $this->House->find('all', array('conditions' => $conditions));
-        if ( count($house) == 0) {
-            return False;
-        }
-        return True;
+    private function unset_default_image($image_id) {
+        $this->Image->id = $image_id;
+        $ret = $this->Image->saveField('is_default', 0, false);
+        if ($ret === false) return false;
+        return true;
     }
 
     private function get_next_image($house_id, $image_id) {
@@ -220,19 +216,24 @@ class ImagesController extends AppController {
     // ========================================================================
     // image retrieval API
     // ========================================================================
+
+    // == House Images
+    //    * URL/images/h/<house_id>
+    //    * URL/images/h/<house_id>/type={t,m}
+    //      * t: thumb (default)
+    //      * m: medium
+    //
+    //    * URL/images/h/<house_id>/type={t,m}&img={1-<max_image>}
+
     private function get_default_image_for_house($id) {
         /* return default image name of house with givven id */
-        $this->House->id = $id;
-        $house = $this->House->read();
-        $img_id = $house['House']['default_image_id'];
+        $conditions = array('is_default' => 1, 'house_id' => $id);
+        $image = $this->Image->find('first', array('condtitions' => $conditions));
 
-        if (empty($img_id)) {
+        if (empty($image)) {
             return NULL;
         }
-
-        foreach ($house['Image'] as $img) {
-            if ($img['id'] == $img_id) return $img['location'];
-        }
+        return $image['Image']['location'];
     }
 
     private function get_all_images_for_house($id) {
@@ -242,9 +243,13 @@ class ImagesController extends AppController {
         return $images;
     }
 
-    function h($id) {
+    function h($id = NULL) {
         /* do not complain about missing view */
         $this->autoRender = false;
+
+        if ($id == NULL) {
+            exit('invalid house id');
+        }
 
         /* process url parameters */
         if (! empty($this->params['url']['type'])) {

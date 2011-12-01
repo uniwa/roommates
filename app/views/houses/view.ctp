@@ -27,6 +27,8 @@
         margin: 10px 0px 20px 0px;
         padding: 24px 24px 24px 16px;
         width: 560px;
+        min-height: 600px;
+        overflow: hidden;
     }
 
     #houseCont{
@@ -139,7 +141,7 @@
     }
 
     #imageList{
-        margin: 0px 0px 0px 16px;
+        margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
     }
     
@@ -278,8 +280,8 @@
                 array('controller' => 'images', 'action' =>'add', $houseid),
                 array('title' => 'προσθήκη εικόνας σπιτιού', 'escape' => false));
         }else{ // empty placeholder without link to add image
-            $housePic = $this->Html->image('addpic.png', array(
-                'alt' => 'προσθήκη εικόνας σπιτιού', 'class' => 'img-placeholder'));
+            $housePic = $this->Html->image('home.png', array(
+                'alt' => 'προσθήκη εικόνας σπιτιού'));
         }
         $empty_slots -= 1;
     }
@@ -300,11 +302,11 @@
     $imageLines = array();
     $i = 1;
     foreach($images as $image){
-        if($image['Image']['location'] == $default_image_location){
+        if($image['location'] == $default_image_location){
             continue;
         }
-        $imageid = $image['Image']['id'];
-        $imageLocation = $image['Image']['location'];
+        $imageid = $image['id'];
+        $imageLocation = $image['location'];
         $imageThumbLocation = 'uploads/houses/'.$houseid.'/thumb_'.$imageLocation;
         $imageMediumLocation = '/img/uploads/houses/'.$houseid.'/medium_'. $imageLocation;
         $imageThumb = $this->Html->image($imageThumbLocation, array(
@@ -512,6 +514,9 @@
     // if either is null, 'null' should be 'printed' (in text) in javascript
     if( is_null( $houseLat ) )  $houseLat = 'null';
     if( is_null( $houseLng ) )  $houseLng = 'null';
+
+    // php does not echo 0 either, so print it as text
+    if( $displayCircle == 0 )  $displayCircle = '0';
 
     // the coordinates and the marker "type" (circle/arrow) are passed as
     // HTML-inline javascipt
