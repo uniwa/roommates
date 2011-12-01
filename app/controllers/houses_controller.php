@@ -242,7 +242,8 @@ class HousesController extends AppController {
                 $hid = $this->House->id;
 
                 // post requires municipality name, house type and user role
-                $this->House->recursice = 2;
+                // TODO check if recursive is actually required
+//                 $this->House->recursice = 2;
                 $house = $this->House->read();
                 // post to facebook application wall
                 if ( $this->data['House']['visible'] == 1 ) {
