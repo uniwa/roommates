@@ -679,7 +679,7 @@ class HousesController extends AppController {
 
             $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
-        
+
     }
 
 
@@ -1318,7 +1318,7 @@ class HousesController extends AppController {
             $this->handleGetRequest($id);
         } else if ($this->RequestHandler->isPost()) {
             $this->handlePostRequest();
-        } else if ($this->RequestHandler->isPost()) {
+        } else if ($this->RequestHandler->isPut()) {
             $this->handlePutRequest($id);
         } else if ($this->RequestHandler->isDelete()) {
             $this->handleDeleteRequest($id);
