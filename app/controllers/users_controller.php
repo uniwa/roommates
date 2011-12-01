@@ -55,6 +55,27 @@ class UsersController extends AppController{
         $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
+	
+	function help(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'help');
+        $this->set('title_for_layout', 'Αναφορά προβλήματος');
+
+        if(isset($this->data)){
+            $userid = $this->Auth->user('id');
+            $username = $this->Auth->user('username');
+//pr($this->data['subject']);die();
+            $formData = array();
+            $formData['subject'] = $this->data['subject'];
+            $formData['category'] = "bug";
+            $formData['userid'] = $userid;
+            $formData['username'] = $username;
+            $formData['description'] = $this->data['description'];
+            $this->createIssue($formData);
+        }
+//        $this->render(false);
+	}
 
     function terms(){
         // this variable is used to display properly
@@ -278,6 +299,39 @@ class UsersController extends AppController{
             return false;
         }
         return $this->RealEstate->id;
+    }
+
+    private function createIssue($data){
+        if(isset($data)){
+            $reqData['subject'] = $data['subject'];
+            $reqData['description'] = "{$data['userid']} {$data['username']}\n";
+            $reqData['description'] .= "{$data['category']}\n";
+            $reqData['description'] .= $data['description'];
+            $reqXml = $this->createXmlRequest($reqData);
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "http://redmine.edu.teiath.gr/issues.xml");
+            curl_setopt($ch, CURLOPT_POST, false);
+            curl_setopt($ch, CURLOPT_USERPWD, "7806cada9458077b3251b341ff3ffc072987e5bc:password");
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $reqXml);
+            curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+            curl_setopt($ch, CURLOPT_FAILONERROR,1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+            $result = curl_exec($ch);
+            curl_close($ch);
+        }
+    }
+    
+    private function createXmlRequest($data){
+        $req = "<?xml version=\"1.0\"?>";
+        $req .= "<issue>";
+        $req .= "<subject>{$data['subject']}</subject>";
+        $req .= "<description>{$data['description']}</description>";
+        $req .= "<project_id>8</project_id>"; // TODO: change project id
+        $req .= "</issue>";
+        
+        return $req;
     }
 
     private function email_registration($id){
