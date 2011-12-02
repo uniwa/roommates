@@ -16,9 +16,9 @@
     }
 
     .profilePic{
-        margin: 0px auto 0px auto;
+        margin: 0px auto;
         padding: 2px;
-        width: 180px;
+        width: 100px;
         height: 100px;
         overflow: hidden;
     }
