@@ -158,41 +158,44 @@ class ProfilesController extends AppController {
         if(empty($this->data)){
              $this->data = $profile;
         }else{
+            //pr($this->data);die();
 	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
 	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
             $this->data['Profile']['email'] = $profile['Profile']['email'];
 
             // check if image is uploaded
             // here we catch images not uploaded due to large file size
-            if ( ! is_uploaded_file($this->data['Profile']['avatar']['tmp_name'])) {
-                $this->Profile->invalidate('avatar', 'Υπερβλικά μεγάλο μέγεθος εικόνας.');
-            }
+            if (! empty($this->data['Profile']['avatar']['name'])) {
+                if ( ! is_uploaded_file($this->data['Profile']['avatar']['tmp_name'])) {
+                    $this->Profile->invalidate('avatar', 'Υπερβλικά μεγάλο μέγεθος εικόνας.');
+                }
 
-            // check avatar file type
-            $valid_types = array('png', 'jpeg', 'jpg', 'gif');
-            if (! in_array($this->Common->upload_file_type($this->data['Profile']['avatar']['tmp_name']),
-                $valid_types)) {
+                // check avatar file type
+                $valid_types = array('png', 'jpeg', 'jpg', 'gif');
+                if (! in_array($this->Common->upload_file_type($this->data['Profile']['avatar']['tmp_name']),
+                    $valid_types)) {
 
-                $this->Profile->invalidate('avatar', 'Μη αποδεκτός τύπος εικόνας');
-            }
+                    $this->Profile->invalidate('avatar', 'Μη αποδεκτός τύπος εικόνας');
+                }
 
-            // check dimensions
-            list($width, $height) = $this->Common->get_image_dimensions($this->data['Profile']['avatar']['tmp_name']);
-            if (($width > $this->avatar_size['width']) or ($height > $this->avatar_size['height'])) {
-                $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλο μέγεθος εικόνας');
-            }
+                // check dimensions
+                list($width, $height) = $this->Common->get_image_dimensions($this->data['Profile']['avatar']['tmp_name']);
+                if (($width > $this->avatar_size['width']) or ($height > $this->avatar_size['height'])) {
+                    $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλο μέγεθος εικόνας');
+                }
 
-            if ($this->Profile->validates() == true) {
-                // save image on FS
-                $this->Image->create();
-                $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
-                if ($newName == NULL) {
-                    $this->Profile->invalidate('avatar', 'Αδυναμία αποθήκευσης εικόνας, παρακαλώ επικοινωνήστε με τον διαχειριστή');
-                } else {
-                    if (! empty($current_avatar)) {
-                        $this->Image->delProfileImage($id, $current_avatar);
+                if ($this->Profile->validates() == true) {
+                    // save image on FS
+                    $this->Image->create();
+                    $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
+                    if ($newName == NULL) {
+                        $this->Profile->invalidate('avatar', 'Αδυναμία αποθήκευσης εικόνας, παρακαλώ επικοινωνήστε με τον διαχειριστή');
+                    } else {
+                        if (! empty($current_avatar)) {
+                            $this->Image->delProfileImage($id, $current_avatar);
+                        }
+                        $this->data['Profile']['avatar'] = $newName;
                     }
-                    $this->data['Profile']['avatar'] = $newName;
                 }
             }
 
