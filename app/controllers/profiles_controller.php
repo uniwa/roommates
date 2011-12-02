@@ -8,6 +8,9 @@ class ProfilesController extends AppController {
     var $paginate = array('limit' => 15);
     var $uses = array('Profile', 'House', 'Municipality', 'Image');
 
+    // max avatar width, height
+    var $avatar_size = array('width' => 100, 'height' => 100);
+
     function index() {
         // Block access for all
         $this->cakeError('error403');
@@ -169,6 +172,12 @@ class ProfilesController extends AppController {
             if (! in_array($this->Common->upload_file_type($this->data['Profile']['avatar']['tmp_name']),
                 $valid_types)) {
 
+                $this->Profile->invalidate('avatar');
+            }
+
+            // check dimensions
+            list($width, $height) = $this->Common->get_image_dimensions($this->data['Profile']['avatar']['tmp_name']);
+            if (($width > $this->avatar_size['width']) or ($height > $this->avatar_size['height'])) {
                 $this->Profile->invalidate('avatar');
             }
 

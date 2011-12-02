@@ -17,5 +17,14 @@ class CommonComponent extends Object {
         $mime_type = explode("/", $mime_type);
         return $mime_type[1];
     }
+
+    function get_image_dimensions($file) {
+        /* return image width and height
+         * NOTE: it does not check if file is an image
+         */
+        if (! is_file($file)) return NULL;
+        list($width, $height, $type, $attr) = getimagesize($file)
+        return list($width, $height);
+    }
 }
 ?>
