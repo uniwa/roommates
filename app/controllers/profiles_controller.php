@@ -233,6 +233,36 @@ class ProfilesController extends AppController {
         $this->set('profile', $profile['Profile']);
      }
 
+    function deleteImage ($id = NULL) {
+        $this->checkExistence($id);
+        $this->checkAccess( $id );
+        $this->Profile->id = $id;
+        $this->Profile->recursive = -1;
+        $profile = $this->Profile->read();
+        if (empty($profile['Profile']['avatar'])) {
+            $this->Session->setFlash(
+                'Η εικόνα που προσπαθείτε να διαγράψετε, δεν υπάρχει',
+                'default', array('class' => 'flashRed'));
+            $this->redirect(array('action'=> "view", $id));
+        }
+
+        if ($this->Image->delProfileImage($id, $profile['Profile']['avatar']) == false) {
+            $this->Session->setFlash(
+                'Aδυναμία διαγραφής εικόνας. Παρακαλώ επικοινωνήστε με τον διαχειριστή.',
+                'default', array('class' => 'flashRed'));
+            $this->redirect(array('action'=> "view", $id));
+        }
+
+        if (! $this->Profile->saveField('avatar', NULL) ){
+            $this->Session->setFlash(
+                'Aδυναμία διαγραφής εικόνας. Παρακαλώ επικοινωνήστε με τον διαχειριστή.',
+                'default', array('class' => 'flashRed'));
+        }
+        $this->Session->setFlash(
+            'Η φωτογραφία προφίλ διαγράφηκε με επιτυχία.',
+            'default', array('class' => 'flashBlue'));
+        $this->redirect(array('action'=> "view", $id));
+    }
 
     function search() {
         // Deny access to real estates
