@@ -43,6 +43,33 @@
         font-weight: bold;
     }
 
+    .editSubTitle{
+        margin: 0px 0px 8px 32px;
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+    .avatarLabel{
+        margin: 0px 0px 8px 32px;
+    }
+    
+    #avatarField{
+        margin: 0px 0px 16px 32px;
+    }
+
+    #avatarField label{
+        display: none;
+    }
+
+    #avatarField.file input{
+        border: 1px solid #ddd;
+    }
+
+    .error-message{
+        margin: 4px 0px 0px 0px;
+        color: #f00;
+    }
+
     .input select{
         border: 1px solid #ddd;
         padding: 4px;
@@ -109,7 +136,11 @@
     $name = $profile['firstname'].' '.$profile['lastname'];
     $email = $profile['email'];
     $emailUrl = $this->Html->link($email, 'mailto:'.$email);
-	$picture = ($profile['gender'])?'female.jpg':'male.jpg';
+    if (empty($profile['avatar'])) {
+        $picture = ($profile['gender'])?'female.jpg':'male.jpg';
+    } else {
+        $picture = 'uploads/profiles/'.$profile['id'].'/'.$profile['avatar'];
+    }
     $profileThumb = $this->Html->image($picture, array('alt' => $name));
 ?>
 <div id='leftbar'>
@@ -118,20 +149,33 @@
             echo $profileThumb;
         ?>
     </div>
-    <div id='profileName'>
-        <?php echo $name; ?>
-    </div>
-    <div id='profileEmail'>
-        <?php echo $emailUrl; ?>
+    <div class='profileData'>
+        <div id='profileName'>
+            <?php echo $name; ?>
+        </div>
+        <div id='profileEmail'>
+            <?php echo $emailUrl; ?>
+        </div>
     </div>
 </div>
 <div id='main-inner'>
     <div class='profileFrame'>
+        <?php echo $this->Form->create('Profile', array('type' => 'file')); ?>
         <div class='editTitle'>
             <h2>Στοιχεία χρήστη</h2>
         </div>
+        <div class='editSubTitle'>
+            <h3>Εικόνα χρήστη</h3>
+        </div>
+        <div class='avatarLabel'>
+            Επιλέξτε εικόνα προφίλ (διαστάσεις μέχρι 100x100 pixels)
+        </div>
+        <div id='avatarField'>
+            <?php
+                echo $this->Form->input('avatar', array('type' => 'file', 'label' => ''));
+            ?>
+        </div>
         <?php
-            echo $this->Form->create('Profile');
             echo "<div class='radio'>".$this->Form->radio('gender',
                 array('0' => 'Άνδρας', '1' => 'Γυναίκα'),
                 array('legend' => false))."</div>";

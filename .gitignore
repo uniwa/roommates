@@ -17,6 +17,9 @@
 # debug, session settings etc
 /app/config/core.php
 
+# registration activation emails
+/app/config/authority.php
+
 
 # swap et al
 *~
@@ -38,3 +41,4 @@
 
 #images
 app/webroot/img/uploads/houses/
+app/webroot/img/uploads/profiles/

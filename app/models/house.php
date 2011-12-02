@@ -3,7 +3,6 @@
 class House extends AppModel {
     var $name = 'House';
     var $belongsTo = array('HouseType', 'Floor', 'HeatingType', 'Municipality', 'User');
-
     var $hasMany = array ('Image');
 
 	var $virtualFields = array(
@@ -70,7 +69,7 @@ class House extends AppModel {
                 'message' => 'Η διεύθυνση δεν μπορεί να είναι κενή.'
             ),
             'valid' => array(
-                'rule' => '/^[\w\dαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς,. &]+$/',
+                'rule' => '/^[\w\dαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς,. &-]+$/',
                 'message' => 'Η διεύθυνση περιέχει έναν μη έγκυρο χαρακτήρα.',
                 'allowEmpty' => true
             )
