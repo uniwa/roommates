@@ -59,8 +59,7 @@ class Image extends AppModel {
             return $this->save_house_image($base_path, $fileData['tmp_name'], $new_name, $thumbSizeMax,
                                             $thumbSizeType, $thumbQuality);
         } else {
-            return $this->save_profile_image($base_path, $fileData['tmp_name'], $new_name, $thumbSizeMax,
-                                            $thumbSizeType, $thumbQuality);
+            return $this->save_profile_image($base_path, $fileData['tmp_name'], $new_name);
         }
 
 //        /* generate photo paths */
@@ -105,26 +104,14 @@ class Image extends AppModel {
         return $new_name;
     }
 
-    private function save_profile_image($base_path, $upload_path, $new_name, $thumbSizeMax,
-        $thumbSizeType, $thumbQuality ) {
-
-        $original = $base_path . 'orig_' . $new_name;
+    private function save_profile_image($base_path, $upload_path, $new_name) {
         $avatar = $base_path . $new_name;
 
-        if (move_uploaded_file($upload_path, $original)) {
-            $resizer = new ccImageResize;
-
-            if (! $resizer->resizeImage($original, $avatar, $thumbSizeMax,$thumbSizeType,$thumbQuality)) {
-                return NULL;
-            }
-
-        } else {
-            return NULL;
+        if (move_uploaded_file($upload_path, $avatar)) {
+            return $new_name;
         }
-        return $new_name;
+            return NULL;
     }
-
-
 
 
     function delImage($house_id, $filename)
