@@ -66,16 +66,24 @@ class UsersController extends AppController{
         if(isset($this->data)){
             $userid = $this->Auth->user('id');
             $username = $this->Auth->user('username');
-//pr($this->data['subject']);die();
+
             $formData = array();
             $formData['subject'] = $this->data['subject'];
             $formData['category'] = "bug";
             $formData['userid'] = $userid;
             $formData['username'] = $username;
             $formData['description'] = $this->data['description'];
-            $this->createIssue($formData);
+            $result = $this->createIssue($formData);
+            if($result){
+                $this->Session->setFlash( 'Η αναφορά καταχωρήθηκε με επιτυχία', 'default',
+                    array('class' => 'flashBlue'));
+                $this->redirect('/');
+            }else{
+                $this->Session->setFlash( 'Η αναφορά δεν ήταν δυνατό να καταχωρηθεί.', 'default',
+                    array('class' => 'flashRed'));
+                $this->redirect('help');
+            }
         }
-//        $this->render(false);
 	}
 
     function terms(){
@@ -337,6 +345,10 @@ class UsersController extends AppController{
             curl_setopt($ch, CURLOPT_TIMEOUT, 15);
             $result = curl_exec($ch);
             curl_close($ch);
+            
+            return $result;
+        }else{
+            return false;
         }
     }
     
