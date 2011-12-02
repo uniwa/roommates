@@ -23,8 +23,8 @@ class CommonComponent extends Object {
          * NOTE: it does not check if file is an image
          */
         if (! is_file($file)) return NULL;
-        list($width, $height, $type, $attr) = getimagesize($file)
-        return list($width, $height);
+        list($width, $height, $type, $attr) = getimagesize($file);
+        return array($width, $height);
     }
 }
 ?>
