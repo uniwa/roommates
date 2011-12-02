@@ -164,7 +164,7 @@ class ProfilesController extends AppController {
             // check if image is uploaded
             // here we catch images not uploaded due to large file size
             if ( ! is_uploaded_file($this->data['Profile']['avatar']['tmp_name'])) {
-                $this->Profile->invalidate('avatar');
+                $this->Profile->invalidate('avatar', 'Υπερβλικά μεγάλο μέγεθος εικόνας.');
             }
 
             // check avatar file type
@@ -172,27 +172,31 @@ class ProfilesController extends AppController {
             if (! in_array($this->Common->upload_file_type($this->data['Profile']['avatar']['tmp_name']),
                 $valid_types)) {
 
-                $this->Profile->invalidate('avatar');
+                $this->Profile->invalidate('avatar', 'Μη αποδεκτός τύπος εικόνας');
             }
 
             // check dimensions
             list($width, $height) = $this->Common->get_image_dimensions($this->data['Profile']['avatar']['tmp_name']);
             if (($width > $this->avatar_size['width']) or ($height > $this->avatar_size['height'])) {
-                $this->Profile->invalidate('avatar');
+                $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλο μέγεγος εικόνας');
             }
 
-            // save image on FS
-            $this->Image->create();
-            $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
-            if ($newName == NULL) {
-                $this->Profile->invalidate('avatar');
+            if ($this->Profile->validates() == true) {
+                // save image on FS
+                $this->Image->create();
+                $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
+                if ($newName == NULL) {
+                    $this->Profile->invalidate('avatar', 'Αδυναμία αποθήκευσης εικόνας, παρακαλώ επικοινωνήστε με τον διαχειριστή');
+                }
+                $this->data['Profile']['avatar'] = $newName;
             }
-            $this->data['Profile']['avatar'] = $newName;
 
-            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
-                    array('class' => 'flashBlue'));
-                $this->redirect(array('action'=> "view", $id));
+            if ($this->Profile->validates() == true) {
+                if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
+                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
+                        array('class' => 'flashBlue'));
+                    $this->redirect(array('action'=> "view", $id));
+                }
             }
 		}
         $dob = array();
