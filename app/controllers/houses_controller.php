@@ -258,7 +258,7 @@ class HousesController extends AppController {
                 $house = $this->House->read();
                 // post to facebook application wall
                 if ( $this->data['House']['visible'] == 1 ) {
-                    $this->postToAppWall( $house );
+                    $this->postToAppWall( $house, false );
                 }
                 $this->redirect(array('action' => "view", $hid));
             }
@@ -356,7 +356,7 @@ class HousesController extends AppController {
                 $house = $this->House->read();
                 // post updated house on application's page on Facebook
                 if ( $this->data['House']['visible'] == 1 ) {
-                    $this->postToAppWall( $house );
+                    $this->postToAppWall( $house, true );
                 }
 
                 $this->redirect(array('action' => "view", $id));
@@ -1124,41 +1124,29 @@ class HousesController extends AppController {
     }
      */
 
-
     // ------------------------------------------------------------------------
     // Manual [geo_distance] ordering. -- SECTION END *DEPRECATED*
     // ------------------------------------------------------------------------
 
+    // ------------------------------------------------------------------------
     // Facebook functions -- SECTION START
+    // ------------------------------------------------------------------------
 
     // Posts an announcement on the application's page on Facebook.
-    // The supplied parameter is a two-dimensional array which
-    // contains the entries 'House' and 'Municipality'.
-    protected function postToAppWall( $house ) {
+    // The supplied [$house] parameter is a two-dimensional array which
+    // contains the entries 'House', 'Municipality' and 'User'.
+    // [$isUpdated] specifies whether to include a short note indicating the
+    // house has been updated or created. Defaults to [false].
+    protected function postToAppWall( $house, $isUpdated=false ) {
 
         if( is_null( $house ) ) return;
 
-        $furnished = null;
-        if( $house['House']['furnitured'] )  $furnished = 'Επιπλωμένο, ';
-        else $furnished = 'Μη επιπλωμένο, ';
-
-        $occupation_availability = null;
-        if( $house['User']['role'] != 'user' ) {
-
-            $occupation_availability = '';
-        } else {echo $house['User']['role'];
-            $occupation_availability =
-                ', Διαθέσιμες θέσεις '
-                . Sanitize::html( $house['House']['free_places'] );
-        }
-
-        $geo_distance = $house['House']['geo_distance'];
-        if( !is_null( $geo_distance ) ) {
-            $geo_distance = ', Αποστάση από ΤΕΙ '
-                . number_format( $geo_distance, 2 ) . ' χλμ.';
-        } else {
-            $geo_distance = '';
-        }
+        $furnished = $this->describeFurnished( $house );
+        $occupation_availability = $this->describeOccupation( $house );
+        $geo_distance = $this->describeDistance( $house );
+        $update = $isUpdated
+            ? 'Τροποποιήθηκε η αγγελία: '
+            : 'Ανερτήθη η αγγελία: ';
 
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
@@ -1168,7 +1156,9 @@ class HousesController extends AppController {
             $facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
 
                 'message' =>
-                    $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
+                    $update
+                    . $house['HouseType']['type'] . ' '
+                    . $house['House']['area'] . 'τμ, '
                     . 'Ενοικίο ' . $house['House']['price'] . '€, '
                     . $furnished
                     . 'Δήμος ' . $house['Municipality']['name']
@@ -1183,10 +1173,45 @@ class HousesController extends AppController {
         } catch( FacebookApiException $e ) {
 
             $this->Session->setFlash(
-                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο Facebook.',
+                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο '
+                . 'Facebook.',
                 'default',
                 array('class' => 'flashRed') );
         }
+    }
+
+    // Creates a properly formatted sentence describing house furnishing.
+    protected function describeFurnished( $house ) {
+        $furnished = null;
+        if( $house['House']['furnitured'] )  $furnished = 'Επιπλωμένο, ';
+        else $furnished = 'Μη επιπλωμένο, ';
+        return $furnished;
+    }
+
+    // Creates a properly formatted sentence describing house availability.
+    protected function describeOccupation( $house ) {
+        $occupation_availability = null;
+        if( $house['User']['role'] != 'user' ) {
+
+            $occupation_availability = '';
+        } else {echo $house['User']['role'];
+            $occupation_availability =
+                ', Διαθέσιμες θέσεις '
+                . Sanitize::html( $house['House']['free_places'] );
+        }
+        return $occupation_availability;
+    }
+
+    // Creates a properly formatted sentence describing house distance from TEI.
+    protected function describeDistance( $house ) {
+        $geo_distance = $house['House']['geo_distance'];
+        if( !is_null( $geo_distance ) ) {
+            $geo_distance = ', Αποστάση από ΤΕΙ '
+                . number_format( $geo_distance, 2 ) . ' χλμ.';
+        } else {
+            $geo_distance = '';
+        }
+        return $geo_distance;
     }
 
     // Creates a Facebook instance which is then made available though
@@ -1203,7 +1228,10 @@ class HousesController extends AppController {
 
         $this->Session->write( 'facebook', $facebook );
     }
+
+    // ------------------------------------------------------------------------
     // Facebook functions -- SECTION END
+    // ------------------------------------------------------------------------
 
     private function checkRole($role){
         if($this->Session->read('Auth.User.role') != $role){
