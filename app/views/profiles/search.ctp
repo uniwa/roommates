@@ -324,8 +324,12 @@
                     <div class='result-photo-cont'>
                     <div class='result-photo-inner'>
                         <?php
-							$profile_id = $profile['Profile']['id'];
-							$imageLocation = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+                            $profile_id = $profile['Profile']['id'];
+                            if (empty($profile['Profile']['avatar'])) {
+    							$imageLocation = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+                            } else {
+                                $imageLocation = 'uploads/profiles/'.$profile_id.'/'.$profile['Profile']['avatar'];
+                            }
                             $altText = "εικόνα {$profile['Profile']['firstname']}
                                  {$profile['Profile']['lastname']}";
 							$profileImage = $this->Html->image($imageLocation,

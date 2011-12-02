@@ -219,6 +219,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `modified` DATETIME NULL DEFAULT NULL ,
   `preference_id` INT NULL DEFAULT NULL ,
   `user_id` INT NOT NULL ,
+  `avatar` VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   INDEX `fk_preference_id` (`preference_id` ASC) ,
   INDEX `fk_user_id` (`user_id` ASC) ,

@@ -4,9 +4,12 @@ App::import('Sanitize');
 class ProfilesController extends AppController {
 
     var $name = 'Profiles';
-    var $components = array('RequestHandler', 'Email');
+    var $components = array('RequestHandler', 'Email', 'Common');
     var $paginate = array('limit' => 15);
     var $uses = array('Profile', 'House', 'Municipality', 'Image');
+
+    // max avatar width, height
+    var $avatar_size = array('width' => 100, 'height' => 100);
 
     function index() {
         // Block access for all
@@ -150,17 +153,55 @@ class ProfilesController extends AppController {
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
+        $current_avatar = $profile['Profile']['avatar'];
 
         if(empty($this->data)){
              $this->data = $profile;
-	    }else{
+        }else{
 	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
 	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
-	        $this->data['Profile']['email'] = $profile['Profile']['email'];
-            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
-                    array('class' => 'flashBlue'));
-                $this->redirect(array('action'=> "view", $id));
+            $this->data['Profile']['email'] = $profile['Profile']['email'];
+
+            // check if image is uploaded
+            // here we catch images not uploaded due to large file size
+            if ( ! is_uploaded_file($this->data['Profile']['avatar']['tmp_name'])) {
+                $this->Profile->invalidate('avatar', 'Υπερβλικά μεγάλο μέγεθος εικόνας.');
+            }
+
+            // check avatar file type
+            $valid_types = array('png', 'jpeg', 'jpg', 'gif');
+            if (! in_array($this->Common->upload_file_type($this->data['Profile']['avatar']['tmp_name']),
+                $valid_types)) {
+
+                $this->Profile->invalidate('avatar', 'Μη αποδεκτός τύπος εικόνας');
+            }
+
+            // check dimensions
+            list($width, $height) = $this->Common->get_image_dimensions($this->data['Profile']['avatar']['tmp_name']);
+            if (($width > $this->avatar_size['width']) or ($height > $this->avatar_size['height'])) {
+                $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλο μέγεθος εικόνας');
+            }
+
+            if ($this->Profile->validates() == true) {
+                // save image on FS
+                $this->Image->create();
+                $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
+                if ($newName == NULL) {
+                    $this->Profile->invalidate('avatar', 'Αδυναμία αποθήκευσης εικόνας, παρακαλώ επικοινωνήστε με τον διαχειριστή');
+                } else {
+                    if (! empty($current_avatar)) {
+                        $this->Image->delProfileImage($id, $current_avatar);
+                    }
+                    $this->data['Profile']['avatar'] = $newName;
+                }
+            }
+
+            if ($this->Profile->validates() == true) {
+                if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
+                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
+                        array('class' => 'flashBlue'));
+                    $this->redirect(array('action'=> "view", $id));
+                }
             }
 		}
         $dob = array();
@@ -191,6 +232,37 @@ class ProfilesController extends AppController {
         }
         $this->set('profile', $profile['Profile']);
      }
+
+    function deleteImage ($id = NULL) {
+        $this->checkExistence($id);
+        $this->checkAccess( $id );
+        $this->Profile->id = $id;
+        $this->Profile->recursive = -1;
+        $profile = $this->Profile->read();
+        if (empty($profile['Profile']['avatar'])) {
+            $this->Session->setFlash(
+                'Η εικόνα που προσπαθείτε να διαγράψετε, δεν υπάρχει',
+                'default', array('class' => 'flashRed'));
+            $this->redirect(array('action'=> "view", $id));
+        }
+
+        if ($this->Image->delProfileImage($id, $profile['Profile']['avatar']) == false) {
+            $this->Session->setFlash(
+                'Aδυναμία διαγραφής εικόνας. Παρακαλώ επικοινωνήστε με τον διαχειριστή.',
+                'default', array('class' => 'flashRed'));
+            $this->redirect(array('action'=> "view", $id));
+        }
+
+        if (! $this->Profile->saveField('avatar', NULL) ){
+            $this->Session->setFlash(
+                'Aδυναμία διαγραφής εικόνας. Παρακαλώ επικοινωνήστε με τον διαχειριστή.',
+                'default', array('class' => 'flashRed'));
+        }
+        $this->Session->setFlash(
+            'Η φωτογραφία προφίλ διαγράφηκε με επιτυχία.',
+            'default', array('class' => 'flashBlue'));
+        $this->redirect(array('action'=> "view", $id));
+    }
 
     function search() {
         // Deny access to real estates

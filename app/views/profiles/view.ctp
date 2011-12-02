@@ -93,8 +93,13 @@
 	$age = $profile['Profile']['age'];
 	$email = $profile['Profile']['email'];
 	$phone = ($profile['Profile']['phone'])?$profile['Profile']['phone']:'-';
-	$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
-	$picture = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+    $gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
+    if (empty($profile['Profile']['avatar'])) {
+        $picture = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+    }
+    else {
+        $picture = 'uploads/profiles/'.$profileid.'/'.$profile['Profile']['avatar'];
+    }
 	$smoker = ($profile['Profile']['smoker'])?'ναι':'όχι';
 	$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
 	$couple = ($profile['Profile']['couple'])?'ναι':'όχι';

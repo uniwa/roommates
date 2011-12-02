@@ -3,6 +3,7 @@ class ImagesController extends AppController {
 
     var $name = 'Images';
     var $uses = array("Image", "House");
+    var $components = array("Common");
     var $max_images = 4;
 
     function add( $id ) {
@@ -12,12 +13,8 @@ class ImagesController extends AppController {
         // the selected element on header
         $this->set('selected_action', 'houses_view');
 
-        /* get max allowed upload size from php conf */
-        $max_upload = (int)(ini_get('upload_max_filesize'));
-        $max_post = (int)(ini_get('post_max_size'));
-        $memory_limit = (int)(ini_get('memory_limit'));
-        $upload_mb = min($max_upload, $max_post, $memory_limit);
-        $this->set('max_size', $upload_mb);
+        // max allowed file upload size
+        $this->set('max_size', $this->Common->max_upload());
 
         if ( ! $this->hasAccess($id) ) {
             $this->cakeError( 'error403' );
@@ -174,11 +171,8 @@ class ImagesController extends AppController {
     private function validType($file) {
         /* check if uploaded image is a valid filetype */
         $valid_types = array("png", "jpg", "jpeg");
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mime_type = finfo_file($finfo, $file);
-        $mime_type = explode("/", $mime_type);
 
-        if (in_array($mime_type[1], $valid_types)) {
+        if (in_array($this->Common->upload_file_type($file), $valid_types)) {
             return True;
         }
         return False;
