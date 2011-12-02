@@ -1352,7 +1352,21 @@ class HousesController extends AppController {
     }
 
     private function handlePutRequest($id) {
-        // TODO implement
+        if ($id != null) {
+            $this->data['House']['id'] = $id;
+            $this->data['House']['geo_distance'] = $this->computeDistance();
+            $this->setRequiredIds();
+            if ($this->House->saveAll($this->data)) {
+                $this->set('results', $this->data);
+            } else {
+                // TODO find a better error message!!!
+                $this->set('results', "You, sir, have been trolled!");
+            }
+            $this->layout = 'xml/default';
+            $this->render('xml/create');
+        } else {
+            // TODO return some error
+        }
     }
 
     private function handleDeleteRequest($id) {
