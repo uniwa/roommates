@@ -113,6 +113,12 @@ class Image extends AppModel {
             return NULL;
     }
 
+    function delProfileImage($profile_id, $filename) {
+        $base_path = WWW_ROOT . "img/uploads/profiles/$profile_id/";
+        $avatar = $base_path . $filename;
+        if (! unlink($avatar)) return False;
+        return True;
+    }
 
     function delImage($house_id, $filename)
     {

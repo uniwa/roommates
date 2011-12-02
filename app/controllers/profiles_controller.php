@@ -153,6 +153,7 @@ class ProfilesController extends AppController {
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
+        $current_avatar = $profile['Profile']['avatar'];
 
         if(empty($this->data)){
              $this->data = $profile;
@@ -187,8 +188,12 @@ class ProfilesController extends AppController {
                 $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
                 if ($newName == NULL) {
                     $this->Profile->invalidate('avatar', 'Αδυναμία αποθήκευσης εικόνας, παρακαλώ επικοινωνήστε με τον διαχειριστή');
+                } else {
+                    if (! empty($current_avatar)) {
+                        $this->Image->delProfileImage($id, $current_avatar);
+                    }
+                    $this->data['Profile']['avatar'] = $newName;
                 }
-                $this->data['Profile']['avatar'] = $newName;
             }
 
             if ($this->Profile->validates() == true) {
@@ -227,6 +232,7 @@ class ProfilesController extends AppController {
         }
         $this->set('profile', $profile['Profile']);
      }
+
 
     function search() {
         // Deny access to real estates
