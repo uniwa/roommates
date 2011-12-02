@@ -2,7 +2,7 @@
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 16px;
         width: 260px;
     }
 
@@ -12,6 +12,8 @@
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 660px;
+        min-height: 300px;
+        overflow: hidden;
     }
 
     .form-title{
@@ -107,8 +109,9 @@
     }
     
     .rowtitle{
-        background-color: #ccc;
-        border-bottom: 1px solid #000;
+        border-top: 3px solid #aaa;
+        border-bottom: 1px solid #aaa;
+        margin: 0px 0px 8px 0px;
         font-weight: bold;
         text-decoration: none;
     }

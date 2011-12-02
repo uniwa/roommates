@@ -7,7 +7,7 @@
         text-align: center;
         color: #000;
     }
-    
+
     .result-cont{
         margin: 2px auto;
         height: 100px;
@@ -36,8 +36,8 @@
 							    // thumbnail icon if found
 							    $house_id = $house['House']['id'];
 							    $house_image = 'house.gif';
-                                if(!empty($house['Image']['location'])) {
-                                    $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
+                                if(!empty($house['Image'][0]['location'])) {
+                                    $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image'][0]['location'];
                                 }
                                 $altText = 'εικόνα '.$house['House']['address'];
 							    $houseImage = $this->Html->image($house_image,
@@ -109,16 +109,10 @@
 							    // thumbnail icon if found
 							    $house_id = $house['House']['id'];
 							    $house_image = 'house.gif';
-							    $housedefid = $house['House']['default_image_id'];
-							    $maxPics = 4;
-                                for($i = 0; $i < $maxPics; $i++){
-                                    if(isset($house['Image'][$i])){
-                                        if($house['Image'][$i]['id'] == $housedefid){
-                                            if(!empty($house['Image'][$i]['location'])){
-                                                $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image'][$i]['location'];
-                                            }
-                                            break;
-                                        }
+                                foreach ($house['Image'] as $image) {
+                                    if ($image['is_default'] == 1) {
+                                        $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$image['location'];
+                                        break;
                                     }
                                 }
                                 $altText = 'εικόνα '.$house['House']['address'];

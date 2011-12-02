@@ -12,11 +12,21 @@ class AuthHelper extends AppHelper{
      * Extract Auth array from $this->data
      */
     function beforeRender(){
-        $this->user_id = $this->data['Auth']['User']['id'];
-        $this->profile_id = $this->data['Auth']['Profile']['id'];
-        $this->house_id = $this->data['Auth']['House']['id'];
-        $this->banned = $this->data['Auth']['User']['banned'];
-        $this->estate_id = $this->data['Auth']['RealEstate']['id'];
+        if(isset($this->data['Auth']['User']['id'])) {
+            $this->user_id = $this->data['Auth']['User']['id'];
+        }
+        if(isset($this->data['Auth']['Profile']['id'])) {
+            $this->profile_id = $this->data['Auth']['Profile']['id'];
+        }
+        if(isset($this->data['Auth']['House']['id'])) {
+            $this->house_id = $this->data['Auth']['House']['id'];
+        }
+        if(isset($this->data['Auth']['User']['banned'])) {
+            $this->banned = $this->data['Auth']['User']['banned'];
+        }
+        if(isset($this->data['Auth']['RealEstate']['id'])) {
+            $this->estate_id = $this->data['Auth']['RealEstate']['id'];
+        }
     }
 
     /*

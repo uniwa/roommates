@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<house>
+<house xmlns="http://www.roommates.teiath.gr/schemas/HouseTypes">
     <address>Oumpa lumpa</address>
     <postal_code>12345</postal_code>
     <area>345</area>

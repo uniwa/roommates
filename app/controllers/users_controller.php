@@ -1,12 +1,13 @@
 <?php
-
+Configure::load('authority');
 
 class UsersController extends AppController{
 
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
-    var $components = array('Token', 'Recaptcha.Recaptcha');
+    var $components = array('Token', 'Recaptcha.Recaptcha', 'Email');
     //var $helpers = array('RecaptchaPlugin.Recaptcha');
+    var $helpers = array('Auth');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -56,6 +57,35 @@ class UsersController extends AppController{
         //and redirect them to where they need to go
         $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
+	}
+	
+	function help(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'help');
+        $this->set('title_for_layout', 'Αναφορά προβλήματος');
+
+        if(isset($this->data)){
+            $userid = $this->Auth->user('id');
+            $username = $this->Auth->user('username');
+
+            $formData = array();
+            $formData['subject'] = $this->data['subject'];
+            $formData['category'] = "bug";
+            $formData['userid'] = $userid;
+            $formData['username'] = $username;
+            $formData['description'] = $this->data['description'];
+            $result = $this->createIssue($formData);
+            if($result){
+                $this->Session->setFlash( 'Η αναφορά καταχωρήθηκε με επιτυχία', 'default',
+                    array('class' => 'flashBlue'));
+                $this->redirect('/');
+            }else{
+                $this->Session->setFlash( 'Η αναφορά δεν ήταν δυνατό να καταχωρηθεί.', 'default',
+                    array('class' => 'flashRed'));
+                $this->redirect('help');
+            }
+        }
 	}
 
     function terms(){
@@ -252,6 +282,21 @@ class UsersController extends AppController{
                     $this->User->commit();
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
+
+                    // get municipality (name) in order to print it onto the 
+                    // email which is to be sent for registration approval
+                    $municipality =
+                        $this->data['RealEstate']['municipality_id'];
+
+                    if( isset($municipality) ) {
+                        $municipality =
+                            $this->getMunicipalityData($municipality);
+                    }
+
+                    $this->set('data', $this->data );
+                    $this->set('municipality', $municipality);
+                    $this->notifyOfRegistration();
+
                     $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
                     $this->redirect('login');
                 }
@@ -260,6 +305,7 @@ class UsersController extends AppController{
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
+
     }
 
     private function create_estate_profile($id, $data) {
@@ -282,5 +328,81 @@ class UsersController extends AppController{
         return $this->RealEstate->id;
     }
 
+    private function createIssue($data){
+        if(isset($data)){
+            $reqData['subject'] = $data['subject'];
+            $reqData['description'] = "{$data['userid']} {$data['username']}\n";
+            $reqData['description'] .= "{$data['category']}\n";
+            $reqData['description'] .= $data['description'];
+            $reqXml = $this->createXmlRequest($reqData);
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "http://redmine.edu.teiath.gr/issues.xml");
+            curl_setopt($ch, CURLOPT_POST, false);
+            curl_setopt($ch, CURLOPT_USERPWD, "7806cada9458077b3251b341ff3ffc072987e5bc:password");
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $reqXml);
+            curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+            curl_setopt($ch, CURLOPT_FAILONERROR,1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+            $result = curl_exec($ch);
+            curl_close($ch);
+            
+            return $result;
+        }else{
+            return false;
+        }
+    }
+    
+    private function createXmlRequest($data){
+        $req = "<?xml version=\"1.0\"?>";
+        $req .= "<issue>";
+        $req .= "<subject>{$data['subject']}</subject>";
+        $req .= "<description>{$data['description']}</description>";
+        $req .= "<project_id>8</project_id>"; // TODO: change project id
+        $req .= "</issue>";
+        
+        return $req;
+    }
+
+    private function email_registration($id){
+        $this->RealEstate->id = $id;
+        $realEstate = $this->RealEstate->read();
+        $this->Email->to = $realEstate['RealEstate']['email'];
+        $this->Email->subject = 'Εγγραφή στην υπηρεσίας roommates ΤΕΙ Αθήνας';
+        //$this->Email->replyTo = 'support@example.com';
+        $this->Email->from = 'admin@roommates.edu.teiath.gr';
+        $this->Email->template = 'registration';
+        $this->Email->sendAs = 'both';
+        $this->Email->send();
+    }
+    
+
+    private function notifyOfRegistration() {
+        $recipients = Configure::read('authority.activation_recipients');
+        $subject = Configure::read('authority.activation_subject');
+        if(empty($subject)) {
+            $subject = 'Αίτησης εγγραφής στο roommates';
+        }
+
+        foreach($recipients as $to) {
+            $this->Email->reset();
+            $this->Email->to = $to;
+            $this->Email->subject = $subject;
+            $this->Email->from = 'admin@roommates.edu.teiath.gr';
+            $this->Email->template = 'registered';
+            $this->Email->layout = 'registered';
+            $this->Email->sendAs = 'both';
+        }
+    }
+
+    private function getMunicipalityData($municipality_id) {
+        $this->loadModel('Municipality');
+        $data = $this->Municipality->find('first', array(
+            'conditions' => array('Municipality.id' => $municipality_id)
+        ));
+        return $data;
+    }
 }
 ?>
+

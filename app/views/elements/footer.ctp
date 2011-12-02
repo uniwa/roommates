@@ -14,6 +14,16 @@
             <li>
                 <?php
                     $linkClass = 'menu-item menu-footer';
+                    if(isset($selected_action) && $selected_action == 'help'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('Αναφορά προβλήματος', array('controller' => 'users',
+                        'action' => 'help'), array('class' => $linkClass));
+                ?>
+            </li>
+            <li>
+                <?php
+                    $linkClass = 'menu-item menu-footer';
                     if(isset($selected_action) && $selected_action == 'users_faq'){
                         $linkClass .= ' menu-selected';
                     }

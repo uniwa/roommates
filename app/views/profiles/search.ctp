@@ -13,8 +13,8 @@
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
-        width: 260px;
+        padding: 16px 0px 0px 36px;
+        width: 300px;
     }
 
     #main-inner{
@@ -22,7 +22,7 @@
         border-left: 1px dotted #aaa;
         margin: 0px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
-        width: 680px;
+        width: 620px;
         min-height: 800px;
         overflow: hidden;
     }
@@ -50,6 +50,10 @@
         float: left;
         width: 140px;
         overflow: no-scroll;
+    }
+    
+    .form-checkbox{
+        width: 220px;
     }
 
     .form-submit{
@@ -237,7 +241,7 @@
                     </div>
                 </li>
                 <li class='form-line'>
-                    <div class='form-elem form-input'>
+                    <div class='form-elem form-input form-checkbox'>
                         <?php
                             echo $this->Form->checkbox('has_house', array('value' => 1,
                                 'class' => 'input-elem',

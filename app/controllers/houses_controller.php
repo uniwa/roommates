@@ -124,7 +124,7 @@ class HousesController extends AppController {
                 array(  'table' => 'images',
                         'alias' => 'Image',
                         'type'  => 'left',
-                        'conditions' => array('House.default_image_id = Image.id')
+                        'conditions' => array('House.id = Image.house_id')
                 ),
                 array(  'table' => 'users',
                         'alias' => 'User',
@@ -203,19 +203,15 @@ class HousesController extends AppController {
         }
 
         $this->set('house', $house);
+        $this->set('images', $house['Image']);
 
-        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-
-        foreach ($images as $image) {
-            if ($image['Image']['id'] == $house['House']['default_image_id']) {
-                $this->set('default_image_location', $image['Image']['location']);
-                $this->set('default_image_id', $image['Image']['id']);
+        foreach ($house['Image'] as $image) {
+            if ($image['is_default'] == 1) {
+                $this->set('default_image_location', $image['location']);
+                $this->set('default_image_id', $image['id']);
+                break;
             }
         }
-
-        $this->House->Image->recursive = 0;
-		$this->set('House.images', $this->paginate());
-		$this->set('images', $images);
 
 		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
         $fb_app_uri = Configure::read( 'fb_app_uri' );
@@ -250,7 +246,7 @@ class HousesController extends AppController {
             $this->data['House']['user_id'] = $this->Auth->user('id');
             /* debug: var_dump($this->data); die(); */
 
-            $this->computeDistance();
+            $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->save($this->data)) {
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
@@ -262,7 +258,7 @@ class HousesController extends AppController {
                 $house = $this->House->read();
                 // post to facebook application wall
                 if ( $this->data['House']['visible'] == 1 ) {
-                    $this->postToAppWall( $house );
+                    $this->postToAppWall( $house, false );
                 }
                 $this->redirect(array('action' => "view", $hid));
             }
@@ -274,13 +270,13 @@ class HousesController extends AppController {
     function delete($id) {
         $this->set('title_for_layout','Διαγραφή σπιτιού');
         $this->checkAccess( $id );
-        $this->House->begin();
+
         if($this->Auth->User('role') == 'realestate'){
             $redirectTarget = array(
                 'controller' => 'houses', 'action'=> 'manage');
         }else if($this->Auth->User('role') == 'user'){
             $profileid = $this->Profile->find('first',
-                array('fields' => 'Profile.id', 
+                array('fields' => 'Profile.id',
                 'conditions' => array(
                     'Profile.user_id' => $this->Auth->user('id'))));
             $profileid = $profileid['Profile']['id'];
@@ -288,15 +284,10 @@ class HousesController extends AppController {
                 'controller' => 'profiles', 'action'=> 'view', $profileid);
         }
 
-        /* hack: set default image id to NULL to avoid constraints */
-        $this->House->id = $id;
-        $house = $this->House->read();
-        $house['House']['default_image_id'] = NULL;
-        $this->House->save($house);
+        $this->House->begin();
 
         /* delete associated images first */
-        $conditions = array("house_id" => $id);
-        if ( ! $this->House->Image->deleteAll($conditions) ) {
+        if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
             $this->House->rollback();
             $this->Session->setFlash('Αδυναμία διαγραφής εικόνων από την βάση.',
                     'default', array('class' => 'flashRed'));
@@ -321,6 +312,7 @@ class HousesController extends AppController {
             }
         }
         $this->House->commit();
+
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
         $this->redirect($redirectTarget);
@@ -334,16 +326,18 @@ class HousesController extends AppController {
         $this->House->id = $id;
 
         $house = $this->House->read();
+
         $this->set('house', $house);
 
-        $images = $this->House->Image->find('all',array('conditions' => array('house_id'=>$id)));
-        $imageThumbLocation = 'house.gif';
-        foreach ($images as $image) {
-            if($image['Image']['id'] == $house['House']['default_image_id']){
-                $defaultImageLocation = $image['Image']['location'];
-                $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$defaultImageLocation;
+        // get default image for house
+        $imageThumbLocation = 'home.png';
+        foreach($house['Image'] as $image) {
+            if ($image['is_default'] == 1) {
+                $imageThumbLocation = 'uploads/houses/'.$id.'/thumb_'.$image['location'];
+                break;
             }
         }
+
         $this->set('imageThumbLocation', $imageThumbLocation);
 
         if (empty($this->data)) {
@@ -351,7 +345,7 @@ class HousesController extends AppController {
         }
         else {
 
-            $this->computeDistance();
+            $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
@@ -362,7 +356,7 @@ class HousesController extends AppController {
                 $house = $this->House->read();
                 // post updated house on application's page on Facebook
                 if ( $this->data['House']['visible'] == 1 ) {
-                    $this->postToAppWall( $house );
+                    $this->postToAppWall( $house, true );
                 }
 
                 $this->redirect(array('action' => "view", $id));
@@ -442,7 +436,7 @@ class HousesController extends AppController {
             $prefs['mates_prefs'], $order);
 
         $uid = $this->Auth->User('id');
-        $house = $this->House->find('first', array('conditions' => array('user_id' => $uid)));
+        $house = $this->House->find('first', array('conditions' => array('House.user_id' => $uid)));
         if(isset($house['House']['id'])){
             $hid = $house['House']['id'];
             for($i = 0; $i < $limit; $i++){
@@ -566,6 +560,21 @@ class HousesController extends AppController {
                                             'απόσταση από ΤΕΙ - αύξουσα',
                                             'απόσταση από ΤΕΙ - φθίνουσα'));
 
+        if(!isset($this->params['url']['search'])){
+            $results = $this->simpleSearch( $this->getHouseConditions(),
+                                                    null,
+                                                    $this->getOrderCondition(0)
+                                                  );
+
+            $this->set('results', $results);
+
+            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
+            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
+            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+
+            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
+        }
+
         if(isset($this->params['url']['save'])) {
             $this->saveSearchPreferences();
             // store user's input
@@ -680,6 +689,7 @@ class HousesController extends AppController {
 
             $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
+        
     }
 
 
@@ -687,21 +697,15 @@ class HousesController extends AppController {
                                     $orderBy = null, $pagination = true,
                                     $user_role = null, $fields = null) {
 
-        // The following SQL query is implemented
-        // mates conditions are added to the inner join with profiles table
-        // house conditions are added to the 'where' statement
-        // ----------------------------------------------------------------
-        // SELECT House.*, Image.location FROM houses House
-        // LEFT JOIN users User ON House.user_id = User.id
-        // INNER JOIN profiles Profile ON Profile.user_id = User.id
-        // LEFT JOIN images Image ON Image.id = House.default_image_id;
+        if ($fields != null) $options['fields'] = $fields;
 
-        if ($fields == null) {
-            $options['fields'] = array('House.*', 'Image.location', 'User.role');
-        } else {
-            $options['fields'] = $fields;
-        }
+        $options['conditions'] = $matesConditions != null ?
+                                 array_merge($houseConditions, $matesConditions) :
+                                 $houseConditions;
 
+        if ($orderBy != null) $options['order'] = $orderBy;
+
+        // used in join with users table
         $user_conditions = array('House.user_id = User.id');
         if ($user_role === "user") {
             array_push($user_conditions, 'User.role = "user"');
@@ -709,68 +713,24 @@ class HousesController extends AppController {
             array_push($user_conditions, 'User.role = "realestate"');
         }
 
-        $options['joins'] = array(
-            array(  'table' => 'users',
-                    'alias' => 'User',
-                    'type'  => 'left',
+        $this->House->bindModel(array(
+            'belongsTo' => array(
+                'User' => array(
                     'conditions' => $user_conditions
+                ),
+                'Profile' => array(
+                    'foreignKey' => false,
+                    'conditions' => array('Profile.user_id = User.id')
+                )
             ),
-            array(  'table' => 'images',
-                    'alias' => 'Image',
-                    'type'  => 'left',
-                    'conditions' => array('Image.id = House.default_image_id')
+            'hasMany' => array(
+                'Image' => array(
+                    'conditions' => array('Image.is_default = 1')
+                )
             )
-        );
+        ), false);
 
-        if ($matesConditions != null) {
-            array_push($options['joins'], array('table' => 'profiles',
-                                                'alias' => 'Profile',
-                                                'type'  => 'inner',
-                                                'conditions' => $matesConditions
-                                               )
-                      );
-        }
-
-        // join the required tables for web service
-        if ($this->isWebService()) {
-            array_push($options['joins'], array('table' => 'floors',
-                                                'alias' => 'Floor',
-                                                'type'  => 'left',
-                                                'conditions' => 'Floor.id = House.floor_id'
-                                               )
-                      );
-
-            array_push($options['joins'], array('table' => 'heating_types',
-                                                'alias' => 'HeatingType',
-                                                'type'  => 'left',
-                                                'conditions' => 'HeatingType.id = House.heating_type_id'
-                                               )
-                      );
-
-            array_push($options['joins'], array('table' => 'house_types',
-                                                'alias' => 'HouseType',
-                                                'type'  => 'left',
-                                                'conditions' => 'HouseType.id = House.house_type_id'
-                                               )
-                      );
-
-            array_push($options['joins'], array('table' => 'municipalities',
-                                                'alias' => 'Municipality',
-                                                'type'  => 'left',
-                                                'conditions' => 'Municipality.id = House.municipality_id'
-                                               )
-                      );
-        }
-
-        $options['conditions'] = $houseConditions;
-        if ($orderBy != null) {
-            $options['order'] = $orderBy;
-        }
-
-        // required recursive value for joins
-        $this->House->recursive = -1;
-        // pagination options
-        if($pagination) {
+        if($pagination === true) {
             $options['limit'] = 15;
             $this->paginate = $options;
             $results = $this->paginate('House');
@@ -778,8 +738,6 @@ class HousesController extends AppController {
         } else {
             $results = $this->House->find('all', $options);
         }
-
-        $this->orderByDistance( $results );
 
         return $results;
     }
@@ -832,7 +790,7 @@ class HousesController extends AppController {
             $defaults['accessibility'] = 1;
         }
         if ($prefs['pref_has_photo'] == 1) {
-            $house_prefs['House.default_image_id !='] = null;
+            $house_prefs['House.image_count'] > 0 ;
             $defaults['has_photo'] = 1;
         }
         //$house_prefs['House.user_id !='] = $this->Auth->user('id');
@@ -889,41 +847,18 @@ class HousesController extends AppController {
 		$ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
 		$ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
         // House preferences
-//		$priceMin = (isset($search_args['price_min']))?$search_args['price_min']:NULL;
 		$priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
 		$areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
 		$areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
-//		$bedroomNumMin = (isset($search_args['bedroom_num_min']))?$search_args['bedroom_num_min']:NULL;
-//		$bathroomNumMin = (isset($search_args['bathroom_num_min']))?$search_args['bathroom_num_min']:NULL;
-//		$constructionYearMin = (isset($search_args['construction_year_min']))?$search_args['construction_year_min']:NULL;
-//		$availabilityDateMin = (isset($search_args['availability_date_min']))?$search_args['availability_date_min']:NULL;
-//		$rentPeriodMin = (isset($search_args['rent_period_min']))?$search_args['rent_period_min']:NULL;
-//		$floorIdMin = (isset($search_args['floor_id_min']))?$search_args['floor_id_min']:NULL;
         $this->House->User->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
                         // House
-//                        'price_min' => $priceMin,
                         'price_max' => $priceMax,
                         'area_min' => $areaMin,
                         'area_max' => $areaMax,
-//                        'bedroom_num_min' => $bedroomNumMin,
-//                        'bathroom_num_min' => $bathroomNumMin,
-//                        'construction_year_min' => $constructionYearMin,
-//                        'availability_date_min' => $availabilityDateMin,
-//                        'rent_period_min' => $rentPeriodMin,
-//                        'floor_id_min' => $floorIdMin,
                         'pref_municipality' => $search_args['municipality'],
-//                        'pref_solar_heater' => $search_args['pref_solar_heater'],
                         'pref_furnitured' => $search_args['furnitured'],
-//                        'pref_aircondition' => $search_args['pref_aircondition'],
-//                        'pref_garden' => $search_args['pref_garden'],
-//                        'pref_parking' => $search_args['pref_parking'],
-//                        'pref_shared_pay' => $search_args['pref_shared_pay'],
-//                        'pref_security_doors' => $search_args['pref_security_doors'],
                         'pref_disability_facilities' => !empty($search_args['accessibility']),
-//                        'pref_storerooms' => $search_args['pref_storeroom'],
-//                        'pref_house_type_id' => $search_args['pref_house_type_id'],
-//                        'pref_heating_type_id' => $search_args['pref_heating_type_id'],
                         'pref_has_photo' => !empty($search_args['has_photo']),
                         // Profile
                         'age_min' => $ageMin,
@@ -967,7 +902,7 @@ class HousesController extends AppController {
             $house_conditions['House.disability_facilities'] = 1;
 
         if(isset($house_prefs['has_photo']))
-            $house_conditions['House.default_image_id !='] = null;
+            $house_conditions['House.image_count >'] = 0;
 
         // secondary conditions
         if(!empty($house_prefs['house_type']))
@@ -1103,19 +1038,26 @@ class HousesController extends AppController {
             case 8:
                 $order = array('House.free_places' => 'desc');
                 break;
-            //case 9: <order by distance - asc>
-            //case 10: <order by distance - desc>
-            // use private function orderByDistance to manually order results
-            // after they have been returned from DB
+            case 9:
+                // order by distance - asc
+                $order = array('geo_distance' => 'IS NULL ASC', 'House.geo_distance' => 'ASC');
+                break;
+            case 10:
+                // order by distance - desc
+                $order = array('House.geo_distance' => 'DESC');
+                break;
         }
 
         return $order;
     }
 
-    // Manual [geo_distance] ordering. -- SECTION START
+    // ------------------------------------------------------------------------
+    // Manual [geo_distance] ordering. -- SECTION START *DEPRECATED*
+    // ------------------------------------------------------------------------
 
     // The contents of the array are sorted based on their 'geo_distance' field.
     // The sorting order is determined by the url parameter 'order_by'.
+    /*
     private function orderByDistance( &$array ) {
         $order;
 
@@ -1126,7 +1068,7 @@ class HousesController extends AppController {
         $order = $url['order_by'];
 
         if( empty( $order ) )   return $array;
- 
+
        switch( $order ) {
             case 9:
                 usort( $array, array( "HousesController", "distanceInAsc" ) );
@@ -1180,38 +1122,31 @@ class HousesController extends AppController {
         if( $d1 > $d2 ) return -1;
         return 0;
     }
-    // Manual [geo_distance] ordering. -- SECTION END
-    
+     */
+
+    // ------------------------------------------------------------------------
+    // Manual [geo_distance] ordering. -- SECTION END *DEPRECATED*
+    // ------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------
     // Facebook functions -- SECTION START
+    // ------------------------------------------------------------------------
 
     // Posts an announcement on the application's page on Facebook.
-    // The supplied parameter is a two-dimensional array which
-    // contains the entries 'House' and 'Municipality'.
-    protected function postToAppWall( $house ) {
+    // The supplied [$house] parameter is a two-dimensional array which
+    // contains the entries 'House', 'Municipality' and 'User'.
+    // [$isUpdated] specifies whether to include a short note indicating the
+    // house has been updated or created. Defaults to [false].
+    protected function postToAppWall( $house, $isUpdated=false ) {
 
         if( is_null( $house ) ) return;
 
-        $furnished = null;
-        if( $house['House']['furnitured'] )  $furnished = 'Επιπλωμένο, ';
-        else $furnished = 'Μη επιπλωμένο, ';
-
-        $occupation_availability = null;
-        if( $house['User']['role'] != 'user' ) {
-
-            $occupation_availability = '';
-        } else {echo $house['User']['role'];
-            $occupation_availability =
-                ', Διαθέσιμες θέσεις '
-                . Sanitize::html( $house['House']['free_places'] );
-        }
-
-        $geo_distance = $house['House']['geo_distance'];
-        if( !is_null( $geo_distance ) ) {
-            $geo_distance = ', Αποστάση από ΤΕΙ '
-                . number_format( $geo_distance, 2 ) . ' χλμ.';
-        } else {
-            $geo_distance = '';
-        }
+        $furnished = $this->describeFurnished( $house );
+        $occupation_availability = $this->describeOccupation( $house );
+        $geo_distance = $this->describeDistance( $house );
+        $update = $isUpdated
+            ? 'Τροποποιήθηκε η αγγελία: '
+            : 'Ανερτήθη η αγγελία: ';
 
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
@@ -1221,7 +1156,9 @@ class HousesController extends AppController {
             $facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
 
                 'message' =>
-                    $house['HouseType']['type'] . ' ' . $house['House']['area'] . 'τμ, '
+                    $update
+                    . $house['HouseType']['type'] . ' '
+                    . $house['House']['area'] . 'τμ, '
                     . 'Ενοικίο ' . $house['House']['price'] . '€, '
                     . $furnished
                     . 'Δήμος ' . $house['Municipality']['name']
@@ -1236,10 +1173,45 @@ class HousesController extends AppController {
         } catch( FacebookApiException $e ) {
 
             $this->Session->setFlash(
-                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο Facebook.',
+                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο '
+                . 'Facebook.',
                 'default',
                 array('class' => 'flashRed') );
         }
+    }
+
+    // Creates a properly formatted sentence describing house furnishing.
+    protected function describeFurnished( $house ) {
+        $furnished = null;
+        if( $house['House']['furnitured'] )  $furnished = 'Επιπλωμένο, ';
+        else $furnished = 'Μη επιπλωμένο, ';
+        return $furnished;
+    }
+
+    // Creates a properly formatted sentence describing house availability.
+    protected function describeOccupation( $house ) {
+        $occupation_availability = null;
+        if( $house['User']['role'] != 'user' ) {
+
+            $occupation_availability = '';
+        } else {echo $house['User']['role'];
+            $occupation_availability =
+                ', Διαθέσιμες θέσεις '
+                . Sanitize::html( $house['House']['free_places'] );
+        }
+        return $occupation_availability;
+    }
+
+    // Creates a properly formatted sentence describing house distance from TEI.
+    protected function describeDistance( $house ) {
+        $geo_distance = $house['House']['geo_distance'];
+        if( !is_null( $geo_distance ) ) {
+            $geo_distance = ', Αποστάση από ΤΕΙ '
+                . number_format( $geo_distance, 2 ) . ' χλμ.';
+        } else {
+            $geo_distance = '';
+        }
+        return $geo_distance;
     }
 
     // Creates a Facebook instance which is then made available though
@@ -1256,7 +1228,10 @@ class HousesController extends AppController {
 
         $this->Session->write( 'facebook', $facebook );
     }
+
+    // ------------------------------------------------------------------------
     // Facebook functions -- SECTION END
+    // ------------------------------------------------------------------------
 
     private function checkRole($role){
         if($this->Session->read('Auth.User.role') != $role){
@@ -1311,7 +1286,6 @@ class HousesController extends AppController {
                         'House.currently_hosting',
                         'House.total_places',
                         'House.free_places',
-                        'Image.location',
                         'Municipality.name',
                         'Floor.type',
                         'HouseType.type',
@@ -1329,8 +1303,7 @@ class HousesController extends AppController {
         $location = array(
             'latitude' => $this->data['House']['latitude'],
             'longitude' => $this->data['House']['longitude'] );
-        $geoDistance = $this->haversineDistance( $location );
-        $this->data['House']['geo_distance'] = $geoDistance;
+        return $this->haversineDistance($location);
     }
 
     // Computes the haversine distance between the to supplied locations. Each
