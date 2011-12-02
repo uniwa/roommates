@@ -179,7 +179,7 @@ class ProfilesController extends AppController {
             // check dimensions
             list($width, $height) = $this->Common->get_image_dimensions($this->data['Profile']['avatar']['tmp_name']);
             if (($width > $this->avatar_size['width']) or ($height > $this->avatar_size['height'])) {
-                $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλο μέγεγος εικόνας');
+                $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλο μέγεθος εικόνας');
             }
 
             if ($this->Profile->validates() == true) {
