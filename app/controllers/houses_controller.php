@@ -1342,6 +1342,7 @@ class HousesController extends AppController {
             // TODO remove hard coded user_id when
             // authentication via web services is implemented
             $this->data['House']['user_id'] = 4;
+            $this->data['House']['geo_distance'] = $this->computeDistance();
             $this->setRequiredIds();
             $this->House->save($this->data);
         }
