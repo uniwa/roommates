@@ -49,13 +49,25 @@
         font-weight: bold;
     }
 
-
+    .avatarLabel{
+        margin: 0px 0px 8px 32px;
+    }
+    
     #avatarField{
-        margin: 0px 0px 16px 0px;
+        margin: 0px 0px 16px 32px;
+    }
+
+    #avatarField label{
+        display: none;
     }
 
     #avatarField.file input{
         border: 1px solid #ddd;
+    }
+
+    .error-message{
+        margin: 4px 0px 0px 0px;
+        color: #f00;
     }
 
     .input select{
@@ -155,9 +167,12 @@
         <div class='editSubTitle'>
             <h3>Εικόνα χρήστη</h3>
         </div>
+        <div class='avatarLabel'>
+            Επιλέξτε εικόνα προφίλ (διαστάσεις μέχρι 100x100 pixels)
+        </div>
         <div id='avatarField'>
             <?php
-                echo $this->Form->input('avatar', array('type' => 'file', 'label' => 'Επιλέξτε εικόνα προφίλ'));
+                echo $this->Form->input('avatar', array('type' => 'file', 'label' => ''));
             ?>
         </div>
         <?php
