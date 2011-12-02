@@ -109,7 +109,11 @@
     $name = $profile['firstname'].' '.$profile['lastname'];
     $email = $profile['email'];
     $emailUrl = $this->Html->link($email, 'mailto:'.$email);
-	$picture = ($profile['gender'])?'female.jpg':'male.jpg';
+    if (empty($profile['avatar'])) {
+        $picture = ($profile['gender'])?'female.jpg':'male.jpg';
+    } else {
+        $picture = 'uploads/profiles/'.$profile['id'].'/'.$profile['avatar'];
+    }
     $profileThumb = $this->Html->image($picture, array('alt' => $name));
 ?>
 <div id='leftbar'>
