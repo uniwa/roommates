@@ -43,6 +43,21 @@
         font-weight: bold;
     }
 
+    .editSubTitle{
+        margin: 0px 0px 8px 32px;
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+
+    #avatarField{
+        margin: 0px 0px 16px 0px;
+    }
+
+    #avatarField.file input{
+        border: 1px solid #ddd;
+    }
+
     .input select{
         border: 1px solid #ddd;
         padding: 4px;
@@ -135,16 +150,15 @@
     <div class='profileFrame'>
         <?php echo $this->Form->create('Profile', array('type' => 'file')); ?>
         <div class='editTitle'>
-            <h2>Εικόνα χρήστη</h2>
+            <h2>Στοιχεία χρήστη</h2>
+        </div>
+        <div class='editSubTitle'>
+            <h3>Εικόνα χρήστη</h3>
         </div>
         <div id='avatarField'>
             <?php
                 echo $this->Form->input('avatar', array('type' => 'file', 'label' => 'Επιλέξτε εικόνα προφίλ'));
             ?>
-        </div>
-
-        <div class='editTitle'>
-            <h2>Στοιχεία χρήστη</h2>
         </div>
         <?php
             echo "<div class='radio'>".$this->Form->radio('gender',
