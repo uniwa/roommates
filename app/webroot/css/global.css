@@ -310,8 +310,8 @@ textarea{
 
 .result-cont{
     clear: both;
-    border: 1px solid #ddd;
-    border-top: 5px solid #ddd;
+    border: 1px solid #aaa;
+    border-top: 5px solid #aaa;
     background-color: #fff;
     background: -moz-linear-gradient(top, #f4f4f4, #fff);
     background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#fff));

@@ -146,7 +146,7 @@
     }
 
     .student{
-        background-color: #ddd;
+        background-color: #aaa;
     }
 
     .realestate{
