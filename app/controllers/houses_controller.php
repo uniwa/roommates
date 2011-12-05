@@ -876,9 +876,13 @@ class HousesController extends AppController {
     }
 
 
-    private function getHouseConditions() {
+    function getHouseConditions( $house_prefs = null ) {
 
-        $house_prefs = $this->params['url'];
+        if( $house_prefs == null ){
+        
+            $house_prefs = $this->params['url'];
+        }
+
         $house_conditions = array();
 
         // primary conditions
@@ -961,9 +965,19 @@ class HousesController extends AppController {
             $house_conditions['House.availability_date <='] =
                                             $year . '-' . $month . '-' . $day;
         }
+        //Thanos mod
+        if(!empty($house_prefs['availability_date_min'])){
+            $year  = $house_prefs['availability_date_min']['year'];
+            $month = $house_prefs['availability_date_min']['month'];
+            $day   = $house_prefs['availability_date_min']['day'];
 
-        if($this->Auth->User('role') != 'admin')
+            $house_conditions['House.availability_date <='] =
+                                            $year . '-' . $month . '-' . $day;
+        }
+
+        if(isset($this->Auth->User()) && $this->Auth->User('role') != 'admin'){
             $house_conditions['House.visible'] = 1;
+        }
 
         $house_conditions['User.banned !='] = 1;
 
