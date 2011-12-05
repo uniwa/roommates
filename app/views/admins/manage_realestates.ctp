@@ -8,7 +8,7 @@
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #aaa;
+        border-left: 1px solid #ddd;
         margin: 10px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 660px;

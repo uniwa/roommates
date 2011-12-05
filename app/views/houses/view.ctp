@@ -23,7 +23,7 @@
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #333;
+        border-left: 1px solid #ddd;
         margin: 10px 0px 20px 0px;
         padding: 24px 24px 24px 16px;
         width: 560px;
