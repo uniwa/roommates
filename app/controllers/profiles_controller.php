@@ -91,17 +91,17 @@ class ProfilesController extends AppController {
         }
         // get house id of this user - NULL if he doesn't own one
         if(isset($profile["User"]["House"][0]["id"])){
+            $houseid = $profile["User"]["House"][0]["id"];
+            $this->House->id = $houseid;
+            $house = $this->House->read();
+            $this->set('house', $house);
             if($profile['User']['House'][0]['visible'] == 1){
                 $imgDir = 'uploads/houses/';
-                $houseid = $profile["User"]["House"][0]["id"];
-                $this->House->id = $houseid;
-                $house = $this->House->read();
                 $image = $this->House->Image->find('first',array('conditions' => array('Image.is_default' => 1)));
                 if($image != ''){
                     $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
                     $this->set('image', $imageFile);
                 }
-                $this->set('house', $house);
             }
         }else{
             $houseid = NULL;

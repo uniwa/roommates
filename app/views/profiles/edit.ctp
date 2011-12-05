@@ -14,13 +14,14 @@
     }
     
     #profilePic{
-        margin: 6px;
+        margin: 0px auto;
         padding: 2px;
-        width: 128px;
-        height: 128px;
+        width: 100px;
+        height: 100px;
     }
     
     #profileName{
+        margin: 16px 0px 0px 0px;
         text-align: center;
         font-size: 1.2em;
         font-weight: bold;
