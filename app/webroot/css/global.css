@@ -7,8 +7,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video{
     margin: 0;
@@ -20,7 +20,7 @@ time, mark, audio, video{
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section{
     display: block;
 }
@@ -205,6 +205,13 @@ textarea{
     text-shadow: #777777 1px 1px 0px;*/
 }
 
+.menu-logo{
+    float: left;
+    margin: -4px 32px 0px 8px;
+    width: 135px;
+    overflow: hidden;
+}
+
 .menu-main{
     float: left;
     border-bottom: 3px solid #aaa;
@@ -270,7 +277,7 @@ textarea{
 
 #main{
 /*    padding: 8px;*/
-    height: 100%;
+/*    height: 100%;*/
     overflow: hidden;
 }
 
@@ -310,14 +317,15 @@ textarea{
 
 .result-cont{
     clear: both;
-    border-top: 3px solid #ddd;
+    border: 1px solid #aaa;
+    border-top: 5px solid #aaa;
     background-color: #fff;
     background: -moz-linear-gradient(top, #f4f4f4, #fff);
     background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#fff));
-    margin: 24px 0px 0px 0px;
+    margin: 8px 0px 0px 0px;
     padding: 2px 0px 0px 0px;
-    width: 580px;
-    height: 100px;
+    width: 578px;
+    height: 120px;
     overflow: hidden;
 }
 
@@ -346,6 +354,7 @@ textarea{
 
 .result-photo-inner{
 	width: 177px;
+	height: 100px;
 	overflow: hidden;
 }
 

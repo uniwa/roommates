@@ -4,9 +4,12 @@ App::import('Sanitize');
 class ProfilesController extends AppController {
 
     var $name = 'Profiles';
-    var $components = array('RequestHandler', 'Email');
+    var $components = array('RequestHandler', 'Email', 'Common');
     var $paginate = array('limit' => 15);
     var $uses = array('Profile', 'House', 'Municipality', 'Image');
+
+    // max avatar width, height
+    var $avatar_size = array('width' => 100, 'height' => 100);
 
     function index() {
         // Block access for all
@@ -88,17 +91,17 @@ class ProfilesController extends AppController {
         }
         // get house id of this user - NULL if he doesn't own one
         if(isset($profile["User"]["House"][0]["id"])){
+            $houseid = $profile["User"]["House"][0]["id"];
+            $this->House->id = $houseid;
+            $house = $this->House->read();
+            $this->set('house', $house);
             if($profile['User']['House'][0]['visible'] == 1){
                 $imgDir = 'uploads/houses/';
-                $houseid = $profile["User"]["House"][0]["id"];
-                $this->House->id = $houseid;
-                $house = $this->House->read();
                 $image = $this->House->Image->find('first',array('conditions' => array('Image.is_default' => 1)));
                 if($image != ''){
                     $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
                     $this->set('image', $imageFile);
                 }
-                $this->set('house', $house);
             }
         }else{
             $houseid = NULL;
@@ -144,30 +147,20 @@ class ProfilesController extends AppController {
         // the selected element on header
         $this->set('selected_action', 'profiles_view');
 
+        $dob = array();
+        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
+            $dob[$year] = $year;
+        }
+        $this->set('available_birth_dates', $dob);
+
         $this->set('title_for_layout','Επεξεργασία προφίλ');
         $this->checkExistence($id);
     	$this->checkAccess( $id );
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
-
-        if(empty($this->data)){
-             $this->data = $profile;
-	    }else{
-	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
-	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
-	        $this->data['Profile']['email'] = $profile['Profile']['email'];
-            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
-                    array('class' => 'flashBlue'));
-                $this->redirect(array('action'=> "view", $id));
-            }
-		}
-        $dob = array();
-        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
-            $dob[$year] = $year;
-        }
-        $this->set('available_birth_dates', $dob);
+        $current_avatar = $profile['Profile']['avatar'];
+        $image_is_valid = true;
 
         // hide banned users unless we are admin
         if ($this->Auth->User('role') != 'admin' &&
@@ -176,21 +169,120 @@ class ProfilesController extends AppController {
                 $this->cakeError('error404');
             }
         }
-        /* FIXME wtf? why ['House'][0]? */
-        if(isset($profile['User']['House'][0]['id'])){
-            if($profile['User']['House'][0]['visible'] === 1){
-                $imgDir = 'uploads/houses/';
-                $houseid = $profile["User"]["House"][0]["id"];
-                $this->House->id = $houseid;
-                $house = $this->House->read();
-                $image = $this->House->Image->find('first',array('conditions' => array(
-                    'Image.is_default' => 1, 'Image')));
-                $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
-                $this->set('image', $imageFile);
-            }
-        }
+
         $this->set('profile', $profile['Profile']);
+
+        if(empty($this->data)){
+             $this->data = $profile;
+        }else{
+	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
+	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
+            $this->data['Profile']['email'] = $profile['Profile']['email'];
+
+            // check if image is uploaded
+            // here we catch images not uploaded due to large file size
+            if (! empty($this->data['Profile']['avatar']['name'])) {
+                if ( ! is_uploaded_file($this->data['Profile']['avatar']['tmp_name'])) {
+                    $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλο μέγεθος εικόνας.');
+                    $image_is_valid = false;
+                }
+
+                // check avatar file type
+                $valid_types = array('png', 'jpeg', 'jpg', 'gif');
+                if (! in_array($this->Common->upload_file_type($this->data['Profile']['avatar']['tmp_name']),
+                    $valid_types)) {
+
+                    $this->Profile->invalidate('avatar', 'Μη αποδεκτός τύπος εικόνας');
+                    $image_is_valid = false;
+                }
+
+                // check dimensions
+                list($width, $height) = $this->Common->get_image_dimensions($this->data['Profile']['avatar']['tmp_name']);
+                if (($width > $this->avatar_size['width']) or ($height > $this->avatar_size['height'])) {
+                    $this->Profile->invalidate('avatar', 'Υπερβολικά μεγάλες διαστάσεις εικόνας');
+                    $image_is_valid = false;
+                }
+
+                if ($image_is_valid == true) {
+                    // save image on FS
+                    $this->Image->create();
+                    $newName = $this->Image->saveImage($id, $this->params['data']['Profile']['avatar'],100,"ht",80, 'profile');
+                    if ($newName == NULL) {
+                        $this->Profile->invalidate('avatar', 'Αδυναμία αποθήκευσης εικόνας, παρακαλώ επικοινωνήστε με τον διαχειριστή');
+                    } else {
+                        if (! empty($current_avatar)) {
+                            $this->Image->delProfileImage($id, $current_avatar);
+                        }
+                        $this->data['Profile']['avatar'] = $newName;
+                    }
+                } else {
+                    // display the error messages
+                    return $this->validationErrors;
+                }
+            } else {
+                // If the user has already an avatar, then
+                // set the image value in $this->data accordingly.
+                // Otherwise set it to null.
+                if (!empty($current_avatar))
+                    $this->data['Profile']['avatar'] = $current_avatar;
+                else
+                    // $this->data['Profile']['avatar'] contains an
+                    // empty array which cannot be saved in database.
+                    $this->data['Profile']['avatar'] = null;
+            }
+
+            if ($this->Profile->saveAll($this->data['Profile'], array('validate'=>'first'))){
+                $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
+                    array('class' => 'flashBlue'));
+                $this->redirect(array('action'=> "view", $id));
+            }
+		}
+
+        /* FIXME wtf? why ['House'][0]? */
+//         if(isset($profile['User']['House'][0]['id'])){
+//             if($profile['User']['House'][0]['visible'] === 1){
+//                 $imgDir = 'uploads/houses/';
+//                 $houseid = $profile["User"]["House"][0]["id"];
+//                 $this->House->id = $houseid;
+//                 $house = $this->House->read();
+//                 $image = $this->House->Image->find('first',array('conditions' => array(
+//                     'Image.is_default' => 1, 'Image')));
+//                 $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
+//                 $this->set('image', $imageFile);
+//             }
+//         }
      }
+
+    function deleteImage ($id = NULL) {
+        $this->checkExistence($id);
+        $this->checkAccess( $id );
+        $this->Profile->id = $id;
+        $this->Profile->recursive = -1;
+        $profile = $this->Profile->read();
+        if (empty($profile['Profile']['avatar'])) {
+            $this->Session->setFlash(
+                'Η εικόνα που προσπαθείτε να διαγράψετε, δεν υπάρχει',
+                'default', array('class' => 'flashRed'));
+            $this->redirect(array('action'=> "view", $id));
+        }
+
+        if ($this->Image->delProfileImage($id, $profile['Profile']['avatar']) == false) {
+            $this->Session->setFlash(
+                'Aδυναμία διαγραφής εικόνας. Παρακαλώ επικοινωνήστε με τον διαχειριστή.',
+                'default', array('class' => 'flashRed'));
+            $this->redirect(array('action'=> "view", $id));
+        }
+
+        if (! $this->Profile->saveField('avatar', NULL) ){
+            $this->Session->setFlash(
+                'Aδυναμία διαγραφής εικόνας. Παρακαλώ επικοινωνήστε με τον διαχειριστή.',
+                'default', array('class' => 'flashRed'));
+        }
+        $this->Session->setFlash(
+            'Η φωτογραφία προφίλ διαγράφηκε με επιτυχία.',
+            'default', array('class' => 'flashBlue'));
+        $this->redirect(array('action'=> "view", $id));
+    }
 
     function search() {
         // Deny access to real estates

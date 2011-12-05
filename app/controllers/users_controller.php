@@ -30,9 +30,9 @@ class UsersController extends AppController{
         $this->set('selected_action', 'login');
         $this->set('title_for_layout', 'Σύνδεση χρήστη');
 
-        /*In case user try to login with some credentials
-         *and terms has not accepted redirect him in terms action.
-         *If rules has accepted redirect him to main page
+        /*In case user tries to login with some credentials
+         *while terms are not accepted, redirect him to terms action.
+         *If rules are accepted, redirect him to main page
          */
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
@@ -44,6 +44,8 @@ class UsersController extends AppController{
                 $this->redirect($this->Auth->logout());
             }
             /* redirect in pre-fixed url */
+            $this->User->id = $this->Auth->user('id');  //target correct record
+            $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
             $this->redirect( $this->Auth->redirect() );
         }
 

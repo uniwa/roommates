@@ -16,7 +16,15 @@
     }
 
     .profilePic{
-        margin: 0px auto 0px auto;
+        margin: 0px auto;
+        padding: 2px;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+    }
+    
+    .housePic{
+        margin: 0px auto;
         padding: 2px;
         width: 180px;
         height: 100px;
@@ -93,8 +101,13 @@
 	$age = $profile['Profile']['age'];
 	$email = $profile['Profile']['email'];
 	$phone = ($profile['Profile']['phone'])?$profile['Profile']['phone']:'-';
-	$gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
-	$picture = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+    $gender = ($profile['Profile']['gender'])?'γυναίκα':'άνδρας';
+    if (empty($profile['Profile']['avatar'])) {
+        $picture = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+    }
+    else {
+        $picture = 'uploads/profiles/'.$profileid.'/'.$profile['Profile']['avatar'];
+    }
 	$smoker = ($profile['Profile']['smoker'])?'ναι':'όχι';
 	$pet = ($profile['Profile']['pet'])?'ναι':'όχι';
 	$couple = ($profile['Profile']['couple'])?'ναι':'όχι';
@@ -384,7 +397,7 @@
                     echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
                 ?>
             </div>
-            <div id='myHousePic' class='profileInfo profilePic'>
+            <div id='myHousePic' class='profileInfo housePic'>
                 <?php
                     if(isset($houseThumbLink)){
                         echo $houseThumbLink;
