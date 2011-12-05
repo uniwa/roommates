@@ -2,16 +2,17 @@
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 16px;
         width: 300px;
     }
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #aaa;
-        margin: 0px 0px 10px 2px;
+        border-left: 1px solid #ddd;
+        margin: 10px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
+        min-height: 500px;
     }
 
     .form-title{
