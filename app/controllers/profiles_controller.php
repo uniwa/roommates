@@ -158,7 +158,6 @@ class ProfilesController extends AppController {
         if(empty($this->data)){
              $this->data = $profile;
         }else{
-            //pr($this->data);die();
 	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
 	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
             $this->data['Profile']['email'] = $profile['Profile']['email'];
@@ -197,14 +196,25 @@ class ProfilesController extends AppController {
                         $this->data['Profile']['avatar'] = $newName;
                     }
                 }
+            } else {
+                // If the user has already an avatar, then
+                // set the image value in $this->data accordingly.
+                // Otherwise set it to null.
+                if (!empty($current_avatar))
+                    $this->data['Profile']['avatar'] = $current_avatar;
+                else
+                    // $this->data['Profile']['avatar'] contains an
+                    // empty array which cannot be saved in database.
+                    $this->data['Profile']['avatar'] = null;
             }
 
-            if ($this->Profile->validates() == true) {
-                if ($this->Profile->saveAll($this->data, array('validate'=>'first'))){
-                    $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
-                        array('class' => 'flashBlue'));
-                    $this->redirect(array('action'=> "view", $id));
-                }
+            if ($this->Profile->saveAll($this->data['Profile'], array('validate'=>'first'))){
+                $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
+                    array('class' => 'flashBlue'));
+                $this->redirect(array('action'=> "view", $id));
+            } else {
+                $this->Session->setFlash('Παρουσιάστηκε κάποιο σφάλμα.', 'default',
+                    array('class' => 'flashRed'));
             }
 		}
         $dob = array();
