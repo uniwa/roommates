@@ -971,7 +971,7 @@ class HousesController extends AppController {
             $month = $house_prefs['availability_date_min']['month'];
             $day   = $house_prefs['availability_date_min']['day'];
 
-            $house_conditions['House.availability_date <='] =
+            $house_conditions['House.availability_date >='] =
                                             $year . '-' . $month . '-' . $day;
         }
 
