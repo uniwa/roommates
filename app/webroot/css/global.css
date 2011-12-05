@@ -205,6 +205,13 @@ textarea{
     text-shadow: #777777 1px 1px 0px;*/
 }
 
+.menu-logo{
+    float: left;
+    margin: -4px 32px 0px 8px;
+    width: 135px;
+    overflow: hidden;
+}
+
 .menu-main{
     float: left;
     border-bottom: 3px solid #aaa;
