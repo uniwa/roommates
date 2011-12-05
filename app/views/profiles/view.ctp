@@ -23,6 +23,14 @@
         overflow: hidden;
     }
     
+    .housePic{
+        margin: 0px auto;
+        padding: 2px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
+    }
+    
     #profileCont{
         margin: 0px 0px 0px 0px;
         padding: 32px;
@@ -389,7 +397,7 @@
                     echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
                 ?>
             </div>
-            <div id='myHousePic' class='profileInfo profilePic'>
+            <div id='myHousePic' class='profileInfo housePic'>
                 <?php
                     if(isset($houseThumbLink)){
                         echo $houseThumbLink;
