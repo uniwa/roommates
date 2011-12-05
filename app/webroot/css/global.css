@@ -258,7 +258,7 @@ textarea{
 }
 
 .menu-selected{
-    border-bottom: 3px solid #59a4d8;
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
     cursor: default;
 }
 
