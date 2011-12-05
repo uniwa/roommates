@@ -212,9 +212,6 @@ class ProfilesController extends AppController {
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
                     array('class' => 'flashBlue'));
                 $this->redirect(array('action'=> "view", $id));
-            } else {
-                $this->Session->setFlash('Παρουσιάστηκε κάποιο σφάλμα.', 'default',
-                    array('class' => 'flashRed'));
             }
 		}
         $dob = array();
