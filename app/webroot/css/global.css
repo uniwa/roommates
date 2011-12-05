@@ -310,14 +310,15 @@ textarea{
 
 .result-cont{
     clear: both;
-    border-top: 3px solid #ddd;
+    border: 1px solid #ddd;
+    border-top: 5px solid #ddd;
     background-color: #fff;
     background: -moz-linear-gradient(top, #f4f4f4, #fff);
     background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#fff));
-    margin: 24px 0px 0px 0px;
+    margin: 8px 0px 0px 0px;
     padding: 2px 0px 0px 0px;
-    width: 580px;
-    height: 100px;
+    width: 578px;
+    height: 120px;
     overflow: hidden;
 }
 

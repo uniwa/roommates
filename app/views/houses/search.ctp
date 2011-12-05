@@ -131,6 +131,32 @@
         margin: 8px 12px 0px 0px;
     }
 
+    .role{
+        position: relative;
+        top: -2px;
+        left: 500px;
+        margin: -2px 0px 0px 0px;
+        width: 78px;
+        height: 14px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: #333 1px 1px 1px;
+    }
+
+    .student{
+        background-color: #ddd;
+    }
+
+    .realestate{
+        background-color: #88a;
+    }
+
+    .owner{
+        background-color: #8a8;
+    }
+
     .resultRE{
         border-color: #88a;
     }
@@ -142,11 +168,10 @@
     <?php
         $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
         $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-
+        $role = $this->Session->read('Auth.User.role');
         //modify the url for pagination
         $get_vars = '';
         $urls = $this->params['url'];
-        //pr($urls);die();
         foreach($urls as $key => $value) {
             if($key == 'url' || $key == 'ext') continue;
 	        if($key == 'available_from'){
@@ -654,13 +679,21 @@
         <ul>
             <?php
                 foreach($results as $house){
+                    $role = $house['User']['role'];
                     $resultClass = 'result-cont';
-                    if($house['User']['role'] == 'realestate'){
+                    // TODO: switch for realestate, student, owner
+                    if($role == 'realestate'){
                         $resultClass .= ' resultRE';
+                        $roleClass = 'realestate';
+                        $roleTitle = 'μεσιτικό';
+                    }else{
+                        $roleClass = 'student';
+                        $roleTitle = 'φοιτητής';
                     }
                 echo "<li class='{$resultClass}'>";
+                echo "<div class='result'>";
+                echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
             ?>
-                <div class='result'>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>
                     <div class='result-photo-cont'>
