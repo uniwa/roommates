@@ -9,14 +9,22 @@
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #333;
+        border-left: 1px solid #ddd;
         margin: 10px 0px 20px 0px;
         padding: 24px;
         height: 100%;
     }
 
     .profilePic{
-        margin: 0px auto 0px auto;
+        margin: 0px auto;
+        padding: 2px;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+    }
+    
+    .housePic{
+        margin: 0px auto;
         padding: 2px;
         width: 180px;
         height: 100px;
@@ -389,7 +397,7 @@
                     echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
                 ?>
             </div>
-            <div id='myHousePic' class='profileInfo profilePic'>
+            <div id='myHousePic' class='profileInfo housePic'>
                 <?php
                     if(isset($houseThumbLink)){
                         echo $houseThumbLink;
