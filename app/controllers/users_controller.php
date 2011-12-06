@@ -334,6 +334,7 @@ class UsersController extends AppController{
         $realestate["RealEstate"]["postal_code"] = $data["RealEstate"]["postal_code"];
         $realestate["RealEstate"]["municipality_id"] = $data["RealEstate"]["municipality_id"];
         $realestate["RealEstate"]["user_id"] = $id;
+        $realestate["RealEstate"]["user_id"] = $data["RealEstate"]["type"];
 
         if ( $this->RealEstate->save($realestate) === false) {
             return false;
