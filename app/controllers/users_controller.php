@@ -59,6 +59,20 @@ class UsersController extends AppController{
 		$this->redirect( $this->Auth->logout() );
 	}
 	
+    function pdf($id = null) {
+        $this->layout = false;
+    } 
+
+    function download($id = null) {
+        App::import('Component', 'Pdf');
+        $Pdf = new PdfComponent();
+        $Pdf->filename = 'your_invoice'; // Without .pdf
+        $Pdf->output = 'download';
+        $Pdf->init();
+        $Pdf->process(Router::url('/', true) . 'users/pdf/');
+        $this->render(false);
+    }
+
 	function help(){
         // this variable is used to display properly
         // the selected element on header
