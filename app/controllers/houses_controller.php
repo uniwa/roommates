@@ -1341,8 +1341,13 @@ class HousesController extends AppController {
         return $distance;
     }
 
+    // ------------------------------------------------------------------------
+    // REST - Web Services
+    // ------------------------------------------------------------------------
+
     function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
+            //$id = $this->authenticate();
             $this->handleGetRequest($id);
         } else if ($this->RequestHandler->isPost()) {
             $this->handlePostRequest();
@@ -1485,6 +1490,38 @@ class HousesController extends AppController {
                         ));
         $this->data['House']['heating_type_id'] = $heating_type['HeatingType']['id'];
         unset($this->data['House']['HeatingType']);
+    }
+
+
+    private function get_credentials() {
+        // get basic auth from http header
+        // decode and return username and password
+        if (!isset($_SERVER['PHP_AUTH_USER'])) {
+            return NULL;
+        }
+        return array('username' => $_SERVER['PHP_AUTH_USER'],
+                     'password' => $_SERVER['PHP_AUTH_PW']);
+    }
+
+
+    private function authenticate() {
+        // return user id if user authenticates successfully
+        // return NULL otherwise
+        $credentials = $this->get_credentials();
+        if ($credentials == NULL) return NULL;
+
+        $user = array('User.username' => $credentials['username'],
+                      'User.password' => $credentials['password']);
+
+        if ($this->Auth->login($user) == false) {
+            return NULL;
+        }
+        else {
+            $conditions = array('User.username' => $credentials['username']);
+            $user = $this->User->find('first',
+                array('conditions' => $conditions, 'fields' => 'id'));
+            return $user['User']['id'];
+        }
     }
 }
 ?>
