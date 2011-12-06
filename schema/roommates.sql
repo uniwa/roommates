@@ -70,7 +70,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `role` VARCHAR(40) NULL DEFAULT NULL ,
   `banned` TINYINT(1) NOT NULL DEFAULT 0 ,
   `terms_accepted` TINYINT(1) NOT NULL DEFAULT 0 ,
-	`enabled` TINYINT(1) NOT NULL DEFAULT 1 ,
+  `enabled` TINYINT(1) NOT NULL DEFAULT 1 ,
+  `last_login` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -111,15 +112,17 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
   `total_places` INT NOT NULL ,
   `user_id` INT NULL DEFAULT NULL ,
   `municipality_id` INT NULL DEFAULT NULL ,
-  `default_image_id` INT NULL DEFAULT NULL ,
   `visible` TINYINT(1) NULL DEFAULT NULL ,
+  `latitude` DOUBLE DEFAULT NULL,
+  `longitude` DOUBLE DEFAULT NULL,
+  `geo_distance` FLOAT DEFAULT NULL,
+  `image_count` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) ,
   INDEX `fk_house_floor` (`floor_id` ASC) ,
   INDEX `fk_house_house_type1` (`house_type_id` ASC) ,
   INDEX `fk_house_heating1` (`heating_type_id` ASC) ,
   INDEX `fk_house_user` (`user_id` ASC) ,
   INDEX `fk_house_municipality` (`municipality_id` ASC) ,
-  INDEX `fk_default_image` (`default_image_id` ASC),
   CONSTRAINT `fk_house_floor`
     FOREIGN KEY (`floor_id` )
     REFERENCES `roommates`.`floors` (`id` )
@@ -144,13 +147,8 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`houses` (
     FOREIGN KEY (`municipality_id` )
     REFERENCES `roommates`.`municipalities` (`id` )
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_default_image`
-    FOREIGN KEY (`default_image_id`)
-    REFERENCES `roommates`.`images` (`id` )
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
+  ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -221,6 +219,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`profiles` (
   `modified` DATETIME NULL DEFAULT NULL ,
   `preference_id` INT NULL DEFAULT NULL ,
   `user_id` INT NOT NULL ,
+  `avatar` VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   INDEX `fk_preference_id` (`preference_id` ASC) ,
   INDEX `fk_user_id` (`user_id` ASC) ,
@@ -247,6 +246,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`images` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `location` VARCHAR(100) NOT NULL ,
   `house_id` INT NOT NULL ,
+  `is_default` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) ,
   INDEX `fk_image_house` (`house_id` ASC) ,
   CONSTRAINT `fk_image_house`

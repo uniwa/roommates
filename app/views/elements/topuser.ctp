@@ -100,7 +100,7 @@
         </li>
         <li>
             <?php
-                $linkClass = 'menu-item menu-rss menu-login';
+                $linkClass = 'menu-item menu-user';
                 echo $this->Html->link(
                     $this->Html->image("rss.png", array("alt" => "Subscribe to RSS.")),
                     "/houses/index.rss",

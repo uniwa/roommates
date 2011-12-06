@@ -146,10 +146,10 @@
     $terms_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit mi, blandit sit amet volutpat ut, accumsan quis ante. Vivamus euismod, metus id molestie sagittis, neque tortor eleifend elit, in sodales neque erat eu eros. Nullam vitae ante libero. Vestibulum vehicula egestas sem, vitae viverra ipsum pharetra sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque malesuada risus libero, et placerat velit. Phasellus ac interdum justo. Donec consequat viverra nisl vitae dapibus.";
 
 ?>
+    <div class='form-title'>
+        <h2>Παρακαλώ συμπληρώστε τα στοιχεία σας:</h2>
+    </div>
     <ul>
-        <div class='form-title'>
-            <h2>Παρακαλώ συμπληρώστε τα στοιχεία σας:</h2>
-        </div>
         <?php
             foreach($inputelems as $elem){
         ?>

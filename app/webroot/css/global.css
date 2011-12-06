@@ -7,8 +7,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video{
     margin: 0;
@@ -20,7 +20,7 @@ time, mark, audio, video{
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section{
     display: block;
 }
@@ -58,6 +58,9 @@ table{
 
 body{
     background-color: #f0f0f0;
+    background-image: url('../img/bg.png');
+    background-repeat: repeat;
+    background-attachment: fixed;
     font-family: 'Open Sans', Verdana, Tahoma, Arial, sans-serif;
     font-size: 12px;
     margin: 0;
@@ -70,6 +73,10 @@ img{
     -moz-user-select: none;
     -khtml-user-select: none;
     user-select: none;
+}
+
+textarea{
+    resize: none;
 }
 
 .bold{
@@ -105,20 +112,20 @@ img{
 
 
 #flashMessage,#authMessage{
-    border-left: 2px;
+/*    border-left: 2px;
     border-right: 2px;
     border-bottom: 2px;
     border-style: solid;
-    border-color: #fff;
-    margin: 0px auto 0px auto;
+    border-color: #fff;*/
+    margin: 0px 0px 0px 0px;
     padding: 4px 8px 8px 8px;
     font-weight: bold;
     text-align: center;
     color: #fff;
     z-index: 200;
-    -moz-border-radius: 0px 0px 6px 6px;
+/*    -moz-border-radius: 0px 0px 6px 6px;
     -webkit-border-bottom-right-radius: 6px;
-    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;*/
 }
 
 .flashBlue{
@@ -135,12 +142,17 @@ img{
 
 #top-menu-cont{
     position: fixed;
+    background-color: #444;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     top: 0px;
     left: 0px;
     width: 100%;
     height: 40px;
-    background-color: #ddd;
     z-index: 100;
+}
+
+#top-menu-cont a{
+    color: #f0f0f0;
 }
 
 #top-menu{
@@ -153,7 +165,9 @@ img{
 }
 
 #container{
-    margin: 40px auto 0px auto;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    margin: 48px auto 24px auto;
     padding: 0px 0px 0px 0px;
     width: 960px;
     min-height: 100%;
@@ -161,14 +175,15 @@ img{
 
 #header{
     clear: both;
-    background-color: #fff;
-    margin: 4px 0px 4px 0px;
-    padding: 2px 0px 2px 0px;
-/*    height: 20px;*/
+    background-color: #eee;
+    margin: 0px 0px 0px 0px;
+    padding: 6px 0px 8px 0px;
+    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+/*    height: 32px;*/
 }
 
 #header-main{
-    margin: 4px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
 }
 
@@ -177,8 +192,9 @@ img{
     padding: 0px 0px 0px 0px;
     font-size: 1.4em;
     font-weight: bold;
-    font-style: italic;
+/*    font-style: italic;*/
     text-align: center;
+    color: #555;
 }
 
 .menu-item{
@@ -189,33 +205,46 @@ img{
     text-shadow: #777777 1px 1px 0px;*/
 }
 
+.menu-logo{
+    float: left;
+    margin: -4px 32px 0px 8px;
+    width: 135px;
+    overflow: hidden;
+}
+
 .menu-main{
     float: left;
-    border-bottom: 3px solid #f0f0f0;
+    border-bottom: 3px solid #aaa;
     margin: 2px 0px 0px 4px;
 }
 
-.menu-main:hover,.menu-footer:hover{
-    border-bottom: 3px solid #59a4d8;
-    background-color: #f0f0f0;
+.menu-main:hover{
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
+    background-color: #555;
     cursor: pointer;
 }
 
 .menu-footer{
     float: right;
-    border-bottom: 3px solid #f0f0f0;
+    border-bottom: 3px solid #aaf;
     margin: 0px 12px 0px 0px;
+}
+
+.menu-footer:hover{
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
+    background-color: #57a;
+    cursor: pointer;
 }
 
 .menu-user{
     float: right;
-    border-bottom: 3px solid #f0f0f0;
+    border-bottom: 3px solid #aaa;
     margin: 2px 4px 0px 0px;
 }
 
 .menu-user:hover{
-    border-bottom: 3px solid #59a4d8;
-    background-color: #f0f0f0;
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
+    background-color: #555;
     cursor: pointer;
 }
 
@@ -224,17 +253,17 @@ img{
 }
 
 .menu-login:hover{
-    border-bottom: 3px solid #dc6865;
-    background-color: #f0f0f0;
+    border-bottom: 3px solid #f96213/*dc6865*/;
+    background-color: #5;
 }
 
 .menu-selected{
-    border-bottom: 3px solid #59a4d8;
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
     cursor: default;
 }
 
 .user-selected{
-    border-top: 3px solid #59a4d8;
+    border-top: 3px solid #12a9f9/*59a4d8*/;
     cursor: default;
 }
 
@@ -247,15 +276,15 @@ img{
 }
 
 #main{
-    padding: 8px;
-    height: 100%;
-    overflow: visible;
+/*    padding: 8px;*/
+/*    height: 100%;*/
+    overflow: hidden;
 }
 
 #footer{
     clear: both;
-    background-color: #ddd;
-    margin: 8px 0px 0px 0px;
+    background-color: #469;
+    margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
 /*    height: 148px;*/
 }
@@ -269,25 +298,35 @@ img{
 }
 
 #footer-menu{
-    margin: 12px 24px 0px 0px;
+    margin: 0px 24px 0px 0px;
     padding: 4px 0px 4px 0px;
     height: 28px;
     overflow: auto;
 }
 
+#footer-menu a{
+    color: #f0f0f0;
+}
+
 #results{
     clear: both;
-    border: 1px solid #00e;
-    margin: 0px 0px 0px 0px;
-    overflow: auto;
+    margin: 0px auto;
+    width: 580px;
+    overflow: hidden;
 }
 
 .result-cont{
     clear: both;
+    border: 1px solid #aaa;
+    border-top: 5px solid #aaa;
     background-color: #fff;
-    margin: 20px auto;
-    width: 580px;
+    background: -moz-linear-gradient(top, #f4f4f4, #fff);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#fff));
+    margin: 8px 0px 0px 0px;
+    padding: 2px 0px 0px 0px;
+    width: 578px;
     height: 120px;
+    overflow: hidden;
 }
 
 .result{
@@ -296,10 +335,9 @@ img{
 
 .result-photo{
     float: left;
-    background-color: #eaeaea;
-    margin: 12px 0px 0px 14px;
+/*    background-color: #fff;*/
+    margin: 0px 0px 0px 14px;
     width: 177px;
-    height: 100px;
 }
 
 .result-photo-wrap{
@@ -316,6 +354,7 @@ img{
 
 .result-photo-inner{
 	width: 177px;
+	height: 100px;
 	overflow: hidden;
 }
 
@@ -327,8 +366,8 @@ img{
 
 .result-desc{
     float: left;
-    background-color: #eaeaea;
-    margin: 12px 0px 0px 4px;
+/*    background-color: #fff;*/
+    margin: 0px 0px 0px 4px;
     width: 380px;
     height: 100px;
 }
@@ -466,11 +505,6 @@ button{
     margin: 0px auto 0px auto;
     padding: 4px 0px 6px 0px;
     background-color: #f44;
-    -moz-border-radius: 3px 3px 3px 3px;
-    -webkit-border-top-right-radius: 3px;
-    -webkit-border-top-left-radius: 3px;
-    -webkit-border-bottom-right-radius: 3px;
-    -webkit-border-bottom-left-radius: 3px;
 }
 
 .terms h2, .faq h2 {

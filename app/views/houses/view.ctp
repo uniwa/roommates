@@ -1,21 +1,39 @@
 <style>
+    #mainWrapper{
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .contRE{
+        border-top: 6px solid #88a;
+    }
+    
+    .contUser{
+        border-top: 6px solid #ddd;
+    }
+    
     #leftbar{
         float: left;
-        margin: 0px 20px 0px 32px;
-        padding: 32px;
-        width: 180px;
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        width: 340px;
     }
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #333;
+        border-left: 1px solid #ddd;
         margin: 10px 0px 20px 0px;
         padding: 24px 24px 24px 16px;
-        width: 580px;
+        width: 560px;
+        min-height: 600px;
+        overflow: hidden;
     }
 
     #houseCont{
-        margin: 0px 0px 32px 0px;
+        margin: 0px 0px 0px 0px;
+        padding: 32px;
         overflow: hidden;
         height: 100%;
     }
@@ -23,22 +41,33 @@
     .housePic{
         float: left;
         padding: 2px;
+        width: 180px;
+        height: 100px;
+        overflow: hidden;
     }
 
     #ownerInfo{
-        margin: 48px 0px 0px 8px;
+        margin: 32px 0px 0px 8px;
         padding: 2px;
     }
 
+    .profileTitle{
+        margin: 0px 0px 4px 0px;
+        font-size: 1.2em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
+    }
+    
     #houseEdit{
         clear: both;
-        margin: 0px 0px 0px 12px;
+        margin: 0px 0px 0px 44px;
     }
 
     .houseTitle{
-        margin: 0px 0px 16px 30px;
-        font-size: 1.2em;
-        font-weight: bold;
+        margin: 0px 0px 16px 18px;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .houseClear{
@@ -51,11 +80,11 @@
     }
 
     .houseLineLong{
-        width: 300px;
+        width: 340px;
     }
     
     .houseLineShort{
-        width: 180px;
+        width: 160px;
     }
     
     .houseProperty{
@@ -68,21 +97,42 @@
     }
 
     .houseC{
-        width: 120px;
+        width: 140px;
     }
 
     .houseValue{
         float: left;
         margin: 0px 0px 0px 8px;
     }
+    
+    .houseCheck{
+        background-image: url('img/check.png');
+        background-repeat: no-repeat;
+        margin: 0px 0px 0px 8px;
+        width: 12px;
+        height: 12px;
+        text-indent: -9999px;
+    }
+    
+    .houseCheckFalse{
+        background-position: 0px -12px;
+    }
+
+    .houseCheckTrue{
+        background-position: 0px 0px;
+    }
 
     .houseOdd{
         background-color: #eef;
     }
+    
+    #housePropertiesCont{
+        margin: 0px 0px 0px 16px;
+    }
 
     .housePropertiesCol{
         float: left;
-        margin: 0px 0px 0px 32px;
+        margin: 0px 8px 0px 0px;
     }
 
     .liimage{
@@ -91,13 +141,18 @@
     }
 
     #imageList{
-        margin: 0px 0px 0px 24px;
+        margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
     }
     
     .imageThumbCont{
         width: 180px;
         height: 100px;
+        overflow: hidden;
+    }
+    
+    .default-image{
+        height: 100%;
         overflow: hidden;
     }
 
@@ -118,9 +173,22 @@
     .owner-info{
         margin: 32px 0px 0px 0px;
     }
+    
+    #houseMap{
+        clear: both;
+        margin: 32px 0px 32px 0px;
+    }
+    
+    .map{
+        margin: 0px auto;
+        width: 300px;
+        height: 220px;
+    }
 </style>
 
 <?php
+    echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
+    echo $this->Html->script(array( 'jquery', 'gmap3.min', 'jquery.viewgmap'));
     // fancybox: js image gallery
     echo $this->Html->script('jquery.fancybox-1.3.4.pack');
     echo $this->Html->script('jquery.easing-1.3.pack');
@@ -182,8 +250,9 @@
     $houseVisibility = ($houseVisible == 1)?
         'Το σπίτι είναι ορατό σε άλλους χρήστες και στις αναζητήσεις':
         'Το σπίτι δεν είναι ορατό σε άλλους χρήστες και στις αναζητήσεις';
-
     $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+    $houseLat = $house['House']['latitude'];
+    $houseLng = $house['House']['longitude'];
     $empty_slots = 4 - count($images);
 
     // default image
@@ -197,11 +266,11 @@
                 'title' => $houseTypeArea, 'escape' => false));
 
         if($loggedUser == $userid){
-            $housePic .= "<div class='imageactions'>";
-            $housePic .= $this->Html->link(__('Διαγραφή', true),
+            $imageActions = "<div class='imageactions'>";
+            $imageActions .= $this->Html->link('Διαγραφή',
                 array('controller' => 'images', 'action' => 'delete', $default_image_id),
                 array('class' => 'thumb_img_delete'), sprintf(__('Είστε σίγουρος;', true)));
-            $housePic .= "</div>";
+            $imageActions .= "</div>";
         }
     }else{ // if don't have an image put placeholder
         if($loggedUser == $userid){
@@ -211,8 +280,8 @@
                 array('controller' => 'images', 'action' =>'add', $houseid),
                 array('title' => 'προσθήκη εικόνας σπιτιού', 'escape' => false));
         }else{ // empty placeholder without link to add image
-            $housePic = $this->Html->image('addpic.png', array(
-                'alt' => 'προσθήκη εικόνας σπιτιού', 'class' => 'img-placeholder'));
+            $housePic = $this->Html->image('home.png', array(
+                'alt' => 'προσθήκη εικόνας σπιτιού'));
         }
         $empty_slots -= 1;
     }
@@ -233,11 +302,11 @@
     $imageLines = array();
     $i = 1;
     foreach($images as $image){
-        if($image['Image']['location'] == $default_image_location){
+        if($image['location'] == $default_image_location){
             continue;
         }
-        $imageid = $image['Image']['id'];
-        $imageLocation = $image['Image']['location'];
+        $imageid = $image['id'];
+        $imageLocation = $image['location'];
         $imageThumbLocation = 'uploads/houses/'.$houseid.'/thumb_'.$imageLocation;
         $imageMediumLocation = '/img/uploads/houses/'.$houseid.'/medium_'. $imageLocation;
         $imageThumb = $this->Html->image($imageThumbLocation, array(
@@ -276,6 +345,7 @@
     if(($loggedUser != $userid) && ($role != 'realestate')){
         if($ownerRole == 'user'){
             $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= "<div class='profileTitle'>Στοιχεία φοιτητή</div>";
             $profileInfo .= $this->Html->link($profileName, array(
                 'controller' => 'profiles', 'action' => 'view',
                 $profileid));
@@ -285,6 +355,7 @@
             $profileInfo .= "</div>";
         }elseif($ownerRole == 'realestate'){
             $profileInfo = "<div class='owner-info'>";
+            $profileInfo .= "<div class='profileTitle'>Στοιχεία ενοικιαστή</div>";
             $profileInfo .= $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
                 $realestateid));
@@ -332,7 +403,8 @@
     }
 
     // House properties
-    if ($userid == $this->Session->read('Auth.User.id')) {
+    if (($userid == $this->Session->read('Auth.User.id')) or
+        ($ownerRole == 'realestate')) {
         $houseProperties['address']['label'] = 'Διεύθυνση';
         $houseProperties['address']['value'] = $houseAddress;
     }
@@ -358,6 +430,14 @@
         $houseProperties['free_places']['label'] = 'Διαθέσιμες θέσεις';
         $houseProperties['free_places']['suffix'] = "(από {$houseTotalPlaces} συνολικά)";
     }
+    if(!is_null($house['House']['geo_distance'])){
+        $geovalue = number_format($house['House']['geo_distance'], 2).' χλμ.';
+    }else{
+        $geovalue = 'δεν διατίθεται';
+    }
+
+    //house distance
+    $houseProperties['geo_distance']['label'] = 'Απόσταση από ΤΕΙ';
     $houseProperties['solar']['label'] = 'Ηλιακός';
     $houseProperties['furnished']['label'] = 'Επιπλωμένο';
     $houseProperties['aircondition']['label'] = 'Κλιματισμός';
@@ -368,6 +448,7 @@
     $houseProperties['disability']['label'] = 'Προσβάσιμο από ΑΜΕΑ';
     $houseProperties['storage']['label'] = 'Αποθήκη';
 
+    $houseProperties['geo_distance']['value'] = $geovalue;
     $houseProperties['municipality']['value'] = $houseMunicipality;
     $houseProperties['postal_code']['value'] = $housePostalCode;
     $houseProperties['type']['value'] = $houseType;
@@ -380,11 +461,13 @@
     $houseProperties['price']['value'] = $housePrice;
     $houseProperties['available']['value'] = $houseAvailable;
     $houseProperties['rent_period']['value'] = $houseRentPeriod;
+
     // if the house belongs to real estate, don't display availability info
     if($ownerRole != 'realestate'){
         $houseProperties['hosting']['value'] = $houseHosting;
         $houseProperties['free_places']['value'] = $houseFreePlaces;
     }
+
     $houseProperties['solar']['check'] = $houseSolar;
     $houseProperties['furnished']['check'] = $houseFurnished;
     $houseProperties['aircondition']['check'] = $houseAircondition;
@@ -394,13 +477,72 @@
     $houseProperties['door']['check'] = $houseDoor;
     $houseProperties['disability']['check'] = $houseDisability;
     $houseProperties['storage']['check'] = $houseStorage;
-?>
 
+    // coordinates over which the map is to be centered (not necessarily the
+    // actual ones)
+    $houseLat = $house['House']['latitude'];
+    $houseLng = $house['House']['longitude'];
+
+    // determines whether a marker or a cirle should be positioned over the
+    // house's location (circle is used for 'user's)
+    $displayCircle = null;
+    // by default, the map div-tag won't be included
+    $showMap = false;
+
+    if( !is_null( $houseLat ) && !is_null( $houseLng ) ) {
+
+        // include map div-tag in html, because coordinates were found
+        $showMap = true;
+
+        // obscure exact location of house if it belongs to a 'user' (as in
+        // role) and request a circular area to be positioned over the map
+        if( $ownerRole == 'user' ) {
+
+            $displayCircle = 1;
+
+            $latDev = rand( -1, 1 );
+
+            $latDev *= 0.001;
+            $lngDev = 0.001 - $latDev;
+            $houseLat += $latDev;
+            $houseLng += $lngDev;
+        } else {
+            $displayCircle = 0;
+        }
+    }
+
+    // if either is null, 'null' should be 'printed' (in text) in javascript
+    if( is_null( $houseLat ) )  $houseLat = 'null';
+    if( is_null( $houseLng ) )  $houseLng = 'null';
+
+    // php does not echo 0 either, so print it as text
+    if( $displayCircle == 0 )  $displayCircle = '0';
+
+    // the coordinates and the marker "type" (circle/arrow) are passed as
+    // HTML-inline javascipt
+    echo <<<EOT
+        <script type='text/javascript'>
+            var houseLat = $houseLat;
+            var houseLng = $houseLng;
+            var displayCircle = $displayCircle;
+        </script>
+EOT;
+
+if($ownerRole == 'realestate'){
+    $classCont='contRE';
+}else{
+    $classCont='contUser';
+}
+echo "<div id='mainWrapper' class='{$classCont}'>";
+?>
 <div id='leftbar'>
     <div id='houseCont'>
-        <div class='housePic liimage'>
+        <div class='housePic default-image'>
             <?php
                 echo $housePic;
+                if(isset($imageActions)){
+                    echo $imageActions;
+                }
             ?>
         </div>
     </div>
@@ -418,6 +560,15 @@
             }
         ?>
     </div>
+        <?php
+            if($showMap) {
+                echo <<<EOM
+                <div id='houseMap'>
+                    <div class='map' id='viewMap'></div>
+                </div>
+EOM;
+            }
+        ?>
 </div>
 <div id='main-inner'>
     <div id='imageList' class='houseClear'>
@@ -449,9 +600,16 @@
                 $propertyLine .= "<div class='houseProperty {$lineClass}'>\n";
                 $property = "{$hp['label']} : ";
                 $propertyLine .= $property;
-                $propertyLine .= "</div>\n<div class='houseValue'>\n";
+                $lineClass = 'houseValue';
                 if($checkbox){
-                    $value = ($hp['check'])?'ναι':'όχι';
+                    $lineClass .= ' houseCheck';
+                    if($hp['check']){
+                        $value = 'ναι';
+                        $lineClass .= ' houseCheckTrue';
+                    }else{
+                        $value = 'όχι';
+                        $lineClass .= ' houseCheckFalse';
+                    }
                 }else{
                     $value = '-';
                     if(isset($hp['value'])){
@@ -463,6 +621,7 @@
                         }
                     }
                 }
+                $propertyLine .= "</div>\n<div class='{$lineClass}'>\n";
                 $propertyLine .= $value;
                 $propertyLine .= "</div>\n</li>\n";
                 if($checkbox){
@@ -472,30 +631,32 @@
                 }
             } //foreach $houseProperties
         ?>
-        <ul class='housePropertiesCol'>
-            <?php
-                echo $propertiesValues;
-            ?>
-            <?php if ($loggedUser == $userid) { ?>
-            <li class='houseClear houseLine houseLineLong'>
+        <div id='housePropertiesCont'>
+            <ul class='housePropertiesCol'>
                 <?php
-                    echo '<br />'.$houseVisibility;
+                    echo $propertiesValues;
                 ?>
-            </li>
-            <?php } ?>
-            <li class='houseClear houseLine houseLineLong'>
+                <?php if ($loggedUser == $userid) { ?>
+                <li class='houseClear houseLine houseLineLong'>
+                    <?php
+                        echo '<br />'.$houseVisibility;
+                    ?>
+                </li>
+                <?php } ?>
+                <li class='houseClear houseLine houseLineLong'>
+                    <?php
+                        if($houseDescription != ''){
+                            echo 'Περιγραφή: '.$houseDescription;
+                        }
+                    ?>
+                </li>
+            </ul>
+            <ul class='housePropertiesCol'>
                 <?php
-                    if($houseDescription != ''){
-                        echo 'Περιγραφή: '.$houseDescription;
-                    }
+                    echo $propertiesChecks;
                 ?>
-            </li>
-        </ul>
-        <ul class='housePropertiesCol'>
-            <?php
-                echo $propertiesChecks;
-            ?>
-        </ul>
+            </ul>
+        </div>
     </div>
 </div>
-
+</div>

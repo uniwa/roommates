@@ -1,0 +1,8 @@
+<?php
+    // emails will be sent to each recipient separately
+    $config['authority']['activation_recipients'] = array();
+
+    // the subject of emails sent as a result of user registration (accounts
+    // waiting for approval); leave empty to use default
+    $config['authority']['activation_subject'] = '';
+?>

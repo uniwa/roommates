@@ -3,7 +3,6 @@
 class House extends AppModel {
     var $name = 'House';
     var $belongsTo = array('HouseType', 'Floor', 'HeatingType', 'Municipality', 'User');
-
     var $hasMany = array ('Image');
 
 	var $virtualFields = array(
@@ -70,7 +69,7 @@ class House extends AppModel {
                 'message' => 'Η διεύθυνση δεν μπορεί να είναι κενή.'
             ),
             'valid' => array(
-                'rule' => '/^[\w\dαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς,. &]+$/',
+                'rule' => '/^[\w\dαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩΆάΈέΎΉήύΊίΌόΏώϊϋΐΰς,. &-]+$/',
                 'message' => 'Η διεύθυνση περιέχει έναν μη έγκυρο χαρακτήρα.',
                 'allowEmpty' => true
             )
@@ -208,15 +207,21 @@ class House extends AppModel {
 
 
     function beforeValidate() {
-        if ($this->data['House']['currently_hosting'] >=
-            $this->data['House']['total_places']) {
-            $this->invalidate('total_places',
-                              'Ο αριθμός των ατόμων που μπορούν να '.
-                              'συγκατοικήσουν πρέπει να είναι μεγαλύτερος '.
-                              'του αριθμού των ατόμων που διαμένουν.');
-            return false;
+        // if curently hosting and total_places keys do not exist,
+        // then user is real estate
+        if ( array_key_exists('currently_hosting', $this->data['House']) &&
+             array_key_exists('total_places', $this->data['House']))
+        {
+            if ($this->data['House']['currently_hosting'] >=
+                $this->data['House']['total_places'])
+            {
+                $this->invalidate('total_places',
+                                  'Ο αριθμός των ατόμων που μπορούν να '.
+                                  'συγκατοικήσουν πρέπει να είναι μεγαλύτερος '.
+                                  'του αριθμού των ατόμων που διαμένουν.');
+                return false;
+            }
         }
-
         return true;
     }
 }

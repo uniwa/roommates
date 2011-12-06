@@ -28,19 +28,19 @@
 
     #leftbar{
         float: left;
-/*        background-color: #f7f7f7;*/
         margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
+        padding: 16px 0px 0px 16px;
         width: 320px;
     }
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #aaa;
-/*        background-color: #f7f7f7;*/
-        margin: 0px 0px 10px 2px;
+        border-left: 1px solid #ddd;
+        margin: 10px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
+        min-height: 800px;
+        overflow: hidden;
     }
 
     .form-buttons{
@@ -131,6 +131,35 @@
         margin: 8px 12px 0px 0px;
     }
 
+    .role{
+        position: relative;
+        top: -2px;
+        left: 500px;
+        margin: -2px 0px 0px 0px;
+        width: 78px;
+        height: 14px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: #333 1px 1px 1px;
+    }
+
+    .student{
+        background-color: #aaa;
+    }
+
+    .realestate{
+        background-color: #88a;
+    }
+
+    .owner{
+        background-color: #8a8;
+    }
+
+    .resultRE{
+        border-color: #88a;
+    }
 </style>
 
 <div id='leftbar'>
@@ -139,11 +168,10 @@
     <?php
         $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
         $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-
+        $role = $this->Session->read('Auth.User.role');
         //modify the url for pagination
         $get_vars = '';
         $urls = $this->params['url'];
-        //pr($urls);die();
         foreach($urls as $key => $value) {
             if($key == 'url' || $key == 'ext') continue;
 	        if($key == 'available_from'){
@@ -170,6 +198,19 @@
                     <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('καθαρισμός', array('name' => 'clear', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ταξινόμηση
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+                            echo $this->Form->input('order_by', array('label' => '',
+                                'options' => $order_options,
+                                'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
+                                'class' => 'input-elem'));
                         ?>
                     </div>
                 </li>
@@ -367,19 +408,6 @@
 
                 <?php } // role != realestate ?>
 
-                <li class='form-line'>
-                    <div class='form-elem form-label'>
-                        Ταξινόμηση
-                    </div>
-                    <div class='form-elem form-input'>
-                        <?php
-                            echo $this->Form->input('order_by', array('label' => '',
-                                'options' => $order_options,
-                                'selected' => isset($defaults['order_by']) ? $defaults['order_by'] : '0',
-                                'class' => 'input-elem'));
-                        ?>
-                    </div>
-                </li>
             </ul>
 
             <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
@@ -599,7 +627,7 @@
     </div>
 </div>
 <div id='main-inner'>
-    <div class='results'>
+    <div id='results'>
         <?php if(isset($results)){ ?>
         <div class='search-title'>
             <h2>Αποτελέσματα αναζήτησης</h2>
@@ -649,9 +677,23 @@
             </ul>
         </div>
         <ul>
-            <?php foreach($results as $house){ ?>
-            <li class='result-cont'>
-                <div class='result'>
+            <?php
+                foreach($results as $house){
+                    $role = $house['User']['role'];
+                    $resultClass = 'result-cont';
+                    // TODO: switch for realestate, student, owner
+                    if($role == 'realestate'){
+                        $resultClass .= ' resultRE';
+                        $roleClass = 'realestate';
+                        $roleTitle = 'μεσιτικό';
+                    }else{
+                        $roleClass = 'student';
+                        $roleTitle = 'φοιτητής';
+                    }
+                echo "<li class='{$resultClass}'>";
+                echo "<div class='result'>";
+                echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
+            ?>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>
                     <div class='result-photo-cont'>
@@ -659,9 +701,9 @@
                         <?php
 							// thumbnail icon if found
 							$house_id = $house['House']['id'];
-							$house_image = 'house.gif';
-                            if(!empty($house['Image']['location'])) {
-                                $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image']['location'];
+							$house_image = 'home.png';
+                            if(!empty($house['Image'][0]['location'])) {
+                                $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image'][0]['location'];
                             }
                             $altText = 'εικόνα '.$house['House']['address'];
 							$houseImage = $this->Html->image($house_image,
@@ -684,6 +726,7 @@
                             $houseType = $house_types[$house['House']['house_type_id']];
                             $houseArea = $house['House']['area'];
                             $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+                            $geoDistance = $house['House']['geo_distance'];
                             // allow posts to Facebook only by a 'user' (as in role)
                             if($this->Session->read('Auth.User.role') == 'user'){
                                 $this_url = substr($get_vars, 0, -1); //replace last character (ampersand)
@@ -722,14 +765,19 @@
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο '.$housePrice.'€, ';
+                                echo 'Ενοίκιο: '.$housePrice.'€, ';
                                 echo $furnished;
-                                echo '<br />Δήμος '.$houseMunicipality.'<br />';
+                                echo '<br />Δήμος: '.$houseMunicipality.'<br />';
                                 //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
                                 if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
                                 if ($house['User']['role'] != 'realestate') {
-                                    echo 'Διαθέσιμες θέσεις '.
+                                    echo 'Διαθέσιμες θέσεις: '.
                                         $house['House']['free_places'].'<br />';
+                                }
+                                if( !empty($geoDistance) ) {
+                                    echo 'Απόσταση από ΤΕΙ: '
+                                        . number_format( $geoDistance, 2 )
+                                        . '&nbsp;χλμ.';
                                 }
                             ?>
                         </div>
