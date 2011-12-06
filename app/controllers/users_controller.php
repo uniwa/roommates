@@ -409,6 +409,7 @@ class UsersController extends AppController{
             $this->Email->template = 'registered';
             $this->Email->layout = 'registered';
             $this->Email->sendAs = 'both';
+            $this->Email->send();
         }
     }
 
