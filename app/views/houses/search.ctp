@@ -164,6 +164,10 @@
     .resultOwner{
         border-color: #12F962;
     }
+    
+    .resultStudent{
+        border-color: #f96213;
+    }
 </style>
 
 <div id='leftbar'>
@@ -698,6 +702,7 @@
                             $roleTitle = 'μεσιτικό';
                         }
                     }else{
+                        $resultClass .= ' resultStudent';
                         $roleClass = 'student';
                         $roleTitle = 'φοιτητής';
                     }
