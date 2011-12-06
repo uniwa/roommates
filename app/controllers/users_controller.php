@@ -17,6 +17,8 @@ class UsersController extends AppController{
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
+        $this->Auth->allow('registerowner');
+        $this->Auth->allow('registerrealestate');
 
         if( $this->params['action'] === 'register' && $this->Auth->user() ) {
 
@@ -233,11 +235,6 @@ class UsersController extends AppController{
     }
 
     function register() {
-        // this variable is used to display properly
-        // the selected element on header
-        $this->set('selected_action', 'register');
-        $this->set('title_for_layout','Εγγραφή νέου χρήστη');
-        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         if ($this->data) {
             // user must accept the real estate terms
             if ($this->data["User"]["estate_terms"] != "1") {
@@ -306,6 +303,22 @@ class UsersController extends AppController{
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
 
+    }
+    
+    function registerowner(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου ιδιώτη');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+    }
+
+    function registerrealestate(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου μεσιτικού γραφείου');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
     }
 
     private function create_estate_profile($id, $data) {
