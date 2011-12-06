@@ -146,19 +146,19 @@
     }
 
     .student{
-        background-color: #aaa;
+        background-color: #f96213;
     }
 
     .realestate{
-        background-color: #88a;
+        background-color: #6212F9;
     }
 
     .owner{
-        background-color: #8a8;
+        background-color: #12F962;
     }
 
     .resultRE{
-        border-color: #88a;
+        border-color: #6212F9;
     }
 </style>
 
