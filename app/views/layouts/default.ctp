@@ -31,9 +31,7 @@
             $userid = $this->Session->read('Auth.User.id');
             $userNull = $this->Session->read("Auth.User") == NULL;
             $userBanned = $this->Session->read('Auth.User.banned');
-            if(!$userNull){
-                echo $this->element('topmenu', array("userid" => $userid));
-            }
+            echo $this->element('topmenu', array("userid" => $userid));
             echo $this->element('topuser', array("userid" => $userid));
         ?>
     </div>

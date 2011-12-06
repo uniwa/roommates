@@ -75,6 +75,11 @@ img{
     user-select: none;
 }
 
+select{
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
 textarea{
     resize: none;
 }
@@ -201,8 +206,8 @@ textarea{
     height: 16px;
     padding: 4px;
     overflow: hidden;
-/*    color: #617e80;
-    text-shadow: #777777 1px 1px 0px;*/
+    color: #f0f0f0;
+/*    text-shadow: #777777 1px 1px 0px;*/
 }
 
 .menu-logo{
@@ -374,6 +379,7 @@ textarea{
 
 .desc-title{
     margin: 12px 0px 0px 24px;
+    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
     font-size: 1.6em;
     font-weight: bold;
 }

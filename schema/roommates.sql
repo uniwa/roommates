@@ -277,6 +277,7 @@ CREATE TABLE IF NOT EXISTS `roommates`.`real_estates` (
   `postal_code` VARCHAR(5) NULL DEFAULT NULL ,
   `municipality_id` INT NULL DEFAULT NULL ,
   `user_id` INT NOT NULL ,
+  `type` VARCHAR(10) NOT NULL ,
 	PRIMARY KEY (`id`) ,
 	INDEX `fk_real_estate_municipality` (`municipality_id`) ,
 	INDEX `fk_real_estate_user` (`user_id`) ,
