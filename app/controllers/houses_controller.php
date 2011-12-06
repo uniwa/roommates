@@ -1399,7 +1399,39 @@ class HousesController extends AppController {
     }
 
     private function handleDeleteRequest($id) {
-        // TODO implement
+        if ($id != null) {
+            // TODO: check access
+            $this->layout = 'xml/default';
+
+            $this->House->id = $id;
+            $this->House->begin();
+            /* delete associated images first */
+            if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
+                $this->House->rollback();
+                $this->render('xml/delete');
+            }
+            else {
+                /* remove from FS */
+                if (! $this->House->Image->delete_all($id) ) {
+                    $this->House->rollback();
+                    $this->render('xml/delete');
+                }
+                else {
+                    /* delete house */
+                    if (! $this->House->delete( $id ) ) {
+                        $this->House->rollback();
+                        $this->render('xml/delete');
+                    }
+                }
+            }
+            $this->House->commit();
+            $this->set('results', 'success');
+            $this->render('xml/create');
+
+        } else {
+            // TODO return some error
+        }
+
     }
 
     //////////////////////////////////////////////////
