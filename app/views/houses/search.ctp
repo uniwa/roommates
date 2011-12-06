@@ -160,6 +160,10 @@
     .resultRE{
         border-color: #6212F9;
     }
+
+    .resultOwner{
+        border-color: #12F962;
+    }
 </style>
 
 <div id='leftbar'>
@@ -683,9 +687,16 @@
                     $resultClass = 'result-cont';
                     // TODO: switch for realestate, student, owner
                     if($role == 'realestate'){
-                        $resultClass .= ' resultRE';
-                        $roleClass = 'realestate';
-                        $roleTitle = 'μεσιτικό';
+                        if($house['RealEstate']['type'] == 'owner'){
+                            $role = 'owner';
+                            $resultClass .= ' resultOwner';
+                            $roleClass = 'owner';
+                            $roleTitle = 'ιδιώτης';
+                        }else{
+                            $resultClass .= ' resultRE';
+                            $roleClass = 'realestate';
+                            $roleTitle = 'μεσιτικό';
+                        }
                     }else{
                         $roleClass = 'student';
                         $roleTitle = 'φοιτητής';
