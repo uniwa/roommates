@@ -771,24 +771,22 @@
                         <div class='desc-title houseClear'>
                             <?php
                                 echo $this->Html->link("{$houseType}, {$houseArea} τ.μ.",
-                                    array('controller' => 'houses','action' => 'view',$houseid));
+                                    array('controller' => 'houses','action' => 'view', $houseid));
                             ?>
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο: '.$housePrice.'€, ';
-                                echo $furnished;
-                                echo '<br />Δήμος: '.$houseMunicipality.'<br />';
-                                //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
-                                if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
+                                echo "<span class='bold'>Ενοίκιο:</span> {$housePrice}€, ";
+                                echo "<span class='bold'>{$furnished}</span>";
+                                echo "<br /><span class='bold'>Δήμος:</span> {$houseMunicipality}<br />";
+                                if($house['House']['disability_facilities']) echo "<span class='bold'>Προσβάσιμο από ΑΜΕΑ</span><br />";
                                 if ($house['User']['role'] != 'realestate') {
-                                    echo 'Διαθέσιμες θέσεις: '.
-                                        $house['House']['free_places'].'<br />';
+                                    echo "<span class='bold'>Διαθέσιμες θέσεις:</span> ";
+                                    echo "{$house['House']['free_places']}<br />";
                                 }
-                                if( !empty($geoDistance) ) {
-                                    echo 'Απόσταση από ΤΕΙ: '
-                                        . number_format( $geoDistance, 2 )
-                                        . '&nbsp;χλμ.';
+                                if(!empty($geoDistance)){
+                                    echo "<span class='bold'>Απόσταση από ΤΕΙ:</span> ";
+                                    echo number_format($geoDistance, 2, ',', '.').' χλμ.';
                                 }
                             ?>
                         </div>

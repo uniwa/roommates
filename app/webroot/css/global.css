@@ -379,6 +379,7 @@ textarea{
 
 .desc-title{
     margin: 12px 0px 0px 24px;
+    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
     font-size: 1.6em;
     font-weight: bold;
 }
