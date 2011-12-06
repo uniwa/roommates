@@ -192,13 +192,21 @@
 		}
 
 		return $preference;
-	}
+    }
 ?>
 <div id='leftbar'>
     <div id='profileCont'>
         <div class='profilePic'>
             <?php
                 echo $profilePic;
+            ?>
+        </div>
+        <div class="imageactions">
+            <?php
+                echo $this->Html->link(__('Διαγραφή', true),
+                        array('controller' => 'profiles', 'action' => 'deleteImage', $profileid),
+                        array('class' => 'profile_img_delete', 'title' => 'Διαγραφή εικόνας προφίλ'),
+                        sprintf(__('Είστε σίγουρος;', true)));
             ?>
         </div>
         <div id='profileRss' class='profileClear'>
