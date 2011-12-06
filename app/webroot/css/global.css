@@ -219,7 +219,7 @@ textarea{
 }
 
 .menu-main:hover{
-    border-bottom: 3px solid #59a4d8;
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
     background-color: #555;
     cursor: pointer;
 }
@@ -231,7 +231,7 @@ textarea{
 }
 
 .menu-footer:hover{
-    border-bottom: 3px solid #59a4d8;
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
     background-color: #57a;
     cursor: pointer;
 }
@@ -243,7 +243,7 @@ textarea{
 }
 
 .menu-user:hover{
-    border-bottom: 3px solid #59a4d8;
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
     background-color: #555;
     cursor: pointer;
 }
@@ -253,17 +253,17 @@ textarea{
 }
 
 .menu-login:hover{
-    border-bottom: 3px solid #dc6865;
+    border-bottom: 3px solid #f96213/*dc6865*/;
     background-color: #5;
 }
 
 .menu-selected{
-    border-bottom: 3px solid #59a4d8;
+    border-bottom: 3px solid #12a9f9/*59a4d8*/;
     cursor: default;
 }
 
 .user-selected{
-    border-top: 3px solid #59a4d8;
+    border-top: 3px solid #12a9f9/*59a4d8*/;
     cursor: default;
 }
 
