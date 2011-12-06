@@ -75,6 +75,11 @@ img{
     user-select: none;
 }
 
+select{
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
 textarea{
     resize: none;
 }
