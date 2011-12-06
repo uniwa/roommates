@@ -1409,18 +1409,21 @@ class HousesController extends AppController {
             if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
                 $this->House->rollback();
                 $this->render('xml/delete');
+                return;
             }
             else {
                 /* remove from FS */
                 if (! $this->House->Image->delete_all($id) ) {
                     $this->House->rollback();
                     $this->render('xml/delete');
+                    return;
                 }
                 else {
                     /* delete house */
                     if (! $this->House->delete( $id ) ) {
                         $this->House->rollback();
                         $this->render('xml/delete');
+                        return;
                     }
                 }
             }
