@@ -97,7 +97,8 @@ class ProfilesController extends AppController {
             $this->set('house', $house);
             if($profile['User']['House'][0]['visible'] == 1){
                 $imgDir = 'uploads/houses/';
-                $image = $this->House->Image->find('first',array('conditions' => array('Image.is_default' => 1)));
+                $conditions = array('Image.is_default' => 1, 'Image.house_id' => $houseid);
+                $image = $this->House->Image->find('first',array('conditions' => $conditions));
                 if($image != ''){
                     $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
                     $this->set('image', $imageFile);
