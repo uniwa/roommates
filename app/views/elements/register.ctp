@@ -88,7 +88,8 @@
 
 <div id='main-inner'>
 <?php
-    echo $this->Form->create('User', array('action' => 'register'));
+    $registerType = ($type == 'owner')?'registerowner':'registerrealestate';
+    echo $this->Form->create('User', array('action' => $registerType));
     echo $this->Form->input('RealEstate.type', array('type' => 'hidden',
         'value' => $type));
     $inputelems = array();

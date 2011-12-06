@@ -311,6 +311,7 @@ class UsersController extends AppController{
         $this->set('selected_action', 'register');
         $this->set('title_for_layout','Εγγραφή νέου ιδιώτη');
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register();
     }
 
     function registerrealestate(){
@@ -319,6 +320,7 @@ class UsersController extends AppController{
         $this->set('selected_action', 'register');
         $this->set('title_for_layout','Εγγραφή νέου μεσιτικού γραφείου');
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register();
     }
 
     private function create_estate_profile($id, $data) {
