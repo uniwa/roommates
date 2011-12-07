@@ -985,7 +985,7 @@ class HousesController extends AppController {
     }
 
 
-    private function getMatesConditions( $mates_prefs = null ,$flag = true) {
+     function getMatesConditions( $mates_prefs = null ,$flag = true) {
         
         if( empty($mates_prefs) ){
 
@@ -1015,8 +1015,10 @@ class HousesController extends AppController {
         if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
+        
+        if(empty($mates_conditions) && $flag) return null;
 
-        if(empty($mates_conditions)) return null;
+        if( !$flag ) return array(); 
 
         if( $flag ){ 
             // required condition for the left join
