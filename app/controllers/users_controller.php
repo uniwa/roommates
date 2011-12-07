@@ -7,7 +7,7 @@ class UsersController extends AppController{
     var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
     var $components = array('Token', 'Recaptcha.Recaptcha', 'Email');
     //var $helpers = array('RecaptchaPlugin.Recaptcha');
-    var $helpers = array('Auth');
+    var $helpers = array('Auth', 'Html');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -18,6 +18,7 @@ class UsersController extends AppController{
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
         $this->Auth->allow('pdf');
+        $this->Auth->allow('download');
 
         if( $this->params['action'] === 'register' && $this->Auth->user() ) {
 
@@ -64,14 +65,15 @@ class UsersController extends AppController{
         if(is_null($id))    return;
 
         $this->User->id = $id;
+        $this->User->recursive = 2;
         $user = $this->User->read();
         $this->set('data', $user);
 
         $this->layout = false;
-        $this->set('uid', $id);
+        //$this->set('uid', $id);
     } 
 
-    private function download($id = null) {
+    /*private*/ function download($id = null) {
         App::import('Component', 'Pdf');
         $Pdf = new PdfComponent();
         $Pdf->filename = 'registration_id_' . $id; // Without .pdf
