@@ -26,9 +26,9 @@ class EmailShell extends Shell{
        // pr( $houses ); die();
 
 
-        $email_users = array();
+        $email_users = $this->get_emails( $users );
 
-        for ($i=0; $i<count($users); $i++){
+        /*for ($i=0; $i<count($users); $i++){
 
             $compatible_houses = array();
 
@@ -53,7 +53,7 @@ class EmailShell extends Shell{
             $email_users[$users[$i]['Profile']['email']] = $house_ids;
 
  
-        }
+        }*/
             var_dump($email_users); die();
                    
 
@@ -77,20 +77,25 @@ class EmailShell extends Shell{
     }
 
 
-       /* private function get_emails( $users , $type){
+        private function get_emails( $users ){
         
             
-             $email_users = array();
+            $email_houses = array();
+            $email_profiles = array();
+            //email both wil have nested houses and profiles arrays
+            $email_both = array();
 
              for ($i=0; $i<count($users); $i++){
 
-                $compatibles = array();
+                $compatible_houses = array();
+                $compatible_profiles = array();
 
-        
-                $compatibles =
-
-                if (empty($compatible_houses)) {
-                    continue;
+                try{
+                    //Get arrays with Houses and Profiles 
+                    $compatible_houses = $this->get_prefered_records( $users, $i, 'House' );
+                    $compatible_profiles = $this->get_prefered_records( $users, $i, 'Profile' );
+                }catch( Exception $ex ){
+                    echo $ex->getMessage();
                 }
 
                 //filtering House ids
@@ -100,11 +105,31 @@ class EmailShell extends Shell{
                     $house_ids[] = $house['House']['id'];
                 }
 
-                $email_users[$users[$i]['Profile']['email']] = $house_ids;
+                //filtering profiles ids
+                $profile_ids = array();
+                foreach( $compatible_profiles as $profile ){
+    
+                    $profile_ids[] = $profile['Profile']['id'];
+                }
 
- 
-            }
-       }*/
+                //True set in both email
+                if( !empty($profile_ids) && !empty($house_ids) ){
+
+                    $email_both[$users[$i]['Profile']['email']] = array( 'houses'=>$house_ids, 
+                        'profiles'=>$profile_ids );
+
+                }else if( !empty( $house_ids) ){
+
+                    $email_houses[$users[$i]['Profile']['email']] = $house_ids;
+
+                } else if( !empty( $profile_ids) ){
+
+                    $email_profiles[$users[$i]['Profile']['email']] = $profile_ids;
+                }
+             }
+
+            return array( 'email_houses' => $email_houses ,'email_profiles'=>$email_profiles, "email_both"=>$email_both);
+       }
         //returns house ids
         private function get_prefered_houses( $users , $i ){
             $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
@@ -143,7 +168,7 @@ class EmailShell extends Shell{
             //this is standard conditions about Profiles and Houses records
             $standard_conditions = array( 'OR' => array( $conditions_created, $conditions_modified ));
            
-            $conditions = null;
+            $conditions = array();
             if( $type === 'House' ){
 
                 $conditions = array_merge( 
@@ -157,8 +182,8 @@ class EmailShell extends Shell{
                         );
             } else if( $type === 'Profile' ) {
 
-                 $conditions = array_merge( 
-//TODO
+                $conditions = array_merge( 
+
                             $this->getProfilePrefs( $users, $i ),
 
                             array(  
@@ -233,8 +258,8 @@ class EmailShell extends Shell{
                 'couple'=>$users[$i]['Preference']['pref_couple'] );
 
             
-            $house_conditions = $House->getMatesConditions( $user_prefs );
-            return $house_conditions;
+            $profile_conditions = $House->getMatesConditions( $user_prefs, false);
+            return $profile_conditions;
 
         }
    
