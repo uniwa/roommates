@@ -1371,10 +1371,30 @@ class HousesController extends AppController {
     }
 
     private function handlePostRequest() {
+        $user_id = $this->authenticate();
+        if ($user_id == NULL) {
+            // TODO deprecate this render when we build error system
+            $this->set('results', 'authentication failed');
+            $this->render('xml/create');
+            return;
+        }
+
         if (!empty($this->data)) {
-            // TODO remove hard coded user_id when
-            // authentication via web services is implemented
-            $this->data['House']['user_id'] = 4;
+            $user_role = $this->get_role($user_id);
+            if ($user_role == 'user') {
+                $house_count = $this->count_houses($user_id);
+                if ($house_count >= 1) {
+                    $this->set('results', 'cannot add more than one houses');
+                    $this->render('xml/create');
+                    return;
+                }
+            }
+            elseif ($user_role == 'admin') {
+                $this->set('results', 'admin cannot add houses');
+                $this->render('xml/create');
+                return;
+            }
+            $this->data['House']['user_id'] = $user_id;
             $this->data['House']['geo_distance'] = $this->computeDistance();
             $this->setRequiredIds();
             $this->House->save($this->data);
@@ -1386,7 +1406,27 @@ class HousesController extends AppController {
     }
 
     private function handlePutRequest($id) {
+        $user_id = $this->authenticate();
+        if ($user_id == NULL) {
+            // TODO deprecate this render when we build error system
+            $this->set('results', 'authentication failed');
+            $this->render('xml/create');
+            return;
+        }
+
         if ($id != null) {
+            if (! $this->house_exist($id) ) {
+                $this->set('results', 'cannot find house to modify');
+                $this->render('xml/create');
+                return;
+            }
+
+            if (! $this->owns_house($user_id, $id) ) {
+                $this->set('results', 'access to house with id '.$id.' is denied');
+                $this->render('xml/create');
+                return;
+            }
+
             $this->data['House']['id'] = $id;
             $this->data['House']['geo_distance'] = $this->computeDistance();
             $this->setRequiredIds();
@@ -1404,8 +1444,27 @@ class HousesController extends AppController {
     }
 
     private function handleDeleteRequest($id) {
+        $user_id = $this->authenticate();
+        if ($user_id == NULL) {
+            // TODO deprecate this render when we build error system
+            $this->set('results', 'authentication failed');
+            $this->render('xml/create');
+            return;
+        }
+
         if ($id != null) {
-            // TODO: check access
+            if (! $this->house_exist($id) ) {
+                $this->set('results', 'cannot find house to modify');
+                $this->render('xml/create');
+                return;
+            }
+
+            if (! $this->owns_house($user_id, $id) ) {
+                $this->set('results', 'access to house with id '.$id.' is denied');
+                $this->render('xml/create');
+                return;
+            }
+
             $this->layout = 'xml/default';
 
             $this->House->id = $id;
@@ -1523,5 +1582,41 @@ class HousesController extends AppController {
             return $user['User']['id'];
         }
     }
+
+    // ------------------------------------------------------------------------
+    // web services helper functions
+    // ------------------------------------------------------------------------
+
+    private function owns_house($user_id, $house_id) {
+        // check if a given user owns a given house
+        $house = $this->House->read('user_id', $house_id);
+        if ($house['House']['user_id'] == $user_id) {
+            return true;
+        }
+        return false;
+    }
+
+    private function house_exist($id) {
+        // check if house with given id exits
+        $house = $this->House->read($id);
+        if ($house == NULL) {
+            return false;
+        }
+        return true;
+    }
+
+    private function get_role($id) {
+        // return role of user with given id
+        $user = $this->User->read('role', $id);
+        return $user['User']['role'];
+    }
+
+    private function count_houses($id) {
+        // return how many houses user with given id owns
+        $conditions = array('user_id' => $id);
+        $n = $this->House->find('count', array('conditions' => $conditions));
+        return $n;
+    }
+
 }
 ?>
