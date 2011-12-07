@@ -16,14 +16,15 @@ class EmailShell extends Shell{
         //echo($conditions);die();
 
 
-        //get houses created or modified today
-        $houses = $this->House->find('all', array('conditions' => $conditions));
-        //pr($houses);die();  //House, HouseType, Floor, HeatingType, Municipality, User, Image
 
 
         //get (only) users data and preferences
         $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user', 'Profile.get_mail' => 1)));
-        //pr($users);die(); //User, Preference, Profile
+
+        //pr($houses);die(); //User, Preference, Profile
+        
+       // pr( $houses ); die();
+
 
         $email_users = array();
 
@@ -31,48 +32,26 @@ class EmailShell extends Shell{
 
             $compatible_houses = array();
 
-            for($j=0; $j<count($houses); $j++){
+        
+            $compatible_houses = $this->get_prefered_houses( $users, $i );
 
-                if(    ( $this->compare_min($houses[$j]['House']['area'], $users[$i]['Preference']['area_min']))
-                    && ( $this->compare_max($houses[$j]['House']['area'], $users[$i]['Preference']['area_max']))
-                    && ( $this->compare_min($houses[$j]['House']['bedroom_num'], $users[$i]['Preference']['bedroom_num_min']))
-                    && ( $this->compare_max($houses[$j]['House']['price'], $users[$i]['Preference']['price_max']))
-                    && ( $this->compare_min($houses[$j]['House']['floor_id'], $users[$i]['Preference']['floor_id_min']) )
-
-                    && ( $this->compare_pref_min($houses[$j]['House']['bathroom_num'], $users[$i]['Preference']['bathroom_num_min']))
-                    && ( $this->compare_pref_min($houses[$j]['House']['construction_year'], $users[$i]['Preference']['construction_year_min']) )
-                    && ( $this->compare_pref_min($houses[$j]['House']['rent_period'], $users[$i]['Preference']['rent_period_min']) )
-                    && ( $this->compare_checkbox_null($houses[$j]['House']['solar_heater'], $users[$i]['Preference']['pref_solar_heater']) )
-                    && ( $this->compare_checkbox_null($houses[$j]['House']['aircondition'], $users[$i]['Preference']['pref_aircondition']) )
-                    && ( $this->compare_checkbox_null($houses[$j]['House']['garden'], $users[$i]['Preference']['pref_garden']) )
-                    && ( $this->compare_checkbox_null($houses[$j]['House']['parking'], $users[$i]['Preference']['pref_parking']) )
-                    && ( $this->compare_checkbox_null($houses[$j]['House']['security_doors'], $users[$i]['Preference']['pref_security_doors']) )
-                    && ( $this->compare_checkbox_null($houses[$j]['House']['storeroom'], $users[$i]['Preference']['pref_storeroom']) )
-
-                    && ( $this->compare_equal($houses[$j]['House']['house_type_id'], $users[$i]['Preference']['pref_house_type_id']))
-                    && ( $this->compare_equal($houses[$j]['House']['heating_type_id'], $users[$i]['Preference']['pref_heating_type_id']))
-
-                    && ( $this->compare_equal_null($houses[$j]['House']['municipality_id'], $users[$i]['Preference']['pref_municipality']))
-                    && ( $this->shared_pay($houses[$j]['House']['shared_pay'], $users[$i]['Preference']['pref_shared_pay']) )
-
-                    && ( $this->compare_date_min($houses[$j]['House']['availability_date'], $users[$i]['Preference']['availability_date_min']) )
-
-                    && ( $this->compare_checkbox($houses[$j]['House']['furnitured'], $users[$i]['Preference']['pref_furnitured']) )
-                    && ( $this->compare_checkbox($houses[$j]['House']['disability_facilities'], $users[$i]['Preference']['pref_disability_facilities']) )
-
-                    && ( $this->has_photo($houses[$j]['House']['default_image_id'], $users[$i]['Preference']['pref_has_photo']))
-
-                )
-                {
-                    array_push($compatible_houses, $houses[$j]['House']['id']);
-                }
-            }
-            // skip if no houses found
             if (empty($compatible_houses)) {
                 continue;
             }
-            $email_users[$users[$i]['Profile']['email']] = $compatible_houses;
+
+            //filtering House ids
+            $house_ids = array();
+            foreach( $compatible_houses as $house ){
+    
+                    $house_ids[] = $house['House']['id'];
+            }
+
+            $email_users[$users[$i]['Profile']['email']] = $house_ids;
+
+ 
         }
+            var_dump($email_users); die();
+                   
 
         if (count($this->args) === 0) {
             $this->email($email_users);
@@ -93,140 +72,144 @@ class EmailShell extends Shell{
         }
     }
 
-        //refers to the compulsory field for the owner's house (availability_date)
-        //default in Preferences --> 0000-00-00
-        private function compare_date_min($attr, $pref){
-            if ($pref == "0000-00-00"){
-                return true;
-            }else{
-                if( strtotime($attr) <= strtotime($pref)){
-                    return true;
-                }else{
-                    return false;
+
+        private function get_emails( $users , $type){
+        
+            
+             $email_users = array();
+
+             for ($i=0; $i<count($users); $i++){
+
+                $compatibles = array();
+
+        
+                $compatibles =
+
+                if (empty($compatible_houses)) {
+                    continue;
                 }
-            }
-        }
 
-        //refers to optional checkbox fields for the owner's house (solar_heater, air_condition, garden, parking, security_doors, storeroom)
-        //default in Preferences --> NULL
-        //default in Houses --> NULL
-        private function compare_checkbox_null($attr, $pref){
-            if( isset($pref) && ($pref) ){
-                if ( isset($attr) && ($attr) ){
-                    return true;
-                }else{
-                    return false;
+                //filtering House ids
+                $house_ids = array();
+                foreach( $compatible_houses as $house ){
+    
+                    $house_ids[] = $house['House']['id'];
                 }
-            }else{
-                return true;
+
+                $email_users[$users[$i]['Profile']['email']] = $house_ids;
+
+ 
             }
         }
+        //returns house ids
+        private function get_prefered_houses( $users , $i ){
+            $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
+            $from = $today;
+            $to = $today;
+            App::import('Helper', 'Time');
+            $time = new TimeHelper();
+            $conditions_created = $time->daysAsSql($from, $to, "created", true);
+            $conditions_modified = $time->daysAsSql($from, $to, "modified", true);
+
+           
+            $house_conditions =  $this->getHousePrefs($users, $i );
 
 
+            $mod_conditions = array(
+                
+                'House.user_id <>' => $users[$i]['User']['id'],
+                'OR' => array(
+                    $conditions_created,
+                    $conditions_modified)
+            );
 
-        //refers to optional checkbox fields (furnitured, disability_facilities)
-        //default in Preferences --> 2, 0
-        //default in Houses --> NULL
-        private function compare_checkbox($attr, $pref){
-            if($pref == 1){
-                if (isset($attr) && ($attr) ){
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                return true;
+
+            $conditions = array_merge( $house_conditions, $mod_conditions  );
+            return $this->House->find('all', array( 'conditions' => $conditions, 'fields'=>'House.id', 'recursive'=>0));
+        }
+// a generic get_prfered_houses function scoped in profiles and houses
+        private function get_prefered_records( $users , $i, $type ){
+            $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
+            $from = $today;
+            $to = $today;
+            App::import('Helper', 'Time');
+            $time = new TimeHelper();
+            $conditions_created = $time->daysAsSql($from, $to, "created", true);
+            $conditions_modified = $time->daysAsSql($from, $to, "modified", true);
+            //this is standard conditions about Profiles and Houses records
+            $standard_conditions = array( 'OR' => array( $conditions_created, $conditions_modified ));
+           
+            $conditions = null;
+            $model = null;
+            if( $type === 'House' ){
+
+                $model = $this->House;
+                $conditions = array_merge( 
+
+                            $this->getHousePrefs( $users, $i ),
+
+                            array(  
+
+                                'House.user_id <>' => $users[$i]['User']['id']
+                            )
+                        );
+            } else if( $type === 'Profile' ) {
+
+                 $model = $this->House;
+                 $conditions = array_merge( 
+//TODO
+                            $this->getProfilePrefs( $users, $i ),
+
+                            array(  
+
+                                'Profile.user_id <>' => $users[$i]['User']['id']
+                            )
+                        );
+            } else {
+
+                throw new Exception('False type parameter: Given type not recognized');
             }
+
+
+            $conditions = array_merge( $conditions, $standard_conditions  );
+            return $this->$model->find('all', array( 'conditions' => $conditions, 'fields'=> $type.'id', 'recursive'=>0));
         }
 
+        private function getHousePrefs( $users ,$i ){
 
-        //refers to optional checkbox field shared_pay
-        //default in Preferences --> NULL
-        //default in Houses --> NULL
-        private function shared_pay($attr, $pref){
-            if ( isset($pref) && ($pref) ){
-                if ( (!isset($attr)) || (!($attr)) ){
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                return true;
-            }
+            //HousesController needs Controller class
+            App::import('Core', 'Controller');
+            App::import('Controller', 'Houses');
+            $House = new HousesController;
+
+            $user_prefs = array( 'max_price'=>$users[$i]['Preference']['price_max'],
+                'max_area'=>$users[$i]['Preference']['area_max'],
+                'min_area'=> $users[$i]['Preference']['area_min'], 
+                'municipality'=>$users[$i]['Preference']['pref_municipality'],
+                'bedroom_num_min'=>$users[$i]['Preference']['bedroom_num_min'],
+                'furnitured'=>$users[$i]['Preference']['pref_furnitured'],
+                'floor_min'=>$users[$i]['Preference']['floor_id_min'],
+                'bathroom_num_min'=>$users[$i]['Preference']['bathroom_num_min'],
+                'construction_year_min'=>$users[$i]['Preference']['construction_year_min'],
+                'rent_period_min'=>$users[$i]['Preference']['rent_period_min'],
+                'solar_heater'=>$users[$i]['Preference']['pref_solar_heater'],
+                'aircondition'=>$users[$i]['Preference']['pref_aircondition'],
+                'garden'=>$users[$i]['Preference']['pref_garden'],
+                'parking'=>$users[$i]['Preference']['pref_parking'],
+                'security_doors'=>$users[$i]['Preference']['pref_security_doors'],
+                'storeroom'=>$users[$i]['Preference']['pref_storeroom'],
+                'house_type'=>$users[$i]['Preference']['pref_house_type_id'],
+                'heating_type'=>$users[$i]['Preference']['pref_heating_type_id'],
+                'no_shared_pay'=>$users[$i]['Preference']['pref_shared_pay'],
+                'availability_date_min'=>$users[$i]['Preference']['availability_date_min'],
+                'accessibility'=>$users[$i]['Preference']['pref_disability_facilities'] );
+
+            
+            $house_conditions = $House->getHouseConditions( $user_prefs );
+            return $house_conditions;
+
         }
-
-
-        //default in Preferences --> 0
-        //default in Houses --> NULL
-        private function has_photo($attr, $pref){
-            if ($pref){
-                if( isset($attr) && ($attr) ){
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                return true;
-            }
-        }
-
-
-        //refers to optional fields for the owner's house, that have to be greater or equal from the user's relevant preferences (rent_period_min, construction_year_min, bathroom_num_min)
-        private function compare_pref_min($attr, $pref){
-            if( isset($pref) ){
-              if( isset($attr) && ($attr >= $pref) ){
-                return true;
-              }else{
-                return false;
-              }
-            }else{
-                return true;
-            }
-        }
-
-        //refers to compulsory fields for the owner's house, that have to be less or equal from the user's relevant preferences (area_max, price_max)
-        private function compare_max($attr, $pref){
-            if( isset($pref) ){
-                if ($attr <= $pref) return true;
-                else return false;
-            }else{
-                return true;
-            }
-        }
-
-        //refers to compulsory fields for the owner's house, that have to be greater or equal from the user's relevant preferences (area_min, bedroom_num_min, floor_id_min)
-        private function compare_min($attr, $pref){
-            if( isset($pref) ){
-                if ($attr >= $pref) return true;
-                else return false;
-            }else{
-                return true;
-            }
-        }
-
-        //refers to compulsory fields for the owner's house, that have to be equal with the user's relevant preferences (house_type_id, heating_type_id)
-        //default in Preferences --> 0
-        private function compare_equal($attr, $pref){
-            if( $pref == 0  || $attr == $pref ){
-                return true;
-            }else{
-                return false;
-            }
-        }
-
-        //refers to compulsory fields for the owner's house, that have to be equal with the user's relevant preferences (municipality_id)
-        //default in Preferences --> NULL
-        private function compare_equal_null($attr, $pref){
-            if(isset($pref)){
-                if($pref == $attr){
-                    return true;
-                }else{
-                    return false;
-                }
-            }else{
-                return true;
-            }
-        }
+   
 
 
         function email($email_all){
