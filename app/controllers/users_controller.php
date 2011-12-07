@@ -17,6 +17,7 @@ class UsersController extends AppController{
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
+        $this->Auth->allow('pdf');
 
         if( $this->params['action'] === 'register' && $this->Auth->user() ) {
 
@@ -51,7 +52,6 @@ class UsersController extends AppController{
 
     }
 
-
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
         //and redirect them to where they need to go
@@ -60,17 +60,30 @@ class UsersController extends AppController{
 	}
 	
     function pdf($id = null) {
+
+        if(is_null($id))    return;
+
+        $this->User->id = $id;
+        $user = $this->User->read();
+        $this->set('data', $user);
+
         $this->layout = false;
     } 
 
     function download($id = null) {
         App::import('Component', 'Pdf');
         $Pdf = new PdfComponent();
-        $Pdf->filename = 'your_invoice'; // Without .pdf
+        $Pdf->filename = 'registration_id_' . $id; // Without .pdf
         $Pdf->output = 'download';
         $Pdf->init();
         $Pdf->process(Router::url('/', true) . 'users/pdf/');
-        $this->render(false);
+
+//        $Pdf = new PdfComponent();
+/*        $Pdf->filename = 'no-greek-filename'; // Without .pdf
+        $Pdf->output = 'download';
+        $Pdf->init();
+        $Pdf->process(Router::url('/', true) . 'users/pdf/');
+*/        $this->render(false);
     }
 
 	function help(){
@@ -310,6 +323,7 @@ class UsersController extends AppController{
                     $this->set('data', $this->data );
                     $this->set('municipality', $municipality);
                     $this->notifyOfRegistration();
+                    $this->download($uid);
 
                     $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
                     $this->redirect('login');
@@ -319,7 +333,6 @@ class UsersController extends AppController{
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
-
     }
 
     private function create_estate_profile($id, $data) {
