@@ -224,30 +224,16 @@ class EmailShell extends Shell{
             App::import('Controller', 'Houses');
             $House = new HousesController;
 
-            $user_prefs = array( 'max_price'=>$users[$i]['Preference']['price_max'],
-                'max_area'=>$users[$i]['Preference']['area_max'],
-                'min_area'=> $users[$i]['Preference']['area_min'], 
-                'municipality'=>$users[$i]['Preference']['pref_municipality'],
-                'bedroom_num_min'=>$users[$i]['Preference']['bedroom_num_min'],
-                'furnitured'=>$users[$i]['Preference']['pref_furnitured'],
-                'floor_min'=>$users[$i]['Preference']['floor_id_min'],
-                'bathroom_num_min'=>$users[$i]['Preference']['bathroom_num_min'],
-                'construction_year_min'=>$users[$i]['Preference']['construction_year_min'],
-                'rent_period_min'=>$users[$i]['Preference']['rent_period_min'],
-                'solar_heater'=>$users[$i]['Preference']['pref_solar_heater'],
-                'aircondition'=>$users[$i]['Preference']['pref_aircondition'],
-                'garden'=>$users[$i]['Preference']['pref_garden'],
-                'parking'=>$users[$i]['Preference']['pref_parking'],
-                'security_doors'=>$users[$i]['Preference']['pref_security_doors'],
-                'storeroom'=>$users[$i]['Preference']['pref_storeroom'],
-                'house_type'=>$users[$i]['Preference']['pref_house_type_id'],
-                'heating_type'=>$users[$i]['Preference']['pref_heating_type_id'],
-                'no_shared_pay'=>$users[$i]['Preference']['pref_shared_pay'],
-                'availability_date_min'=>$users[$i]['Preference']['availability_date_min'],
-                'accessibility'=>$users[$i]['Preference']['pref_disability_facilities'] );
+            $user_prefs = array( 'min_age'=>$users[$i]['Preference']['age_min'],
+                'max_age'=>$users[$i]['Preference']['age_max'],
+                'gender'=> $users[$i]['Preference']['pref_gender'], 
+                'smoker'=>$users[$i]['Preference']['pref_smoker'],
+                'pet'=>$users[$i]['Preference']['pref_pet'],
+                'child'=>$users[$i]['Preference']['pref_child'],
+                'couple'=>$users[$i]['Preference']['pref_couple'] );
 
             
-            $house_conditions = $House->getHouseConditions( $user_prefs );
+            $house_conditions = $House->getMatesConditions( $user_prefs );
             return $house_conditions;
 
         }
