@@ -17,6 +17,8 @@ class UsersController extends AppController{
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
+        $this->Auth->allow('pdf');
+
 
         if( $this->params['action'] === 'register' && $this->Auth->user() ) {
 
@@ -59,15 +61,16 @@ class UsersController extends AppController{
 	
     function pdf($id = null) {
         $this->layout = false;
+        $this->set('uid', $id);
     } 
 
-    function download($id = null) {
+    private function download($id = null) {
         App::import('Component', 'Pdf');
         $Pdf = new PdfComponent();
         $Pdf->filename = 'your_invoice'; // Without .pdf
         $Pdf->output = 'download';
         $Pdf->init();
-        $Pdf->process(Router::url('/', true) . 'users/pdf/');
+        $Pdf->process(Router::url('/', true) . 'users/pdf/' . $id);
         $this->render(false);
     }
 
@@ -308,6 +311,8 @@ class UsersController extends AppController{
                     $this->set('data', $this->data );
                     $this->set('municipality', $municipality);
                     $this->notifyOfRegistration();
+        
+                    $this->download($uid);
 
                     $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
                     $this->redirect('login');
@@ -390,6 +395,7 @@ class UsersController extends AppController{
     }
     
 
+    //sends email to the Authority to inform that a user has subscribed
     private function notifyOfRegistration() {
         $recipients = Configure::read('authority.activation_recipients');
         $subject = Configure::read('authority.activation_subject');
