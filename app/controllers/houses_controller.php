@@ -1618,7 +1618,7 @@ class HousesController extends AppController {
         $this->User->recursive = -1;
         $conditions = array('User.id' => $id);
         $user = $this->User->find('first',
-            array('conditions' => $conditions, 'fields' => 'role');
+            array('conditions' => $conditions, 'fields' => 'role'));
         return $user['User']['role'];
     }
 
