@@ -42,13 +42,8 @@
         text-align: center;
     }
 
-    #profileRss,#profileBan{
+    #profileBan{
         margin: 32px auto 0px auto;
-        text-align: center;
-    }
-
-    #profileRss img,#profileBan img{
-        margin: 0px auto 0px auto;
     }
 
     .profileClear{
@@ -76,6 +71,15 @@
         font-size: 1.0em;
     }
 
+    .profileOptions{
+        margin: 16px 0px 0px 0px;
+    }
+
+    .optionIcon{
+        margin: 0px 4px 0px 0px;
+        vertical-align: -30%;
+    }
+    
     #myHouse{
         width: 500px;
     }
@@ -203,22 +207,11 @@
         </div>
         <div class="imageactions">
             <?php
-                echo $this->Html->link(__('Διαγραφή', true),
+                if (! empty($profile['Profile']['avatar']) ) {
+                    echo $this->Html->link(__('Διαγραφή', true),
                         array('controller' => 'profiles', 'action' => 'deleteImage', $profileid),
                         array('class' => 'profile_img_delete', 'title' => 'Διαγραφή εικόνας προφίλ'),
                         sprintf(__('Είστε σίγουρος;', true)));
-            ?>
-        </div>
-        <div id='profileRss' class='profileClear'>
-            <?php
-                $rssContent = $this->Html->image('rss.png', array('alt' => $name));
-                $rssContent .= ' Προσωποποιημένο RSS';
-                $rssLink = array('controller' => 'houses', 'action' => 'search.rss',
-                    '?' => array('token' => $profile['Profile']['token']));
-                if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
-                    $personalRSS = $this->Html->link(
-                        $rssContent, $rssLink, array('escape' => false));
-                    echo $personalRSS;
                 }
             ?>
         </div>
@@ -227,14 +220,16 @@
                 if($role == 'admin' &&
                     $profile['Profile']['user_id'] != $this->Session->read('Auth.User.id')){
                     if($profile['User']['banned'] == 0){
-                        $banContent = $this->Html->image('ban.png', array('alt' => $name));
-                        $banContent .= ' Κλείδωμα χρήστη';
+                        $banContent = $this->Html->image('delete_16.png', array(
+                            'alt' => $name, 'class' => 'optionIcon'))
+                            .'Κλείδωμα χρήστη';
                         $banClass = 'banButton';
                         $banMsg = "Είστε σίγουρος ότι θέλετε να κλειδώσετε τον λογαριασμό αυτού του χρήστη;";
                         $banCase = 'ban';
                     }else{
-                        $banContent = $this->Html->image('unban.png', array('alt' => $name));
-                        $banContent .= ' Ξεκλείδωμα χρήστη';
+                        $banContent = $this->Html->image('accept_16.png', array(
+                            'alt' => $name, 'class' => 'optionIcon'))
+                            .'Ξεκλείδωμα χρήστη';
                         $banClass = 'unbanButton';
                         $banMsg = "Είστε σίγουρος ότι θέλετε να ξεκλειδώσετε τον λογαριασμό αυτού του χρήστη;";
                         $banCase = 'unban';
@@ -246,14 +241,30 @@
                 }
             ?>
         </div>
-        <div id='profileEdit'>
-            <?php
-                if($this->Session->read('Auth.User.id') == $profile['User']['id']){
-                    echo $html->link('Επεξεργασία προφίλ',
-                        array('action' => 'edit', $profile['Profile']['id']));
-                }
-            ?>
-        </div>
+        <?php
+            if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
+                $rssContent = $html->image('rss.png', array(
+                    'alt' => 'προσωποποιημένο RSS', 'class' => 'optionIcon'))
+                    .'Προσωποποιημένο RSS';
+                $rssLink = array('controller' => 'houses', 'action' => 'search.rss',
+                    '?' => array('token' => $profile['Profile']['token']));
+                $editRSS = $html->link($rssContent, $rssLink,
+                    array('escape' => false));
+                $editRSS = "<div class='profileOptions'>{$editRSS}</div>";
+                echo $editRSS;
+            }
+
+            if($this->Session->read('Auth.User.id') == $profile['User']['id']){
+                $editContent = $html->image('edit.png', array(
+                    'alt' => 'επεξεργασία προφίλ', 'class' => 'optionIcon'))
+                    .'Επεξεργασία προφίλ';
+                $profileLink = array('action' => 'edit',$profile['Profile']['id']);
+                $editProfile = $html->link($editContent, $profileLink,
+                    array('escape' => false));
+                $editProfile = "<div class='profileOptions'>{$editProfile}</div>";
+                echo $editProfile;
+            }
+        ?>
     </div>
 </div>
 <div id='main-inner'>
