@@ -2,6 +2,15 @@
     <ul>
         <li>
             <?php
+                // Logo
+                $linkClass = 'menu-logo';
+                $logo = $this->Html->image('logo.png', array('alt' => '+κατοικώ'));
+                echo $this->Html->link($logo, array('controller' => 'pages',
+                    'action' => 'display'), array('class' => $linkClass, 'escape' => false));
+            ?>
+        </li>
+        <li>
+            <?php
                 // Roommates search
                 // realestates cannot search for roommates
                 if ($this->Session->read('Auth.User.role') != 'realestate') {

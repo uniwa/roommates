@@ -19,7 +19,6 @@ class UsersController extends AppController{
         $this->Auth->allow('register');
         $this->Auth->allow('pdf');
 
-
         if( $this->params['action'] === 'register' && $this->Auth->user() ) {
 
             $this->cakeError( 'error403' );
@@ -32,9 +31,9 @@ class UsersController extends AppController{
         $this->set('selected_action', 'login');
         $this->set('title_for_layout', 'Σύνδεση χρήστη');
 
-        /*In case user try to login with some credentials
-         *and terms has not accepted redirect him in terms action.
-         *If rules has accepted redirect him to main page
+        /*In case user tries to login with some credentials
+         *while terms are not accepted, redirect him to terms action.
+         *If rules are accepted, redirect him to main page
          */
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
@@ -46,11 +45,12 @@ class UsersController extends AppController{
                 $this->redirect($this->Auth->logout());
             }
             /* redirect in pre-fixed url */
+            $this->User->id = $this->Auth->user('id');  //target correct record
+            $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
             $this->redirect( $this->Auth->redirect() );
         }
 
     }
-
 
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
@@ -60,6 +60,13 @@ class UsersController extends AppController{
 	}
 	
     function pdf($id = null) {
+
+        if(is_null($id))    return;
+
+        $this->User->id = $id;
+        $user = $this->User->read();
+        $this->set('data', $user);
+
         $this->layout = false;
         $this->set('uid', $id);
     } 
@@ -67,11 +74,16 @@ class UsersController extends AppController{
     private function download($id = null) {
         App::import('Component', 'Pdf');
         $Pdf = new PdfComponent();
-        $Pdf->filename = 'your_invoice'; // Without .pdf
+        $Pdf->filename = 'registration_id_' . $id; // Without .pdf
         $Pdf->output = 'download';
         $Pdf->init();
         $Pdf->process(Router::url('/', true) . 'users/pdf/' . $id);
-        $this->render(false);
+//        $Pdf = new PdfComponent();
+/*        $Pdf->filename = 'no-greek-filename'; // Without .pdf
+        $Pdf->output = 'download';
+        $Pdf->init();
+        $Pdf->process(Router::url('/', true) . 'users/pdf/');
+*/        $this->render(false);
     }
 
 	function help(){
@@ -311,7 +323,6 @@ class UsersController extends AppController{
                     $this->set('data', $this->data );
                     $this->set('municipality', $municipality);
                     $this->notifyOfRegistration();
-        
                     $this->download($uid);
 
                     $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
@@ -322,7 +333,6 @@ class UsersController extends AppController{
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
-
     }
 
     private function create_estate_profile($id, $data) {
