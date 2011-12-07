@@ -89,9 +89,12 @@
         </div>
         <div id='registration'>
             <?php
-                echo $this->Html->link('Εγγραφή',
-                    array('controller' => 'users', 'action' => 'register'));
-                echo ' για ανάρτηση ακινήτου.';
+                echo "Ανάρτηση ακινήτου<br /><br />";
+                echo $this->Html->link('Εγγραφή ιδιώτη',
+                    array('controller' => 'users', 'action' => 'registerowner'))
+                    .'<br /><br />';
+                echo $this->Html->link('Εγγραφή μεσιτικού γραφείου',
+                    array('controller' => 'users', 'action' => 'registerrealestate'));
             ?> 
         </div>
         <?php

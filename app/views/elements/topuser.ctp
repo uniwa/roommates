@@ -28,12 +28,13 @@
                         
                         if($selected_action == 'register'){
                             $linkContent = 'εγγραφή';
-                            $linkAction = 'register';
+//                            $linkAction = 'register';
                             $linkClass .= ' menu-selected';
-                            echo $this->Html->link($linkContent, array(
-                                'controller' => 'users',
-                                'action' => $linkAction),
-                                array('class' => $linkClass));
+                            echo "<div class='{$linkClass}'>{$linkContent}</div>";
+//                            echo $this->Html->link($linkContent, array(
+//                                'controller' => 'users',
+//                                'action' => $linkAction),
+//                                array('class' => $linkClass));
                         }
                     }
                 }

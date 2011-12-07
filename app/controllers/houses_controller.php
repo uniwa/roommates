@@ -719,6 +719,10 @@ class HousesController extends AppController {
                 'Profile' => array(
                     'foreignKey' => false,
                     'conditions' => array('Profile.user_id = User.id')
+                ),
+                'RealEstate' => array(
+                    'foreignKey' => false,
+                    'conditions' => array('RealEstate.user_id = User.id')
                 )
             ),
             'hasMany' => array(
