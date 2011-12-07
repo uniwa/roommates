@@ -1351,7 +1351,6 @@ class HousesController extends AppController {
 
     function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
-            //$id = $this->authenticate();
             $this->handleGetRequest($id);
         } else if ($this->RequestHandler->isPost()) {
             $this->handlePostRequest();
