@@ -1371,6 +1371,7 @@ class HousesController extends AppController {
     }
 
     private function handlePostRequest() {
+        $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
             // TODO deprecate this render when we build error system
@@ -1406,6 +1407,7 @@ class HousesController extends AppController {
     }
 
     private function handlePutRequest($id) {
+        $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
             // TODO deprecate this render when we build error system
@@ -1444,6 +1446,7 @@ class HousesController extends AppController {
     }
 
     private function handleDeleteRequest($id) {
+        $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
             // TODO deprecate this render when we build error system
@@ -1589,7 +1592,10 @@ class HousesController extends AppController {
 
     private function owns_house($user_id, $house_id) {
         // check if a given user owns a given house
-        $house = $this->House->read('user_id', $house_id);
+        $this->House->recursive = -1;
+        $conditions = array('House.id' => $house_id);
+        $house = $this->House->find('first',
+            array('conditions' => $conditions, 'fields' => 'user_id'));
         if ($house['House']['user_id'] == $user_id) {
             return true;
         }
@@ -1598,8 +1604,10 @@ class HousesController extends AppController {
 
     private function house_exist($id) {
         // check if house with given id exits
-        $house = $this->House->read($id);
-        if ($house == NULL) {
+        $this->House->recursive = -1;
+        $this->House->id = $id;
+        $house = $this->House->read();
+        if (empty($house)) {
             return false;
         }
         return true;
@@ -1607,7 +1615,10 @@ class HousesController extends AppController {
 
     private function get_role($id) {
         // return role of user with given id
-        $user = $this->User->read('role', $id);
+        $this->User->recursive = -1;
+        $conditions = array('User.id' => $id);
+        $user = $this->User->find('first',
+            array('conditions' => $conditions, 'fields' => 'role');
         return $user['User']['role'];
     }
 
