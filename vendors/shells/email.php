@@ -32,8 +32,12 @@ class EmailShell extends Shell{
 
             $compatible_houses = array();
 
-        
-            $compatible_houses = $this->get_prefered_houses( $users, $i );
+
+            try{
+                $compatible_houses = $this->get_prefered_records( $users, $i, 'House' );
+            }catch( Exception $ex ){
+                echo $ex->getMessage();
+            }
 
             if (empty($compatible_houses)) {
                 continue;
@@ -73,7 +77,7 @@ class EmailShell extends Shell{
     }
 
 
-        private function get_emails( $users , $type){
+       /* private function get_emails( $users , $type){
         
             
              $email_users = array();
@@ -100,7 +104,7 @@ class EmailShell extends Shell{
 
  
             }
-        }
+       }*/
         //returns house ids
         private function get_prefered_houses( $users , $i ){
             $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
@@ -140,10 +144,8 @@ class EmailShell extends Shell{
             $standard_conditions = array( 'OR' => array( $conditions_created, $conditions_modified ));
            
             $conditions = null;
-            $model = null;
             if( $type === 'House' ){
 
-                $model = $this->House;
                 $conditions = array_merge( 
 
                             $this->getHousePrefs( $users, $i ),
@@ -155,7 +157,6 @@ class EmailShell extends Shell{
                         );
             } else if( $type === 'Profile' ) {
 
-                 $model = $this->House;
                  $conditions = array_merge( 
 //TODO
                             $this->getProfilePrefs( $users, $i ),
@@ -172,10 +173,51 @@ class EmailShell extends Shell{
 
 
             $conditions = array_merge( $conditions, $standard_conditions  );
-            return $this->$model->find('all', array( 'conditions' => $conditions, 'fields'=> $type.'id', 'recursive'=>0));
+            $records = 
+                ($type === 'House')?$this->House->find('all', array( 'conditions' => $conditions, 'fields'=> 'House.id', 'recursive'=>0))
+                :$this->Profile->find('all', array( 'conditions' => $conditions, 'fields'=> 'Profile.id', 'recursive'=>0));
+
+
+            return $records;       
         }
 
         private function getHousePrefs( $users ,$i ){
+
+            //HousesController needs Controller class
+            App::import('Core', 'Controller');
+            App::import('Controller', 'Houses');
+            $House = new HousesController;
+
+            $user_prefs = array( 'max_price'=>$users[$i]['Preference']['price_max'],
+                'max_area'=>$users[$i]['Preference']['area_max'],
+                'min_area'=> $users[$i]['Preference']['area_min'], 
+                'municipality'=>$users[$i]['Preference']['pref_municipality'],
+                'bedroom_num_min'=>$users[$i]['Preference']['bedroom_num_min'],
+                'furnitured'=>$users[$i]['Preference']['pref_furnitured'],
+                'floor_min'=>$users[$i]['Preference']['floor_id_min'],
+                'bathroom_num_min'=>$users[$i]['Preference']['bathroom_num_min'],
+                'construction_year_min'=>$users[$i]['Preference']['construction_year_min'],
+                'rent_period_min'=>$users[$i]['Preference']['rent_period_min'],
+                'solar_heater'=>$users[$i]['Preference']['pref_solar_heater'],
+                'aircondition'=>$users[$i]['Preference']['pref_aircondition'],
+                'garden'=>$users[$i]['Preference']['pref_garden'],
+                'parking'=>$users[$i]['Preference']['pref_parking'],
+                'security_doors'=>$users[$i]['Preference']['pref_security_doors'],
+                'storeroom'=>$users[$i]['Preference']['pref_storeroom'],
+                'house_type'=>$users[$i]['Preference']['pref_house_type_id'],
+                'heating_type'=>$users[$i]['Preference']['pref_heating_type_id'],
+                'no_shared_pay'=>$users[$i]['Preference']['pref_shared_pay'],
+                'availability_date_min'=>$users[$i]['Preference']['availability_date_min'],
+                'accessibility'=>$users[$i]['Preference']['pref_disability_facilities'] );
+
+            
+            $house_conditions = $House->getHouseConditions( $user_prefs );
+            return $house_conditions;
+
+        }
+
+
+        private function getProfilePrefs( $users ,$i ){
 
             //HousesController needs Controller class
             App::import('Core', 'Controller');
