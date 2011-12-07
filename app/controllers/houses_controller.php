@@ -985,8 +985,12 @@ class HousesController extends AppController {
     }
 
 
-    private function getMatesConditions() {
-        $mates_prefs = $this->params['url'];
+    private function getMatesConditions( $mates_prefs = null ,$flag = true) {
+        
+        if( empty($mates_prefs) ){
+
+            $mates_prefs = $this->params['url'];
+        }
 
         $mates_conditions = array();
 
@@ -1012,10 +1016,12 @@ class HousesController extends AppController {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
 
-        if (empty($mates_conditions)) return null;
+        if(empty($mates_conditions)) return null;
 
-        // required condition for the left join
-        array_push($mates_conditions, 'User.id = Profile.user_id');
+        if( $flag ){ 
+            // required condition for the left join
+            array_push($mates_conditions, 'User.id = Profile.user_id');
+        }
 
         return $mates_conditions;
     }
