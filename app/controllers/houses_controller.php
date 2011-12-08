@@ -878,9 +878,13 @@ class HousesController extends AppController {
     }
 
 
-    private function getHouseConditions() {
+    function getHouseConditions( $house_prefs = null ) {
 
-        $house_prefs = $this->params['url'];
+        if( $house_prefs == null ){
+        
+            $house_prefs = $this->params['url'];
+        }
+
         $house_conditions = array();
 
         // primary conditions
@@ -963,9 +967,19 @@ class HousesController extends AppController {
             $house_conditions['House.availability_date <='] =
                                             $year . '-' . $month . '-' . $day;
         }
+        //Thanos mod
+        if(!empty($house_prefs['availability_date_min'])){
+            $year  = $house_prefs['availability_date_min']['year'];
+            $month = $house_prefs['availability_date_min']['month'];
+            $day   = $house_prefs['availability_date_min']['day'];
 
-        if($this->Auth->User('role') != 'admin')
+            $house_conditions['House.availability_date >='] =
+                                            $year . '-' . $month . '-' . $day;
+        }
+
+        if(isset($this->Auth->User) && $this->Auth->User('role') != 'admin'){
             $house_conditions['House.visible'] = 1;
+        }
 
         $house_conditions['User.banned !='] = 1;
 
@@ -973,8 +987,12 @@ class HousesController extends AppController {
     }
 
 
-    private function getMatesConditions() {
-        $mates_prefs = $this->params['url'];
+     function getMatesConditions( $mates_prefs = null ,$flag = true) {
+        
+        if( empty($mates_prefs) ){
+
+            $mates_prefs = $this->params['url'];
+        }
 
         $mates_conditions = array();
 
@@ -999,11 +1017,15 @@ class HousesController extends AppController {
         if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
+        
+        if(empty($mates_conditions) && $flag) return null;
 
-        if (empty($mates_conditions)) return null;
+        if( !$flag ) return array(); 
 
-        // required condition for the left join
-        array_push($mates_conditions, 'User.id = Profile.user_id');
+        if( $flag ){ 
+            // required condition for the left join
+            array_push($mates_conditions, 'User.id = Profile.user_id');
+        }
 
         return $mates_conditions;
     }
