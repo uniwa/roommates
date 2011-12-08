@@ -10,7 +10,11 @@
     $doy = $data['RealEstate']['doy'];
     $address = $data['RealEstate']['address'];
     $postalCode = $data['RealEstate']['postal_code'];
-    $municipality = $municipality['Municipality']['name'];
+    $municipalityName = '';
+
+    if( isset($municipality['Municipality']['name']) ) {
+        $municipalityName = $municipality['Municipality']['name'];
+    }
 
     $isOffice = !empty($companyName);
     $roleClarification = $isOffice ? 'μεσιτικού γραφείου' : 'ιδιώτη';
@@ -36,4 +40,4 @@ EOT;
 <p>Διεύθυνση: <?php echo $address; ?></p>
 <p>Τ.Κ.: <?php echo $postalCode; ?></p>
 
-<p>Τα στοιχεία έχουν καταχωρηθεί με όνομα λογαριασμού: <?php echo $username; ?></p>
+<p>Όνομα προς δημιουργία λογαριασμού: <?php echo $username; ?></p>

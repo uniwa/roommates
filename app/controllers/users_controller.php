@@ -50,7 +50,6 @@ class UsersController extends AppController{
             $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
             $this->redirect( $this->Auth->redirect() );
         }
-
     }
 
 	function logout(){
@@ -59,33 +58,71 @@ class UsersController extends AppController{
         $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
-	
+
+    // Produces a registration application html for the given user [$id].
+    // Currently, only users of role 'RealEstate' are supported. This function
+    // is invoked by (vendors/html2ps) PdfComponent's member function process()
+    // in order to produce the pdf version of that html. Only local access
+    // should be allowed to this function (by means of .htaccess or otherwise).
     function pdf($id = null) {
 
         if(is_null($id))    return;
 
         $this->User->id = $id;
-        $this->User->recursive = 2;
         $user = $this->User->read();
+
         $this->set('data', $user);
 
+        // get municipality (name) in order to print it onto the 
+        // email which is to be sent for registration approval
+        $municipality = $user['RealEstate']['municipality_id'];
+
+        if( isset($municipality) ) {
+            $municipality = $this->getMunicipalityData($municipality);
+        }
+        $this->set('municipality', $municipality);
+
         $this->layout = false;
-        //$this->set('uid', $id);
     } 
 
-    /*private*/ function download($id = null) {
+    // 
+    /*private*/ function download($id) {
+
+        if(is_null($id))   return;
+
         App::import('Component', 'Pdf');
+        $filename = 'registration_id_' . $id;
+        // file is stored under html2ps/out/ directory
+        $outDir = APP . 'vendors'.DS.'html2ps'.DS.'out'.DS;
+
         $Pdf = new PdfComponent();
-        $Pdf->filename = 'registration_id_' . $id; // Without .pdf
-        $Pdf->output = 'download';
+        $Pdf->filename = $filename; // Without .pdf
+        $Pdf->output = 'file';
         $Pdf->init();
         $Pdf->process(Router::url('/', true) . 'users/pdf/' . $id);
-//        $Pdf = new PdfComponent();
-/*        $Pdf->filename = 'no-greek-filename'; // Without .pdf
-        $Pdf->output = 'download';
-        $Pdf->init();
-        $Pdf->process(Router::url('/', true) . 'users/pdf/');
-*/        $this->render(false);
+
+        $filePath = $outDir . $filename . '.pdf';
+
+ $this->set('content_for_layout', 'Υπεβλήθη αίτηση εγγραφής στο σύστημα όπου αναφέρθηκε αυτή η ηλεκτρονική διεύθυνση...');
+       // email registration application
+        $this->Email->reset();
+        $this->Email->to = 'peth.ez@gmail.com';
+        $this->Email->subject = 'registration application';
+        $this->Email->from = 'admin@roommates.edu.teiath.gr';
+        $this->Email->template = 'default';
+        $this->Email->layout = 'default';
+        $this->Email->sendAs = 'both';
+        $this->Email->delivery = 'mail';
+        $this->Email->attachments = array( 'Αίτηση-εγγραφής.pdf' => $filePath);
+
+        $this->Email->send();
+//pr( $this->Session->read('Message.email') );
+        // return pdf to client
+/*        header('Content-type: application/pdf');
+        header('Content-disposition: attachment;'
+            . ' filename="Αίτηση-εγγραφής.pdf"');
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);*/
     }
 
 	function help(){
@@ -405,7 +442,7 @@ class UsersController extends AppController{
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
-    
+
 
     //sends email to the Authority to inform that a user has subscribed
     private function notifyOfRegistration() {

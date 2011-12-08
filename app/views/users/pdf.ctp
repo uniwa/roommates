@@ -1,77 +1,134 @@
 <!doctype html>
 <html>
 
-<head>
-<?php echo $this->Html->charset('utf-8'); ?>
+    <head>
+        <?php echo $this->Html->charset('utf-8'); ?>
 
-<style>
-    h2{
-        text-align: center;
-        margin: 0 0 17px 0;
-    }
-    .testpdf{
-        font-weight: bold;
-    }
+        <style>
+            h2{
+                text-align: center;
+                margin: 0 0 17px 0;
+            }
 
-    #footer{
-        text-align: center;
-    }
-</style>
-</head>
+            div.text-area{
+                margin: 43px 43px 0 43px;
+            }
 
-<body>
-<?php $username = $data['User']['username'];
-    $firstname = $data['RealEstate']['firstname'];
-    $lastname = $data['RealEstate']['lastname'];
-    $companyName = $data['RealEstate']['company_name'];
-    $email = $data['RealEstate']['email'];
-    $phone = $data['RealEstate']['phone'];
-    $fax = $data['RealEstate']['fax'];
-    $vatNumber = $data['RealEstate']['afm'];
-    $doy = $data['RealEstate']['doy'];
-    $address = $data['RealEstate']['address'];
-    $postalCode = $data['RealEstate']['postal_code'];
-    $municipality = $data['RealEstate']['Municipality']['name'];
-    $isOffice = !empty($companyName);
-    $roleClarification = $isOffice ? 'μεσιτικού γραφείου' : 'ιδιώτη';
-?>
+            ul{
+                list-style-type: none;
+            }
 
-<div class='testpdf'>
-<h2>Αίτηση εγγραφής Παρόχου Χώρων Στέγασης</h2>
-<p>Η παρούσα αίτηση χρησιμοποιείται </p>
-<p>Υπεβλήθη αίτηση εγγραφής νέου <?php echo $roleClarification ?> στο σύστημα
-με τα ακόλουθα στοιχεία. Παρακαλείστε να ελέγξε την ορθότητα των αναγραφόμενων
-στοιχείων:</p>
+            li{
+                padding: 3px;
+            }
 
-<p>Όνομα: <?php echo $firstname; ?></p>
-<p>Επίθετο: <?php echo $lastname; ?></p>
-<?php
-    if($isOffice) {
-        echo <<<EOT
-<p>Επωνυμία εταιρίας: {$companyName}</p>
+            p.justified{
+                text-align: justify;
+            }
+
+            hr {
+                margin: 0 0 19px 0;
+            }
+
+            body{
+                font-family: Ubuntu, Verdana, Arial, "Sans-serif";
+            }
+
+            #footer{
+                text-align: center;
+            }
+
+            #undersigned{
+                text-align: center;
+                margin: 0 130px 0 500px;
+            }
+
+            #undersigned .desc{
+                margin: 0 0 60px 0;
+                vertical-align: super;
+                color: darkgray;
+            }
+
+            .liner{
+                border-bottom: 1px black solid;
+                width: 100%;
+                margin: 12px 0;
+            }
+        </style>
+    </head>
+
+    <body>
+    <?php
+        $username = $data['User']['username'];
+        $firstname = $data['RealEstate']['firstname'];
+        $lastname = $data['RealEstate']['lastname'];
+        $companyName = $data['RealEstate']['company_name'];
+        $email = $data['RealEstate']['email'];
+        $phone = $data['RealEstate']['phone'];
+        $fax = $data['RealEstate']['fax'];
+        $vatNumber = $data['RealEstate']['afm'];
+        $doy = $data['RealEstate']['doy'];
+        $address = $data['RealEstate']['address'];
+        $postalCode = $data['RealEstate']['postal_code'];
+        $municipalityName = '';
+
+        if( isset($municipality['Municipality']['name']) ) {
+            $municipalityName = $municipality['Municipality']['name'];
+        }
+pr( $companyName );
+        $isOffice = !empty($companyName);
+        $roleClarification = $isOffice ? 'μεσιτικού γραφείου' : 'ιδιώτη';
+    ?>
+
+    <div class='text-area'>
+        <h2>Αίτηση εγγραφής Παρόχου Χώρων Στέγασης</h2>
+        <p class='justified'>
+        Υπεβλήθη αίτηση εγγραφής νέου <?php echo $roleClarification ?> στο
+        σύστημα με τα ακόλουθα στοιχεία. Παρακαλείσθε να ελέγξτε την ορθότητα
+        των αναγραφόμενων στοιχείων. Κατόπιν, να την παραδώσετε στην αρμόδια
+        αρχή έγκρισης και επικύρωσης συνοδευόμενη από τα απαραίτητα αποδεικτικά
+        έγγραφα.</p>
+
+        <ul>
+            <li>Όνομα: <b><?php echo $firstname; ?></b></li>
+            <li>Επίθετο: <b><?php echo $lastname; ?></b></li>
+            <?php
+                if($isOffice) {
+                    echo <<<EOT
+                <li>Επωνυμία εταιρίας: <b>{$companyName}</b></li>
 
 EOT;
-    }
-?>
-<p>ΑΦΜ: <?php echo $vatNumber; ?></p>
-<p>ΔΟΥ: <?php echo $doy; ?></p>
-<p>Email: <?php echo $email; ?></p>
-<p>Τηλέφωνο επικοινωνίας: <?php echo $phone; ?></p>
-<p>Φαξ: <?php echo $fax; ?></p>
-<p>Δήμος: <?php echo $municipality; ?></p>
-<p>Διεύθυνση: <?php echo $address; ?></p>
-<p>Τ.Κ.: <?php echo $postalCode; ?></p>
+                }
+            ?>
 
-</p>Υπογράφοντας την παρούσα αίτηση, επιβεβαιώνετε την ορθότητατα των ανωτέρω
-αναγραφόμενων στοιχείων καθώς και την από μέρου σας ανάγνωση, πλήρη κατανόηση,
-αποδοχή των εν λόγω όρων χρήσης και τη δέσμευσή σας να ενεργείτε στο νομικό
-και ηθικό πλαίσιο το οποίο αυτοί ορίζουν.<p>
-<br /> (Ο/Η υπογράφων/ουσα) __________________________
-</div>
+            <li class="">ΑΦΜ: <b><?php echo $vatNumber; ?></b></li>
+            <li>ΔΟΥ: <b><?php echo $doy; ?></b></li>
+            <li>Email: <b><?php echo $email; ?></b></li>
+            <li>Τηλέφωνο<br />επικοινωνίας: <b><?php echo $phone; ?></b></li>
+            <li>Φαξ: <b><?php echo $fax; ?></b></li>
+            <li>Δήμος: <b><?php echo $municipalityName; ?></b></li>
+            <li>Διεύθυνση: <b><?php echo $address; ?></b></li>
+            <li>Τ.Κ.: <b><?php echo $postalCode; ?></b></li>
+            <li>Όνομα προς δημιουργία λογαριασμού:
+                <b><?php echo $username; ?></b>
+            </li>
+        </ul>
 
-<hr />
-<?php echo $this->element('footer_pdf'); ?>
+        <p class="justified">Υπογράφοντας την παρούσα αίτηση, επιβεβαιώνετε την
+        ορθότητα των ανωτέρω αναγραφόμενων στοιχείων καθώς και την από μέρους
+        σας ανάγνωση, πλήρη κατανόηση και αποδοχή των όρων χρήσης και τη 
+        δέσμευσή σας να ενεργείτε στο νομικό και ηθικό πλαίσιο το οποίο αυτοί
+        ορίζουν.</p>
+        <div id="undersigned">
+            <div class="desc">(Ο/Η υπογράφων/ουσα)</div>
+            <div class="liner"></div>
+        </div>
 
-</body>
+    </div>
+
+    <div class="liner"></div>
+    <?php echo $this->element('footer_pdf'); ?>
+
+    </body>
 
 </html>
