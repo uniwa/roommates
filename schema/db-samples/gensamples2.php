@@ -8,12 +8,11 @@
     $first_names = array();
 
     $lines = file('names_m.txt');
-    // Loop through our array, show HTML source as HTML source; and line numbers too.
     foreach ($lines as $line) {
          $first_names['m'][] = $line;
     }
+
     $lines = file('names_f.txt');
-    // Loop through our array, show HTML source as HTML source; and line numbers too.
     foreach ($lines as $line) {
         $first_names['f'][] = $line;
     }
@@ -28,21 +27,6 @@
 
     $streets = array('οδός','λεωφ.','πλατεία');
 
-    // set array limits for random function
-    $max_m = count($first_names['m']) - 1;
-    $max_f = count($first_names['f']) - 1;
-    $max_l = count($last_names) - 1;
-    $max_s = count($street_names) - 1 ;
-
-
-
-    //$rangemax = NUM_USERS + 100;
-    //$profiles = range(101, $rangemax);
-    //$preferences = $profiles;
-    //$houses = $profiles;
-    //shuffle($profiles);
-    //shuffle($preferences);
-    //shuffle($houses);
     $fu = openFile($sampleField[0]);
     $fp = openFile($sampleField[1]);
     $fh = openFile($sampleField[2]);
@@ -50,6 +34,7 @@
     for($i = 0; $i < NUM_USERS; $i++){
 
         // master ID same for all tables
+        // +100 id offset
         $uid = 100 + $i;
 
         // -------------------
@@ -169,33 +154,4 @@
     function closeFile($f){
         fclose($f);
     }
-        // we do not need preferences 
-        //$prefgender = rand(0,2);
-        //$prefsmoker = rand(0,2);
-        //$prefpet = rand(0,2);
-        //$prefchild = rand(0,2);
-        //$prefcouple = rand(0,2);
-        //$prefid = $preferences[$i];
-        //$hid = $houses[$i];
-        //$agemin = rand(18,34);
-        //$agemax = rand($agemin, 35);
-        //$pref_municipality = rand(0,1)?'NULL':"'".rand(1,30)."'";
-        //echo $pref_municipality."<br />";
-        // DITCH PREFS
-/*
-        $insertPreference = "INSERT INTO `roommates`.`preferences` (
-            `id`,`age_min`,`age_max`,`pref_gender`,`pref_smoker`,`pref_pet`,
-            `pref_child`,`pref_couple`, `price_min`, `price_max`, `area_min`,
-            `area_max`, `pref_municipality`, `bedroom_num_min`, `bathroom_num_min`,
-            `construction_year_min`, `pref_solar_heater`, `pref_furnitured`,
-            `pref_aircondition`, `pref_garden`, `pref_parking`, `pref_shared_pay`,
-            `pref_security_doors`, `pref_disability_facilities`, `pref_storeroom`,
-            `availability_date_min`, `rent_period_min`, `floor_id_min`, 
-            `pref_house_type_id`, `pref_heating_type_id`)\n";
-        $insertPreference .= "VALUES ('{$prefid}', '{$agemin}', '{$agemax}', '{$prefgender}', '{$prefsmoker}', '{$prefpet}', '{$prefchild}', '{$prefcouple}',
-            0, 9999, 0, 9999, {$pref_municipality}, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NOW(), 0, 0, 0, 0);\n\n";
-
-*/
-
-
 ?>
