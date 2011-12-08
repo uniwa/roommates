@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <house xmlns="http://www.roommates.teiath.gr/schemas/HouseTypes">
-    <address>Oumpa lumpa</address>
-    <postal_code>12345</postal_code>
+    <address>edited address 4</address>
+    <postal_code>54321</postal_code>
     <area>345</area>
     <bedroom_num>3</bedroom_num>
     <bathroom_num>1</bathroom_num>
@@ -19,7 +19,7 @@
     <storeroom>1</storeroom>
     <availability_date><![CDATA[2012-10-10]]></availability_date>
     <rent_period>12</rent_period>
-    <description />
+    <description>μια τυχαία περιγραφή</description>
     <floor>
         <type>1ος όροφος</type>
     </floor>
