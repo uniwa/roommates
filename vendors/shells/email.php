@@ -21,40 +21,9 @@ class EmailShell extends Shell{
         //get (only) users data and preferences
         $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user', 'Profile.get_mail' => 1)));
 
-        //pr($houses);die(); //User, Preference, Profile
-        
-       // pr( $houses ); die();
-
-
         $email_users = $this->get_emails( $users );
 
-        /*for ($i=0; $i<count($users); $i++){
-
-            $compatible_houses = array();
-
-
-            try{
-                $compatible_houses = $this->get_prefered_records( $users, $i, 'House' );
-            }catch( Exception $ex ){
-                echo $ex->getMessage();
-            }
-
-            if (empty($compatible_houses)) {
-                continue;
-            }
-
-            //filtering House ids
-            $house_ids = array();
-            foreach( $compatible_houses as $house ){
-    
-                    $house_ids[] = $house['House']['id'];
-            }
-
-            $email_users[$users[$i]['Profile']['email']] = $house_ids;
-
- 
-        }*/
-            var_dump($email_users); die();
+        var_dump($email_users); die();
                    
 
         if (count($this->args) === 0) {
@@ -274,34 +243,78 @@ class EmailShell extends Shell{
             $email =& new EmailComponent(null);
             $email->initialize($controller);
 
-            $email_addr = array_keys($email_all);   //all users email addresses that will receive mail
+            //array with addresses and house profile ids
+            $houses = $email_all['email_houses'];
+            $profiles = $email_all['email_profiles'];
+            $both = $email_all['email_both'];
 
-            for($i=0; $i<count($email_addr); $i++){
-                $email->reset();
+            $this->send_mail_to($houses, 'houses', $controller, $email, 'mail_from_cron', 'cron_house_match' );
 
-                $email->from = 'admin@roommates.edu.teiath.gr';
-                $email->subject = 'Ενημέρωση για νέα σπίτια που ταιριάζουν στις προτιμήσεις σας';
-                $email->sendAs = 'both';
-                $email->template = 'cron_house_match';
-                $email->layout = 'default';
+            
+        }
 
-                $houses_ids = $email_all[$email_addr[$i]]; //houses ids
-                $controller->set('house_count', count($houses_ids));
+        //Send mail to users with different tenplate for each category
+        //type for ids match
+        //email_all an array of mails for one category
+        //subject and template for email configuration
+        //cotroller email objects
+        private function send_mail_to( $email_all, $type, &$controller, &$email, $subject, $template ){
 
-                //$links = array();
-                $links = "";
-                for($j=0; $j<count($houses_ids); $j++){
-                    //array_push($links, 'http://roommates.edu.teiath.gr/houses/view/' . $houses_ids[$j]);
-                    $house_link = "http://roommates.edu.teiath.gr/houses/view/{$houses_ids[$j]}";
-                    $links .= "<a href=\"{$house_link}\">{$house_link}</a><br />";
-                }
-                //pr($links);die();
-                //echo $houses_ids;
-                //echo $email_addr[$i];
-                $email->to = $email_addr[$i];
-                $controller->set('links', $links);
-                $email->send();
-            }
+            
+                $email_addr = array_keys($email_all);
+
+                //send mail for each address
+                for($i=0; $i < count($email_addr); $i++){
+                    $email->reset();
+
+                    $email->from = 'admin@roommates.edu.teiath.gr';
+                    $email->subject = $subject;
+                    $email->sendAs = 'both';
+                    $email->template = $template;
+                    $email->layout = 'default';
+
+                    //for both
+                    if( array_key_exists( 'houses' ,$email_all[$email_addr])
+                    && array_key_exists('profiles', $email_all[$email_adrr])){
+
+                        $house_ids = $email_all[$email_addr][$i]['houses'];
+                        $profile_ids = $email_all[$email_addr][$i]['profiles'];
+                        $controller->set('houses_count', count($house_ids));
+                        $controller->set('profiles_count', count($profile_ids));
+
+                        $house_links = "";
+                        for($j=0; $j<count($house_ids); $j++){
+                            $link = "http://roommates.edu.teiath.gr/houses/view/{$house_ids[$j]}";
+                            $house_links .= "<a href=\"{$link}\">{$link}</a><br />";
+                        }
+
+                        $profile_links = "";
+                        for($j=0; $j<count($profile_ids); $j++){
+                            $link = "http://roommates.edu.teiath.gr/profiles/view/{$profile_ids[$j]}";
+                            $profile_links .= "<a href=\"{$link}\">{$link}</a><br />";
+                        }
+
+                        $email->to = $email_addr[$i];
+                        $controller->set('house_links', $house_links);
+                        $controller->set('profile_links', $profile_links);
+                        $email_send();
+
+                    } else {
+
+                        $ids = $email_all[$email_addr[$i]]; 
+                        $controller->set('count', count($ids));
+                    
+                        
+                        $links = "";
+                        for($j=0; $j<count($ids); $j++){
+                            $link = "http://roommates.edu.teiath.gr/".$type."/view/{$ids[$j]}";
+                            $links .= "<a href=\"{$link}\">{$link}</a><br />";
+                        }
+                        $email->to = $email_addr[$i];
+                        $controller->set('links', $links);
+                        $email->send();
+                    }
+            } 
         }
 
 }
