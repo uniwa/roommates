@@ -23,8 +23,6 @@ class EmailShell extends Shell{
 
         $email_users = $this->get_emails( $users );
 
-        var_dump($email_users); die();
-                   
 
         if (count($this->args) === 0) {
             $this->email($email_users);
@@ -225,24 +223,23 @@ class EmailShell extends Shell{
             $email->initialize($controller);
 
             //array with addresses and house profile ids
-            $houses = $email_all['email_houses'];
-            $profiles = $email_all['email_profiles'];
-            $both = $email_all['email_both'];
-
-            if( !empty($houses) ){
+            if( !empty($email_all['email_houses']) ){
              
-                $this->send_mail_to($houses, 'houses', $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών', 'cron_house_match' );
+                $this->send_mail_to($email_all['email_houses'], 'houses', 
+                    $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών', 'cron_house_match' );
             }
 
-            if( !empty($profiles)){
+            if( !empty($email_all['email_profiles'])){
                 
-                $this->send_mail_to($houses, 'profiles', $controller, $email, 'Τελευταίες καταχωρίσεις προφίλ', 'cron_profile_match' );
+                $this->send_mail_to($email_all['email_profiles'], 'profiles', 
+                    $controller, $email, 'Τελευταίες καταχωρίσεις προφίλ', 'cron_profile_match' );
             }
 
 
-            if( !empty($both) ){
+            if( !empty($email_all['email_both']) ){
 
-                $this->send_mail_to($houses, 'houses', $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών και προφίλ', 'cron_both_match' );
+                $this->send_mail_to($email_all['email_both'], 'both', 
+                    $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών και προφίλ', 'cron_both_match' );
             }
             
         }
@@ -268,11 +265,10 @@ class EmailShell extends Shell{
                     $email->layout = 'default';
 
                     //for both
-                    if( array_key_exists( 'houses' ,$email_all[$email_addr])
-                    && array_key_exists('profiles', $email_all[$email_adrr])){
+                    if( $type === 'both'){
 
-                        $house_ids = $email_all[$email_addr][$i]['houses'];
-                        $profile_ids = $email_all[$email_addr][$i]['profiles'];
+                        $house_ids = $email_all[$email_addr[$i]]['houses'];
+                        $profile_ids = $email_all[$email_addr[$i]]['profiles'];
                         $controller->set('houses_count', count($house_ids));
                         $controller->set('profiles_count', count($profile_ids));
 
@@ -281,7 +277,6 @@ class EmailShell extends Shell{
                             $link = "http://roommates.edu.teiath.gr/houses/view/{$house_ids[$j]}";
                             $house_links .= "<a href=\"{$link}\">{$link}</a><br />";
                         }
-
                         $profile_links = "";
                         for($j=0; $j<count($profile_ids); $j++){
                             $link = "http://roommates.edu.teiath.gr/profiles/view/{$profile_ids[$j]}";
