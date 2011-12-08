@@ -46,6 +46,9 @@ class EmailShell extends Shell{
     }
 
 
+        //return user email with matched house or profile id or both
+        //users can be only in one category email_houses ,email_profiles, 
+        //email_both. Return all categories
         private function get_emails( $users ){
         
             
@@ -60,9 +63,9 @@ class EmailShell extends Shell{
                 $compatible_profiles = array();
 
                 try{
-                    //Get arrays with Houses and Profiles 
-                    $compatible_houses = $this->get_prefered_records( $users, $i, 'House' );
-                    $compatible_profiles = $this->get_prefered_records( $users, $i, 'Profile' );
+                    //Get arrays with user's compatible Houses and Profiles 
+                    $compatible_houses = $this->get_prefered_records( $users[$i], 'House' );
+                    $compatible_profiles = $this->get_prefered_records( $users[$i], 'Profile' );
                 }catch( Exception $ex ){
                     echo $ex->getMessage();
                 }
@@ -100,8 +103,10 @@ class EmailShell extends Shell{
             return array( 'email_houses' => $email_houses ,'email_profiles'=>$email_profiles, "email_both"=>$email_both);
        }
      
-// a generic get_prfered_houses function scoped in profiles and houses
-        private function get_prefered_records( $users , $i, $type ){
+        // return all prefered houses or profiles for each user
+        //
+        private function get_prefered_records( $user, $type ){
+
             $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
             $from = $today;
             $to = $today;
@@ -117,22 +122,22 @@ class EmailShell extends Shell{
 
                 $conditions = array_merge( 
 
-                            $this->getHousePrefs( $users, $i ),
+                            $this->getHousePrefs( $user ),
 
                             array(  
 
-                                'House.user_id <>' => $users[$i]['User']['id']
+                                'House.user_id <>' => $user['User']['id']
                             )
                         );
             } else if( $type === 'Profile' ) {
 
                 $conditions = array_merge( 
 
-                            $this->getProfilePrefs( $users, $i ),
+                            $this->getProfilePrefs( $user ),
 
                             array(  
 
-                                'Profile.user_id <>' => $users[$i]['User']['id']
+                                'Profile.user_id <>' => $user['User']['id']
                             )
                         );
             } else {
@@ -150,34 +155,34 @@ class EmailShell extends Shell{
             return $records;       
         }
 
-        private function getHousePrefs( $users ,$i ){
+        private function getHousePrefs( $user ){
 
             //HousesController needs Controller class
             App::import('Core', 'Controller');
             App::import('Controller', 'Houses');
             $House = new HousesController;
 
-            $user_prefs = array( 'max_price'=>$users[$i]['Preference']['price_max'],
-                'max_area'=>$users[$i]['Preference']['area_max'],
-                'min_area'=> $users[$i]['Preference']['area_min'], 
-                'municipality'=>$users[$i]['Preference']['pref_municipality'],
-                'bedroom_num_min'=>$users[$i]['Preference']['bedroom_num_min'],
-                'furnitured'=>$users[$i]['Preference']['pref_furnitured'],
-                'floor_min'=>$users[$i]['Preference']['floor_id_min'],
-                'bathroom_num_min'=>$users[$i]['Preference']['bathroom_num_min'],
-                'construction_year_min'=>$users[$i]['Preference']['construction_year_min'],
-                'rent_period_min'=>$users[$i]['Preference']['rent_period_min'],
-                'solar_heater'=>$users[$i]['Preference']['pref_solar_heater'],
-                'aircondition'=>$users[$i]['Preference']['pref_aircondition'],
-                'garden'=>$users[$i]['Preference']['pref_garden'],
-                'parking'=>$users[$i]['Preference']['pref_parking'],
-                'security_doors'=>$users[$i]['Preference']['pref_security_doors'],
-                'storeroom'=>$users[$i]['Preference']['pref_storeroom'],
-                'house_type'=>$users[$i]['Preference']['pref_house_type_id'],
-                'heating_type'=>$users[$i]['Preference']['pref_heating_type_id'],
-                'no_shared_pay'=>$users[$i]['Preference']['pref_shared_pay'],
-                'availability_date_min'=>$users[$i]['Preference']['availability_date_min'],
-                'accessibility'=>$users[$i]['Preference']['pref_disability_facilities'] );
+            $user_prefs = array( 'max_price'=>$user['Preference']['price_max'],
+                'max_area'=>$user['Preference']['area_max'],
+                'min_area'=> $user['Preference']['area_min'], 
+                'municipality'=>$user['Preference']['pref_municipality'],
+                'bedroom_num_min'=>$user['Preference']['bedroom_num_min'],
+                'furnitured'=>$user['Preference']['pref_furnitured'],
+                'floor_min'=>$user['Preference']['floor_id_min'],
+                'bathroom_num_min'=>$user['Preference']['bathroom_num_min'],
+                'construction_year_min'=>$user['Preference']['construction_year_min'],
+                'rent_period_min'=>$user['Preference']['rent_period_min'],
+                'solar_heater'=>$user['Preference']['pref_solar_heater'],
+                'aircondition'=>$user['Preference']['pref_aircondition'],
+                'garden'=>$user['Preference']['pref_garden'],
+                'parking'=>$user['Preference']['pref_parking'],
+                'security_doors'=>$user['Preference']['pref_security_doors'],
+                'storeroom'=>$user['Preference']['pref_storeroom'],
+                'house_type'=>$user['Preference']['pref_house_type_id'],
+                'heating_type'=>$user['Preference']['pref_heating_type_id'],
+                'no_shared_pay'=>$user['Preference']['pref_shared_pay'],
+                'availability_date_min'=>$user['Preference']['availability_date_min'],
+                'accessibility'=>$user['Preference']['pref_disability_facilities'] );
 
             
             $house_conditions = $House->getHouseConditions( $user_prefs );
@@ -186,20 +191,20 @@ class EmailShell extends Shell{
         }
 
 
-        private function getProfilePrefs( $users ,$i ){
+        private function getProfilePrefs( $user ){
 
             //HousesController needs Controller class
             App::import('Core', 'Controller');
             App::import('Controller', 'Houses');
             $House = new HousesController;
 
-            $user_prefs = array( 'min_age'=>$users[$i]['Preference']['age_min'],
-                'max_age'=>$users[$i]['Preference']['age_max'],
-                'gender'=> $users[$i]['Preference']['pref_gender'], 
-                'smoker'=>$users[$i]['Preference']['pref_smoker'],
-                'pet'=>$users[$i]['Preference']['pref_pet'],
-                'child'=>$users[$i]['Preference']['pref_child'],
-                'couple'=>$users[$i]['Preference']['pref_couple'] );
+            $user_prefs = array( 'min_age'=>$user['Preference']['age_min'],
+                'max_age'=>$user['Preference']['age_max'],
+                'gender'=> $user['Preference']['pref_gender'], 
+                'smoker'=>$user['Preference']['pref_smoker'],
+                'pet'=>$user['Preference']['pref_pet'],
+                'child'=>$user['Preference']['pref_child'],
+                'couple'=>$user['Preference']['pref_couple'] );
 
             
             $profile_conditions = $House->getMatesConditions( $user_prefs, false);
