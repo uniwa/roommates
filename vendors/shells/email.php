@@ -234,6 +234,7 @@ class EmailShell extends Shell{
    
 
 
+        //email all is array => email_houses, email_profiles, email_both
         function email($email_all){
             //import classes
             App::import('Core', 'Controller');
@@ -248,8 +249,21 @@ class EmailShell extends Shell{
             $profiles = $email_all['email_profiles'];
             $both = $email_all['email_both'];
 
-            $this->send_mail_to($houses, 'houses', $controller, $email, 'mail_from_cron', 'cron_house_match' );
+            if( !empty($houses) ){
+             
+                $this->send_mail_to($houses, 'houses', $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών', 'cron_house_match' );
+            }
 
+            if( !empty($profiles)){
+                
+                $this->send_mail_to($houses, 'profiles', $controller, $email, 'Τελευταίες καταχωρίσεις προφίλ', 'cron_profile_match' );
+            }
+
+
+            if( !empty($both) ){
+
+                $this->send_mail_to($houses, 'houses', $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών και προφίλ', 'cron_both_match' );
+            }
             
         }
 
