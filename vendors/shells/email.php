@@ -13,10 +13,6 @@ class EmailShell extends Shell{
         $conditions_created = $time->daysAsSql($from, $to, "created", true);
         $conditions_modified = $time->daysAsSql($from, $to, "modified", true);
         $conditions = '(' . $conditions_created . ') OR (' .$conditions_modified . ')';
-        //echo($conditions);die();
-
-
-
 
         //get (only) users data and preferences
         $users = $this->Profile->find('all', array('conditions' => array( 'User.role' => 'user', 'Profile.get_mail' => 1)));
@@ -286,7 +282,7 @@ class EmailShell extends Shell{
                         $email->to = $email_addr[$i];
                         $controller->set('house_links', $house_links);
                         $controller->set('profile_links', $profile_links);
-                        $email_send();
+                        $email->send();
 
                     } else {
 
