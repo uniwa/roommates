@@ -99,32 +99,7 @@ class EmailShell extends Shell{
 
             return array( 'email_houses' => $email_houses ,'email_profiles'=>$email_profiles, "email_both"=>$email_both);
        }
-        //returns house ids
-        private function get_prefered_houses( $users , $i ){
-            $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
-            $from = $today;
-            $to = $today;
-            App::import('Helper', 'Time');
-            $time = new TimeHelper();
-            $conditions_created = $time->daysAsSql($from, $to, "created", true);
-            $conditions_modified = $time->daysAsSql($from, $to, "modified", true);
-
-           
-            $house_conditions =  $this->getHousePrefs($users, $i );
-
-
-            $mod_conditions = array(
-                
-                'House.user_id <>' => $users[$i]['User']['id'],
-                'OR' => array(
-                    $conditions_created,
-                    $conditions_modified)
-            );
-
-
-            $conditions = array_merge( $house_conditions, $mod_conditions  );
-            return $this->House->find('all', array( 'conditions' => $conditions, 'fields'=>'House.id', 'recursive'=>0));
-        }
+     
 // a generic get_prfered_houses function scoped in profiles and houses
         private function get_prefered_records( $users , $i, $type ){
             $today = date('Y-m-d', strtotime("+1 day")); //because daysAsSql returns yesterday, use strtotime
