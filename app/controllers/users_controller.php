@@ -19,6 +19,8 @@ class UsersController extends AppController{
         $this->Auth->allow('register');
         $this->Auth->allow('pdf');
         $this->Auth->allow('download');
+        $this->Auth->allow('registerowner');
+        $this->Auth->allow('registerrealestate');
 
         if( $this->params['action'] === 'register' && $this->Auth->user() ) {
 
@@ -299,11 +301,6 @@ class UsersController extends AppController{
     }
 
     function register() {
-        // this variable is used to display properly
-        // the selected element on header
-        $this->set('selected_action', 'register');
-        $this->set('title_for_layout','Εγγραφή νέου χρήστη');
-        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         if ($this->data) {
             // user must accept the real estate terms
             if ($this->data["User"]["estate_terms"] != "1") {
@@ -373,6 +370,24 @@ class UsersController extends AppController{
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
     }
+    
+    function registerowner(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου ιδιώτη');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register();
+    }
+
+    function registerrealestate(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου μεσιτικού γραφείου');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register();
+    }
 
     private function create_estate_profile($id, $data) {
         $realestate["RealEstate"]["firstname"] = $data["RealEstate"]["firstname"];
@@ -387,6 +402,7 @@ class UsersController extends AppController{
         $realestate["RealEstate"]["postal_code"] = $data["RealEstate"]["postal_code"];
         $realestate["RealEstate"]["municipality_id"] = $data["RealEstate"]["municipality_id"];
         $realestate["RealEstate"]["user_id"] = $id;
+        $realestate["RealEstate"]["type"] = $data["RealEstate"]["type"];
 
         if ( $this->RealEstate->save($realestate) === false) {
             return false;
@@ -460,6 +476,7 @@ class UsersController extends AppController{
             $this->Email->template = 'registered';
             $this->Email->layout = 'registered';
             $this->Email->sendAs = 'both';
+            $this->Email->send();
         }
     }
 

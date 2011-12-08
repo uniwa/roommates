@@ -10,7 +10,8 @@ class HousesController extends AppController {
     var $components = array('RequestHandler', 'Token');
     var $helpers = array('Text', 'Time', 'Html', 'Xml');
     var $paginate = array('limit' => 15);
-    var $uses = array('House', 'HouseType');
+    var $uses = array('House', 'HouseType', 'Image',
+                      'HeatingType', 'Municipality', 'Floor');
 
     function index() {
 
@@ -23,20 +24,6 @@ class HousesController extends AppController {
                               'conditions' => $conditions)
             );
             return $this->set(compact('houses'));
-        }
-
-        if ($this->isWebService()) {
-            if ($this->RequestHandler->isGet()) {
-                $houses = $this->simpleSearch(  $this->getHouseConditions(),
-                                                null, null, false, null,
-                                                $this->getXmlFields());
-                $this->set('houses', $houses);
-                $this->layout = 'xml/default';
-                $this->render('xml/public');
-            } elseif ($this->RequestHandler->isPost()) {
-//                 $this->layout = 'xml/empty';
-//                 $this->render('xml/empty');
-            }
         }
 
 		$order = array('House.modified' => 'desc');
@@ -158,10 +145,12 @@ class HousesController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        if( $this->RequestHandler->isRss() || $this->isWebService()){
+        if( $this->RequestHandler->isRss() ){
             $this->Auth->allow( 'index' );
             $this->Auth->allow( 'search' );
         }
+
+        if ($this->isWebService()) $this->Auth->allow('webService');
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -254,7 +243,8 @@ class HousesController extends AppController {
                 $hid = $this->House->id;
 
                 // post requires municipality name, house type and user role
-                $this->House->recursice = 2;
+                // TODO check if recursive is actually required
+//                 $this->House->recursice = 2;
                 $house = $this->House->read();
                 // post to facebook application wall
                 if ( $this->data['House']['visible'] == 1 ) {
@@ -689,13 +679,21 @@ class HousesController extends AppController {
 
             $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
-        
+
     }
 
 
     private function simpleSearch(  $houseConditions, $matesConditions = null,
                                     $orderBy = null, $pagination = true,
-                                    $user_role = null, $fields = null) {
+                                    $user_role = null, $fields = null,
+                                    $isWebService = false) {
+
+        //----- WARNING -----//
+        // $fields variable *must not* contain anything related to Image
+        // model (e.g. 'Image.location', 'Image.is_default').
+        // By default the results will contain all the fields of the default
+        // image of each house and one must filter the result to get the
+        // wanted output.
 
         if ($fields != null) $options['fields'] = $fields;
 
@@ -721,11 +719,15 @@ class HousesController extends AppController {
                 'Profile' => array(
                     'foreignKey' => false,
                     'conditions' => array('Profile.user_id = User.id')
+                ),
+                'RealEstate' => array(
+                    'foreignKey' => false,
+                    'conditions' => array('RealEstate.user_id = User.id')
                 )
             ),
             'hasMany' => array(
                 'Image' => array(
-                    'conditions' => array('Image.is_default = 1')
+                    'conditions' => array('Image.is_default' => 1)
                 )
             )
         ), false);
@@ -1253,14 +1255,15 @@ class HousesController extends AppController {
 
     /// Returns whether this is web service call or not
     private function isWebService() {
-        if (isset($this->params['url']['url']) && (strpos($this->params['url']['url'], 'api/houses') !== false))
+        if (isset($this->params['url']['url']) &&
+            (strpos($this->params['url']['url'], 'api/houses') !== false))
             return true;
         else
             return false;
     }
 
 
-    private function getXmlFields() {
+    private function getResponseXmlFields() {
         $fields = array('House.id',
                         'House.address',
                         'House.postal_code',
@@ -1286,6 +1289,7 @@ class HousesController extends AppController {
                         'House.currently_hosting',
                         'House.total_places',
                         'House.free_places',
+                        'House.geo_distance',
                         'Municipality.name',
                         'Floor.type',
                         'HouseType.type',
@@ -1340,5 +1344,293 @@ class HousesController extends AppController {
         $distance = 2*$radius*asin( $root );
         return $distance;
     }
+
+    // ------------------------------------------------------------------------
+    // REST - Web Services
+    // ------------------------------------------------------------------------
+
+    function webService($id = null) {
+        if ($this->RequestHandler->isGet()) {
+            $this->handleGetRequest($id);
+        } else if ($this->RequestHandler->isPost()) {
+            $this->handlePostRequest();
+        } else if ($this->RequestHandler->isPut()) {
+            $this->handlePutRequest($id);
+        } else if ($this->RequestHandler->isDelete()) {
+            $this->handleDeleteRequest($id);
+        }
+    }
+
+    private function handleGetRequest($id) {
+        $house_conds = $this->getHouseConditions();
+        if ($id != null) array_push($house_conds, array('House.id' => $id));
+        $result = $this->simpleSearch(  $house_conds,
+                                        null, null, false, null,
+                                        $this->getResponseXmlFields(),
+                                        true);
+        $this->set('houses', $result);
+        $this->layout = 'xml/default';
+        $this->render('xml/public');
+    }
+
+    private function handlePostRequest() {
+        $this->layout = 'xml/default';
+        $user_id = $this->authenticate();
+        if ($user_id == NULL) {
+            // TODO deprecate this render when we build error system
+            $this->set('results', 'authentication failed');
+            $this->render('xml/create');
+            return;
+        }
+
+        if (!empty($this->data)) {
+            $user_role = $this->get_role($user_id);
+            if ($user_role == 'user') {
+                $house_count = $this->count_houses($user_id);
+                if ($house_count >= 1) {
+                    $this->set('results', 'cannot add more than one houses');
+                    $this->render('xml/create');
+                    return;
+                }
+            }
+            elseif ($user_role == 'admin') {
+                $this->set('results', 'admin cannot add houses');
+                $this->render('xml/create');
+                return;
+            }
+            $this->data['House']['user_id'] = $user_id;
+            $this->data['House']['geo_distance'] = $this->computeDistance();
+            $this->setRequiredIds();
+            $this->House->save($this->data);
+        }
+        // TODO return a confirmation/failure message instead
+        $this->set('results', $this->data);
+        $this->layout = 'xml/default';
+        $this->render('xml/create');
+    }
+
+    private function handlePutRequest($id) {
+        $this->layout = 'xml/default';
+        $user_id = $this->authenticate();
+        if ($user_id == NULL) {
+            // TODO deprecate this render when we build error system
+            $this->set('results', 'authentication failed');
+            $this->render('xml/create');
+            return;
+        }
+
+        if ($id != null) {
+            if (! $this->house_exist($id) ) {
+                $this->set('results', 'cannot find house to modify');
+                $this->render('xml/create');
+                return;
+            }
+
+            if (! $this->owns_house($user_id, $id) ) {
+                $this->set('results', 'access to house with id '.$id.' is denied');
+                $this->render('xml/create');
+                return;
+            }
+
+            $this->data['House']['id'] = $id;
+            $this->data['House']['geo_distance'] = $this->computeDistance();
+            $this->setRequiredIds();
+            if ($this->House->saveAll($this->data)) {
+                $this->set('results', $this->data);
+            } else {
+                // TODO find a better error message!!!
+                $this->set('results', "You, sir, have been trolled!");
+            }
+            $this->layout = 'xml/default';
+            $this->render('xml/create');
+        } else {
+            // TODO return some error
+        }
+    }
+
+    private function handleDeleteRequest($id) {
+        $this->layout = 'xml/default';
+        $user_id = $this->authenticate();
+        if ($user_id == NULL) {
+            // TODO deprecate this render when we build error system
+            $this->set('results', 'authentication failed');
+            $this->render('xml/create');
+            return;
+        }
+
+        if ($id != null) {
+            if (! $this->house_exist($id) ) {
+                $this->set('results', 'cannot find house to modify');
+                $this->render('xml/create');
+                return;
+            }
+
+            if (! $this->owns_house($user_id, $id) ) {
+                $this->set('results', 'access to house with id '.$id.' is denied');
+                $this->render('xml/create');
+                return;
+            }
+
+            $this->layout = 'xml/default';
+
+            $this->House->id = $id;
+            $this->House->begin();
+            /* delete associated images first */
+            if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
+                $this->House->rollback();
+                $this->render('xml/delete');
+                return;
+            }
+            else {
+                /* remove from FS */
+                if (! $this->House->Image->delete_all($id) ) {
+                    $this->House->rollback();
+                    $this->render('xml/delete');
+                    return;
+                }
+                else {
+                    /* delete house */
+                    if (! $this->House->delete( $id ) ) {
+                        $this->House->rollback();
+                        $this->render('xml/delete');
+                        return;
+                    }
+                }
+            }
+            $this->House->commit();
+            $this->set('results', 'success');
+            $this->render('xml/create');
+
+        } else {
+            // TODO return some error
+        }
+
+    }
+
+    //////////////////////////////////////////////////
+    // Set the required ID fields in House model
+    // (municipality, floor, house_type, heating_type)
+    // and remove the respective types/names from
+    // $this->data
+    //////////////////////////////////////////////////
+    private function setRequiredIds() {
+        $house = $this->data['House'];
+
+        // municipality
+        $municipality = $this->Municipality->find('first', array(
+                            'fields' => 'Municipality.id',
+                            'conditions' => array(
+                                'Municipality.name' => $house['Municipality']['name']
+                            )
+                        ));
+        $this->data['House']['municipality_id'] = $municipality['Municipality']['id'];
+        unset($this->data['House']['Municipality']);
+
+        // floor
+        $floor = $this->Floor->find('first', array(
+                    'fields' => 'Floor.id',
+                    'conditions' => array(
+                        'Floor.type' => $house['Floor']['type']
+                    )
+                 ));
+        $this->data['House']['floor_id'] = $floor['Floor']['id'];
+        unset($this->data['House']['Floor']);
+
+        // house type
+        $house_type = $this->HouseType->find('first', array(
+                        'fields' => 'HouseType.id',
+                        'conditions' => array(
+                            'HouseType.type' => $house['HouseType']['type']
+                        )
+                     ));
+        $this->data['House']['house_type_id'] = $house_type['HouseType']['id'];
+        unset($this->data['House']['HouseType']);
+
+        // heating type
+        $heating_type = $this->HeatingType->find('first', array(
+                            'fields' => 'HeatingType.id',
+                            'conditions' => array(
+                                'HeatingType.type' => $house['HeatingType']['type']
+                            )
+                        ));
+        $this->data['House']['heating_type_id'] = $heating_type['HeatingType']['id'];
+        unset($this->data['House']['HeatingType']);
+    }
+
+
+    private function get_credentials() {
+        // get basic auth from http header
+        // decode and return username and password
+        if (!isset($_SERVER['PHP_AUTH_USER'])) {
+            return NULL;
+        }
+        return array('username' => $_SERVER['PHP_AUTH_USER'],
+                     'password' => $_SERVER['PHP_AUTH_PW']);
+    }
+
+
+    private function authenticate() {
+        // return user id if user authenticates successfully
+        // return NULL otherwise
+        $credentials = $this->get_credentials();
+        if ($credentials == NULL) return NULL;
+
+        $user = array('User.username' => $credentials['username'],
+                      'User.password' => $credentials['password']);
+
+        if ($this->Auth->login($user) == false) {
+            return NULL;
+        }
+        else {
+            $conditions = array('User.username' => $credentials['username']);
+            $user = $this->User->find('first',
+                array('conditions' => $conditions, 'fields' => 'id'));
+            return $user['User']['id'];
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // web services helper functions
+    // ------------------------------------------------------------------------
+
+    private function owns_house($user_id, $house_id) {
+        // check if a given user owns a given house
+        $this->House->recursive = -1;
+        $conditions = array('House.id' => $house_id);
+        $house = $this->House->find('first',
+            array('conditions' => $conditions, 'fields' => 'user_id'));
+        if ($house['House']['user_id'] == $user_id) {
+            return true;
+        }
+        return false;
+    }
+
+    private function house_exist($id) {
+        // check if house with given id exits
+        $this->House->recursive = -1;
+        $this->House->id = $id;
+        $house = $this->House->read();
+        if (empty($house)) {
+            return false;
+        }
+        return true;
+    }
+
+    private function get_role($id) {
+        // return role of user with given id
+        $this->User->recursive = -1;
+        $conditions = array('User.id' => $id);
+        $user = $this->User->find('first',
+            array('conditions' => $conditions, 'fields' => 'role'));
+        return $user['User']['role'];
+    }
+
+    private function count_houses($id) {
+        // return how many houses user with given id owns
+        $conditions = array('user_id' => $id);
+        $n = $this->House->find('count', array('conditions' => $conditions));
+        return $n;
+    }
+
 }
 ?>

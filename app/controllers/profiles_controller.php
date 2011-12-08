@@ -156,7 +156,7 @@ class ProfilesController extends AppController {
 
         $this->set('title_for_layout','Επεξεργασία προφίλ');
         $this->checkExistence($id);
-    	$this->checkAccess( $id );
+        $this->checkAccess( $id );
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
@@ -176,8 +176,8 @@ class ProfilesController extends AppController {
         if(empty($this->data)){
              $this->data = $profile;
         }else{
-	        $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
-	        $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
+            $this->data['Profile']['firstname'] = $profile['Profile']['firstname'];
+            $this->data['Profile']['lastname'] = $profile['Profile']['lastname'];
             $this->data['Profile']['email'] = $profile['Profile']['email'];
 
             // check if image is uploaded
@@ -237,21 +237,7 @@ class ProfilesController extends AppController {
                     array('class' => 'flashBlue'));
                 $this->redirect(array('action'=> "view", $id));
             }
-		}
-
-        /* FIXME wtf? why ['House'][0]? */
-//         if(isset($profile['User']['House'][0]['id'])){
-//             if($profile['User']['House'][0]['visible'] === 1){
-//                 $imgDir = 'uploads/houses/';
-//                 $houseid = $profile["User"]["House"][0]["id"];
-//                 $this->House->id = $houseid;
-//                 $house = $this->House->read();
-//                 $image = $this->House->Image->find('first',array('conditions' => array(
-//                     'Image.is_default' => 1, 'Image')));
-//                 $imageFile = $imgDir.$houseid.'/thumb_'.$image['Image']['location'];
-//                 $this->set('image', $imageFile);
-//             }
-//         }
+        }
      }
 
     function deleteImage ($id = NULL) {
