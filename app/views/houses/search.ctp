@@ -164,7 +164,7 @@
     .resultOwner{
         border-color: #12F962;
     }
-    
+
     .resultStudent{
         border-color: #f96213;
     }
@@ -706,6 +706,10 @@
                         $roleClass = 'student';
                         $roleTitle = 'φοιτητής';
                     }
+                // change the background if the user is viewing his house
+                if ($this->Session->read('Auth.User.id') == $house['House']['user_id']) {
+                    $resultClass .= ' result-myself';
+                }
                 echo "<li class='{$resultClass}'>";
                 echo "<div class='result'>";
                 echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
