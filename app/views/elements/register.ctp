@@ -88,7 +88,10 @@
 
 <div id='main-inner'>
 <?php
-    echo $this->Form->create('User', array('action' => 'register'));
+    $registerType = ($type == 'owner')?'registerowner':'registerrealestate';
+    echo $this->Form->create('User', array('action' => $registerType));
+    echo $this->Form->input('RealEstate.type', array('type' => 'hidden',
+        'value' => $type));
     $inputelems = array();
     $inputelems['uname']['input'] = $this->Form->input('User.username', array(
         'label' => '', 'autocomplete' => 'off', 'class' => 'input-elem'));
@@ -119,9 +122,13 @@
     $inputelems['lname']['input'] = $this->Form->input('RealEstate.lastname', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['lname']['label'] = 'Επίθετο';
-    $inputelems['cname']['input'] = $this->Form->input('RealEstate.company_name', array('label' => '', 'class' => 'input-elem'));
-    $inputelems['cname']['label'] = 'Επωνυμία εταιρίας';
-    $inputelems['cname']['comment'] = '(Αν είστε ιδιώτης αφήστε το πεδίο κενό)';
+    if($type == 'owner'){
+        $inputType = 'hidden';
+    }else{
+        $inputType = 'text';
+        $inputelems['cname']['label'] = 'Επωνυμία εταιρίας';
+    }
+    $inputelems['cname']['input'] = $this->Form->input('RealEstate.company_name', array('label' => '', 'class' => 'input-elem', 'type' => $inputType));
     $inputelems['afm']['input'] = $this->Form->input('RealEstate.afm', array('label' => '', 'class' => 'input-elem'));
     $inputelems['afm']['label'] = 'ΑΦΜ';
     $inputelems['doy']['input'] = $this->Form->input('RealEstate.doy', array('label' => '', 'class' => 'input-elem'));
@@ -146,17 +153,21 @@
     $terms_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi velit mi, blandit sit amet volutpat ut, accumsan quis ante. Vivamus euismod, metus id molestie sagittis, neque tortor eleifend elit, in sodales neque erat eu eros. Nullam vitae ante libero. Vestibulum vehicula egestas sem, vitae viverra ipsum pharetra sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Quisque malesuada risus libero, et placerat velit. Phasellus ac interdum justo. Donec consequat viverra nisl vitae dapibus.";
 
 ?>
+    <div class='form-title'>
+        <h2>Παρακαλώ συμπληρώστε τα στοιχεία σας:</h2>
+    </div>
     <ul>
-        <div class='form-title'>
-            <h2>Παρακαλώ συμπληρώστε τα στοιχεία σας:</h2>
-        </div>
         <?php
             foreach($inputelems as $elem){
         ?>
         <li class='form-line'>
-            <div class='form-elem form-label'>
-                <?php echo $elem['label']; ?>
-            </div>
+                <?php
+                    if (isset($elem['label'])) {
+                ?>
+                <div class='form-elem form-label'>
+                    <?php echo $elem['label']; ?>
+                </div>
+                <?php } ?>
             <div class='form-elem form-input'>
                 <?php
                     echo $elem['input'];

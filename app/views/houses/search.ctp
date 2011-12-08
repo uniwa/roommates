@@ -35,8 +35,8 @@
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #aaa;
-        margin: 0px 0px 10px 2px;
+        border-left: 1px solid #ddd;
+        margin: 10px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
         min-height: 800px;
@@ -131,8 +131,42 @@
         margin: 8px 12px 0px 0px;
     }
 
+    .role{
+        position: relative;
+        top: -2px;
+        left: 500px;
+        margin: -2px 0px 0px 0px;
+        width: 78px;
+        height: 14px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: #333 1px 1px 1px;
+    }
+
+    .student{
+        background-color: #f96213;
+    }
+
+    .realestate{
+        background-color: #6212F9;
+    }
+
+    .owner{
+        background-color: #12F962;
+    }
+
     .resultRE{
-        border-color: #88a;
+        border-color: #6212F9;
+    }
+
+    .resultOwner{
+        border-color: #12F962;
+    }
+
+    .resultStudent{
+        border-color: #f96213;
     }
 </style>
 
@@ -142,11 +176,10 @@
     <?php
         $select_options = array('Όχι', 'Ναι', 'Αδιάφορο');
         $gender_options = array('Άνδρας', 'Γυναίκα', 'Αδιάφορο');
-
+        $role = $this->Session->read('Auth.User.role');
         //modify the url for pagination
         $get_vars = '';
         $urls = $this->params['url'];
-        //pr($urls);die();
         foreach($urls as $key => $value) {
             if($key == 'url' || $key == 'ext') continue;
 	        if($key == 'available_from'){
@@ -654,13 +687,33 @@
         <ul>
             <?php
                 foreach($results as $house){
+                    $role = $house['User']['role'];
                     $resultClass = 'result-cont';
-                    if($house['User']['role'] == 'realestate'){
-                        $resultClass .= ' resultRE';
+                    // TODO: switch for realestate, student, owner
+                    if($role == 'realestate'){
+                        if($house['RealEstate']['type'] == 'owner'){
+                            $role = 'owner';
+                            $resultClass .= ' resultOwner';
+                            $roleClass = 'owner';
+                            $roleTitle = 'ιδιώτης';
+                        }else{
+                            $resultClass .= ' resultRE';
+                            $roleClass = 'realestate';
+                            $roleTitle = 'μεσιτικό';
+                        }
+                    }else{
+                        $resultClass .= ' resultStudent';
+                        $roleClass = 'student';
+                        $roleTitle = 'φοιτητής';
                     }
+                // change the background if the user is viewing his house
+                if ($this->Session->read('Auth.User.id') == $house['House']['user_id']) {
+                    $resultClass .= ' result-myself';
+                }
                 echo "<li class='{$resultClass}'>";
+                echo "<div class='result'>";
+                echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
             ?>
-                <div class='result'>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>
                     <div class='result-photo-cont'>
@@ -727,24 +780,22 @@
                         <div class='desc-title houseClear'>
                             <?php
                                 echo $this->Html->link("{$houseType}, {$houseArea} τ.μ.",
-                                    array('controller' => 'houses','action' => 'view',$houseid));
+                                    array('controller' => 'houses','action' => 'view', $houseid));
                             ?>
                         </div>
                         <div class='desc-info'>
                             <?php
-                                echo 'Ενοίκιο: '.$housePrice.'€, ';
-                                echo $furnished;
-                                echo '<br />Δήμος: '.$houseMunicipality.'<br />';
-                                //echo 'Διεύθυνση '.$house['House']['address'].'<br />';
-                                if($house['House']['disability_facilities']) echo 'Προσβάσιμο από ΑΜΕΑ<br />';
+                                echo "<span class='bold'>Ενοίκιο:</span> {$housePrice}€, ";
+                                echo "<span class='bold'>{$furnished}</span>";
+                                echo "<br /><span class='bold'>Δήμος:</span> {$houseMunicipality}<br />";
+                                if($house['House']['disability_facilities']) echo "<span class='bold'>Προσβάσιμο από ΑΜΕΑ</span><br />";
                                 if ($house['User']['role'] != 'realestate') {
-                                    echo 'Διαθέσιμες θέσεις: '.
-                                        $house['House']['free_places'].'<br />';
+                                    echo "<span class='bold'>Διαθέσιμες θέσεις:</span> ";
+                                    echo "{$house['House']['free_places']}<br />";
                                 }
-                                if( !empty($geoDistance) ) {
-                                    echo 'Απόσταση από ΤΕΙ: '
-                                        . number_format( $geoDistance, 2 )
-                                        . '&nbsp;χλμ.';
+                                if(!empty($geoDistance)){
+                                    echo "<span class='bold'>Απόσταση από ΤΕΙ:</span> ";
+                                    echo number_format($geoDistance, 2, ',', '.').' χλμ.';
                                 }
                             ?>
                         </div>

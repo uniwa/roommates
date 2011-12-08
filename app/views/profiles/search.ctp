@@ -5,11 +5,11 @@
         font-size: 1.2em;
         font-weight: bold;
     }
-    
+
     .left-form ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
@@ -19,8 +19,8 @@
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #aaa;
-        margin: 0px 0px 10px 2px;
+        border-left: 1px solid #ddd;
+        margin: 10px 0px 10px 2px;
         padding: 0px 0px 0px 0px;
         width: 620px;
         min-height: 800px;
@@ -30,12 +30,12 @@
     .left-form ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     .form-buttons{
         margin: 10px auto;
         width: 220px;
     }
-    
+
     .form-elem{
         margin: 0px 8px 12px 0px;
         font-size: 1.2em;
@@ -45,13 +45,13 @@
         float: left;
         width: 80px;
     }
-    
+
     .form-input{
         float: left;
         width: 140px;
         overflow: no-scroll;
     }
-    
+
     .form-checkbox{
         width: 220px;
     }
@@ -66,7 +66,7 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
     .search-title{
         margin: 12px auto 0px auto;
         text-align: center;
@@ -81,12 +81,12 @@
         font-size: 1.2em;
         font-style: italic;
     }
-    
+
     .pagination{
         margin: 0px auto 12px auto;
         text-align: center;
     }
-    
+
     .pagination ul li{
         display: inline;
     }
@@ -96,14 +96,12 @@
         padding: 0px 2px 0px 2px;
         font-weight: bold;
     }
-    
+
     .pagination ul li.disabled{
         color: #aaa;
     }
-    
+
     .thumbImage{
-        width: 100px;
-        height: 100px;
     }
 </style>
 
@@ -314,18 +312,29 @@
         </div>
         <ul>
             <?php
+                $result_class = 'result-cont';
                 foreach ($profiles as $profile){
                     $gender = ($profile['Profile']['gender']) ? 'fe' : '';
+
+                    if ($this->Session->read('Auth.User.id') == $profile['Profile']['user_id']) {
+                        $result_class .= ' result-myself';
+                    }
+
+                    echo "<li class='{$result_class}'>";
             ?>
-            <li class='result-cont'>
+            <!-- li class='result-cont' -->
                 <div class='result'>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>
                     <div class='result-photo-cont'>
                     <div class='result-photo-inner'>
                         <?php
-							$profile_id = $profile['Profile']['id'];
-							$imageLocation = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+                            $profile_id = $profile['Profile']['id'];
+                            if (empty($profile['Profile']['avatar'])) {
+    							$imageLocation = ($profile['Profile']['gender'])?'female.jpg':'male.jpg';
+                            } else {
+                                $imageLocation = 'uploads/profiles/'.$profile_id.'/'.$profile['Profile']['avatar'];
+                            }
                             $altText = "εικόνα {$profile['Profile']['firstname']}
                                  {$profile['Profile']['lastname']}";
 							$profileImage = $this->Html->image($imageLocation,
@@ -350,11 +359,11 @@
                             <?php
                                 echo $profile['Profile']['age'].", ";
                                 $gender = ($profile['Profile']['gender']) ? 'γυναίκα' : 'άνδρας';
-                                echo $gender."<br />\n";
+                                echo "<span class='bold'>{$gender}</span><br />";
 	                            $email = $profile['Profile']['email'];
 	                            $emailUrl = $this->Html->link($email, 'mailto:'.$email);
-	                            echo "email: ".$emailUrl."<br />\n";
-                                echo "επιθυμητοί συγκάτοικοι: " . $profile['Profile']['max_roommates']."\n";
+	                            echo "<span class='bold'>email:</span> {$emailUrl}<br />";
+                                echo "<span class='bold'>επιθυμητοί συγκάτοικοι:</span> {$profile['Profile']['max_roommates']}";
                             ?>
                         </div>
                     </div>

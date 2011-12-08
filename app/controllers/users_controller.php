@@ -17,6 +17,8 @@ class UsersController extends AppController{
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
+        $this->Auth->allow('registerowner');
+        $this->Auth->allow('registerrealestate');
 
         if( $this->params['action'] === 'register' && $this->Auth->user() ) {
 
@@ -30,9 +32,9 @@ class UsersController extends AppController{
         $this->set('selected_action', 'login');
         $this->set('title_for_layout', 'Σύνδεση χρήστη');
 
-        /*In case user try to login with some credentials
-         *and terms has not accepted redirect him in terms action.
-         *If rules has accepted redirect him to main page
+        /*In case user tries to login with some credentials
+         *while terms are not accepted, redirect him to terms action.
+         *If rules are accepted, redirect him to main page
          */
         if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
             $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
@@ -44,6 +46,8 @@ class UsersController extends AppController{
                 $this->redirect($this->Auth->logout());
             }
             /* redirect in pre-fixed url */
+            $this->User->id = $this->Auth->user('id');  //target correct record
+            $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
             $this->redirect( $this->Auth->redirect() );
         }
 
@@ -66,16 +70,24 @@ class UsersController extends AppController{
         if(isset($this->data)){
             $userid = $this->Auth->user('id');
             $username = $this->Auth->user('username');
-//pr($this->data['subject']);die();
+
             $formData = array();
             $formData['subject'] = $this->data['subject'];
             $formData['category'] = "bug";
             $formData['userid'] = $userid;
             $formData['username'] = $username;
             $formData['description'] = $this->data['description'];
-            $this->createIssue($formData);
+            $result = $this->createIssue($formData);
+            if($result){
+                $this->Session->setFlash( 'Η αναφορά καταχωρήθηκε με επιτυχία', 'default',
+                    array('class' => 'flashBlue'));
+                $this->redirect('/');
+            }else{
+                $this->Session->setFlash( 'Η αναφορά δεν ήταν δυνατό να καταχωρηθεί.', 'default',
+                    array('class' => 'flashRed'));
+                $this->redirect('help');
+            }
         }
-//        $this->render(false);
 	}
 
     function terms(){
@@ -223,11 +235,6 @@ class UsersController extends AppController{
     }
 
     function register() {
-        // this variable is used to display properly
-        // the selected element on header
-        $this->set('selected_action', 'register');
-        $this->set('title_for_layout','Εγγραφή νέου χρήστη');
-        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         if ($this->data) {
             // user must accept the real estate terms
             if ($this->data["User"]["estate_terms"] != "1") {
@@ -297,6 +304,24 @@ class UsersController extends AppController{
         }
 
     }
+    
+    function registerowner(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου ιδιώτη');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register();
+    }
+
+    function registerrealestate(){
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου μεσιτικού γραφείου');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register();
+    }
 
     private function create_estate_profile($id, $data) {
         $realestate["RealEstate"]["firstname"] = $data["RealEstate"]["firstname"];
@@ -311,6 +336,7 @@ class UsersController extends AppController{
         $realestate["RealEstate"]["postal_code"] = $data["RealEstate"]["postal_code"];
         $realestate["RealEstate"]["municipality_id"] = $data["RealEstate"]["municipality_id"];
         $realestate["RealEstate"]["user_id"] = $id;
+        $realestate["RealEstate"]["type"] = $data["RealEstate"]["type"];
 
         if ( $this->RealEstate->save($realestate) === false) {
             return false;
@@ -337,6 +363,10 @@ class UsersController extends AppController{
             curl_setopt($ch, CURLOPT_TIMEOUT, 15);
             $result = curl_exec($ch);
             curl_close($ch);
+            
+            return $result;
+        }else{
+            return false;
         }
     }
     
@@ -379,6 +409,7 @@ class UsersController extends AppController{
             $this->Email->template = 'registered';
             $this->Email->layout = 'registered';
             $this->Email->sendAs = 'both';
+            $this->Email->send();
         }
     }
 

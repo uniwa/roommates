@@ -23,7 +23,7 @@
 
     #main-inner{
         float: left;
-        border-left: 1px dotted #333;
+        border-left: 1px solid #ddd;
         margin: 10px 0px 20px 0px;
         padding: 24px 24px 24px 16px;
         width: 560px;
@@ -135,6 +135,10 @@
         margin: 0px 8px 0px 0px;
     }
 
+    .houseOptions{
+        margin: 16px 0px 0px 0px;
+    }
+
     .liimage{
         float: left;
         margin: 0px 0px 0px 4px;
@@ -161,13 +165,9 @@
         padding: 24px 0px 0px 0px;
     }
     
-    .fbIcon{
+    .optionIcon{
         margin: 0px 4px 0px 0px;
         vertical-align: -30%;
-    }
-    
-    .facebook-post{
-        margin: 16px 0px 0px 0px;
     }
     
     .owner-info{
@@ -336,10 +336,17 @@
 
     if($loggedUser == $userid){
         //edit house
-        $editHouse = $html->link('Επεξεργασία', array('action' => 'edit', $houseid));
+        $editContent = $html->image('edit.png', array(
+            'alt' => 'Επεξεργασία', 'class' => 'optionIcon')).'Επεξεργασία';
+        $editHouse = $html->link($editContent,
+            array('action' => 'edit', $houseid), array('escape' => false));
+        $editHouse = "<div class='houseOptions'>{$editHouse}</div>";
         // delete house
-        $deleteHouse = $html->link('Διαγραφή', array('action' => 'delete', $houseid),
-            null, 'Είστε σίγουρος/η;');
+        $deleteContent = $html->image('delete_16.png', array(
+            'alt' => 'Διαγραφή', 'class' => 'optionIcon')).'Διαγραφή';
+        $deleteHouse = $html->link($deleteContent, array('action' => 'delete', $houseid),
+            array('escape' => false), 'Είστε σίγουρος/η;');
+        $deleteHouse = "<div class='houseOptions'>{$deleteHouse}</div>";
     }
     // owner's profile (not available to real estate)
     if(($loggedUser != $userid) && ($role != 'realestate')){
@@ -394,12 +401,12 @@
         $fbImage = 'facebook.png';
         $fbDisplay = $this->Html->image($fbImage, array(
             'alt' => 'Κοινoποίηση στο Facebook',
-            'class' => 'fbIcon'))
+            'class' => 'optionIcon'))
             ." Post";
         $fbLink = $this->Html->link($fbDisplay, $fbUrl,array(
             'title' => 'κοινοποίηση στο facebook', 'escape' => false,
             'target' => 'post_to_facebook'));
-        $fbPost = "<div class='facebook-post'>{$fbLink}</div>";
+        $fbPost = "<div class='houseOptions'>{$fbLink}</div>";
     }
 
     // House properties
@@ -549,7 +556,7 @@ echo "<div id='mainWrapper' class='{$classCont}'>";
     <div id='houseEdit'>
         <?php
             if($this->Session->read('Auth.User.id') == $userid){
-                echo $editHouse.'<br />';
+                echo $editHouse;
                 echo $deleteHouse;
             }
             if($role == 'user'){

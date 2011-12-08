@@ -1,4 +1,8 @@
 <?php
+    /////////////////////////////////////
+    // TODO filter image element (id etc)
+    /////////////////////////////////////
+
     $serialized = '<houses>'.$xml->serialize($houses, array('format' => 'tags')).'</houses>';
     $output = new Xml($serialized);
 

@@ -2,6 +2,20 @@
     <ul>
         <li>
             <?php
+                $userNull = $this->Session->read("Auth.User") == NULL;
+                $userBanned = $this->Session->read('Auth.User.banned');
+                // Logo
+                $linkClass = 'menu-logo';
+                $logo = $this->Html->image('logo.png', array('alt' => '+κατοικώ'));
+                echo $this->Html->link($logo, array('controller' => 'pages',
+                    'action' => 'display'), array('class' => $linkClass, 'escape' => false));
+            ?>
+        </li>
+            <?php
+                if(!$userNull){
+            ?>
+        <li>
+            <?php
                 // Roommates search
                 // realestates cannot search for roommates
                 if ($this->Session->read('Auth.User.role') != 'realestate') {
@@ -51,6 +65,9 @@
                 }
             ?>
         </li>
+            <?php
+                } // !$userNull
+            ?>
     </ul>
 </div>
 
