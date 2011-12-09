@@ -78,7 +78,7 @@ class EmailShell extends Shell{
                     $profile_ids[] = $profile['Profile']['id'];
                 }
 
-                //True set in both email
+                //Categorize users
                 if( !empty($profile_ids) && !empty($house_ids) ){
 
                     $email_both[$users[$i]['Profile']['email']] = array( 'houses'=>$house_ids, 
@@ -120,7 +120,7 @@ class EmailShell extends Shell{
 
                             array(  
 
-                                'House.user_id <>' => $user['User']['id']
+                                'House.user_id !=' => (int)$user['User']['id']
                             )
                         );
             } else if( $type === 'Profile' ) {
@@ -131,7 +131,7 @@ class EmailShell extends Shell{
 
                             array(  
 
-                                'Profile.user_id <>' => $user['User']['id']
+                                'Profile.user_id !=' => (int)$user['User']['id']
                             )
                         );
             } else {
@@ -145,6 +145,10 @@ class EmailShell extends Shell{
                 ($type === 'House')?$this->House->find('all', array( 'conditions' => $conditions, 'fields'=> 'House.id', 'recursive'=>0))
                 :$this->Profile->find('all', array( 'conditions' => $conditions, 'fields'=> 'Profile.id', 'recursive'=>0));
 
+/*            var_dump("conditions");
+            var_dump($conditions);
+            var_dump("records");
+            var_dump($records);*/
 
             return $records;       
         }
@@ -180,10 +184,11 @@ class EmailShell extends Shell{
 
             
             $house_conditions = $House->getHouseConditions( $user_prefs );
+            var_dump("house_prefs");
+            var_dump($user_prefs);
             return $house_conditions;
 
         }
-
 
         private function getProfilePrefs( $user ){
 
@@ -202,10 +207,165 @@ class EmailShell extends Shell{
 
             
             $profile_conditions = $House->getMatesConditions( $user_prefs, false);
+            var_dump("user_prefs");
+            var_dump($user_prefs);
             return $profile_conditions;
 
         }
-   
+
+
+        private function get_house_conditions( $user_prefs ){
+
+            if( $house_prefs == null ){
+
+                $house_prefs = $this->params['url'];
+            }
+
+            $house_conditions = array();
+
+            // primary conditions
+            if(!empty($house_prefs['max_price']))
+                $house_conditions['House.price <='] = $house_prefs['max_price'];
+
+            if(!empty($house_prefs['min_area']))
+                $house_conditions['House.area >='] = $house_prefs['min_area'];
+
+            if(!empty($house_prefs['max_area']))
+                $house_conditions['House.area <='] = $house_prefs['max_area'];
+
+            if(!empty($house_prefs['municipality']))
+                $house_conditions['House.municipality_id'] =
+                                                    $house_prefs['municipality'];
+
+            if (isset($house_prefs['furnitured']) && $house_prefs['furnitured'] < 2)
+                $house_conditions['House.furnitured'] = $house_prefs['furnitured'];
+
+            if(isset($house_prefs['accessibility']))
+                $house_conditions['House.disability_facilities'] = 1;
+
+            if(isset($house_prefs['has_photo']))
+                $house_conditions['House.image_count >'] = 0;
+
+            // secondary conditions
+            if(!empty($house_prefs['house_type']))
+                $house_conditions['House.house_type_id'] =
+                                                        $house_prefs['house_type'];
+
+            if(!empty($house_prefs['heating_type']))
+                $house_conditions['House.heating_type_id'] =
+                                                    $house_prefs['heating_type'];
+
+            if(!empty($house_prefs['bedroom_num_min']))
+                $house_conditions['House.bedroom_num >='] =
+                                                    $house_prefs['bedroom_num_min'];
+
+            if(!empty($house_prefs['bathroom_num_min']))
+                $house_conditions['House.bathroom_num >='] =
+                                                $house_prefs['bathroom_num_min'];
+
+            if(!empty($house_prefs['construction_year_min']))
+                $house_conditions['House.construction_year >='] =
+                                            $house_prefs['construction_year_min'];
+
+            if(!empty($house_prefs['floor_min']))
+                $house_conditions['House.floor_id >='] = $house_prefs['floor_min'];
+
+            if(!empty($house_prefs['rent_period_min']))
+                $house_conditions['House.rent_period >='] =
+                                                    $house_prefs['rent_period_min'];
+
+            if(isset($house_prefs['solar_heater']))
+                $house_conditions['House.solar_heater'] = 1;
+
+            if(isset($house_prefs['aircondition']))
+                $house_conditions['House.aircondition'] = 1;
+
+            if(isset($house_prefs['garden']))
+                $house_conditions['House.garden'] = 1;
+
+            if(isset($house_prefs['parking']))
+                $house_conditions['House.parking'] = 1;
+
+            if(isset($house_prefs['no_shared_pay']))
+                $house_conditions['House.shared_pay'] = 0;
+
+            if(isset($house_prefs['security_doors']))
+                $house_conditions['House.security_doors'] = 1;
+
+            if(isset($house_prefs['storeroom']))
+                $house_conditions['House.storeroom'] = 1;
+
+            if(!empty($house_prefs['available_from'])){
+                $year  = $house_prefs['available_from']['year'];
+                $month = $house_prefs['available_from']['month'];
+                $day   = $house_prefs['available_from']['day'];
+
+                $house_conditions['House.availability_date <='] =
+                                                $year . '-' . $month . '-' . $day;
+            }
+            //Thanos mod
+            if(!empty($house_prefs['availability_date_min'])){
+                $year  = $house_prefs['availability_date_min']['year'];
+                $month = $house_prefs['availability_date_min']['month'];
+                $day   = $house_prefs['availability_date_min']['day'];
+
+                $house_conditions['House.availability_date >='] =
+                                                $year . '-' . $month . '-' . $day;
+            }
+
+            if(!isset($this->Auth) || $this->Auth->User('role') != 'admin'){
+                $house_conditions['House.visible'] = 1;
+            }
+
+            $house_conditions['User.banned !='] = 1;
+
+            return $house_conditions;
+        }
+
+        private function get_mates_conditions( $user_conditions){
+        
+            if( empty($mates_prefs) ){
+
+                $mates_prefs = $this->params['url'];
+            }
+
+            $mates_conditions = array();
+
+            if(!empty($mates_prefs['min_age'])) {
+                $mates_conditions['Profile.dob <='] = $this->age_to_year($mates_prefs['min_age']);
+            }
+            if(!empty($mates_prefs['max_age'])) {
+                $mates_conditions['Profile.dob >='] = $this->age_to_year($mates_prefs['max_age']);
+            }
+            if($mates_prefs['gender'] < 2 && $mates_prefs['gender'] != null) {
+                $mates_conditions['Profile.gender'] = $mates_prefs['gender'];
+            }
+            if($mates_prefs['smoker'] < 2 && $mates_prefs['smoker'] != null) {
+                $mates_conditions['Profile.smoker'] = $mates_prefs['smoker'];
+            }
+            if($mates_prefs['pet'] < 2 && $mates_prefs['pet'] != null) {
+                $mates_conditions['Profile.pet'] = $mates_prefs['pet'];
+            }
+            if($mates_prefs['child'] < 2 && $mates_prefs['child'] != null) {
+                $mates_conditions['Profile.child'] = $mates_prefs['child'];
+            }
+            if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
+                $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
+            }
+
+            if(empty($mates_conditions) && $flag) return null;
+
+            if( !$flag ) return array();
+
+            if( $flag ){
+                // required condition for the left join
+                array_push($mates_conditions, 'User.id = Profile.user_id');
+            }
+
+            return $mates_conditions;
+
+        }
+
 
 
         //email all is array => email_houses, email_profiles, email_both
@@ -220,21 +380,22 @@ class EmailShell extends Shell{
 
             //array with addresses and house profile ids
             if( !empty($email_all['email_houses']) ){
-                var_dump("House");
+            //    var_dump("House");
                 $this->send_mail_to($email_all['email_houses'], 'houses', 
                     $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών', 'cron_house_match' );
             }
 
             if( !empty($email_all['email_profiles'])){
-                var_dump("profiles");
+              //  var_dump("profiles");
+               // var_dump( $email_all['email_profiles'] );
                 $this->send_mail_to($email_all['email_profiles'], 'profiles', 
                     $controller, $email, 'Τελευταίες καταχωρίσεις προφίλ', 'cron_profile_match' );
             }
 
 
             if( !empty($email_all['email_both']) ){
-                var_dump("both");
-                var_dump($email_all['email_both']);
+                //var_dump("both");
+                //var_dump($email_all['email_both']);
                 $this->send_mail_to($email_all['email_both'], 'both', 
                     $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών και προφίλ', 'cron_both_match' );
             }
@@ -277,14 +438,14 @@ class EmailShell extends Shell{
                             $house_links .= "<a href=\"{$link}\">{$link}</a><br />";
                         }
 
-                        var_dump($house_links);
+                  //      var_dump($house_links);
                         $profile_links = "";
                         for($j=0; $j<count($profile_ids); $j++){
                             $link = "http://roommates.edu.teiath.gr/profiles/view/{$profile_ids[$j]}";
                             $profile_links .= "<a href=\"{$link}\">{$link}</a><br />";
                         }
                 
-                        var_dump($profile_links);
+                 //       var_dump($profile_links);
                         $email->to = $email_addr[$i];
                         $controller->set('house_links', $house_links);
                         $controller->set('profile_links', $profile_links);
@@ -301,7 +462,7 @@ class EmailShell extends Shell{
                             $link = "http://roommates.edu.teiath.gr/".$type."/view/{$ids[$j]}";
                             $links .= "<a href=\"{$link}\">{$link}</a><br />";
                         }
-                        var_dump($links);
+               //         var_dump($links);
                         $email->to = $email_addr[$i];
                         $controller->set('links', $links);
                         //$email->send();
