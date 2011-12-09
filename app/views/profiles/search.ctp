@@ -312,8 +312,8 @@
         </div>
         <ul>
             <?php
-                $result_class = 'result-cont';
                 foreach ($profiles as $profile){
+                    $result_class = 'result-cont';
                     $gender = ($profile['Profile']['gender']) ? 'fe' : '';
 
                     if ($this->Session->read('Auth.User.id') == $profile['Profile']['user_id']) {
