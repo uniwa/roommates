@@ -81,7 +81,7 @@
     }
 
     .pagination{
-        margin: 0px auto 12px auto;
+        margin: 12px auto 12px auto;
         text-align: center;
     }
 
