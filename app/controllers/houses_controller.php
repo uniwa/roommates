@@ -734,7 +734,7 @@ class HousesController extends AppController {
         ), false);
 
         if($pagination === true) {
-            $options['limit'] = 3;
+            $options['limit'] = 15;
             $this->paginate = $options;
             $results = $this->paginate('House');
             $this->set('pagination_limit', $options['limit']);
