@@ -1,8 +1,12 @@
 <?php
     // emails will be sent to each recipient separately
-    $config['authority']['activation_recipients'] = array();
+    $config['registration']['authority_recipients'] = array();
 
     // the subject of emails sent as a result of user registration (accounts
-    // waiting for approval); leave empty to use default
-    $config['authority']['activation_subject'] = '';
+    // pending approval); leave empty to use default
+    $config['registration']['authority_subject'] = '';
+
+    // the subject of the email sent to the applicant containing the pdf version
+    // of their application form; leave empty to use default
+    $config['registration']['applicant_subject'] = '';
 ?>

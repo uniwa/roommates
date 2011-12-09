@@ -62,6 +62,7 @@
         $username = $data['User']['username'];
         $firstname = $data['RealEstate']['firstname'];
         $lastname = $data['RealEstate']['lastname'];
+        $type = $data['RealEstate']['type'];
         $companyName = $data['RealEstate']['company_name'];
         $email = $data['RealEstate']['email'];
         $phone = $data['RealEstate']['phone'];
@@ -75,25 +76,24 @@
         if( isset($municipality['Municipality']['name']) ) {
             $municipalityName = $municipality['Municipality']['name'];
         }
-pr( $companyName );
-        $isOffice = !empty($companyName);
-        $roleClarification = $isOffice ? 'μεσιτικού γραφείου' : 'ιδιώτη';
+
+        $roleClarification = $type == 'owner' ? 'ιδιώτη' : 'μεσιτικού γραφείου';
     ?>
 
     <div class='text-area'>
         <h2>Αίτηση εγγραφής Παρόχου Χώρων Στέγασης</h2>
         <p class='justified'>
-        Υπεβλήθη αίτηση εγγραφής νέου <?php echo $roleClarification ?> στο
-        σύστημα με τα ακόλουθα στοιχεία. Παρακαλείσθε να ελέγξτε την ορθότητα
-        των αναγραφόμενων στοιχείων. Κατόπιν, να την παραδώσετε στην αρμόδια
-        αρχή έγκρισης και επικύρωσης συνοδευόμενη από τα απαραίτητα αποδεικτικά
-        έγγραφα.</p>
+        Υπεβλήθη η αίτησή σας για την εγγραφή νέου
+        <?php echo $roleClarification ?> στο σύστημα με τα ακόλουθα στοιχεία.
+        Παρακαλείσθε να ελέγξτε την ορθότητα των αναγραφόμενων στοιχείων.
+        Κατόπιν, να την παραδώσετε στην αρμόδια αρχή έγκρισης συνοδευόμενη
+        από τα απαραίτητα αποδεικτικά έγγραφα.</p>
 
         <ul>
             <li>Όνομα: <b><?php echo $firstname; ?></b></li>
             <li>Επίθετο: <b><?php echo $lastname; ?></b></li>
             <?php
-                if($isOffice) {
+                if($type == 'realestate') {
                     echo <<<EOT
                 <li>Επωνυμία εταιρίας: <b>{$companyName}</b></li>
 
@@ -117,8 +117,8 @@ EOT;
         <p class="justified">Υπογράφοντας την παρούσα αίτηση, επιβεβαιώνετε την
         ορθότητα των ανωτέρω αναγραφόμενων στοιχείων καθώς και την από μέρους
         σας ανάγνωση, πλήρη κατανόηση και αποδοχή των όρων χρήσης και τη 
-        δέσμευσή σας να ενεργείτε στο νομικό και ηθικό πλαίσιο το οποίο αυτοί
-        ορίζουν.</p>
+        δέσμευσή σας να ενεργείτε εντός του νομικού και ηθικού πλαισίου το οποίο
+        αυτοί ορίζουν.</p>
         <div id="undersigned">
             <div class="desc">(Ο/Η υπογράφων/ουσα)</div>
             <div class="liner"></div>

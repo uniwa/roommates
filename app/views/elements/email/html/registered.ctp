@@ -2,6 +2,7 @@
     $username = $data['User']['username'];
     $firstname = $data['RealEstate']['firstname'];
     $lastname = $data['RealEstate']['lastname'];
+    $type = $data['RealEstate']['type'];
     $companyName = $data['RealEstate']['company_name'];
     $email = $data['RealEstate']['email'];
     $phone = $data['RealEstate']['phone'];
@@ -11,20 +12,19 @@
     $address = $data['RealEstate']['address'];
     $postalCode = $data['RealEstate']['postal_code'];
     $municipalityName = '';
-
+pr( $municipality );
     if( isset($municipality['Municipality']['name']) ) {
         $municipalityName = $municipality['Municipality']['name'];
     }
 
-    $isOffice = !empty($companyName);
-    $roleClarification = $isOffice ? 'μεσιτικού γραφείου' : 'ιδιώτη';
+    $roleClarification = $type == 'owner' ? 'ιδιώτη' : 'μεσιτικού γραφείου';
 ?>
 
 <p>Υπεβλήθη αίτηση εγγραφής νέου <?php echo $roleClarification ?> στο σύστημα με τα ακόλουθα στοιχεία:</p>
 <p>Όνομα: <?php echo $firstname; ?></p>
 <p>Επίθετο: <?php echo $lastname; ?></p>
 <?php
-    if($isOffice) {
+    if($type == 'realestate') {
         echo <<<EOT
 <p>Επωνυμία εταιρίας: {$companyName}</p>
 
@@ -36,7 +36,7 @@ EOT;
 <p>Email: <?php echo $email; ?></p>
 <p>Τηλέφωνο επικοινωνίας: <?php echo $phone; ?></p>
 <p>Φαξ: <?php echo $fax; ?></p>
-<p>Δήμος: <?php echo $municipality; ?></p>
+<p>Δήμος: <?php echo $municipalityName; ?></p>
 <p>Διεύθυνση: <?php echo $address; ?></p>
 <p>Τ.Κ.: <?php echo $postalCode; ?></p>
 
