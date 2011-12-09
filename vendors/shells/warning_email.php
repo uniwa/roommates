@@ -6,9 +6,9 @@ class WarningEmailShell extends Shell{
 
     function main(){
         
-        $one_month_ago = date("Y-m-d", strtotime('-29 days')); ////because daysAsSql returns yesterday, count 29 instead of 30 days
-        $two_months_ago= date("Y-m-d", strtotime('-59 days'));
-        //pr($two_months_ago);die();
+        $one_month_ago = date("Y-m-d"/*, strtotime('-29 days')*/); ////because daysAsSql returns yesterday, count 29 instead of 30 days //-29
+        $two_months_ago= date("Y-m-d"/*, strtotime('-59 days')*/);//-59
+        //pr($one_month_ago);die();
 
         App::import('Helper', 'Time');
         $time = new TimeHelper();
