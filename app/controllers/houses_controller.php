@@ -507,6 +507,7 @@ class HousesController extends AppController {
 
             // get user preferences
             $prefs = $this->loadSavedPreferences($profile_id);
+// pr($prefs); die();
             $results = $this->simpleSearch($prefs['house_prefs'],
                                            $prefs['mates_prefs'], null, false);
 
@@ -792,7 +793,7 @@ class HousesController extends AppController {
             $defaults['accessibility'] = 1;
         }
         if ($prefs['pref_has_photo'] == 1) {
-            $house_prefs['House.image_count'] > 0 ;
+            $house_prefs['House.image_count >'] = 0 ;
             $defaults['has_photo'] = 1;
         }
         //$house_prefs['House.user_id !='] = $this->Auth->user('id');
@@ -881,7 +882,7 @@ class HousesController extends AppController {
     function getHouseConditions( $house_prefs = null ) {
 
         if( $house_prefs == null ){
-        
+
             $house_prefs = $this->params['url'];
         }
 
@@ -988,7 +989,7 @@ class HousesController extends AppController {
 
 
      function getMatesConditions( $mates_prefs = null ,$flag = true) {
-        
+
         if( empty($mates_prefs) ){
 
             $mates_prefs = $this->params['url'];
@@ -1017,12 +1018,12 @@ class HousesController extends AppController {
         if($mates_prefs['couple'] < 2 && $mates_prefs['couple'] != null) {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
-        
+
         if(empty($mates_conditions) && $flag) return null;
 
-        if( !$flag ) return array(); 
+        if( !$flag ) return array();
 
-        if( $flag ){ 
+        if( $flag ){
             // required condition for the left join
             array_push($mates_conditions, 'User.id = Profile.user_id');
         }
