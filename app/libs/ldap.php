@@ -18,12 +18,12 @@ class ldap {
         //loads ldap file from app/config/
         Configure::load( 'ldap' );
         
-        $this->ldapServer  = Configure::read('Ldap.server'); //'elke.dnna.gr';
-        $this->ldapPort = Configure::read( 'Ldap.port' ); //'389';
-        $this->suffix = Configure::read( 'Ldap.suffix' ); //'@teiath.gr';
-        $this->baseDN = Configure::read( 'Ldap.baseDN' );//'dc=teiath, dc=gr';
-        $this->ldapUser = Configure::read( 'Ldap.user'); //'cn=admin,dc=teiath,dc=gr';
-        $this->ldapPassword = Configure::read( 'Ldap.password' );//'##bp94cP58#a'; 
+        $this->ldapServer  = Configure::read('Ldap.server');
+        $this->ldapPort = Configure::read( 'Ldap.port' ); 
+        $this->suffix = Configure::read( 'Ldap.suffix' ); 
+        $this->baseDN = Configure::read( 'Ldap.baseDN' );
+        $this->ldapUser = Configure::read( 'Ldap.user'); 
+        $this->ldapPassword = Configure::read( 'Ldap.password' );
 
         /*Connect to LDAP*/
         $this->ldap =  ldap_connect( $this->ldapServer, $this->ldapPort );
