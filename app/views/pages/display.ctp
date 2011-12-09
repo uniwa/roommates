@@ -18,6 +18,43 @@
         height: 100px;
     }
 */
+    .role{
+        position: relative;
+        top: -2px;
+        left: 500px;
+        margin: -2px 0px 0px 0px;
+        width: 78px;
+        height: 14px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: #333 1px 1px 1px;
+    }
+
+    .student{
+        background-color: #f96213;
+    }
+
+    .realestate{
+        background-color: #d02552/*6212F9*/;
+    }
+
+    .owner{
+        background-color: #50d07d/*12F962*/;
+    }
+
+    .resultRE{
+        border-color: #d02552/*6212F9*/;
+    }
+
+    .resultOwner{
+        border-color: #50d07d/*12F962*/;
+    }
+
+    .resultStudent{
+        border-color: #f96213;
+    }
 </style>
 
 <div id='main-inner'>
@@ -30,10 +67,29 @@
     </div>
     <ul id='lastPreferred'>
         <?php
-                foreach($housesPreferred as $house){
+            foreach($housesPreferred as $house){
+                $role = $house['User']['role'];
+                $resultClass = 'result-cont';
+                if($role == 'realestate'){
+                    if(isset($house['User']['RealEstate']['type']) && ($house['User']['RealEstate']['type'] == 'owner')){
+                        $role = 'owner';
+                        $resultClass .= ' resultOwner';
+                        $roleClass = 'owner';
+                        $roleTitle = 'ιδιώτης';
+                    }else{
+                        $resultClass .= ' resultRE';
+                        $roleClass = 'realestate';
+                        $roleTitle = 'μεσιτικό';
+                    }
+                }else{
+                    $resultClass .= ' resultStudent';
+                    $roleClass = 'student';
+                    $roleTitle = 'φοιτητής';
+                }
+                echo "<li class='{$resultClass}'>";
+                echo "<div class='result'>";
+                echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
         ?>
-                <li class='result-cont'>
-                    <div class='result'>
                         <div class='result-photo'>
                         <div class='result-photo-wrap'>
                         <div class='result-photo-cont'>
@@ -85,10 +141,7 @@
                                             $house['House']['free_places'].'<br />';
                                     }
                                 ?>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                                 </li>
         <?php
                 } // foreach $housesPrefs
         ?>
@@ -104,9 +157,28 @@
     <ul id='lastModified'>
         <?php
             foreach($housesModified as $house){
+                $role = $house['User']['role'];
+                $resultClass = 'result-cont';
+                if($role == 'realestate'){
+                    if(isset($house['User']['RealEstate']['type']) && ($house['User']['RealEstate']['type'] == 'owner')){
+                        $role = 'owner';
+                        $resultClass .= ' resultOwner';
+                        $roleClass = 'owner';
+                        $roleTitle = 'ιδιώτης';
+                    }else{
+                        $resultClass .= ' resultRE';
+                        $roleClass = 'realestate';
+                        $roleTitle = 'μεσιτικό';
+                    }
+                }else{
+                    $resultClass .= ' resultStudent';
+                    $roleClass = 'student';
+                    $roleTitle = 'φοιτητής';
+                }
+                echo "<li class='{$resultClass}'>";
+                echo "<div class='result'>";
+                echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
         ?>
-                <li class='result-cont result-dense'>
-                    <div class='result'>
                         <div class='result-photo'>
                         <div class='result-photo-wrap'>
                         <div class='result-photo-cont'>
@@ -163,8 +235,8 @@
                                 ?>
                             </div>
                         </div>
-                    </div>
-                </li>
+                </div>
+            </li>
         <?php
             } // foreach $housesModified
         ?>
