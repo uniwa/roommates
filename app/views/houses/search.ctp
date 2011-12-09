@@ -689,7 +689,6 @@
                 foreach($results as $house){
                     $role = $house['User']['role'];
                     $resultClass = 'result-cont';
-                    // TODO: switch for realestate, student, owner
                     if($role == 'realestate'){
                         if($house['RealEstate']['type'] == 'owner'){
                             $role = 'owner';
