@@ -18,12 +18,13 @@
     .form-title{
         clear: both;
         margin: 20px 0px 12px 8px;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .left-form ul{
-        margin: 0px 0px 20px 0px;
+        margin: 0px 0px 20px 8px;
     }
 
     #leftbar{
@@ -83,8 +84,9 @@
 /*        margin: 12px 0px 8px 48px;*/
         margin: 12px auto 0px auto;
         text-align: center;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .search-subtitle{
@@ -129,44 +131,6 @@
     .facebook-post{
         float: right;
         margin: 8px 12px 0px 0px;
-    }
-
-    .role{
-        position: relative;
-        top: -2px;
-        left: 500px;
-        margin: -2px 0px 0px 0px;
-        width: 78px;
-        height: 14px;
-        color: #fff;
-        font-size: 10px;
-        font-weight: bold;
-        text-align: center;
-        text-shadow: #333 1px 1px 1px;
-    }
-
-    .student{
-        background-color: #f96213;
-    }
-
-    .realestate{
-        background-color: #d02552/*6212F9*/;
-    }
-
-    .owner{
-        background-color: #50d07d/*12F962*/;
-    }
-
-    .resultRE{
-        border-color: #d02552/*6212F9*/;
-    }
-
-    .resultOwner{
-        border-color: #50d07d/*12F962*/;
-    }
-
-    .resultStudent{
-        border-color: #f96213;
     }
 </style>
 
@@ -418,7 +382,8 @@
 
             </ul>
 
-            <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+            <?php $logged_role = $this->Session->read('Auth.User.role');
+                  if ($logged_role != 'realestate' && $logged_role != 'admin') {?>
 
             <div class='form-title'>
                 <h2>Οι προτιμήσεις μου</h2>
@@ -438,7 +403,7 @@
                 </li>
             </ul>
 
-            <?php } // role != realestate ?>
+            <?php } // role != realestate && admin?>
 
             <div class='form-title form-collapse expand'>
                 <h2>Πρόσθετα χαρακτηριστικά σπιτιών</h2>
