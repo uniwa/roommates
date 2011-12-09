@@ -377,6 +377,10 @@ textarea{
     height: 100px;
 }
 
+.result-myself{
+    background-image: url('../img/canvas.png');
+}
+
 .desc-title{
     margin: 12px 0px 0px 24px;
     font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;

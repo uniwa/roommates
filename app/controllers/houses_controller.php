@@ -507,6 +507,7 @@ class HousesController extends AppController {
 
             // get user preferences
             $prefs = $this->loadSavedPreferences($profile_id);
+// pr($prefs); die();
             $results = $this->simpleSearch($prefs['house_prefs'],
                                            $prefs['mates_prefs'], null, false);
 
@@ -792,7 +793,7 @@ class HousesController extends AppController {
             $defaults['accessibility'] = 1;
         }
         if ($prefs['pref_has_photo'] == 1) {
-            $house_prefs['House.image_count'] > 0 ;
+            $house_prefs['House.image_count >'] = 0 ;
             $defaults['has_photo'] = 1;
         }
         //$house_prefs['House.user_id !='] = $this->Auth->user('id');
@@ -878,9 +879,13 @@ class HousesController extends AppController {
     }
 
 
-    private function getHouseConditions() {
+    function getHouseConditions( $house_prefs = null ) {
 
-        $house_prefs = $this->params['url'];
+        if( $house_prefs == null ){
+
+            $house_prefs = $this->params['url'];
+        }
+
         $house_conditions = array();
 
         // primary conditions
@@ -963,9 +968,19 @@ class HousesController extends AppController {
             $house_conditions['House.availability_date <='] =
                                             $year . '-' . $month . '-' . $day;
         }
+        //Thanos mod
+        if(!empty($house_prefs['availability_date_min'])){
+            $year  = $house_prefs['availability_date_min']['year'];
+            $month = $house_prefs['availability_date_min']['month'];
+            $day   = $house_prefs['availability_date_min']['day'];
 
-        if($this->Auth->User('role') != 'admin')
+            $house_conditions['House.availability_date >='] =
+                                            $year . '-' . $month . '-' . $day;
+        }
+
+        if(isset($this->Auth->User) && $this->Auth->User('role') != 'admin'){
             $house_conditions['House.visible'] = 1;
+        }
 
         $house_conditions['User.banned !='] = 1;
 
@@ -973,8 +988,12 @@ class HousesController extends AppController {
     }
 
 
-    private function getMatesConditions() {
-        $mates_prefs = $this->params['url'];
+     function getMatesConditions( $mates_prefs = null ,$flag = true) {
+
+        if( empty($mates_prefs) ){
+
+            $mates_prefs = $this->params['url'];
+        }
 
         $mates_conditions = array();
 
@@ -1000,10 +1019,14 @@ class HousesController extends AppController {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
 
-        if (empty($mates_conditions)) return null;
+        if(empty($mates_conditions) && $flag) return null;
 
-        // required condition for the left join
-        array_push($mates_conditions, 'User.id = Profile.user_id');
+        if( !$flag ) return array();
+
+        if( $flag ){
+            // required condition for the left join
+            array_push($mates_conditions, 'User.id = Profile.user_id');
+        }
 
         return $mates_conditions;
     }
@@ -1351,7 +1374,6 @@ class HousesController extends AppController {
 
     function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
-            //$id = $this->authenticate();
             $this->handleGetRequest($id);
         } else if ($this->RequestHandler->isPost()) {
             $this->handlePostRequest();
