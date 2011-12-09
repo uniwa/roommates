@@ -5,11 +5,11 @@
         font-size: 1.2em;
         font-weight: bold;
     }
-    
+
     .left-form ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
@@ -30,12 +30,12 @@
     .left-form ul{
         margin: 0px 0px 20px 0px;
     }
-    
+
     .form-buttons{
         margin: 10px auto;
         width: 220px;
     }
-    
+
     .form-elem{
         margin: 0px 8px 12px 0px;
         font-size: 1.2em;
@@ -45,13 +45,13 @@
         float: left;
         width: 80px;
     }
-    
+
     .form-input{
         float: left;
         width: 140px;
         overflow: no-scroll;
     }
-    
+
     .form-checkbox{
         width: 220px;
     }
@@ -66,7 +66,7 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
     .search-title{
         margin: 12px auto 0px auto;
         text-align: center;
@@ -81,12 +81,12 @@
         font-size: 1.2em;
         font-style: italic;
     }
-    
+
     .pagination{
         margin: 0px auto 12px auto;
         text-align: center;
     }
-    
+
     .pagination ul li{
         display: inline;
     }
@@ -96,11 +96,11 @@
         padding: 0px 2px 0px 2px;
         font-weight: bold;
     }
-    
+
     .pagination ul li.disabled{
         color: #aaa;
     }
-    
+
     .thumbImage{
     }
 </style>
@@ -312,10 +312,17 @@
         </div>
         <ul>
             <?php
+                $result_class = 'result-cont';
                 foreach ($profiles as $profile){
                     $gender = ($profile['Profile']['gender']) ? 'fe' : '';
+
+                    if ($this->Session->read('Auth.User.id') == $profile['Profile']['user_id']) {
+                        $result_class .= ' result-myself';
+                    }
+
+                    echo "<li class='{$result_class}'>";
             ?>
-            <li class='result-cont'>
+            <!-- li class='result-cont' -->
                 <div class='result'>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>
