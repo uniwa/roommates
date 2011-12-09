@@ -232,7 +232,7 @@ class ProfilesController extends AppController {
                     $this->data['Profile']['avatar'] = null;
             }
 
-            if ($this->Profile->saveAll($this->data['Profile'], array('validate'=>'first'))){
+            if ($this->Profile->saveAll($this->data)){
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
                     array('class' => 'flashBlue'));
                 $this->redirect(array('action'=> "view", $id));
