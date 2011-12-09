@@ -528,7 +528,7 @@ class ProfilesController extends AppController {
 
         $this->User->begin();
         $this->User->id = $profile["Profile"]["user_id"];
-        if ($this->User->save($user, array('validate'=>'false'))) {
+        if ($this->User->save($user, array('validate'=>false))) {
             $this->User->commit();
             return True;
         } else {
