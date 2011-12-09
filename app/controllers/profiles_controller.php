@@ -449,9 +449,10 @@ class ProfilesController extends AppController {
         $profile = $this->Profile->find('first', array('conditions' => array(
                                                        'Profile.user_id' => $this->Auth->user('id'))));
         $prefs = $profile['Preference'];
-		unset($this->params['named']);
-		$this->params['named'] = $prefs;
-		$this->simpleSearch();
+        unset($this->params['named']);
+        $this->params['named'] = $prefs;
+        $this->params['named']['searchtype'] = 'byprefs';
+        $this->simpleSearch();
     }
 
     //check user's access
