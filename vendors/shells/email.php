@@ -220,23 +220,26 @@ class EmailShell extends Shell{
 
             //array with addresses and house profile ids
             if( !empty($email_all['email_houses']) ){
-             
+                var_dump("House");
                 $this->send_mail_to($email_all['email_houses'], 'houses', 
                     $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών', 'cron_house_match' );
             }
 
             if( !empty($email_all['email_profiles'])){
-                
+                var_dump("profiles");
                 $this->send_mail_to($email_all['email_profiles'], 'profiles', 
                     $controller, $email, 'Τελευταίες καταχωρίσεις προφίλ', 'cron_profile_match' );
             }
 
 
             if( !empty($email_all['email_both']) ){
-
+                var_dump("both");
+                var_dump($email_all['email_both']);
                 $this->send_mail_to($email_all['email_both'], 'both', 
                     $controller, $email, 'Τελευταίες καταχωρίσεις σπιτιών και προφίλ', 'cron_both_match' );
             }
+
+            die();
             
         }
 
@@ -273,16 +276,19 @@ class EmailShell extends Shell{
                             $link = "http://roommates.edu.teiath.gr/houses/view/{$house_ids[$j]}";
                             $house_links .= "<a href=\"{$link}\">{$link}</a><br />";
                         }
+
+                        var_dump($house_links);
                         $profile_links = "";
                         for($j=0; $j<count($profile_ids); $j++){
                             $link = "http://roommates.edu.teiath.gr/profiles/view/{$profile_ids[$j]}";
                             $profile_links .= "<a href=\"{$link}\">{$link}</a><br />";
                         }
-
+                
+                        var_dump($profile_links);
                         $email->to = $email_addr[$i];
                         $controller->set('house_links', $house_links);
                         $controller->set('profile_links', $profile_links);
-                        $email->send();
+                        //$email->send();
 
                     } else {
 
@@ -295,9 +301,10 @@ class EmailShell extends Shell{
                             $link = "http://roommates.edu.teiath.gr/".$type."/view/{$ids[$j]}";
                             $links .= "<a href=\"{$link}\">{$link}</a><br />";
                         }
+                        var_dump($links);
                         $email->to = $email_addr[$i];
                         $controller->set('links', $links);
-                        $email->send();
+                        //$email->send();
                     }
             } 
         }
