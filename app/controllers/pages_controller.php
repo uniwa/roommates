@@ -10,6 +10,10 @@ class PagesController extends AppController{
 //    var $paginate = array('limit' => 15);
     var $uses = array('House', 'HouseType', 'Municipality');
 
+    function beforeFilter() {
+        $this->Auth->allow('display');
+    }
+
     function display(){
         // this variable is used to display properly
         // the selected element on header

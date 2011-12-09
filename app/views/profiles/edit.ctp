@@ -5,39 +5,39 @@
         padding: 32px;
         width: 150px;
     }
-    
+
     #main-inner{
         float: left;
         border-left: 1px solid #ddd;
         margin: 10px 0px 20px 0px;
         padding: 24px 24px 24px 64px;
     }
-    
+
     #profilePic{
         margin: 0px auto;
         padding: 2px;
         width: 100px;
         height: 100px;
     }
-    
+
     #profileName{
         margin: 16px 0px 0px 0px;
         text-align: center;
         font-size: 1.2em;
         font-weight: bold;
     }
-    
+
     #profileEmail{
         margin: 8px 0px 0px 0px;
         text-align: center;
         font-size: 1.2em;
     }
-    
+
     .profileFrame{
         clear: both;
         padding: 0px 0px 24px 0px;
     }
-    
+
     .editTitle{
         margin: 0px 0px 24px 16px;
         font-size: 1.2em;
@@ -53,7 +53,7 @@
     .avatarLabel{
         margin: 0px 0px 8px 32px;
     }
-    
+
     #avatarField{
         margin: 0px 0px 16px 32px;
     }
@@ -85,11 +85,11 @@
         clear: both;
         padding: 3px 0;
     }
-    
+
     .radio,.checkbox{
         margin: 12px 0px 16px 64px;
     }
-    
+
     .input label{
         float: left;
         margin: 8px 12px 0px 0px;
@@ -107,20 +107,20 @@
         margin: 8px 0px 0px 8px;
         width: auto;
     }
-    
+
     .input input[type=text]{
         border: 1px solid #ddd;
         padding: 4px;
     }
-    
+
     .longBox{
         width: 100px;
     }
-    
+
     .shortBox{
         width: 30px;
     }
-    
+
     .button{
         border: 0px;
         margin: 16px 0px 16px 24px;
@@ -128,7 +128,7 @@
         height: 24px;
         cursor: pointer;
     }
-    
+
     .required{
         background-position: 160px 4px;
     }

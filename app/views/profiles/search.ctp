@@ -1,13 +1,10 @@
 <style>
     .form-title{
         clear: both;
-        margin: 16px 0px 12px 8px;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    .left-form ul{
-        margin: 0px 0px 20px 0px;
+        margin: 16px 0px 12px 0px;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     #leftbar{
@@ -28,7 +25,7 @@
     }
 
     .left-form ul{
-        margin: 0px 0px 20px 0px;
+        margin: 0px 0px 20px 8px;
     }
 
     .form-buttons{
@@ -70,8 +67,9 @@
     .search-title{
         margin: 12px auto 0px auto;
         text-align: center;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .search-subtitle{
@@ -249,6 +247,9 @@
                     </div>
                 </li>
             </ul>
+
+            <?php if ($this->Session->read('Auth.User.role') != 'admin') { ?>
+
             <div class='form-title'>
                 <h2>Οι προτιμήσεις μου</h2>
             </div>
@@ -266,6 +267,9 @@
                     </div>
                 </li>
             </ul>
+
+            <?php } // User.role != 'admin' ?>
+
         </div>
     </div>
 </div>
@@ -312,8 +316,8 @@
         </div>
         <ul>
             <?php
-                $result_class = 'result-cont';
                 foreach ($profiles as $profile){
+                    $result_class = 'result-cont';
                     $gender = ($profile['Profile']['gender']) ? 'fe' : '';
 
                     if ($this->Session->read('Auth.User.id') == $profile['Profile']['user_id']) {
@@ -335,8 +339,8 @@
                             } else {
                                 $imageLocation = 'uploads/profiles/'.$profile_id.'/'.$profile['Profile']['avatar'];
                             }
-                            $altText = "εικόνα {$profile['Profile']['firstname']}
-                                 {$profile['Profile']['lastname']}";
+                            $altText = "εικόνα {$profile['Profile']['firstname']} ";
+                            $altText .= $profile['Profile']['lastname'];
 							$profileImage = $this->Html->image($imageLocation,
 							    array('alt' => $altText, 'class' => 'thumbImage'));
 							echo $this->Html->link($profileImage, array(
