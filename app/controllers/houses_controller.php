@@ -978,7 +978,7 @@ class HousesController extends AppController {
                                             $year . '-' . $month . '-' . $day;
         }
 
-        if(isset($this->Auth->User) && $this->Auth->User('role') != 'admin'){
+        if(!isset($this->Auth) || $this->Auth->User('role') != 'admin'){
             $house_conditions['House.visible'] = 1;
         }
 

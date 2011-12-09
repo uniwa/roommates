@@ -312,8 +312,8 @@
         </div>
         <ul>
             <?php
-                $result_class = 'result-cont';
                 foreach ($profiles as $profile){
+                    $result_class = 'result-cont';
                     $gender = ($profile['Profile']['gender']) ? 'fe' : '';
 
                     if ($this->Session->read('Auth.User.id') == $profile['Profile']['user_id']) {
@@ -335,8 +335,8 @@
                             } else {
                                 $imageLocation = 'uploads/profiles/'.$profile_id.'/'.$profile['Profile']['avatar'];
                             }
-                            $altText = "εικόνα {$profile['Profile']['firstname']}
-                                 {$profile['Profile']['lastname']}";
+                            $altText = "εικόνα {$profile['Profile']['firstname']} ";
+                            $altText .= $profile['Profile']['lastname'];
 							$profileImage = $this->Html->image($imageLocation,
 							    array('alt' => $altText, 'class' => 'thumbImage'));
 							echo $this->Html->link($profileImage, array(
