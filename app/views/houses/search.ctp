@@ -418,7 +418,8 @@
 
             </ul>
 
-            <?php if ($this->Session->read('Auth.User.role') != 'realestate') {?>
+            <?php $logged_role = $this->Session->read('Auth.User.role');
+                  if ($logged_role != 'realestate' && $logged_role != 'admin') {?>
 
             <div class='form-title'>
                 <h2>Οι προτιμήσεις μου</h2>
@@ -438,7 +439,7 @@
                 </li>
             </ul>
 
-            <?php } // role != realestate ?>
+            <?php } // role != realestate && admin?>
 
             <div class='form-title form-collapse expand'>
                 <h2>Πρόσθετα χαρακτηριστικά σπιτιών</h2>

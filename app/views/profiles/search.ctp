@@ -249,6 +249,9 @@
                     </div>
                 </li>
             </ul>
+
+            <?php if ($this->Session->read('Auth.User.role') != 'admin') { ?>
+
             <div class='form-title'>
                 <h2>Οι προτιμήσεις μου</h2>
             </div>
@@ -266,6 +269,9 @@
                     </div>
                 </li>
             </ul>
+
+            <?php } // User.role != 'admin' ?>
+
         </div>
     </div>
 </div>
