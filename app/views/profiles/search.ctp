@@ -1,13 +1,10 @@
 <style>
     .form-title{
         clear: both;
-        margin: 16px 0px 12px 8px;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    .left-form ul{
-        margin: 0px 0px 20px 0px;
+        margin: 16px 0px 12px 0px;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     #leftbar{
@@ -28,7 +25,7 @@
     }
 
     .left-form ul{
-        margin: 0px 0px 20px 0px;
+        margin: 0px 0px 20px 8px;
     }
 
     .form-buttons{
@@ -70,8 +67,9 @@
     .search-title{
         margin: 12px auto 0px auto;
         text-align: center;
-        font-size: 1.2em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        color: #333;
     }
 
     .search-subtitle{
