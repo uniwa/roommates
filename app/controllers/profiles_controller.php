@@ -324,7 +324,7 @@ class ProfilesController extends AppController {
 			switch($searchType){
 				case 'resetvalues':
 					unset($this->params['named']);
-					$this->simpleSearch();
+//					$this->simpleSearch();
 					break;
 				case 'simple':
 					$this->simpleSearch();
@@ -337,49 +337,54 @@ class ProfilesController extends AppController {
 					$this->simpleSearch();
 					break;
 			}
+		}else{
+		    $this->simpleSearch();
 		}
     }
 
     private function simpleSearch(){
-		$searchArgs = $this->params['named'];
-
         // set the conditions
         $searchconditions = array('Profile.visible' => 1, 'User.banned' => 0);
 
-		if(isset($searchArgs['has_house'])){
-			$ownerId = $this->Profile->User->House->find('all', array(
-			    'fields' => 'DISTINCT user_id',
-			    'conditions' => array('House.visible' => 1)));
-			$ownerId = Set::extract($ownerId, '/House/user_id');
-			$searchconditions['Profile.user_id'] = $ownerId;
-		};
+        if(isset($this->params['named']) && !empty($this->params['named'])){
+    		$searchArgs = $this->params['named'];
+    		$this->set('searchargs', $searchArgs);
 
-        if(isset($searchArgs['age_min'])) {
-            $searchconditions['Profile.dob <='] = $this->age_to_year($searchArgs['age_min']);
-        }
+		    if(isset($searchArgs['has_house'])){
+			    $ownerId = $this->Profile->User->House->find('all', array(
+			        'fields' => 'DISTINCT user_id',
+			        'conditions' => array('House.visible' => 1)));
+			    $ownerId = Set::extract($ownerId, '/House/user_id');
+			    $searchconditions['Profile.user_id'] = $ownerId;
+		    };
 
-        if(isset($searchArgs['age_max'])) {
-            $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['age_max']);
-        }
+            if(isset($searchArgs['age_min'])) {
+                $searchconditions['Profile.dob <='] = $this->age_to_year($searchArgs['age_min']);
+            }
 
-        if(($searchArgs['pref_gender'] != '') && ($searchArgs['pref_gender'] < 2)) {
-            $searchconditions['Profile.gender'] = $searchArgs['pref_gender'];
-        }
+            if(isset($searchArgs['age_max'])) {
+                $searchconditions['Profile.dob >='] = $this->age_to_year($searchArgs['age_max']);
+            }
 
-        if(($searchArgs['pref_smoker'] != '') && ($searchArgs['pref_smoker'] < 2)) {
-            $searchconditions['Profile.smoker'] = $searchArgs['pref_smoker'];
-        }
+            if(($searchArgs['pref_gender'] != '') && ($searchArgs['pref_gender'] < 2)) {
+                $searchconditions['Profile.gender'] = $searchArgs['pref_gender'];
+            }
 
-        if(($searchArgs['pref_pet'] != '') && ($searchArgs['pref_pet'] < 2)) {
-            $searchconditions['Profile.pet'] = $searchArgs['pref_pet'];
-        }
+            if(($searchArgs['pref_smoker'] != '') && ($searchArgs['pref_smoker'] < 2)) {
+                $searchconditions['Profile.smoker'] = $searchArgs['pref_smoker'];
+            }
 
-        if(($searchArgs['pref_child'] != '') && ($searchArgs['pref_child'] < 2)) {
-            $searchconditions['Profile.child'] = $searchArgs['pref_child'];
-        }
+            if(($searchArgs['pref_pet'] != '') && ($searchArgs['pref_pet'] < 2)) {
+                $searchconditions['Profile.pet'] = $searchArgs['pref_pet'];
+            }
 
-        if(($searchArgs['pref_couple'] != '') && ($searchArgs['pref_couple'] < 2)) {
-            $searchconditions['Profile.couple'] = $searchArgs['pref_couple'];
+            if(($searchArgs['pref_child'] != '') && ($searchArgs['pref_child'] < 2)) {
+                $searchconditions['Profile.child'] = $searchArgs['pref_child'];
+            }
+
+            if(($searchArgs['pref_couple'] != '') && ($searchArgs['pref_couple'] < 2)) {
+                $searchconditions['Profile.couple'] = $searchArgs['pref_couple'];
+            }
         }
         // exclude logged user's profile
         //$searchconditions['Profile.user_id !='] = $this->Auth->user('id');
@@ -399,7 +404,6 @@ class ProfilesController extends AppController {
 			);
 
         $profiles = $this->paginate('Profile');
-		$this->set('searchargs', $searchArgs);
         $this->set('profiles', $profiles);
         $this->set('pagination_limit', $this->paginate['limit']);
 /*        $this->set('defaults', array(   'age_min' => $searchArgs['age_min'],
