@@ -2,58 +2,15 @@
     .sectionTitle{
         clear: both;
         padding: 24px 0px 8px 8px;
-        font-size: 1.3em;
-        font-weight: bold;
+        font-size: 1.4em;
+        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
         text-align: center;
-        color: #000;
+        color: #333;
     }
 
     #lastPreferred,#lastModified{
         margin: 8px auto 16px auto;        
         width: 620px;
-    }
-/*
-    .result-cont{
-        margin: 2px auto;
-        height: 100px;
-    }
-*/
-    .role{
-        position: relative;
-        top: -2px;
-        left: 500px;
-        margin: -2px 0px 0px 0px;
-        width: 78px;
-        height: 14px;
-        color: #fff;
-        font-size: 10px;
-        font-weight: bold;
-        text-align: center;
-        text-shadow: #333 1px 1px 1px;
-    }
-
-    .student{
-        background-color: #f96213;
-    }
-
-    .realestate{
-        background-color: #d02552/*6212F9*/;
-    }
-
-    .owner{
-        background-color: #50d07d/*12F962*/;
-    }
-
-    .resultRE{
-        border-color: #d02552/*6212F9*/;
-    }
-
-    .resultOwner{
-        border-color: #50d07d/*12F962*/;
-    }
-
-    .resultStudent{
-        border-color: #f96213;
     }
 </style>
 
