@@ -1,17 +1,23 @@
 <style>
     .sectionTitle{
         clear: both;
-        padding: 24px 0px 0px 8px;
+        padding: 24px 0px 8px 8px;
         font-size: 1.3em;
         font-weight: bold;
         text-align: center;
         color: #000;
     }
 
+    #lastPreferred,#lastModified{
+        margin: 8px auto 16px auto;        
+        width: 620px;
+    }
+/*
     .result-cont{
         margin: 2px auto;
         height: 100px;
     }
+*/
 </style>
 
 <div id='main-inner'>

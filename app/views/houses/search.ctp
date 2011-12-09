@@ -150,19 +150,19 @@
     }
 
     .realestate{
-        background-color: #6212F9;
+        background-color: #d02552/*6212F9*/;
     }
 
     .owner{
-        background-color: #12F962;
+        background-color: #50d07d/*12F962*/;
     }
 
     .resultRE{
-        border-color: #6212F9;
+        border-color: #d02552/*6212F9*/;
     }
 
     .resultOwner{
-        border-color: #12F962;
+        border-color: #50d07d/*12F962*/;
     }
 
     .resultStudent{
