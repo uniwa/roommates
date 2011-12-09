@@ -25,7 +25,7 @@ class WarningEmailShell extends Shell{
         for ($i=0; $i<count($inactivate_users); $i++){
             array_push($inactivate_users_emails, $inactivate_users[$i]['Profile']['email']);
         }
-        //$this->email($inactivate_users_emails, 'warn');
+        $this->email($inactivate_users_emails, 'warn');
         
         //get soon-to-be deactivated users emails, deactivate them and send relevant info email
         $deactivated_users_emails = array();
@@ -33,8 +33,8 @@ class WarningEmailShell extends Shell{
             array_push($deactivated_users_emails, $deactivated_users[$i]['Profile']['email']);
         }
         $this->deactivate($deactivated_users);
-        pr('end');die();
-        //$this->email($deactivated_users_emails, 'deactivate');
+        //pr('end');die();
+        $this->email($deactivated_users_emails, 'deactivate');
                 
     }
 
