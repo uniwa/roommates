@@ -1,16 +1,59 @@
 <style>
     .sectionTitle{
         clear: both;
-        padding: 24px 0px 0px 8px;
+        padding: 24px 0px 8px 8px;
         font-size: 1.3em;
         font-weight: bold;
         text-align: center;
         color: #000;
     }
 
+    #lastPreferred,#lastModified{
+        margin: 8px auto 16px auto;        
+        width: 620px;
+    }
+/*
     .result-cont{
         margin: 2px auto;
         height: 100px;
+    }
+*/
+    .role{
+        position: relative;
+        top: -2px;
+        left: 500px;
+        margin: -2px 0px 0px 0px;
+        width: 78px;
+        height: 14px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: #333 1px 1px 1px;
+    }
+
+    .student{
+        background-color: #f96213;
+    }
+
+    .realestate{
+        background-color: #d02552/*6212F9*/;
+    }
+
+    .owner{
+        background-color: #50d07d/*12F962*/;
+    }
+
+    .resultRE{
+        border-color: #d02552/*6212F9*/;
+    }
+
+    .resultOwner{
+        border-color: #50d07d/*12F962*/;
+    }
+
+    .resultStudent{
+        border-color: #f96213;
     }
 </style>
 
@@ -24,10 +67,29 @@
     </div>
     <ul id='lastPreferred'>
         <?php
-                foreach($housesPreferred as $house){
+            foreach($housesPreferred as $house){
+                $role = $house['User']['role'];
+                $resultClass = 'result-cont';
+                if($role == 'realestate'){
+                    if(isset($house['User']['RealEstate']['type']) && ($house['User']['RealEstate']['type'] == 'owner')){
+                        $role = 'owner';
+                        $resultClass .= ' resultOwner';
+                        $roleClass = 'owner';
+                        $roleTitle = 'ιδιώτης';
+                    }else{
+                        $resultClass .= ' resultRE';
+                        $roleClass = 'realestate';
+                        $roleTitle = 'μεσιτικό';
+                    }
+                }else{
+                    $resultClass .= ' resultStudent';
+                    $roleClass = 'student';
+                    $roleTitle = 'φοιτητής';
+                }
+                echo "<li class='{$resultClass}'>";
+                echo "<div class='result'>";
+                echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
         ?>
-                <li class='result-cont'>
-                    <div class='result'>
                         <div class='result-photo'>
                         <div class='result-photo-wrap'>
                         <div class='result-photo-cont'>
@@ -35,7 +97,7 @@
                             <?php
 							    // thumbnail icon if found
 							    $house_id = $house['House']['id'];
-							    $house_image = 'house.gif';
+							    $house_image = 'home.png';
                                 if(!empty($house['Image'][0]['location'])) {
                                     $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image'][0]['location'];
                                 }
@@ -79,10 +141,7 @@
                                             $house['House']['free_places'].'<br />';
                                     }
                                 ?>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+                                 </li>
         <?php
                 } // foreach $housesPrefs
         ?>
@@ -98,9 +157,28 @@
     <ul id='lastModified'>
         <?php
             foreach($housesModified as $house){
+                $role = $house['User']['role'];
+                $resultClass = 'result-cont';
+                if($role == 'realestate'){
+                    if(isset($house['User']['RealEstate']['type']) && ($house['User']['RealEstate']['type'] == 'owner')){
+                        $role = 'owner';
+                        $resultClass .= ' resultOwner';
+                        $roleClass = 'owner';
+                        $roleTitle = 'ιδιώτης';
+                    }else{
+                        $resultClass .= ' resultRE';
+                        $roleClass = 'realestate';
+                        $roleTitle = 'μεσιτικό';
+                    }
+                }else{
+                    $resultClass .= ' resultStudent';
+                    $roleClass = 'student';
+                    $roleTitle = 'φοιτητής';
+                }
+                echo "<li class='{$resultClass}'>";
+                echo "<div class='result'>";
+                echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
         ?>
-                <li class='result-cont result-dense'>
-                    <div class='result'>
                         <div class='result-photo'>
                         <div class='result-photo-wrap'>
                         <div class='result-photo-cont'>
@@ -108,7 +186,7 @@
                             <?php
 							    // thumbnail icon if found
 							    $house_id = $house['House']['id'];
-							    $house_image = 'house.gif';
+							    $house_image = 'home.png';
                                 foreach ($house['Image'] as $image) {
                                     if ($image['is_default'] == 1) {
                                         $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$image['location'];
@@ -157,8 +235,8 @@
                                 ?>
                             </div>
                         </div>
-                    </div>
-                </li>
+                </div>
+            </li>
         <?php
             } // foreach $housesModified
         ?>

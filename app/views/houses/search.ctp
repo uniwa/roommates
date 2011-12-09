@@ -96,7 +96,7 @@
     }
 
     .pagination{
-        margin: 0px auto 12px auto;
+        margin: 12px auto 12px auto;
         text-align: center;
     }
 
@@ -150,19 +150,19 @@
     }
 
     .realestate{
-        background-color: #6212F9;
+        background-color: #d02552/*6212F9*/;
     }
 
     .owner{
-        background-color: #12F962;
+        background-color: #50d07d/*12F962*/;
     }
 
     .resultRE{
-        border-color: #6212F9;
+        border-color: #d02552/*6212F9*/;
     }
 
     .resultOwner{
-        border-color: #12F962;
+        border-color: #50d07d/*12F962*/;
     }
 
     .resultStudent{
@@ -689,7 +689,6 @@
                 foreach($results as $house){
                     $role = $house['User']['role'];
                     $resultClass = 'result-cont';
-                    // TODO: switch for realestate, student, owner
                     if($role == 'realestate'){
                         if($house['RealEstate']['type'] == 'owner'){
                             $role = 'owner';
