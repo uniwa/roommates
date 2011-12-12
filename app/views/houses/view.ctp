@@ -368,7 +368,7 @@
     if($role == 'user'){
         $occupation_availability = ', Διαθέσιμες θέσεις ';
         $occupation_availability .= Sanitize::html($house['House']['free_places']);
-        $rentPeriod = 'Περίοδος συγκατοίκησης';
+        $rentPeriodLabel = 'Περίοδος συγκατοίκησης';
 
         // allow posts to Facebook only by a 'user' (as in role)
         // create the link to post on Facebook
@@ -399,7 +399,7 @@
         $fbPost = "<div class='houseOptions'>{$fbLink}</div>";
     }else{
         $occupation_availability = '';
-        $rentPeriod = 'Περίοδος ενοικίασης';
+        $rentPeriodLabel = 'Περίοδος ενοικίασης';
     }
 
     // House properties
@@ -421,7 +421,7 @@
     $houseProperties['price']['label'] = 'Ενοίκιο';
     $houseProperties['price']['suffix'] = '€';
     $houseProperties['available']['label'] = 'Διαθέσιμο από';
-    $houseProperties['rent_period']['label'] = $rentPeriod;
+    $houseProperties['rent_period']['label'] = $rentPeriodLabel;
     $houseProperties['rent_period']['suffix'] = 'μήνες';
     // if the house belongs to real estate, don't display availability info
     if($ownerRole != 'realestate'){
