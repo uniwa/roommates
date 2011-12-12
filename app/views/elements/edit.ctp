@@ -106,7 +106,7 @@
         clear: both;
         border: 1px solid #eee;
         background-color: #f9f9f9;
-        margin: 16px 0px 16px 24px;
+        margin: 16px 24px 16px 24px;
         padding: 8px;
     }
 
@@ -118,7 +118,6 @@
     .map{
         padding: 0px 0px 0px 10px;
         margin: 7px 0 0 0;
-        width: 450px;
         height: 250px;
     }
 </style>
