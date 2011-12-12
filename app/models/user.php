@@ -21,6 +21,11 @@ class User extends AppModel{
                 'rule' => 'isUnique',
                 'message' => 'Αυτό το όνομα χρήστη χρησιμοποιείται ήδη',
                 'allowEmpty' => true
+            ),
+            'ldapUnique' => array(
+                'rule' => 'isLdapUnique',
+                'message' => 'Αυτό το όνομα χρήστη χρησιμοποιείται ήδη',
+                'allowEmpty' => true
             )
         ),
 
@@ -76,6 +81,19 @@ class User extends AppModel{
 
         // hashed passwords did NOT match
         return false;
+    }
+
+    function isLdapUnique($check){
+
+        App::import( 'Lib', 'ldap' );
+        $ldap = new ldap();
+
+        if( $ldap->uidCheck( $check['username'] ) ){
+
+            return false;
+        }
+
+        return true;
     }
 }
 ?>
