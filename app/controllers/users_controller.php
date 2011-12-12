@@ -7,7 +7,7 @@ class UsersController extends AppController{
     var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
     var $components = array('Token', 'Recaptcha.Recaptcha', 'Email');
     //var $helpers = array('RecaptchaPlugin.Recaptcha');
-    var $helpers = array('Auth');
+    var $helpers = array('Auth', 'Html');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -17,6 +17,7 @@ class UsersController extends AppController{
         $this->Auth->allow('publicTerms');
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
+        $this->Auth->allow('pdf');
         $this->Auth->allow('registerowner');
         $this->Auth->allow('registerrealestate');
 
@@ -50,9 +51,7 @@ class UsersController extends AppController{
             $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
             $this->redirect( $this->Auth->redirect() );
         }
-
     }
-
 
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
@@ -60,6 +59,52 @@ class UsersController extends AppController{
         $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
+
+    // Produces a registration application html form for the given user $id.
+    // Currently, only users of role 'RealEstate' are supported. This function
+    // is invoked by (vendors/html2ps) PdfComponent's member function process()
+    // in order to produce the pdf version of that html. Only local access
+    // should be allowed to this function (by means of .htaccess or otherwise).
+    function pdf($id = null) {
+
+        if( is_null($id) )    return;
+
+        $this->User->id = $id;
+        $user = $this->User->read();
+
+        $this->set('data', $user);
+
+        // get municipality (name) in order to print it onto the 
+        // email which is to be sent for registration approval
+        $municipality = $user['RealEstate']['municipality_id'];
+
+        if( isset($municipality) ) {
+            $municipality = $this->getMunicipalityData($municipality);
+        }
+        $this->set('municipality', $municipality);
+
+        $this->layout = false;
+    } 
+
+    // Initiates the creation of the pdf equivalent of the application form.
+    private function getRegistrationPdf($id) {
+
+        if(is_null($id))   return;
+
+        App::import('Component', 'Pdf');
+        $filename = 'user_id_' . $id;
+        // files are stored under html2ps/out/ directory
+        $outDir = APP.'vendors'.DS.'html2ps'.DS.'out'.DS;
+        $filepath = $outDir . $filename . '.pdf';
+
+        $Pdf = new PdfComponent();
+        $Pdf->filename = $filename; // Without .pdf
+        $Pdf->output = 'file';
+        $Pdf->init();
+        $Pdf->process(Router::url('/', true) . 'users/pdf/' . $id);
+
+        return $filepath;
+    }
 
 	function help(){
         // this variable is used to display properly
@@ -280,21 +325,14 @@ class UsersController extends AppController{
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
 
-                    // get municipality (name) in order to print it onto the
-                    // email which is to be sent for registration approval
-                    $municipality =
-                        $this->data['RealEstate']['municipality_id'];
-
-                    if( isset($municipality) ) {
-                        $municipality =
-                            $this->getMunicipalityData($municipality);
-                    }
-
-                    $this->set('data', $this->data );
-                    $this->set('municipality', $municipality);
+                    // uses $this->data
                     $this->notifyOfRegistration();
 
-                    $this->Session->setFlash("Η εγγραφή σας ολοκληρώθηκε με επιτυχία.", 'default', array('class' => 'flashBlue'));
+                    //"Η εγγραφή σας ολοκληρώθηκε με επιτυχία."
+                    $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
+                            ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
+                        'default', array('class' => 'flashBlue'));
+
                     $this->redirect('login');
                 }
             }
@@ -302,7 +340,6 @@ class UsersController extends AppController{
             /* clear password fields */
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
-
     }
 
     function registerowner(){
@@ -381,35 +418,83 @@ class UsersController extends AppController{
         return $req;
     }
 
-    private function email_registration($id){
-        $this->RealEstate->id = $id;
-        $realEstate = $this->RealEstate->read();
-        $this->Email->to = $realEstate['RealEstate']['email'];
-        $this->Email->subject = 'Εγγραφή στην υπηρεσίας roommates ΤΕΙ Αθήνας';
-        //$this->Email->replyTo = 'support@example.com';
-        $this->Email->from = 'admin@roommates.edu.teiath.gr';
-        $this->Email->template = 'registration';
+    // Simple wrapper function for sending email both as html and plain text.
+    private function sendEmail($from, $to, $subject, $body, $attachments,
+    $template, $layout ) {
+        $this->Email->reset();
+        $this->Email->from = $from;
+        $this->Email->to = $to;
+        $this->Email->subject = $subject;
+        $this->set('content_for_layout', $body);
+        $this->Email->template = $template;
+        $this->Email->layout = $layout;
+        if( isset($attachments) ) {
+            $this->Email->attachments = $attachments;
+        }
+
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
 
-
+    // Sends emails to applicant and authority.
     private function notifyOfRegistration() {
-        $recipients = Configure::read('authority.activation_recipients');
-        $subject = Configure::read('authority.activation_subject');
-        if(empty($subject)) {
-            $subject = 'Αίτησης εγγραφής στο roommates';
+        if( empty( $this->data) )   return;
+
+        // get municipality (name) in order to print it onto the 
+        // email which is to be sent for registration approval
+        $municipality = $this->data['RealEstate']['municipality_id'];
+        if( isset($municipality) ) {
+            $municipality = $this->getMunicipalityData($municipality);
+        }
+        $this->set('data', $this->data );
+        $this->set('municipality', $municipality);
+
+        $this->notifyAuthority();
+
+        $filepath = $this->getRegistrationPdf($this->User->id);
+        if( file_exists($filepath) ) {
+
+            $attachments = array('roommates.pdf' => $filepath);
+            $this->notifyApplicant(
+                $this->data['RealEstate']['email'], $attachments);
+        }
+    }
+
+    // Sends the registration application form to the supplied $email address.
+    // The $attachments is an array of files to be included.
+    private function notifyApplicant($email, $attachments) {
+        if( empty($email) ) return;
+
+        $subject = Configure::read('registration.applicant_subject');
+        if( empty($subject) ) {
+            $subject = 'Αίτηση εγγραφής στην υπηρεσία roommates';
+        }
+        $body =
+            'Το παρόν μήνυμα εστάλη ως αποτέλεσμα της εγγραφής σας ως πάροχο'
+            . ' χώρων στέγασης στο σύστημα εύρεσης συγκατοίκων του ΤΕΙ'
+            . ' Αθήνας. Το συνημμένο αρχείο αποτελεί την αίτηση η οποία πρέπει'
+            . ' να ελεγχθεί, υπογραφεί και υποβληθεί στην αρμόδια αρχή'
+            . ' έγκρισης μέσω τηλεομοιότυπου (fax).';
+
+        $this->sendEmail(
+            'admin@roommates.edu.teiath.gr', $email, $subject, $body,
+            $attachments, 'default', 'default' );
+    }
+
+    // Sends email to the Authority to inform of user registration. The
+    // recipients' emails are read from the Configuration. The $attachments
+    // array is optional, but any file included *must* be accessible.
+    private function notifyAuthority($attachments=null) {
+        $recipients = Configure::read('registration.authority_recipients');
+        $subject = Configure::read('registration.authority_subject');
+        if( empty($subject) ) {
+            $subject = 'Αίτηση εγγραφής στην υπηρεσία roommates';
         }
 
-        foreach($recipients as $to) {
-            $this->Email->reset();
-            $this->Email->to = $to;
-            $this->Email->subject = $subject;
-            $this->Email->from = 'admin@roommates.edu.teiath.gr';
-            $this->Email->template = 'registered';
-            $this->Email->layout = 'registered';
-            $this->Email->sendAs = 'both';
-            $this->Email->send();
+        foreach( $recipients as $to ) {
+            $this->sendEmail(
+                'admin@roommates.edu.teiath.gr', $to, $subject, '',
+                $attachments, 'registered', 'registered' );
         }
     }
 
