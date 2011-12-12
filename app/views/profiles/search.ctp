@@ -135,6 +135,20 @@
                         ?>
                     </div>
                 </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ταξινόμηση
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+                            echo $this->Form->input('orderby',
+                                array('label' => '',
+                                'options' => $order_options['options'],
+                                'default' => $order_options['selected'],
+                                'class' => 'input-elem'));
+                        ?>
+                    </div>
+                </li>
             </ul>
             <div class='form-title'>
                 <h2>Χαρακτηριστικά συγκατοίκων</h2>
