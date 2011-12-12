@@ -115,6 +115,9 @@ textarea{
     margin: 0px 0px 4px 0px;
 }
 
+.error-message{
+    color: #e00;
+}
 
 #flashMessage,#authMessage{
 /*    border-left: 2px;
