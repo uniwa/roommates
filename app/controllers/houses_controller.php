@@ -501,7 +501,6 @@ class HousesController extends AppController {
 
             // get user preferences
             $prefs = $this->loadSavedPreferences($profile_id);
-// pr($prefs); die();
             $results = $this->simpleSearch($prefs['house_prefs'],
                                            $prefs['mates_prefs'], null, false);
 
@@ -545,6 +544,8 @@ class HousesController extends AppController {
                                             'απόσταση από ΤΕΙ - αύξουσα',
                                             'απόσταση από ΤΕΙ - φθίνουσα'));
 
+        $fb_app_uri = Configure::read( 'fb_app_uri' );
+
         if(!isset($this->params['url']['search'])){
             $results = $this->simpleSearch( $this->getHouseConditions(),
                                                     null,
@@ -552,12 +553,10 @@ class HousesController extends AppController {
                                                   );
 
             $this->set('results', $results);
+        }
 
-            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
+        if(isset($this->params['url']['clear'])){
+            $this->redirect('search');
         }
 
         if(isset($this->params['url']['save'])) {
@@ -577,12 +576,6 @@ class HousesController extends AppController {
                                               );
             }
             $this->set('results', $results);
-
-            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if(isset($this->params['url']['search'])) {
@@ -621,12 +614,7 @@ class HousesController extends AppController {
             $this->set('defaults', $this->params['url']);
 
             /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $fb_app_uri = Configure::read( 'fb_app_uri' );
             $fb_app_uri = $this->appendIfAbsent( Configure::read('fb_app_uri'), '/' );
-            $this->set( 'fb_app_uri', $fb_app_uri );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if (isset($this->params['url']['extra'])) {
@@ -642,12 +630,7 @@ class HousesController extends AppController {
             $this->set('defaults', $this->params['url']);
 
             /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $fb_app_uri = Configure::read( 'fb_app_uri' );
             $fb_app_uri = $this->appendIfAbsent( Configure::read('fb_app_uri'), '/' );
-            $this->set( 'fb_app_uri', $fb_app_uri );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if(isset($this->params['url']['load'])) {
@@ -667,14 +650,12 @@ class HousesController extends AppController {
                                               );
             }
             $this->set('results', $results);
-
-            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
+        /* accessed by the View, in order to compile the appopriate link to post to Facebook */
+        $this->set( 'fb_app_uri', $fb_app_uri );
+        $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+        $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
     }
 
 
