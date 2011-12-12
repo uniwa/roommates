@@ -185,7 +185,7 @@
         echo $form->input('security_doors', array('label' => 'Πόρτες ασφαλείας'));
         echo $form->input('disability_facilities', array('label' => 'Προσβάσιμο από ΑΜΕΑ'));
         echo $form->input('storeroom', array('label' => 'Αποθήκη'));
-        $rentPeriod = ($role == 'realestate')?'Περίοδος ενοικίασης ':'Περίοδος συγκατοίκισης ';
+        $rentPeriod = ($role == 'realestate')?'Περίοδος ενοικίασης ':'Περίοδος συγκατοίκησης ';
         echo $form->input('rent_period', array('label' => $rentPeriod,'after' => ' μήνες', 'class' => 'short'));
         echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 

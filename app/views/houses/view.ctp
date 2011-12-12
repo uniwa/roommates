@@ -378,9 +378,11 @@
         $occupation_availability = null;
         if($role != 'user'){
             $occupation_availability = '';
+            $rentPeriod = 'Περίοδος ενοικίασης';
         }else{
             $occupation_availability = ', Διαθέσιμες θέσεις ';
             $occupation_availability .= Sanitize::html($house['House']['free_places']);
+            $rentPeriod = 'Περίοδος συγκατοίκησης';
         }
         $fbUrl = "http://www.facebook.com/dialog/feed";
         $fbUrl .= "?app_id=".$facebook->getAppId();
@@ -420,7 +422,7 @@
     $houseProperties['price']['label'] = 'Ενοίκιο';
     $houseProperties['price']['suffix'] = '€';
     $houseProperties['available']['label'] = 'Διαθέσιμο από';
-    $houseProperties['rent_period']['label'] = 'Περίοδος ενοικίασης';
+    $houseProperties['rent_period']['label'] = $rentPeriod;
     $houseProperties['rent_period']['suffix'] = 'μήνες';
     // if the house belongs to real estate, don't display availability info
     if($ownerRole != 'realestate'){
