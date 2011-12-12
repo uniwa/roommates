@@ -102,11 +102,11 @@
         cursor: pointer;
     }
 
-    #updateMap{
+    #mapDiv{
         clear: both;
         border: 1px solid #eee;
         background-color: #f9f9f9;
-        margin: 16px 0px 16px 24px;
+        margin: 16px 24px 16px 24px;
         padding: 8px;
     }
 
@@ -117,7 +117,7 @@
 
     .map{
         padding: 0px 0px 0px 10px;
-        width: 450px;
+        margin: 7px 0 0 0;
         height: 250px;
     }
 </style>
@@ -160,9 +160,16 @@
 
         // map location mainly depends on [country], [municipality], [address]
         // and [postalCode] form-fields
-        echo "<div id='updateMap'><div class='mapMarker'>";
-        echo $this->Html->link('Ενημέρωση χάρτη από πεδία', '');
-        echo "</div><div class='map' id='editMap'></div></div>";
+        echo "<div id='mapDiv'>";
+        echo $this->Html->link('Ενημέρωση χάρτη από πεδία', '', array(
+            'id' => 'updateMap', 'class' => 'mapMarker',
+            'title' =>
+                'Απόπειρα προσδιορισμού της θέσης του σπιτιού βάσει των πεδίων διεύθυνσης.'));
+        echo $this->Html->link('Επαναφορά χάρτη','', array(
+            'id' => 'eraseLatLng', 'class' => 'mapMarker',
+            'title' =>
+                'Αφαίρεση της οποιαδήποτε πληροφορίας σχετικά με τη θέση του σπιτιού.'));
+        echo "<div class='map' id='editMap'></div></div>";
 
         echo $form->input('latitude', array('type' => 'hidden'));
         echo $form->input('longitude', array('type' => 'hidden'));
@@ -185,8 +192,8 @@
         echo $form->input('security_doors', array('label' => 'Πόρτες ασφαλείας'));
         echo $form->input('disability_facilities', array('label' => 'Προσβάσιμο από ΑΜΕΑ'));
         echo $form->input('storeroom', array('label' => 'Αποθήκη'));
-        $rentPeriod = ($role == 'realestate')?'Περίοδος ενοικίασης ':'Περίοδος συγκατοίκησης ';
-        echo $form->input('rent_period', array('label' => $rentPeriod,'after' => ' μήνες', 'class' => 'short'));
+        $rentPeriodLabel = ($role == 'realestate')?'Περίοδος ενοικίασης ':'Περίοδος συγκατοίκησης ';
+        echo $form->input('rent_period', array('label' => $rentPeriodLabel,'after' => ' μήνες', 'class' => 'short'));
         echo $form->input('description', array('label' => 'Περιγραφή','type'=>'textarea'));
 
         if ($this->Session->read('Auth.User.role') != 'realestate') {
