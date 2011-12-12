@@ -338,6 +338,44 @@ textarea{
     clear: both;
 }
 
+.role{
+    position: relative;
+    top: -2px;
+    left: 500px;
+    margin: -2px 0px 0px 0px;
+    width: 78px;
+    height: 14px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: #333 1px 1px 1px;
+}
+
+.student{
+    background-color: #12A9F9/*f96213*/;
+}
+
+.realestate{
+    background-color: #f96213/*d02552*/;
+}
+
+.owner{
+    background-color: #50d07d;
+}
+
+.resultRE{
+    border-color: #f96213/*d02552*/;
+}
+
+.resultOwner{
+    border-color: #50d07d;
+}
+
+.resultStudent{
+    border-color: #12A9F9/*f96213*/;
+}
+
 .result-photo{
     float: left;
 /*    background-color: #fff;*/

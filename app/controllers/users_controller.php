@@ -239,7 +239,7 @@ class UsersController extends AppController{
         /* dummy sane data - user will edit his profile after login */
         $profile["Profile"]["dob"] = date('Y') - 18;
         $profile["Profile"]["gender"] = 0;
-        $profile["Profile"]["visible"] = 0;
+        $profile["Profile"]["visible"] = 1;
         $profile["Profile"]["user_id"] = $id;
         /* supplied by create_preferences() */
         $profile["Profile"]["preference_id"] = $pref_id;
@@ -283,7 +283,7 @@ class UsersController extends AppController{
         if ($this->data) {
             // user must accept the real estate terms
             if ($this->data["User"]["estate_terms"] != "1") {
-                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης 
+                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης
 για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
                 $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
                 return;
@@ -341,7 +341,7 @@ class UsersController extends AppController{
             $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
         }
     }
-    
+
     function registerowner(){
         // this variable is used to display properly
         // the selected element on header
@@ -388,7 +388,7 @@ class UsersController extends AppController{
             $reqData['description'] .= "{$data['category']}\n";
             $reqData['description'] .= $data['description'];
             $reqXml = $this->createXmlRequest($reqData);
-            
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, "http://redmine.edu.teiath.gr/issues.xml");
             curl_setopt($ch, CURLOPT_POST, false);
@@ -400,13 +400,13 @@ class UsersController extends AppController{
             curl_setopt($ch, CURLOPT_TIMEOUT, 15);
             $result = curl_exec($ch);
             curl_close($ch);
-            
+
             return $result;
         }else{
             return false;
         }
     }
-    
+
     private function createXmlRequest($data){
         $req = "<?xml version=\"1.0\"?>";
         $req .= "<issue>";
@@ -414,7 +414,7 @@ class UsersController extends AppController{
         $req .= "<description>{$data['description']}</description>";
         $req .= "<project_id>8</project_id>"; // TODO: change project id
         $req .= "</issue>";
-        
+
         return $req;
     }
 

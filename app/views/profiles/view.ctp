@@ -22,7 +22,7 @@
         height: 100px;
         overflow: hidden;
     }
-    
+
     .housePic{
         margin: 0px auto;
         padding: 2px;
@@ -30,13 +30,13 @@
         height: 100px;
         overflow: hidden;
     }
-    
+
     #profileCont{
         margin: 0px 0px 0px 0px;
         padding: 32px;
         text-align: center;
     }
-    
+
     #profileEdit{
         margin: 32px 0px 0px 12px;
         text-align: center;
@@ -79,11 +79,11 @@
         margin: 0px 4px 0px 0px;
         vertical-align: -30%;
     }
-    
+
     #myHouse{
         width: 500px;
     }
-    
+
     #myHousePic{
         margin: 0px 0px 0px 24px;
     }
@@ -207,7 +207,8 @@
         </div>
         <div class="imageactions">
             <?php
-                if (! empty($profile['Profile']['avatar']) ) {
+                if (! empty($profile['Profile']['avatar'])
+                    && $this->Session->read('Auth.User.id') === $profileid ) {
                     echo $this->Html->link(__('Διαγραφή', true),
                         array('controller' => 'profiles', 'action' => 'deleteImage', $profileid),
                         array('class' => 'profile_img_delete', 'title' => 'Διαγραφή εικόνας προφίλ'),
@@ -424,7 +425,7 @@
                 ?>
             </div>
         </div>
-    <?php 
+    <?php
         }else{
             if($profile['Profile']['user_id'] == $this->Session->read('Auth.User.id')){
                 $houseTitle = '+Προσθήκη σπιτιού';

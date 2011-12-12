@@ -6,7 +6,7 @@
         width: 300px;
         overflow: hidden;
     }
-    
+
     #main-inner{
         float: left;
         border-left: 1px solid #ddd;
@@ -16,7 +16,7 @@
         min-height: 600px;
         overflow: hidden;
     }
-    
+
     .housePic{
         float: left;
         padding: 2px;
@@ -24,7 +24,7 @@
         height: 100px;
         overflow: hidden;
     }
-    
+
     .edit-title{
         margin: 12px 0px 24px 24px;
         font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
@@ -37,31 +37,31 @@
         clear: both;
         padding: 3px 0;
     }
-    
+
     .input .short{
         width: 40px;
     }
-    
+
     .required {
         background: url("img/required.gif") no-repeat scroll 160px -2px transparent;
     }
-    
+
     .input label{
         float: left;
         margin: 0px 8px 16px 0px;
         width: 160px;
         text-align: right;
     }
-    
+
     .input.checkbox{
         margin: 0px 0px 0px 96px;
     }
-    
+
     .checkbox label{
         width: auto;
         text-align: left;
     }
-    
+
     .checkbox input{
         border: 1px solid #ddd;
     }
@@ -73,7 +73,7 @@
         font-family: 'Open Sans',Verdana,Tahoma,Arial,sans-serif;
         font-size: 10px;
     }
-    
+
     .input select{
         float: left;
         border: 1px solid #ddd;
@@ -81,7 +81,7 @@
         font-family: 'Open Sans',Verdana,Tahoma,Arial,sans-serif;
         font-size: 10px;
     }
-    
+
     .input textarea{
         float: left;
         border: 1px solid #ddd;
@@ -89,7 +89,7 @@
         font-family: 'Open Sans',Verdana,Tahoma,Arial,sans-serif;
         font-size: 10px;
     }
-    
+
     .submit{
         clear: both;
         margin: 0px 0px 0px 48px;
@@ -101,7 +101,7 @@
         padding: 4px;
         cursor: pointer;
     }
-    
+
     #updateMap{
         clear: both;
         border: 1px solid #eee;
@@ -109,12 +109,12 @@
         margin: 16px 0px 16px 24px;
         padding: 8px;
     }
-    
+
     .mapMarker{
         margin: 0px 0px 8px 12px;
         padding: 4px;
     }
-    
+
     .map{
         padding: 0px 0px 0px 10px;
         width: 450px;
@@ -195,8 +195,16 @@
                     'label' => 'Μπορούν συνολικά να συγκατοικήσουν ',
                     'type' => 'select', 'options' => $places_availability, 'default' => 2));
         }
-        echo $this->Form->input('visible', array(
-            'label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
+
+        if ($editOrigin == 'add') {
+            echo $this->Form->input('visible', array(
+                'label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.',
+                'checked' => true));
+        } else {
+            echo $this->Form->input('visible', array(
+                'label' => 'Να είναι ορατό στους υπόλοιπους χρήστες και στις αναζητήσεις.'));
+        }
+
         echo $form->input('id', array('type' => 'hidden'));
         echo $form->end('Αποθήκευση');
     ?>
