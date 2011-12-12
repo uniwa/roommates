@@ -251,6 +251,16 @@ class UsersController extends AppController{
                 return;
             }
 
+           App::import( 'Lib', 'ldap' );
+            $ldap = new ldap();
+
+            if( $ldap->uidCheck( $this->data['User']['username'] ) ){
+
+                $this->Session->setFlash('Το όνομα χρήστη που εισήχθει χρησιμοποιείται' ,'default', array('class'=>'flashRed'));
+                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                return;
+            }
+
             $userdata["User"]["username"] = $this->data["User"]["username"];
             $userdata["User"]["password"] = $this->data["User"]["password"];
             $userdata["User"]["password_confirm"] = $this->data["User"]["password_confirm"];

@@ -56,6 +56,22 @@ class ldap {
 
     }
 
+    //This function checks for uid existance
+    //Returns true if uid already exists
+    public function uidCheck( $uid ){
+
+       
+        ldap_bind( $this->ldap, $this->ldapUser, $this->ldapPassword );
+        /*
+         * compares with uid users distinguished name. If user does not exist returns 
+         * -1 which is error. Avoiding warnings with @ and accept -1 as false 
+         * value
+         * */
+        @$result = ldap_compare( $this->ldap, 'uid='.$uid.', ou=people,'.$this->baseDN, 'uid', $uid );
+        return ($result == 1)?true:false;
+
+    }
+
     public function __destruct() {
 
         ldap_unbind( $this->ldap );
