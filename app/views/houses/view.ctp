@@ -365,10 +365,16 @@
         }
     }
 
-    if($role == 'user'){
+    if($ownerRole == 'user'){
+        $rentPeriodLabel = 'Περίοδος συγκατοίκησης';
         $occupation_availability = ', Διαθέσιμες θέσεις ';
         $occupation_availability .= Sanitize::html($house['House']['free_places']);
+    }else{
+        $rentPeriodLabel = 'Περίοδος ενοικίασης';
+        $occupation_availability = null;
+    }
 
+    if($role == 'user'){
         // allow posts to Facebook only by a 'user' (as in role)
         // create the link to post on Facebook
         $furnished = null;
@@ -378,7 +384,6 @@
             $furnished = ', ';
         }
         // don't show 'available_places' if house does not belong to a 'user' (as in role)
-        $occupation_availability = null;
         $fbUrl = "http://www.facebook.com/dialog/feed";
         $fbUrl .= "?app_id=".$facebook->getAppId();
         $fbUrl .= "&name=".urlencode('Δείτε περισσότερα εδώ...');
@@ -396,14 +401,6 @@
             'title' => 'κοινοποίηση στο facebook', 'escape' => false,
             'target' => 'post_to_facebook'));
         $fbPost = "<div class='houseOptions'>{$fbLink}</div>";
-    }else{
-        $occupation_availability = '';
-    }
-
-    if($ownerRole == 'user'){
-        $rentPeriodLabel = 'Περίοδος συγκατοίκησης';
-    }else{
-        $rentPeriodLabel = 'Περίοδος ενοικίασης';
     }
 
     // House properties
