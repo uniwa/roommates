@@ -118,7 +118,6 @@
                 $resultClass = 'result-cont';
                 if($role == 'realestate'){
                     if(isset($house['RealEstate']['type']) && ($house['RealEstate']['type'] == 'owner')){
-                        $role = 'owner';
                         $resultClass .= ' resultOwner';
                         $roleClass = 'owner';
                         $roleTitle = 'ιδιώτης';

@@ -6,18 +6,6 @@
         height: 100%;
     }
     
-    .contRE{
-        border-top: 6px solid #88a;
-    }
-    
-    .contUser{
-        border-top: 6px solid #ddd;
-    }
-    
-    .contOwner{
-        border-top: 6px solid #50d07d;
-    }
-
     #leftbar{
         float: left;
         margin: 0px 0px 0px 0px;
@@ -187,44 +175,6 @@
         margin: 0px auto;
         width: 300px;
         height: 220px;
-    }
-
-    .role{
-        position: relative;
-        top: -2px;
-        left: 500px;
-        margin: -2px 0px 0px 0px;
-        width: 78px;
-        height: 14px;
-        color: #fff;
-        font-size: 10px;
-        font-weight: bold;
-        text-align: center;
-        text-shadow: #333 1px 1px 1px;
-    }
-
-    .student{
-        background-color: #f96213;
-    }
-
-    .realestate{
-        background-color: #d02552/*6212F9*/;
-    }
-
-    .owner{
-        background-color: #50d07d/*12F962*/;
-    }
-
-    .resultRE{
-        border-color: #d02552/*6212F9*/;
-    }
-
-    .resultOwner{
-        border-color: #50d07d/*12F962*/;
-    }
-
-    .resultStudent{
-        border-color: #f96213;
     }
 </style>
 
@@ -581,7 +531,6 @@ EOT;
     $resultClass = 'result-cont';
     if($role == 'realestate'){
         if($house['User']['RealEstate']['type'] == 'owner'){
-            $role = 'owner';
             $classCont='contOwner';
             $resultClass .= ' resultOwner';
             $roleClass = 'owner';
@@ -593,7 +542,7 @@ EOT;
             $roleTitle = 'μεσιτικό';
         }
     }else{
-        $classCont='contUser';
+        $classCont='contStudent';
         $resultClass .= ' resultStudent';
         $roleClass = 'student';
         $roleTitle = 'φοιτητής';
