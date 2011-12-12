@@ -365,8 +365,12 @@
         }
     }
 
-    // allow posts to Facebook only by a 'user' (as in role)
     if($role == 'user'){
+        $occupation_availability = ', Διαθέσιμες θέσεις ';
+        $occupation_availability .= Sanitize::html($house['House']['free_places']);
+        $rentPeriodLabel = 'Περίοδος συγκατοίκησης';
+
+        // allow posts to Facebook only by a 'user' (as in role)
         // create the link to post on Facebook
         $furnished = null;
         if($house['House']['furnitured']){
@@ -376,14 +380,6 @@
         }
         // don't show 'available_places' if house does not belong to a 'user' (as in role)
         $occupation_availability = null;
-        if($role != 'user'){
-            $occupation_availability = '';
-            $rentPeriod = 'Περίοδος ενοικίασης';
-        }else{
-            $occupation_availability = ', Διαθέσιμες θέσεις ';
-            $occupation_availability .= Sanitize::html($house['House']['free_places']);
-            $rentPeriod = 'Περίοδος συγκατοίκησης';
-        }
         $fbUrl = "http://www.facebook.com/dialog/feed";
         $fbUrl .= "?app_id=".$facebook->getAppId();
         $fbUrl .= "&name=".urlencode('Δείτε περισσότερα εδώ...');
@@ -401,6 +397,9 @@
             'title' => 'κοινοποίηση στο facebook', 'escape' => false,
             'target' => 'post_to_facebook'));
         $fbPost = "<div class='houseOptions'>{$fbLink}</div>";
+    }else{
+        $occupation_availability = '';
+        $rentPeriodLabel = 'Περίοδος ενοικίασης';
     }
 
     // House properties
@@ -422,7 +421,7 @@
     $houseProperties['price']['label'] = 'Ενοίκιο';
     $houseProperties['price']['suffix'] = '€';
     $houseProperties['available']['label'] = 'Διαθέσιμο από';
-    $houseProperties['rent_period']['label'] = $rentPeriod;
+    $houseProperties['rent_period']['label'] = $rentPeriodLabel;
     $houseProperties['rent_period']['suffix'] = 'μήνες';
     // if the house belongs to real estate, don't display availability info
     if($ownerRole != 'realestate'){
@@ -529,9 +528,8 @@
         </script>
 EOT;
 
-    $role = $house['User']['role'];
     $resultClass = 'result-cont';
-    if($role == 'realestate'){
+    if($ownerRole == 'realestate'){
         if($house['User']['RealEstate']['type'] == 'owner'){
             $classCont='contOwner';
             $resultClass .= ' resultOwner';

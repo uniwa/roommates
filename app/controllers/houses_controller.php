@@ -409,7 +409,8 @@ class HousesController extends AppController {
     function getLastModified(){
         $order = array('House.modified' => 'desc');
         $conditions = array('House.visible' => 1,
-                            'House.user_id !=' => $this->Auth->User('id'));
+            'House.user_id !=' => $this->Auth->User('id'),
+            'User.banned' => 0);
         $results = $this->simpleSearch($conditions, null, $order, false);
         $results = array_slice($results, 0, 5);
         return $results;
