@@ -1,11 +1,10 @@
 $(document).ready(function() {
+    if( !shouldProceed )    return;
+
     var geocoder = new google.maps.Geocoder();
     var teiLocation = new google.maps.LatLng(38.004135, 23.676619);
 
     // initialize map zoom factor and the event to move the marker on click
-    $('#editMap').click(function(e) {
-        e.stopPropagation();
-    });
     $('#editMap').gmap3(
         {   action: 'init',
             options: {
@@ -20,6 +19,17 @@ $(document).ready(function() {
             }
         }
     );
+    if( $('#eraseLatLng').length > 0 ){
+
+        $('#eraseLatLng').click(function(e){
+
+            e.preventDefault();
+            repositionMarkers( '#editMap', true, teiLocation );
+            $('#HouseLatitude').val(null);
+            $('#HouseLongitude').val(null);
+
+        });
+    }
 
     // check for latitude and longitude values returned from server
     mapLat = $('#HouseLatitude').val();
@@ -115,5 +125,16 @@ $(document).ready(function() {
     function updateFormFields(latLng) {
         $('#HouseLatitude').val(latLng.lat());
         $('#HouseLongitude').val(latLng.lng());
+    }
+
+    // Returns true if all required elements are defined.
+    function shouldProceed(){
+
+        should = $('#editMap').length && $('#updateMap').length
+            && $('#HouseLatitude').length && $('#HouseLongitude').length
+            && $('#HouseAddress').length && $('#HousePostalCode').length
+            && $('#HouseMunicipalityId').length;
+
+        return should;
     }
 });
