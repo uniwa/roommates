@@ -81,7 +81,7 @@
     }
 
     .pagination{
-        margin: 0px auto 12px auto;
+        margin: 12px auto 12px auto;
         text-align: center;
     }
 
@@ -132,6 +132,20 @@
                     <div class='form-elem form-submit'>
                         <?php
                             echo $this->Form->submit('καθαρισμός', array('name' => 'resetvalues', 'class' => 'button'));
+                        ?>
+                    </div>
+                </li>
+                <li class='form-line'>
+                    <div class='form-elem form-label'>
+                        Ταξινόμηση
+                    </div>
+                    <div class='form-elem form-input'>
+                        <?php
+                            echo $this->Form->input('orderby',
+                                array('label' => '',
+                                'options' => $order_options['options'],
+                                'default' => $order_options['selected'],
+                                'class' => 'input-elem'));
                         ?>
                     </div>
                 </li>

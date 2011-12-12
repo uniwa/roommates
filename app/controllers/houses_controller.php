@@ -407,12 +407,12 @@ class HousesController extends AppController {
     }
 
     function getLastModified(){
-        $limit = 5;
-        $options['order'] = array('House.modified DESC');
-        $options['limit'] = $limit;
-        $options['conditions'] = array('House.visible' => 1);
-//        $this->House->recursive = 1;
-        $results = $this->House->find('all', $options);
+        $order = array('House.modified' => 'desc');
+        $conditions = array('House.visible' => 1,
+            'House.user_id !=' => $this->Auth->User('id'),
+            'User.banned' => 0);
+        $results = $this->simpleSearch($conditions, null, $order, false);
+        $results = array_slice($results, 0, 5);
         return $results;
     }
 
@@ -422,22 +422,16 @@ class HousesController extends AppController {
         $prefs = $this->loadSavedPreferences();
 
         $order = array('House.modified' => 'desc', 'House.id' => 'asc');
+
+        // exclude logged user's house
+        array_push($prefs['house_prefs'], array('House.user_id !=' => $this->Auth->User('id')));
         $results = $this->simpleSearch($prefs['house_prefs'],
-            $prefs['mates_prefs'], $order);
+                                       empty($prefs['mates_prefs']) ?
+                                            null : $prefs['mates_prefs'],
+                                       $order,
+                                       false);
 
-        $uid = $this->Auth->User('id');
-        $house = $this->House->find('first', array('conditions' => array('House.user_id' => $uid)));
-        if(isset($house['House']['id'])){
-            $hid = $house['House']['id'];
-            for($i = 0; $i < $limit; $i++){
-                if($result[$i]['House']['id'] = $hid){
-                    unset($results[$i]);
-                    break;
-                }
-            }
-        }
         $results = array_slice($results, 0, $limit);
-
         return $results;
     }
 
@@ -507,7 +501,6 @@ class HousesController extends AppController {
 
             // get user preferences
             $prefs = $this->loadSavedPreferences($profile_id);
-// pr($prefs); die();
             $results = $this->simpleSearch($prefs['house_prefs'],
                                            $prefs['mates_prefs'], null, false);
 
@@ -551,6 +544,8 @@ class HousesController extends AppController {
                                             'απόσταση από ΤΕΙ - αύξουσα',
                                             'απόσταση από ΤΕΙ - φθίνουσα'));
 
+        $fb_app_uri = Configure::read( 'fb_app_uri' );
+
         if(!isset($this->params['url']['search'])){
             $results = $this->simpleSearch( $this->getHouseConditions(),
                                                     null,
@@ -558,12 +553,10 @@ class HousesController extends AppController {
                                                   );
 
             $this->set('results', $results);
+        }
 
-            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
+        if(isset($this->params['url']['clear'])){
+            $this->redirect('search');
         }
 
         if(isset($this->params['url']['save'])) {
@@ -583,12 +576,6 @@ class HousesController extends AppController {
                                               );
             }
             $this->set('results', $results);
-
-            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if(isset($this->params['url']['search'])) {
@@ -627,12 +614,7 @@ class HousesController extends AppController {
             $this->set('defaults', $this->params['url']);
 
             /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $fb_app_uri = Configure::read( 'fb_app_uri' );
             $fb_app_uri = $this->appendIfAbsent( Configure::read('fb_app_uri'), '/' );
-            $this->set( 'fb_app_uri', $fb_app_uri );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if (isset($this->params['url']['extra'])) {
@@ -648,12 +630,7 @@ class HousesController extends AppController {
             $this->set('defaults', $this->params['url']);
 
             /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $fb_app_uri = Configure::read( 'fb_app_uri' );
             $fb_app_uri = $this->appendIfAbsent( Configure::read('fb_app_uri'), '/' );
-            $this->set( 'fb_app_uri', $fb_app_uri );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
         if(isset($this->params['url']['load'])) {
@@ -673,14 +650,12 @@ class HousesController extends AppController {
                                               );
             }
             $this->set('results', $results);
-
-            /* accessed by the View, in order to compile the appopriate link to post to Facebook */
-            $this->set( 'fb_app_uri', Configure::read( 'fb_app_uri' ) );
-            $this->set( 'facebook', $this->Session->read( 'facebook' ) );
-
-            $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
         }
 
+        /* accessed by the View, in order to compile the appopriate link to post to Facebook */
+        $this->set( 'fb_app_uri', $fb_app_uri );
+        $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+        $this->set('house_types', $this->HouseType->find('list', array('fields' => array('type'))));
     }
 
 
@@ -733,6 +708,7 @@ class HousesController extends AppController {
             )
         ), false);
 
+        $this->House->recursive = 1;
         if($pagination === true) {
             $options['limit'] = 15;
             $this->paginate = $options;
@@ -796,7 +772,6 @@ class HousesController extends AppController {
             $house_prefs['House.image_count >'] = 0 ;
             $defaults['has_photo'] = 1;
         }
-        //$house_prefs['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
             $house_prefs['House.visible'] = 1;
         }
@@ -832,8 +807,6 @@ class HousesController extends AppController {
             $mates_prefs['Profile.couple'] = $prefs['pref_couple'];
             $defaults['couple'] = $prefs['pref_couple'];
         }
-        // required for the joins
-        array_push($mates_prefs, 'User.id = Profile.user_id');
 
         return array(   'house_prefs' => $house_prefs,
                         'mates_prefs' => $mates_prefs,
@@ -879,12 +852,10 @@ class HousesController extends AppController {
     }
 
 
-    function getHouseConditions( $house_prefs = null ) {
+   private function getHouseConditions( ) {
 
-        if( $house_prefs == null ){
 
-            $house_prefs = $this->params['url'];
-        }
+        $house_prefs = $this->params['url'];
 
         $house_conditions = array();
 
@@ -968,17 +939,9 @@ class HousesController extends AppController {
             $house_conditions['House.availability_date <='] =
                                             $year . '-' . $month . '-' . $day;
         }
-        //Thanos mod
-        if(!empty($house_prefs['availability_date_min'])){
-            $year  = $house_prefs['availability_date_min']['year'];
-            $month = $house_prefs['availability_date_min']['month'];
-            $day   = $house_prefs['availability_date_min']['day'];
 
-            $house_conditions['House.availability_date >='] =
-                                            $year . '-' . $month . '-' . $day;
-        }
 
-        if(!isset($this->Auth) || $this->Auth->User('role') != 'admin'){
+        if( $this->Auth->User('role') != 'admin' ){
             $house_conditions['House.visible'] = 1;
         }
 
@@ -988,12 +951,10 @@ class HousesController extends AppController {
     }
 
 
-     function getMatesConditions( $mates_prefs = null ,$flag = true) {
+  private function getMatesConditions() {
 
-        if( empty($mates_prefs) ){
 
-            $mates_prefs = $this->params['url'];
-        }
+        $mates_prefs = $this->params['url'];
 
         $mates_conditions = array();
 
@@ -1019,14 +980,11 @@ class HousesController extends AppController {
             $mates_conditions['Profile.couple'] = $mates_prefs['couple'];
         }
 
-        if(empty($mates_conditions) && $flag) return null;
+        if(empty($mates_conditions)) return null;
 
-        if( !$flag ) return array();
 
-        if( $flag ){
-            // required condition for the left join
-            array_push($mates_conditions, 'User.id = Profile.user_id');
-        }
+        // required condition for the left join
+        array_push($mates_conditions, 'User.id = Profile.user_id');
 
         return $mates_conditions;
     }

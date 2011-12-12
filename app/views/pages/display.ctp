@@ -9,7 +9,7 @@
     }
 
     #lastPreferred,#lastModified{
-        margin: 8px auto 16px auto;        
+        margin: 8px auto 16px auto;
         width: 620px;
     }
 </style>
@@ -28,7 +28,7 @@
                 $role = $house['User']['role'];
                 $resultClass = 'result-cont';
                 if($role == 'realestate'){
-                    if(isset($house['User']['RealEstate']['type']) && ($house['User']['RealEstate']['type'] == 'owner')){
+                    if(isset($house['RealEstate']['type']) && ($house['RealEstate']['type'] == 'owner')){
                         $role = 'owner';
                         $resultClass .= ' resultOwner';
                         $roleClass = 'owner';
@@ -117,8 +117,7 @@
                 $role = $house['User']['role'];
                 $resultClass = 'result-cont';
                 if($role == 'realestate'){
-                    if(isset($house['User']['RealEstate']['type']) && ($house['User']['RealEstate']['type'] == 'owner')){
-                        $role = 'owner';
+                    if(isset($house['RealEstate']['type']) && ($house['RealEstate']['type'] == 'owner')){
                         $resultClass .= ' resultOwner';
                         $roleClass = 'owner';
                         $roleTitle = 'ιδιώτης';

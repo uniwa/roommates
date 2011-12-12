@@ -115,6 +115,9 @@ textarea{
     margin: 0px 0px 4px 0px;
 }
 
+.error-message{
+    color: #e00;
+}
 
 #flashMessage,#authMessage{
 /*    border-left: 2px;
@@ -353,27 +356,39 @@ textarea{
 }
 
 .student{
-    background-color: #12A9F9/*f96213*/;
+    background-color: #12A9F9;
 }
 
 .realestate{
-    background-color: #f96213/*d02552*/;
+    background-color: #f96213;
 }
 
 .owner{
     background-color: #50d07d;
 }
 
+.contStudent{
+    border-top: 6px solid #12A9F9;
+}
+
+.contRE{
+    border-top: 6px solid #f96213;
+}
+
+.contOwner{
+    border-top: 6px solid #50d07d;
+}
+
+.resultStudent{
+    border-color: #12A9F9;
+}
+
 .resultRE{
-    border-color: #f96213/*d02552*/;
+    border-color: #f96213;
 }
 
 .resultOwner{
     border-color: #50d07d;
-}
-
-.resultStudent{
-    border-color: #12A9F9/*f96213*/;
 }
 
 .result-photo{
