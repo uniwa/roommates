@@ -195,7 +195,7 @@
                     'options' => $places_availability));
                 echo $form->input('total_places', array(
                     'label' => 'Μπορούν συνολικά να συγκατοικήσουν ',
-                    'type' => 'select', 'options' => $places_availability, 'default' => 2));
+                    'type' => 'select', 'options' => $places_availability_extra, 'default' => 2));
         }
 
         if ($editOrigin == 'add') {

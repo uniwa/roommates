@@ -529,9 +529,8 @@
         </script>
 EOT;
 
-    $role = $house['User']['role'];
     $resultClass = 'result-cont';
-    if($role == 'realestate'){
+    if($ownerRole == 'realestate'){
         if($house['User']['RealEstate']['type'] == 'owner'){
             $classCont='contOwner';
             $resultClass .= ' resultOwner';
