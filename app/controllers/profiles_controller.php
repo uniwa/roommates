@@ -519,7 +519,7 @@ class ProfilesController extends AppController {
         // exit if this profile belongs to another admin
         if ($profile["User"]["role"] == "admin") {
             $this->Session->setFlash('Ο διαχειριστής δεν μπορεί να κλειδώσει άλλο διαχειριστή.',
-                'default', array('class' => 'flashBlue'));
+                'default', array('class' => 'flashRed'));
             $this->redirect(array("action" => "view", $id));
         }
 
@@ -528,7 +528,7 @@ class ProfilesController extends AppController {
 
         $this->User->begin();
         $this->User->id = $profile["Profile"]["user_id"];
-        if ($this->User->save($user, array('validate'=>'first'))) {
+        if ($this->User->save($user, array('validate'=>false))) {
             $this->User->commit();
             return True;
         } else {

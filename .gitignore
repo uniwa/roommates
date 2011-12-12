@@ -24,6 +24,7 @@
 # swap et al
 *~
 *.swp
+*.kate-swp
 *.bak
 .~*
 

@@ -407,12 +407,11 @@ class HousesController extends AppController {
     }
 
     function getLastModified(){
-        $limit = 5;
-        $options['order'] = array('House.modified DESC');
-        $options['limit'] = $limit;
-        $options['conditions'] = array('House.visible' => 1);
-//        $this->House->recursive = 1;
-        $results = $this->House->find('all', $options);
+        $order = array('House.modified' => 'desc');
+        $conditions = array('House.visible' => 1,
+                            'House.user_id !=' => $this->Auth->User('id'));
+        $results = $this->simpleSearch($conditions, null, $order, false);
+        $results = array_slice($results, 0, 5);
         return $results;
     }
 
@@ -422,22 +421,16 @@ class HousesController extends AppController {
         $prefs = $this->loadSavedPreferences();
 
         $order = array('House.modified' => 'desc', 'House.id' => 'asc');
+
+        // exclude logged user's house
+        array_push($prefs['house_prefs'], array('House.user_id !=' => $this->Auth->User('id')));
         $results = $this->simpleSearch($prefs['house_prefs'],
-            $prefs['mates_prefs'], $order);
+                                       empty($prefs['mates_prefs']) ?
+                                            null : $prefs['mates_prefs'],
+                                       $order,
+                                       false);
 
-        $uid = $this->Auth->User('id');
-        $house = $this->House->find('first', array('conditions' => array('House.user_id' => $uid)));
-        if(isset($house['House']['id'])){
-            $hid = $house['House']['id'];
-            for($i = 0; $i < $limit; $i++){
-                if($result[$i]['House']['id'] = $hid){
-                    unset($results[$i]);
-                    break;
-                }
-            }
-        }
         $results = array_slice($results, 0, $limit);
-
         return $results;
     }
 
@@ -733,6 +726,7 @@ class HousesController extends AppController {
             )
         ), false);
 
+        $this->House->recursive = 1;
         if($pagination === true) {
             $options['limit'] = 15;
             $this->paginate = $options;
@@ -796,7 +790,6 @@ class HousesController extends AppController {
             $house_prefs['House.image_count >'] = 0 ;
             $defaults['has_photo'] = 1;
         }
-        //$house_prefs['House.user_id !='] = $this->Auth->user('id');
         if($this->Auth->User('role') != 'admin') {
             $house_prefs['House.visible'] = 1;
         }
@@ -832,8 +825,6 @@ class HousesController extends AppController {
             $mates_prefs['Profile.couple'] = $prefs['pref_couple'];
             $defaults['couple'] = $prefs['pref_couple'];
         }
-        // required for the joins
-        array_push($mates_prefs, 'User.id = Profile.user_id');
 
         return array(   'house_prefs' => $house_prefs,
                         'mates_prefs' => $mates_prefs,
@@ -966,7 +957,7 @@ class HousesController extends AppController {
             $house_conditions['House.availability_date <='] =
                                             $year . '-' . $month . '-' . $day;
         }
-        
+
 
         if( $this->Auth->User('role') != 'admin' ){
             $house_conditions['House.visible'] = 1;

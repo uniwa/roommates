@@ -2,6 +2,7 @@
     $username = $data['User']['username'];
     $firstname = $data['RealEstate']['firstname'];
     $lastname = $data['RealEstate']['lastname'];
+    $type = $data['RealEstate']['type'];
     $companyName = $data['RealEstate']['company_name'];
     $email = $data['RealEstate']['email'];
     $phone = $data['RealEstate']['phone'];
@@ -10,10 +11,13 @@
     $doy = $data['RealEstate']['doy'];
     $address = $data['RealEstate']['address'];
     $postalCode = $data['RealEstate']['postal_code'];
-    $municipality = $municipality['Municipality']['name'];
+    $municipalityName = '';
 
-    $isOffice = !empty($companyName);
-    $roleClarification = $isOffice ? 'μεσιτικού γραφείου' : 'ιδιώτη';
+    if( isset($municipality['Municipality']['name']) ) {
+        $municipalityName = $municipality['Municipality']['name'];
+    }
+
+    $roleClarification = $type == 'owner' ? 'ιδιώτη' : 'μεσιτικού γραφείου';
 ?>
 
 Υπεβλήθη αίτηση εγγραφής νέου <?php echo $roleClarification ?> στο σύστημα με τα ακόλουθα στοιχεία:
@@ -21,7 +25,7 @@
 
 Επίθετο: <?php echo $lastname; ?>
 <?php
-    if($isOffice) {
+    if($type == 'realestate') {
         echo <<<EOT
 
 Επωνυμία εταιρίας: {$companyName}
@@ -39,7 +43,7 @@ Email: <?php echo $email; ?>
 
 Φαξ: <?php echo $fax; ?>
 
-Δήμος: <?php echo $municipality; ?>
+Δήμος: <?php echo $municipalityName; ?>
 
 Διεύθυνση: <?php echo $address; ?>
 
