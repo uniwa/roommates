@@ -502,7 +502,9 @@ class HousesController extends AppController {
             // get user preferences
             $prefs = $this->loadSavedPreferences($profile_id);
             $results = $this->simpleSearch($prefs['house_prefs'],
-                                           $prefs['mates_prefs'], null, false);
+                $prefs['mates_prefs'],
+                array('House.modified' => 'DESC'),
+                false);
 
             // return municipality names
             $municipalities = $this->House->Municipality->find('list');
