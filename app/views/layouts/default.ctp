@@ -64,7 +64,7 @@
 
     </div>
     <!-- Inlude Piwik element -->
-    <?php echo $this->element('piwiki'); ?>
+    <?php echo $this->element('piwik'); ?>
 </body>
 </html>
 
