@@ -156,7 +156,7 @@
     // any saved house preferences
     if ($prefFurnished == 2  && $prefAccessibility == 0 &&
         $prefHousePhoto == 0 && $price_max == '' &&
-        $area_max == ''      && $area_min == '')
+        $area_max == ''      && $area_min == '' && $municipality == '')
     {
         $has_house_prefs = false;
     } else {
