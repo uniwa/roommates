@@ -208,7 +208,7 @@
         <div class="imageactions">
             <?php
                 if (! empty($profile['Profile']['avatar'])
-                    && $this->Session->read('Auth.User.id') === $profileid ) {
+                    && ($userid == $loggedUser) ) {
                     echo $this->Html->link(__('Διαγραφή', true),
                         array('controller' => 'profiles', 'action' => 'deleteImage', $profileid),
                         array('class' => 'profile_img_delete', 'title' => 'Διαγραφή εικόνας προφίλ'),

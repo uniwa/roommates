@@ -116,6 +116,8 @@ textarea{
 }
 
 .error-message{
+    clear: both;
+    margin: 0px 0px 8px 64px;
     color: #e00;
 }
 
