@@ -27,8 +27,8 @@ foreach ($results as $house) {
     $houseTitle = "{$house_types[$house['House']['house_type_id']]}, {$house['House']['area']}τ.μ.";
 
     /* set image if exists */
-    if (isset($house['Image']['location'])) {
-        $_imgpath = 'uploads/houses/' . $house['House']['id'] . '/thumb_' . $house['Image']['location'];
+    if (! empty($house['Image'])) {
+        $_imgpath = 'uploads/houses/' . $house['House']['id'] . '/thumb_' . $house['Image'][0]['location'];
         $thumb = $this->Html->image($_imgpath, array('alt' => 'εικόνα '.$house['House']['address'], 'height' => 70)) . '<br />';
     }
     else {
