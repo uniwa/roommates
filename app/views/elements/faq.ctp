@@ -1,4 +1,3 @@
-
 <?php
     echo $this->Html->script('jquery.easing.1.3.js');
     echo $this->Html->script('jquery.ui.totop.js');
