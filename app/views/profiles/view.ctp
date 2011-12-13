@@ -60,8 +60,8 @@
 
     .profileTitle{
         margin: 24px 0px 8px 18px;
-        font-size: 1.4em;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.2em;
         color: #333;
     }
 

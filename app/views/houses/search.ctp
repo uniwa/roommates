@@ -18,8 +18,8 @@
     .form-title{
         clear: both;
         margin: 20px 0px 12px 8px;
-        font-size: 1.4em;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.2em;
         color: #333;
     }
 
@@ -84,8 +84,8 @@
 /*        margin: 12px 0px 8px 48px;*/
         margin: 12px auto 0px auto;
         text-align: center;
-        font-size: 1.4em;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.2em;
         color: #333;
     }
 

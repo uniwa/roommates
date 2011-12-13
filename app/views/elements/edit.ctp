@@ -27,8 +27,8 @@
 
     .edit-title{
         margin: 12px 0px 24px 24px;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
-        font-size: 1.4em;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.3em;
         font-weight: bold;
         color: #333;
     }

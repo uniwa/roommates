@@ -188,8 +188,7 @@ textarea{
     background-color: #eee;
     margin: 0px 0px 0px 0px;
     padding: 6px 0px 8px 0px;
-    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
-/*    height: 32px;*/
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
 }
 
 #header-main{
@@ -438,8 +437,8 @@ textarea{
 
 .desc-title{
     margin: 12px 0px 0px 24px;
-    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
-    font-size: 1.6em;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.4em;
     font-weight: bold;
 }
 

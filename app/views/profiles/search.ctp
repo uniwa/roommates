@@ -2,8 +2,8 @@
     .form-title{
         clear: both;
         margin: 16px 0px 12px 0px;
-        font-size: 1.4em;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.2em;
         color: #333;
     }
 
@@ -67,8 +67,8 @@
     .search-title{
         margin: 12px auto 0px auto;
         text-align: center;
-        font-size: 1.4em;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.2em;
         color: #333;
     }
 

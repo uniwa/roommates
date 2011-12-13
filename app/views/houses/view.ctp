@@ -45,8 +45,8 @@
 
     .profileTitle{
         margin: 0px 0px 4px 0px;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
         font-size: 1.2em;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
         color: #333;
     }
     
@@ -57,8 +57,8 @@
 
     .houseTitle{
         margin: 0px 0px 16px 18px;
-        font-size: 1.4em;
-        font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
+        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+        font-size: 1.2em;
         color: #333;
     }
 
