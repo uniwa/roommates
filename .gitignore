@@ -20,12 +20,6 @@
 # registration activation emails
 /app/config/authority.php
 
-# any pdfs created locally (html2ps)
-/app/vendors/html2ps/out/*
-!/app/vendors/html2ps/out/readme.txt
-
-# /app/vendors/html2ps/cache/ contents are .gitignored from within the directory
-
 # swap et al
 *~
 *.swp
