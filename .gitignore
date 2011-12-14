@@ -20,6 +20,9 @@
 # registration activation emails
 /app/config/authority.php
 
+# possible cache caused from local pdf-lib use
+/app/vendors/html2ps/cache/*
+
 # swap et al
 *~
 *.swp
