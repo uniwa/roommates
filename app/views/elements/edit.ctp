@@ -126,7 +126,8 @@
     echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
     echo $this->Html->script(array('jquery', 'gmap3.min', 'jquery.editgmap'));
     $dateOptions = array('label' => 'Διαθέσιμο από', 'separator' => '',
-        'dateFormat' => 'DMY', 'minYear' => date('Y'), 'maxYear' => date('Y') + 5);
+                         'dateFormat' => 'DMY', 'minYear' => date('Y'),
+                         'maxYear' => date('Y') + 5, 'orderYear' => 'asc');
     $role = $this->Session->read('Auth.User.role');
     if(isset($house)){
         $houseid = $house['House']['id'];
