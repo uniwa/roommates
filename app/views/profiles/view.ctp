@@ -384,7 +384,7 @@
 			    }
 		    ?>
 		    <?php
-		        if(isset($municipality)){
+		        if(! empty($municipality)){
 				    echoDetail('Δήμος', $municipality);
 			    }
                 if($prefFurnished < '2' && $prefFurnished != null) {
