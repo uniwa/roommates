@@ -112,8 +112,22 @@ define("MAX_LINE_LENGTH", 100);
 define('MAX_IMAGE_ROW_LEN',16);
 define('MAX_TRANSPARENT_IMAGE_ROW_LEN',16);
 
-define('CACHE_DIR', HTML2PS_DIR.'cache/');
-define('OUTPUT_FILE_DIRECTORY', HTML2PS_DIR.'out/');
+// Gives the option to define cache directory (the if statement is custom and
+// was not included into the initial library)
+if( defined('HTML2PS_PDF_CACHE_DIR') ) {
+    define('CACHE_DIR', constant('HTML2PS_PDF_CACHE_DIR'));
+} else {
+    define('CACHE_DIR', HTML2PS_DIR.'cache/');
+}
+
+// Gives the option to define output directory (the if statement is custom and
+// was not included into the initial library)
+if( defined('HTML2PS_PDF_OUT_DIR') ) {
+    define('OUTPUT_FILE_DIRECTORY', constant('HTML2PS_PDF_OUT_DIR'));
+} else {
+    define('OUTPUT_FILE_DIRECTORY', HTML2PS_DIR.'out/');
+}
+
 define('FPDF_PATH', HTML2PS_DIR.'fpdf/');
 
 // Trailing directory separator ('/' or '\', depending on your system)

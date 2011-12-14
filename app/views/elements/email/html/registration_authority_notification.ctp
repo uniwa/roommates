@@ -12,13 +12,16 @@
     $address = $data['RealEstate']['address'];
     $postalCode = $data['RealEstate']['postal_code'];
     $municipalityName = '';
-pr( $municipality );
     if( isset($municipality['Municipality']['name']) ) {
         $municipalityName = $municipality['Municipality']['name'];
     }
 
     $roleClarification = $type == 'owner' ? 'ιδιώτη' : 'μεσιτικού γραφείου';
 ?>
+<?php if( !$pdf_success ) { ?>
+<p>ΣΗΜΑΝΤΙΚΟ: Η εκτυπώσιμη μορφή (pdf) της παρούσας αίτησης δεν κατέστη δυνατό να παραχθεί και, συνεπώς, δεν εστάλη στον αιτούντα. Για το λόγο αυτό, επικοινωνήστε μαζί του το συντομότερο δυνατό ώστε να τον ενημερώσετε σχετικά με το πώς να κινηθεί.</p>
+
+<?php } ?>
 
 <p>Υπεβλήθη αίτηση εγγραφής νέου <?php echo $roleClarification ?> στο σύστημα με τα ακόλουθα στοιχεία:</p>
 <p>Όνομα: <?php echo $firstname; ?></p>
