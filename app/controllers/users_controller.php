@@ -21,9 +21,11 @@ class UsersController extends AppController{
         $this->Auth->allow('registerowner');
         $this->Auth->allow('registerrealestate');
 
-        if( $this->params['action'] === 'register' && $this->Auth->user() ) {
+        if( $this->params['action'] === 'register' ) {
+            if ($this->Auth->user() || $this->Auth->User('role') != 'admin') {
 
-            $this->cakeError( 'error403' );
+                $this->cakeError( 'error403' );
+            }
         }
     }
 
