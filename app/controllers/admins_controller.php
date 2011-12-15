@@ -61,19 +61,9 @@ class AdminsController extends AppController
         $user = new User();
         $this->set('limit', $this->paginate['limit']);
 
-        if (! empty($this->params['url'])) {
+        if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])
+            || isset($this->params['url']['disabled'])){
             $parameters = $this->params['url'];
-        }
-        elseif (! empty($this->params['named'])) {
-            $parameters = $this->params['named'];
-        }
-        else {
-            $parameters = array();
-        }
-
-        if(isset($parameters['name']) || isset($parameters['banned'])
-            || isset($parameters['url']['disabled'])){
-
             if(isset($parameters['name']) && ($parameters['name'] != '')){
                 $conditions = array('OR'=>array(
                     'User.username LIKE' => "%".$parameters['name']."%",
