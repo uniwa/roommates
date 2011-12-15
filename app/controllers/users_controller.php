@@ -300,7 +300,7 @@ class UsersController extends AppController{
         }
     }
 
-    function register() {
+    private function register() {
         if ($this->data) {
             // user must accept the real estate terms
             if ($this->data["User"]["estate_terms"] != "1") {
