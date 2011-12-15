@@ -150,7 +150,10 @@ class HousesController extends AppController {
             $this->Auth->allow( 'search' );
         }
 
-        $this->Auth->allow('webService');
+        $this->Auth->allow('handleGetRequest');
+        $this->Auth->allow('handlePostRequest');
+        $this->Auth->allow('handlePutRequest');
+        $this->Auth->allow('handleDeleteRequest');
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -1323,19 +1326,7 @@ class HousesController extends AppController {
     // REST - Web Services
     // ------------------------------------------------------------------------
 
-    function webService($id = null) {
-        if ($this->RequestHandler->isGet()) {
-            $this->handleGetRequest($id);
-        } else if ($this->RequestHandler->isPost()) {
-            $this->handlePostRequest();
-        } else if ($this->RequestHandler->isPut()) {
-            $this->handlePutRequest($id);
-        } else if ($this->RequestHandler->isDelete()) {
-            $this->handleDeleteRequest($id);
-        }
-    }
-
-    private function handleGetRequest($id) {
+    function handleGetRequest($id = null) {
         $house_conds = $this->getHouseConditions();
         if ($id != null) array_push($house_conds, array('House.id' => $id));
         $result = $this->simpleSearch(  $house_conds,
@@ -1347,7 +1338,7 @@ class HousesController extends AppController {
         $this->render('xml/public');
     }
 
-    private function handlePostRequest() {
+    function handlePostRequest() {
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
@@ -1383,7 +1374,7 @@ class HousesController extends AppController {
         $this->render('xml/create');
     }
 
-    private function handlePutRequest($id) {
+    function handlePutRequest($id = null) {
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
@@ -1418,11 +1409,11 @@ class HousesController extends AppController {
             $this->layout = 'xml/default';
             $this->render('xml/create');
         } else {
-            // TODO return some error
+            // TODO if the $id === null then create the house
         }
     }
 
-    private function handleDeleteRequest($id) {
+    function handleDeleteRequest($id = null) {
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
