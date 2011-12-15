@@ -408,7 +408,7 @@ EOM;
 </div>
 <div id='main-inner' class='mainSearch'>
     <?php
-        if($numberImages > 0){
+        if(($loggedUser == $userid) || ($numberImages > 0)){
     ?>
     <div id='imageList' class='houseClear'>
         <ul>
