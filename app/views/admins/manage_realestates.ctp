@@ -66,7 +66,7 @@
         if(isset($results)){
     ?>
         <div class='search-title'>
-            <h2>Εγγεγραμμένοι ενοικιαστές</h2>
+            <h2>Εγγεγραμμένοι εκμισθωτές</h2>
         </div>
         <div class='search-subtitle'>
         <?php
