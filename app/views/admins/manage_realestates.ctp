@@ -1,5 +1,16 @@
+<div 
 <div id='leftbar' class='leftManage'>
     <div class='left-form-cont'>
+        <div class='form-title'>
+            <h2>Εγγραφή ιδιώτη</h2>
+        </div>
+        <div class='button'>
+            <?php
+                $addLink = array('controller' => 'users', 'action' => 'registerfromadmin');
+                $addClass = 'buttonAdd';
+                echo $this->Html->link('εγγραφή', $addLink, array('class' => $addClass));
+            ?>
+        </div>
         <div class='form-title'>
             <h2>Αναζήτηση χρηστών</h2>
         </div>
