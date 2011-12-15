@@ -38,5 +38,10 @@
                 array('controller' => 'houses', 'action' => 'webservice')
     );
 
+    Router::connect(
+                '/api/users/*',
+                array('controller' => 'users', 'action' => 'webservice')
+    );
+
     /* enable rss*/
     Router::parseExtensions('rss');
