@@ -419,6 +419,13 @@ class UsersController extends AppController{
         $this->register();
     }
 
+    function registerfromadmin() {
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου ιδιώτη από τον διαχειριστή');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register(true);
+    }
+
     private function create_estate_profile($id, $data) {
         $realestate["RealEstate"]["firstname"] = $data["RealEstate"]["firstname"];
         $realestate["RealEstate"]["lastname"] = $data["RealEstate"]["lastname"];
