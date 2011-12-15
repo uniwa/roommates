@@ -1472,6 +1472,10 @@ class HousesController extends AppController {
 
     }
 
+    function webServiceError($id = null) {
+        // TODO implement display an error
+    }
+
     //////////////////////////////////////////////////
     // Set the required ID fields in House model
     // (municipality, floor, house_type, heating_type)
