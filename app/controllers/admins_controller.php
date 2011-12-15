@@ -61,6 +61,18 @@ class AdminsController extends AppController
         $user = new User();
         $this->set('limit', $this->paginate['limit']);
 
+        if (! empty($this->params['named'])) {
+            if (isset($this->params['named']['name'])) {
+                $this->params['url']['name'] = $this->params['named']['name'];
+            }
+            if (isset($this->params['named']['banned'])) {
+                $this->params['url']['banned'] = $this->params['named']['banned'];
+            }
+            if (isset($this->params['named']['disabled'])) {
+                $this->params['url']['disabled'] = $this->params['named']['disabled'];
+            }
+        }
+
         if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])
             || isset($this->params['url']['disabled'])){
             $parameters = $this->params['url'];
