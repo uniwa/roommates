@@ -355,6 +355,7 @@ class UsersController extends AppController{
             else {
                 /* try saving real estate profile */
                 $uid = $this->User->id;
+                $uname = $userdata["User"]["username"];
                 if ( $this->create_estate_profile($uid, $this->data) == false) {
                     $this->User->rollback();
                 }
@@ -383,9 +384,9 @@ class UsersController extends AppController{
                         // if admin registers on behalf of other users, redirect to RE management screen
                         $this->redirect(array('controller' => 'admins',
                                             'action' => 'manage_realestates',
-                                            'name' => $this->User->username,
+                                            'name' => "$uname",
                                             'banned' => '0',
-                                            'disable' => '0'));
+                                            'disabled' => '0'));
                     }
                     else {
                         $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
