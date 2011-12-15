@@ -432,12 +432,15 @@ class UsersController extends AppController{
         }
     }
 
+    // Creates XML request to Redmine for reporting an issue
     private function createXmlRequest($data){
+        // Set project id
+        $projectID = 8;
         $req = "<?xml version=\"1.0\"?>";
         $req .= "<issue>";
         $req .= "<subject>{$data['subject']}</subject>";
         $req .= "<description>{$data['description']}</description>";
-        $req .= "<project_id>8</project_id>"; // TODO: change project id
+        $req .= "<project_id>{$projectID}</project_id>";
         $req .= "</issue>";
 
         return $req;
