@@ -372,12 +372,14 @@ class UsersController extends AppController{
                     $fraction['User']['id'] = $uid;
                     $this->notifyOfRegistration($fraction);
 
-                    //"Η εγγραφή σας ολοκληρώθηκε με επιτυχία."
                     $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
                             ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
                         'default', array('class' => 'flashBlue'));
 
                     if ($from_admin) {
+                        $this->Session->setFlash("Η εγγραφή εκ μέρους τρίτου πραγματοποιήθηκε με επιτυχία.",
+                                'default', array('class' => 'flashBlue'));
+
                         // if admin registers on behalf of other users, redirect to RE management screen
                         $this->redirect(array('controller' => 'admins',
                                             'action' => 'manage_realestates',
@@ -386,6 +388,9 @@ class UsersController extends AppController{
                                             'disable' => '0'));
                     }
                     else {
+                        $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
+                                ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
+                                'default', array('class' => 'flashBlue'));
                         $this->redirect('login');
                     }
                 }
