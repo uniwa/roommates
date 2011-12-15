@@ -2,13 +2,14 @@
 <div id='mainCenter' class='mainLogin'>
 <?php
     $registerType = ($type == 'owner' || $type == 'from_admin')?'registerowner':'registerrealestate';
-    echo $this->Form->create('User', array('action' => $registerType));
     if ($type == 'from_admin') {
+        echo $this->Form->create('User', array('action' => 'registerfromadmin'));
         // if we are admin, we register owners not real estates
         echo $this->Form->input('RealEstate.type', array('type' => 'hidden',
             'value' => 'owner'));
     }
     else {
+        echo $this->Form->create('User', array('action' => $registerType));
         echo $this->Form->input('RealEstate.type', array('type' => 'hidden',
             'value' => $type));
     }
