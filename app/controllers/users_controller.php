@@ -60,18 +60,22 @@ class UsersController extends AppController{
 		$this->redirect( $this->Auth->logout() );
 	}
 
+    // Enables currently logged in 'admin' user to act with the permissions of
+    // $id user. Currently, $id may only belong to a 'realestate' of type
+    // 'owner'. If this function is invoked by a non-admin user, the account
+    // will be reset to its initial permissions.
     function switchUser($id=null) {
-// TODO: MAKE SURE $id CORRESPONDS TO REAL_ESTATE (prevent greedy admins)
 
         if( $this->Session->read('Auth.User.role') != 'admin' ) {
 
-            // user may be a 'masked' admin (ie, admin logged in as realestate)
-            if($this->Session->check('Manager.id')) {
-                $this->Auth->logout(); //required?
+            // user may be a 'masked' admin (an admin logged in as realestate)
+            if( $this->Session->check('Manager.id') ) {
 
                 $managerId = $this->Session->read('Manager.id');
+                $managerRole = $this->Session->read('Manager.role');
+                $managerUsername = $this->Session->read('Manager.username');
 
-                $this->Auth->login($managerId);
+                $this->alterAuth($managerId, $managerRole, $managerUsername);
 
                 $redirect_url =
                     $this->Session->check('Manager.return_url') ?
@@ -80,20 +84,58 @@ class UsersController extends AppController{
                         'controller' => 'admins',
                         'action' => 'manage_realestates');
 
+                // ensure that topuser.ctp will display link to (casual) logout
                 $this->Session->delete('Manager');
                 $this->redirect($redirect_url);
             }
             $this->cakeError('error404');
         }
 
-        $managerId = $this->Auth->user('id');
-        $this->Session->write('Manager.id', $managerId);
-        // url to redirect admin after they logout as realestate
-        $this->Session->write(
-            'Manager.return_url',
-            Router::url('/', true));
+        // make sure that no $id of improper account was requested
+        $user = $this->ascertainRole($id, 'owner');
 
-//        $this->Auth->login(/*$id*/ array('username'=>'rapturous', 'password'=>'12345678'));
+        if( empty($user) )   $this->cakeError('error404');
+
+        $this->transmuteRole($user);
+    }
+
+    // Alters id, role and username under Auth.User session variable,
+    // effectively changing the permissions of the currently logged in user to
+    // those of the supplied one.
+    private function alterAuth($id, $role, $username) {
+        $this->Session->write('Auth.User.id', $id);
+        $this->Session->write('Auth.User.role', $role);
+        $this->Session->write('Auth.User.username', $username);        
+    }
+
+    // Returns the realestate data that correspond to the supplied $user_id
+    // given that it ($user_id) actually belongs to a $type realestate account.
+    private function ascertainRole($user_id, $type) {
+        //$this->loadModel('RealEstate');
+        return $this->RealEstate->find('first', array('conditions' => array(
+            'RealEstate.user_id' => $user_id, 'RealEstate.type' => $type)));
+    }
+
+    // Does the actual switching of account by copying the current user's data
+    // into the 'Manager' session variable, replacing Auth.User.id, username and
+    // role with the $user info supplied and redirecting to the home page.
+    private function transmuteRole($user) {
+        $managerId = $this->Session->read('Auth.User.id');
+        $managerRole = $this->Session->read('Auth.User.role');
+        $managerUsername = $this->Session->read('Auth.User.username');
+
+        // store current user data so as to switch back to this account
+        $this->Session->write('Manager.id', $managerId);
+        $this->Session->write('Manager.role', $managerRole);
+        $this->Session->write('Manager.username', $managerUsername);
+
+        // url to redirect admin after they logout from the realestate account
+        $this->Session->write( 'Manager.return_url', Router::url( array(
+            'controller' => 'admins', 'action' => 'manage_realestates'), true));
+
+        $this->Session->write('Auth.User.id', $user['User']['id']);
+        $this->Session->write('Auth.User.username', $user['User']['username']);
+        $this->Session->write('Auth.User.role', $user['User']['role']);
 
         $this->redirect(array('controller' => 'pages', 'action' => 'display'));
     }
