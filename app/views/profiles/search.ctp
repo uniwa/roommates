@@ -1,109 +1,4 @@
-<style>
-    .form-title{
-        clear: both;
-        margin: 16px 0px 12px 0px;
-        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
-        font-size: 1.2em;
-        color: #333;
-    }
-
-    #leftbar{
-        float: left;
-        margin: 0px 0px 0px 0px;
-        padding: 16px 0px 0px 36px;
-        width: 300px;
-    }
-
-    #main-inner{
-        float: left;
-        border-left: 1px solid #ddd;
-        margin: 10px 0px 10px 2px;
-        padding: 0px 0px 0px 0px;
-        width: 620px;
-        min-height: 800px;
-        overflow: hidden;
-    }
-
-    .left-form ul{
-        margin: 0px 0px 20px 8px;
-    }
-
-    .form-buttons{
-        margin: 10px auto;
-        width: 220px;
-    }
-
-    .form-elem{
-        margin: 0px 8px 12px 0px;
-        font-size: 1.2em;
-    }
-
-    .form-label{
-        float: left;
-        width: 80px;
-    }
-
-    .form-input{
-        float: left;
-        width: 140px;
-        overflow: no-scroll;
-    }
-
-    .form-checkbox{
-        width: 220px;
-    }
-
-    .form-submit{
-        float: left;
-    }
-
-    .button{
-        border: 0px;
-        width: 100px;
-        height: 24px;
-        cursor: pointer;
-    }
-
-    .search-title{
-        margin: 12px auto 0px auto;
-        text-align: center;
-        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
-        font-size: 1.2em;
-        color: #333;
-    }
-
-    .search-subtitle{
-/*        margin: 0px 0px 12px 64px;*/
-        margin: 8px auto 24px auto;
-        text-align: center;
-        font-size: 1.2em;
-        font-style: italic;
-    }
-
-    .pagination{
-        margin: 12px auto 12px auto;
-        text-align: center;
-    }
-
-    .pagination ul li{
-        display: inline;
-    }
-
-    .pagination ul li.current{
-        border: 1px solid #59A4D8;
-        padding: 0px 2px 0px 2px;
-        font-weight: bold;
-    }
-
-    .pagination ul li.disabled{
-        color: #aaa;
-    }
-
-    .thumbImage{
-    }
-</style>
-
-<div id='leftbar'>
+<div id='leftbar' class='leftSearch'>
     <div class='left-form-cont'>
 
     <?php
@@ -144,7 +39,8 @@
                             echo $this->Form->input('orderby',
                                 array('label' => '',
                                 'options' => $order_options['options'],
-                                'default' => $order_options['selected'],
+                                'selected' => isset($order_options['selected'])
+                                    ?$order_options['selected']:'0',
                                 'class' => 'input-elem'));
                         ?>
                     </div>
@@ -287,7 +183,7 @@
         </div>
     </div>
 </div>
-<div id='main-inner'>
+<div id='main-inner' class='mainSearch'>
     <div id='results'>
         <?php
             if (isset($profiles)) {

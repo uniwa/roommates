@@ -1,183 +1,3 @@
-<style>
-    #mainWrapper{
-        margin: 0px;
-        padding: 0px;
-        width: 100%;
-        height: 100%;
-    }
-    
-    #leftbar{
-        float: left;
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
-        width: 340px;
-    }
-
-    #main-inner{
-        float: left;
-        border-left: 1px solid #ddd;
-        margin: 10px 0px 20px 0px;
-        padding: 24px 24px 24px 16px;
-        width: 560px;
-        min-height: 600px;
-        overflow: hidden;
-    }
-
-    #houseCont{
-        margin: 0px 0px 0px 0px;
-        padding: 32px;
-        overflow: hidden;
-        height: 100%;
-    }
-
-    .housePic{
-        float: left;
-        padding: 2px;
-        width: 180px;
-        height: 100px;
-        overflow: hidden;
-    }
-
-    #ownerInfo{
-        margin: 32px 0px 0px 8px;
-        padding: 2px;
-    }
-
-    .profileTitle{
-        margin: 0px 0px 4px 0px;
-        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
-        font-size: 1.2em;
-        color: #333;
-    }
-    
-    #houseEdit{
-        clear: both;
-        margin: 0px 0px 0px 44px;
-    }
-
-    .houseTitle{
-        margin: 0px 0px 16px 18px;
-        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
-        font-size: 1.2em;
-        color: #333;
-    }
-
-    .houseClear{
-        clear: both;
-    }
-
-    .houseLine{
-        padding: 6px;
-        overflow: hidden;
-    }
-
-    .houseLineLong{
-        width: 340px;
-    }
-    
-    .houseLineShort{
-        width: 160px;
-    }
-    
-    .houseProperty{
-        float: left;
-        text-align: right;
-    }
-
-    .houseV{
-        width: 130px;
-    }
-
-    .houseC{
-        width: 140px;
-    }
-
-    .houseValue{
-        float: left;
-        margin: 0px 0px 0px 8px;
-    }
-    
-    .houseCheck{
-        background-image: url('img/check.png');
-        background-repeat: no-repeat;
-        margin: 0px 0px 0px 8px;
-        width: 12px;
-        height: 12px;
-        text-indent: -9999px;
-    }
-    
-    .houseCheckFalse{
-        background-position: 0px -12px;
-    }
-
-    .houseCheckTrue{
-        background-position: 0px 0px;
-    }
-
-    .houseOdd{
-        background-color: #eef;
-    }
-    
-    #housePropertiesCont{
-        margin: 0px 0px 0px 16px;
-    }
-
-    .housePropertiesCol{
-        float: left;
-        margin: 0px 8px 0px 0px;
-    }
-
-    .houseOptions{
-        margin: 16px 0px 0px 0px;
-    }
-
-    .liimage{
-        float: left;
-        margin: 0px 0px 0px 4px;
-    }
-
-    #imageList{
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
-    }
-    
-    .imageThumbCont{
-        width: 180px;
-        height: 100px;
-        overflow: hidden;
-    }
-    
-    .default-image{
-        height: 100%;
-        overflow: hidden;
-    }
-
-    #houseInfo{
-        margin: 0px 0px 0px 0px;
-        padding: 24px 0px 0px 0px;
-    }
-    
-    .optionIcon{
-        margin: 0px 4px 0px 0px;
-        vertical-align: -30%;
-    }
-    
-    .owner-info{
-        margin: 32px 0px 0px 0px;
-    }
-    
-    #houseMap{
-        clear: both;
-        margin: 32px 0px 32px 0px;
-    }
-    
-    .map{
-        margin: 0px auto;
-        width: 300px;
-        height: 220px;
-    }
-</style>
-
 <?php
     echo $this->Html->script('http://maps.google.com/maps/api/js?sensor=false');
     echo $this->Html->script(array( 'jquery', 'gmap3.min', 'jquery.viewgmap'));
@@ -325,6 +145,7 @@
         $imageLines[$i] = $imageLine;
         $i++;
     }
+    $numberImages = count($imageLines);
 
     if($loggedUser == $userid){
         //edit house
@@ -343,7 +164,7 @@
     // owner's profile (not available to real estate)
     if(($loggedUser != $userid) && ($role != 'realestate')){
         if($ownerRole == 'user'){
-            $profileInfo = "<div class='owner-info'>";
+            $profileInfo = "<div id='owner-info'>";
             $profileInfo .= "<div class='profileTitle'>Στοιχεία φοιτητή</div>";
             $profileInfo .= $this->Html->link($profileName, array(
                 'controller' => 'profiles', 'action' => 'view',
@@ -353,7 +174,7 @@
             $profileInfo .= '<br />επιθυμητοί συγκάτοικοι: '.$profileWanted;
             $profileInfo .= "</div>";
         }elseif($ownerRole == 'realestate'){
-            $profileInfo = "<div class='owner-info'>";
+            $profileInfo = "<div id='owner-info'>";
             $profileInfo .= "<div class='profileTitle'>Στοιχεία ενοικιαστή</div>";
             $profileInfo .= $this->Html->link($realestateCompany,
                 array('controller' => 'realEstates', 'action' => 'view',
@@ -548,9 +369,9 @@ EOT;
         $roleClass = 'student';
         $roleTitle = 'φοιτητής';
     }
-    echo "<div id='mainWrapper' class='{$classCont}'>";
+    echo "<div id='mainWrapper' class='{$classCont} houseview'>";
 ?>
-<div id='leftbar'>
+<div id='leftbar' class='leftSearch'>
     <div id='houseCont'>
         <div class='housePic default-image'>
             <?php
@@ -585,17 +406,23 @@ EOM;
             }
         ?>
 </div>
-<div id='main-inner'>
+<div id='main-inner' class='mainSearch'>
+    <?php
+        if($numberImages > 0){
+    ?>
     <div id='imageList' class='houseClear'>
         <ul>
             <?php
-                for($i = 1; $i <= count($imageLines); $i++){
+                for($i = 1; $i <= $numberImages; $i++){
                     echo $imageLines[$i];
                 }
                 if(isset($placeholders)) echo $placeholders;
             ?>
         </ul>
     </div>
+    <?php
+        } // $numberImages > 0
+    ?>
     <div id='houseInfo' class='houseClear'>
         <div class='houseTitle'>
             Στοιχεία σπιτιού

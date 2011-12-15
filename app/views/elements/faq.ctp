@@ -1,24 +1,6 @@
 <?php
     echo $this->Html->script('jquery.easing.1.3.js');
     echo $this->Html->script('jquery.ui.totop.js');
-?>
-<style>
-/*    h2{
-        margin: 68px 0px 0px 0px;
-    }
-*/
-.faqitem{
-    margin: -40px 0 0 0;
-    padding: 48px 0px 0px 0px;
-}
-</style>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $().UItoTop({ easingType: 'easeOutQuart' });
-    });
-</script>
-
-<?php
 
     // The order of the keys in $questions and $answers
     // arrays does not matter, but they must be unique.
@@ -192,3 +174,10 @@
     }
 
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $().UItoTop({ easingType: 'easeOutQuart' });
+    });
+</script>
+

@@ -1,97 +1,3 @@
-<style>
-    #leftbar{
-        float: left;
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
-        width: 300px;
-        height: 100%;
-    }
-
-    #main-inner{
-        float: left;
-        border-left: 1px solid #ddd;
-        margin: 10px 0px 20px 0px;
-        padding: 24px;
-        height: 100%;
-    }
-
-    .profilePic{
-        margin: 0px auto;
-        padding: 2px;
-        width: 100px;
-        height: 100px;
-        overflow: hidden;
-    }
-
-    .housePic{
-        margin: 0px auto;
-        padding: 2px;
-        width: 180px;
-        height: 100px;
-        overflow: hidden;
-    }
-
-    #profileCont{
-        margin: 0px 0px 0px 0px;
-        padding: 32px;
-        text-align: center;
-    }
-
-    #profileEdit{
-        margin: 32px 0px 0px 12px;
-        text-align: center;
-    }
-
-    #profileBan{
-        margin: 32px auto 0px auto;
-    }
-
-    .profileClear{
-        clear: both;
-    }
-
-    .profileBlock{
-        float: left;
-        margin: 0px 32px 64px 0px;
-        padding: 0px 8px 0px 8px;
-        width: 240px;
-        overflow: hidden;
-    }
-
-    .profileTitle{
-        margin: 24px 0px 8px 18px;
-        font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
-        font-size: 1.2em;
-        color: #333;
-    }
-
-    .profileInfo{
-        float: left;
-        margin: 0px 0px 16px 24px;
-        font-size: 1.0em;
-    }
-
-    .profileOptions{
-        margin: 16px 0px 0px 0px;
-    }
-
-    .optionIcon{
-        margin: 0px 4px 0px 0px;
-        vertical-align: -30%;
-    }
-
-    #myHouse{
-        width: 500px;
-    }
-
-    #myHousePic{
-        margin: 0px 0px 0px 24px;
-    }
-
-    #myHouseInfo{
-        margin: 24px 0px 0px 24px;
-    }
-</style>
 <?php
     $role = $this->Session->read('Auth.User.role');
     $loggedUser = $this->Session->read('Auth.User.id');
@@ -198,9 +104,10 @@
 		return $preference;
     }
 ?>
-<div id='leftbar'>
+<div id='profileView'>
+<div id='leftbar' class='leftGeneral'>
     <div id='profileCont'>
-        <div class='profilePic'>
+        <div id='profilePic'>
             <?php
                 echo $profilePic;
             ?>
@@ -268,7 +175,7 @@
         ?>
     </div>
 </div>
-<div id='main-inner'>
+<div id='main-inner' class='mainSearch'>
     <div class='profileBlock profileClear'>
         <div id='myName' class='profileTitle'>
             <h2><?php echo $name; ?></h2>
@@ -417,7 +324,7 @@
                     echo "{$houseLink}<br />{$houseAddress}<br />{$housePrice} €/μήνα<br />{$houseFurnished}";
                 ?>
             </div>
-            <div id='myHousePic' class='profileInfo housePic'>
+            <div id='myHousePic' class='profileInfo profileHousePic'>
                 <?php
                     if(isset($houseThumbLink)){
                         echo $houseThumbLink;
@@ -448,4 +355,4 @@
         } // isset $house
     ?>
 </div>
-
+</div>
