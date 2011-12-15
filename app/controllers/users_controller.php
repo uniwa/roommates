@@ -308,19 +308,23 @@ class UsersController extends AppController{
         // captcha field
 
         if ($this->data) {
-            // user must accept the real estate terms
-            if ($this->data["User"]["estate_terms"] != "1") {
-                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης
-για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
+            if (! $from_admin) {
+                // user must accept the real estate terms
+                if ($this->data["User"]["estate_terms"] != "1") {
+                    $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης
+    για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
+                    $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                    return;
+                }
             }
 
             // check for valid captcha
-            if (! $this->Recaptcha->verify()) {
-                $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
+            if (! $from_admin) {
+                if (! $this->Recaptcha->verify()) {
+                    $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
+                    $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                    return;
+                }
             }
 
             $userdata["User"]["username"] = $this->data["User"]["username"];
@@ -330,8 +334,14 @@ class UsersController extends AppController{
             $userdata["User"]["banned"] = 0;
             /* terms are shown on register page and cannot proceed without accepting */
             $userdata["User"]["terms_accepted"] = 1;
-            /* we need enabled = 0 because all users are enabled in db by default */
-            $userdata["User"]["enabled"] = 0;
+
+            if ($from_admin) {
+                /* if admin registers a user then enable by default */
+                $userdata["User"]["enabled"] = 1;
+            } else {
+                /* we need enabled = 0 because all users are enabled in db by default */
+                $userdata["User"]["enabled"] = 0;
+            }
 
             $this->User->begin();
             /* try saving user model */
