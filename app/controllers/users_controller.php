@@ -338,7 +338,8 @@ class UsersController extends AppController{
             if ($from_admin) {
                 /* if admin registers a user then enable by default */
                 $userdata["User"]["enabled"] = 1;
-            } else {
+            }
+            else {
                 /* we need enabled = 0 because all users are enabled in db by default */
                 $userdata["User"]["enabled"] = 0;
             }
@@ -376,7 +377,17 @@ class UsersController extends AppController{
                             ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
                         'default', array('class' => 'flashBlue'));
 
-                    $this->redirect('login');
+                    if ($from_admin) {
+                        // if admin registers on behalf of other users, redirect to RE management screen
+                        $this->redirect(array('controller' => 'admins',
+                                            'action' => 'manage_realestates',
+                                            'name' => $this->User->username,
+                                            'banned' => '0',
+                                            'disable' => '0'));
+                    }
+                    else {
+                        $this->redirect('login');
+                    }
                 }
             }
 
