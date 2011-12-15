@@ -146,13 +146,9 @@
         width: 180px;
     }
 
-    .banned,.enabled{
+    .banned,.enabled,.alias{
         border-right: 0px;
-        width: 80px;
-    }
-    .alias{
-        border-right:0;
-        width:10px;
+        width: 60px;
     }
 
     .admpaginator{
@@ -215,6 +211,16 @@
     
     .optionDisabled:hover{
         background-image: url('img/accept_16.png');
+    }
+    
+    .switchUser{
+        background-image: url('img/switch.png');
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
     }
 </style>
 
@@ -354,7 +360,7 @@
                     ενεργός
                 </div>
                 <div class='col alias'>
-                    a
+                    σύνδεση
                 </div>
             </div>
             <?php
@@ -425,10 +431,13 @@
                 </div>
                 <div class='col alias'>
                     <?php
-                        echo $this->Html->link('ϗ', array(
-                            'controller' => 'users',
-                            'action' => 'switchUser',
-                            $user['User']['id']));
+                        $iconConnect = $this->Html->image('switch.png',
+                            array('alt' => 'σύνδεση'));
+                        $textConnect = "<div class='switchUser'>σύνδεση ως</div>";
+                        echo $this->Html->link($textConnect,
+                            array('controller' => 'users',
+                            'action' => 'switchUser', $user['User']['id']),
+                            array('title' => 'σύνδεση ως', 'escape' => false));
                     ?>
                 </div>
             </div>
