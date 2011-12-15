@@ -21,9 +21,11 @@ class UsersController extends AppController{
         $this->Auth->allow('registerowner');
         $this->Auth->allow('registerrealestate');
 
-        if( $this->params['action'] === 'register' && $this->Auth->user() ) {
+        if( $this->params['action'] === 'register' ) {
+            if ($this->Auth->user() || $this->Auth->User('role') != 'admin') {
 
-            $this->cakeError( 'error403' );
+                $this->cakeError( 'error403' );
+            }
         }
     }
 
@@ -298,21 +300,31 @@ class UsersController extends AppController{
         }
     }
 
-    function register() {
+    private function register($from_admin = false) {
+        // core register function
+        //
+        // $from_admin parameter shows that admin registers
+        // another user, used for bypassing legal notes and
+        // captcha field
+
         if ($this->data) {
-            // user must accept the real estate terms
-            if ($this->data["User"]["estate_terms"] != "1") {
-                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης
-για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
+            if (! $from_admin) {
+                // user must accept the real estate terms
+                if ($this->data["User"]["estate_terms"] != "1") {
+                    $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης
+    για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
+                    $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                    return;
+                }
             }
 
             // check for valid captcha
-            if (! $this->Recaptcha->verify()) {
-                $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
+            if (! $from_admin) {
+                if (! $this->Recaptcha->verify()) {
+                    $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
+                    $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                    return;
+                }
             }
 
             $userdata["User"]["username"] = $this->data["User"]["username"];
@@ -322,8 +334,15 @@ class UsersController extends AppController{
             $userdata["User"]["banned"] = 0;
             /* terms are shown on register page and cannot proceed without accepting */
             $userdata["User"]["terms_accepted"] = 1;
-            /* we need enabled = 0 because all users are enabled in db by default */
-            $userdata["User"]["enabled"] = 0;
+
+            if ($from_admin) {
+                /* if admin registers a user then enable by default */
+                $userdata["User"]["enabled"] = 1;
+            }
+            else {
+                /* we need enabled = 0 because all users are enabled in db by default */
+                $userdata["User"]["enabled"] = 0;
+            }
 
             $this->User->begin();
             /* try saving user model */
@@ -336,6 +355,7 @@ class UsersController extends AppController{
             else {
                 /* try saving real estate profile */
                 $uid = $this->User->id;
+                $uname = $userdata["User"]["username"];
                 if ( $this->create_estate_profile($uid, $this->data) == false) {
                     $this->User->rollback();
                 }
@@ -353,12 +373,27 @@ class UsersController extends AppController{
                     $fraction['User']['id'] = $uid;
                     $this->notifyOfRegistration($fraction);
 
-                    //"Η εγγραφή σας ολοκληρώθηκε με επιτυχία."
                     $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
                             ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
                         'default', array('class' => 'flashBlue'));
 
-                    $this->redirect('login');
+                    if ($from_admin) {
+                        $this->Session->setFlash("Η εγγραφή εκ μέρους τρίτου πραγματοποιήθηκε με επιτυχία.",
+                                'default', array('class' => 'flashBlue'));
+
+                        // if admin registers on behalf of other users, redirect to RE management screen
+                        $this->redirect(array('controller' => 'admins',
+                                            'action' => 'manage_realestates',
+                                            'name' => "$uname",
+                                            'banned' => '0',
+                                            'disabled' => '0'));
+                    }
+                    else {
+                        $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
+                                ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
+                                'default', array('class' => 'flashBlue'));
+                        $this->redirect('login');
+                    }
                 }
             }
 
@@ -383,6 +418,13 @@ class UsersController extends AppController{
         $this->set('title_for_layout','Εγγραφή νέου μεσιτικού γραφείου');
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         $this->register();
+    }
+
+    function registerfromadmin() {
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου ιδιώτη από τον διαχειριστή');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register(true);
     }
 
     private function create_estate_profile($id, $data) {

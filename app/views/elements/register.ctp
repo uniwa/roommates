@@ -1,10 +1,18 @@
 <div id='registerView'>
 <div id='mainCenter' class='mainLogin'>
 <?php
-    $registerType = ($type == 'owner')?'registerowner':'registerrealestate';
-    echo $this->Form->create('User', array('action' => $registerType));
-    echo $this->Form->input('RealEstate.type', array('type' => 'hidden',
-        'value' => $type));
+    $registerType = ($type == 'owner' || $type == 'from_admin')?'registerowner':'registerrealestate';
+    if ($type == 'from_admin') {
+        echo $this->Form->create('User', array('action' => 'registerfromadmin'));
+        // if we are admin, we register owners not real estates
+        echo $this->Form->input('RealEstate.type', array('type' => 'hidden',
+            'value' => 'owner'));
+    }
+    else {
+        echo $this->Form->create('User', array('action' => $registerType));
+        echo $this->Form->input('RealEstate.type', array('type' => 'hidden',
+            'value' => $type));
+    }
     $inputelems = array();
     $inputelems['uname']['input'] = $this->Form->input('User.username', array(
         'label' => '', 'autocomplete' => 'off', 'class' => 'input-elem'));
@@ -35,7 +43,7 @@
     $inputelems['lname']['input'] = $this->Form->input('RealEstate.lastname', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['lname']['label'] = 'Επίθετο';
-    if($type == 'owner'){
+    if($type == 'owner' || $type = 'from_admin'){
         $inputType = 'hidden';
     }else{
         $inputType = 'text';
@@ -98,6 +106,7 @@
             ?>
         </li>
         <?php } // foreach ?>
+        <?php if ($type != 'from_admin') { // ignore recaptcha and legal notes ?>
         <li class='form-line'>
             <textarea rows="6" cols="80" readonly="readonly">
                 <?php echo $terms_text; ?>
@@ -113,6 +122,7 @@
         <li class='form-line form-center'>
             <?php echo $this->Recaptcha->display(); ?>
         </li>
+        <?php } // END recaptcha and legal notes ignore ?>
         <li class='form-line form-buttons'>
             <div class='form-elem form-submit'>
                 <?php
