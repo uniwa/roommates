@@ -300,7 +300,13 @@ class UsersController extends AppController{
         }
     }
 
-    private function register() {
+    private function register($from_admin = false) {
+        // core register function
+        //
+        // $from_admin parameter shows that admin registers
+        // another user, used for bypassing legal notes and
+        // captcha field
+
         if ($this->data) {
             // user must accept the real estate terms
             if ($this->data["User"]["estate_terms"] != "1") {
