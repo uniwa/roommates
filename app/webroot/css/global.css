@@ -1364,7 +1364,7 @@ ul.collapsible{
 }
 
 #houseView .houseCheck{
-    background-image: url('img/check.png');
+    background-image: url('../img/check.png');
     background-repeat: no-repeat;
     margin: 0px 0px 0px 8px;
     width: 12px;
