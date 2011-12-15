@@ -61,6 +61,7 @@ class AdminsController extends AppController
         $user = new User();
         $this->set('limit', $this->paginate['limit']);
 
+        // work around named parameters in url
         if (! empty($this->params['named'])) {
             if (isset($this->params['named']['name'])) {
                 $this->params['url']['name'] = $this->params['named']['name'];
