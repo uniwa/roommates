@@ -49,7 +49,7 @@ q:before, q:after{
 
 a, a:link, a:visited {
     text-decoration: none;
-    color: #339/*21759B*/;
+    color: #337;
 }
 table{
     border-collapse: collapse;
@@ -66,7 +66,7 @@ body{
     margin: 0;
     padding: 0;
     height: 100%;
-    color: #000/*59a4d8*/;
+    color: #000;
 }
 
 img{
@@ -82,6 +82,10 @@ select{
 
 textarea{
     resize: none;
+}
+
+input[type='submit']{
+    background-color: #ccc;
 }
 
 .bold{
@@ -188,8 +192,7 @@ textarea{
     background-color: #eee;
     margin: 0px 0px 0px 0px;
     padding: 6px 0px 8px 0px;
-    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
-/*    height: 32px;*/
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
 }
 
 #header-main{
@@ -229,7 +232,7 @@ textarea{
 }
 
 .menu-main:hover{
-    border-bottom: 3px solid #12a9f9/*59a4d8*/;
+    border-bottom: 3px solid #12a9f9;
     background-color: #555;
     cursor: pointer;
 }
@@ -241,7 +244,7 @@ textarea{
 }
 
 .menu-footer:hover{
-    border-bottom: 3px solid #12a9f9/*59a4d8*/;
+    border-bottom: 3px solid #12a9f9;
     background-color: #57a;
     cursor: pointer;
 }
@@ -253,7 +256,7 @@ textarea{
 }
 
 .menu-user:hover{
-    border-bottom: 3px solid #12a9f9/*59a4d8*/;
+    border-bottom: 3px solid #12a9f9;
     background-color: #555;
     cursor: pointer;
 }
@@ -263,31 +266,81 @@ textarea{
 }
 
 .menu-login:hover{
-    border-bottom: 3px solid #f96213/*dc6865*/;
+    border-bottom: 3px solid #f96213;
     background-color: #5;
 }
 
 .menu-selected{
-    border-bottom: 3px solid #12a9f9/*59a4d8*/;
+    border-bottom: 3px solid #12a9f9;
     cursor: default;
 }
 
 .user-selected{
-    border-top: 3px solid #12a9f9/*59a4d8*/;
+    border-top: 3px solid #12a9f9;
     cursor: default;
 }
 
 #main-cont{
     background-color: #fff;
-    /*margin: 0px 0px 0px 0px;*/
-    /*padding: 0 0 20px 0;*/
 	width: 100%;
     overflow: hidden;
 }
 
 #main{
-/*    padding: 8px;*/
-/*    height: 100%;*/
+    padding: 16px 0px 16px 0px;
+    width: 100%;
+    overflow: hidden;
+}
+
+#leftbar{
+    float: left;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    overflow: hidden;
+}
+
+.leftGeneral{
+    width: 300px;
+}
+
+.leftManage{
+    width: 280px;
+}
+
+.leftSearch{
+    width: 340px;
+}
+
+#main-inner{
+    float: left;
+    border-left: 1px solid #ddd;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+.mainGeneral{
+    width: 659px;
+}
+
+.mainManage{
+    width: 679px;
+}
+
+.mainSearch{
+    width: 619px;
+}
+
+.mainCenter{
+    border-top: 6px solid #ddd;
+    background-color: #fff;
+    background: -moz-linear-gradient(top, #f4f4f4, #fff);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#fff));
+    margin: 24px auto 24px auto;
+    padding: 32px 32px 32px 48px;
+    width: 500px;
+    font-size: 1.1em;
     overflow: hidden;
 }
 
@@ -438,8 +491,8 @@ textarea{
 
 .desc-title{
     margin: 12px 0px 0px 24px;
-    font-family: 'Ubuntu Mono', Verdana, Tahoma, Arial, sans-serif;
-    font-size: 1.6em;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.4em;
     font-weight: bold;
 }
 
@@ -473,13 +526,7 @@ textarea{
 
 .form-input select{
     margin: 0px 0px 0px 0px;
-    font-size: 10px;
-}
-
-button{
-    font-size: 10px;
-    margin: 0px 8px 0px 0px;
-    width: 70px;
+/*    font-size: 10px;*/
 }
 
 .clear{
@@ -745,5 +792,1108 @@ img.info{
 
 .required{
     background:url(../img/required.gif) top left no-repeat;
+}
+
+/* GENERAL */
+.titleFont{
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    color: #333;
+}
+
+.font12{
+    font-size: 1.2em;
+}
+
+.font14{
+    font-size: 1.4em;
+}
+
+/* LOGIN */
+#loginView .loginContent{
+    margin: 0px auto 0px auto;
+    padding: 8px 0px 0px 0px;
+    width: 340px;
+}
+
+#loginView .loginCredential{
+    margin: 0px 0px 16px 0px;
+}
+
+#loginView .loginCredential .input label{
+    display: block;
+    margin: 0px 0px 4px 0px;
+    padding: 4px 0px 0px 0px;
+}
+
+#loginView .loginCredential .input input{
+    border: 1px solid #ddd;
+}
+
+#loginView .loginInputCredential{
+    border: 0px;
+    margin: 6px 8px 0px 0px;
+    padding: 6px;
+}
+
+#loginView #loginRegistration{
+    margin: 0px 0px 16px 0px;
+    padding: 8px 0px 0px 0px;
+    text-align: right;
+}
+
+#loginView .loginCredential .required{
+    background: none;
+}
+
+#loginView .loginCredential .button{
+    border: 0px;
+    width: 100px;
+    height: 24px;
+    cursor: pointer;
+}
+
+/* SEARCH */
+
+.form-title{
+    clear: both;
+    margin: 16px 0px 0px 0px;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #333;
+}
+
+.leftSearch .left-form-cont{
+    margin: 0px auto;
+    width: 320px;
+}
+
+.left-form ul{
+    margin: 0px 0px 20px 0px;
+}
+
+.leftSearch .form-buttons{
+    margin: 10px auto;
+    padding: 0px 0px 64px 0px;
+}
+
+.leftSearch .form-elem{
+    margin: 0px 0px 12px 0px;
+    font-size: 1.2em;
+}
+
+.leftSearch .form-label{
+    float: left;
+    width: 100px;
+}
+
+.form-input-house{
+    float: left;
+    width: 200px;
+    overflow: hidden;
+}
+
+.form-input-profile{
+    float: left;
+    width: 140px;
+    overflow: hidden;
+}
+
+.form-input .input-municipality{
+    width: 200px;
+}
+
+.form-checkbox{
+    width: 220px;
+}
+
+.form-submit{
+    float: left;
+    padding: 0px 4px 0px 4px;
+}
+
+.button{
+    border: 0px;
+    width: 100px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.search-title{
+    margin: 12px auto 0px auto;
+    text-align: center;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #333;
+}
+
+.search-subtitle{
+    margin: 8px auto 24px auto;
+    text-align: center;
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+.pagination{
+    margin: 12px auto 12px auto;
+    text-align: center;
+}
+
+.pagination ul li{
+    display: inline;
+}
+
+.pagination ul li.current{
+    border: 1px solid #59A4D8;
+    padding: 0px 2px 0px 2px;
+    font-weight: bold;
+}
+
+.pagination ul li.disabled{
+    color: #aaa;
+}
+
+.mainSearch h3{
+    font-size: 12px;
+    font-style: italic;
+    text-align: center;
+    margin: -10px auto 24px;
+}
+
+.fbIcon{
+    margin: 0px 4px 0px 0px;
+    vertical-align: -30%;
+}
+
+.facebook-post{
+    float: right;
+    margin: 8px 12px 0px 0px;
+}
+
+ul.collapsible{
+    display: none;
+}
+
+.form-collapse{
+    background-image: url('../img/arrows.png');
+    background-position: 98% 0px;
+    background-repeat: no-repeat;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* MANAGE */
+.form-title{
+    clear: both;
+    margin: 16px 0px 16px 8px;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.left-form-cont{
+    margin: 0px auto;
+    width: 240px;
+}
+
+.left-form-cont-house{
+    margin: 0px auto; 
+    width: 320px;
+}
+
+.left-form ul{
+    margin: 16px 0px 20px 0px;
+}
+
+.form-buttons{
+    margin: 10px 0px 0px 0px;
+}
+
+.form-elem{
+    margin: 0px 8px 8px 0px;
+    font-size: 1.2em;
+}
+
+.form-label{
+    float: left;
+    width: 100px;
+}
+
+.form-input{
+    float: left;
+    overflow: hidden;
+}
+
+.form-input input[type='checkbox']{
+    margin: 0px 8px 0px 0px;
+}
+
+.form-submit{
+    float: left;
+    margin: 8px 0px 0px 0px;
+}
+
+.button{
+    border: 0px;
+    margin: 16px 0px 0px 16px;
+    width: 100px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.buttonAdd{
+    background-color: #ccc;
+    padding: 4px 12px 4px 12px;
+}
+
+.button a,.button a:link,.button a:visited{
+    color: #000;
+}
+
+.search-title{
+    text-align: center;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.search-subtitle{
+    text-align: center;
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+.pagination{
+    margin: 0px auto 12px auto;
+    text-align: center;
+}
+
+.pagination ul li{
+    display: inline;
+}
+
+.pagination ul li.current{
+    border: 1px solid #59A4D8;
+    padding: 0px 2px 0px 2px;
+    font-weight: bold;
+}
+
+.pagination ul li.disabled{
+    color: #aaa;
+}
+
+.housetable{
+    margin: 0px auto 0px auto;
+    width: 600px;
+}
+
+.usertable{
+    margin: 0px auto 0px auto;
+    width: 660px;
+}
+
+.colodd{
+    background-color: #f3f3f3;
+}
+
+.rowodd{
+    background-color: #f3f3f3;
+}
+
+.rowtitle{
+    border-top: 3px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    margin: 0px 0px 8px 0px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.row{
+    clear: both;
+    height: 100%;
+    overflow: hidden;
+}
+
+.col{
+    float: left;
+    margin: 0px 4px 0px 0px;
+    padding: 4px;
+    text-align: center;
+}
+
+.num{
+    width: 12px;
+}
+
+.manage-address{
+    width: 180px;
+    overflow: hidden;
+}
+
+.manage-type{
+    width: 100px;
+}
+
+.manage-area{
+    width: 60px;
+}
+
+.manage-price{
+    width: 50px;
+}
+
+.manage-delete{
+    width: 100px;
+    text-align: center;
+}
+
+.admpaginator{
+    clear: both;
+    margin: 20px auto 20px auto;
+    text-align: center;
+}
+
+.uname-re{
+    width: 60px;
+}
+
+.uname-user{
+    width: 110px;
+}
+
+.fname,.lname{
+    width: 110px;
+}
+
+.cname{
+    width: 140px;
+}
+
+.email{
+    width: 180px;
+}
+
+.banned,.enabled{
+    width: 60px;
+}
+
+.admpaginator{
+    clear: both;
+    margin: 20px auto 20px auto;
+    text-align: center;
+}
+
+.optionUnbanned{
+    background-image: url('../img/unlock_16.png');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+}
+
+.optionUnbanned:hover{
+    background-image: url('../img/lock_16.png');
+}
+
+.optionBanned{
+    background-image: url('../img/lock_16.png');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+}
+
+.optionBanned:hover{
+    background-image: url('../img/unlock_16.png');
+}
+
+.optionEnabled{
+    background-image: url('../img/accept_16.png');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+}
+
+.optionEnabled:hover{
+    background-image: url('../img/delete_16.png');
+}
+
+.optionDisabled{
+    background-image: url('../img/delete_16.png');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+}
+
+.optionDisabled:hover{
+    background-image: url('../img/accept_16.png');
+}
+
+/* FAQ */
+.faqitem{
+    margin: -40px 0px 0px 0px;
+    padding: 48px 0px 0px 0px;
+}
+
+/* DISPLAY */
+.sectionTitle{
+    clear: both;
+    padding: 24px 0px 8px 8px;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+#lastPreferred,#lastModified{
+    margin: 8px auto 16px auto;
+    width: 580px;
+}
+
+/* VIEWS */
+#houseCont{
+    margin: 0px 0px 0px 0px;
+    padding: 32px;
+    overflow: hidden;
+    height: 100%;
+}
+
+.housePic{
+    float: left;
+    padding: 2px;
+    width: 180px;
+    height: 100px;
+    overflow: hidden;
+}
+
+.profileHousePic{
+    margin: 0px auto;
+    padding: 2px;
+    width: 180px;
+    height: 100px;
+    overflow: hidden;
+}
+
+#profilePic{
+    margin: 0px auto;
+    padding: 2px;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+
+#owner-info{
+    margin: 32px 0px 0px 0px;
+}
+
+/* HOUSE VIEW */
+#houseView{
+    margin: -16px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    width: 100%;
+    height: 100%;
+}
+
+#houseView .profileTitle{
+    margin: 0px 0px 4px 0px;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+#houseView #houseEdit{
+    clear: both;
+    margin: 0px 0px 0px 44px;
+}
+
+#houseView .houseTitle{
+    margin: 0px 0px 16px 18px;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+#houseView .houseClear{
+    clear: both;
+}
+
+#houseView .houseLine{
+    padding: 6px;
+    overflow: hidden;
+}
+
+#houseView .houseLineLong{
+    width: 340px;
+}
+
+#houseView .houseLineShort{
+    width: 160px;
+}
+
+#houseView .houseProperty{
+    float: left;
+    text-align: right;
+}
+
+#houseView .houseV{
+    width: 130px;
+}
+
+#houseView .houseC{
+    width: 140px;
+}
+
+#houseView .houseValue{
+    float: left;
+    margin: 0px 0px 0px 8px;
+}
+
+#houseView .houseCheck{
+    background-image: url('img/check.png');
+    background-repeat: no-repeat;
+    margin: 0px 0px 0px 8px;
+    width: 12px;
+    height: 12px;
+    text-indent: -9999px;
+}
+
+#houseView .houseCheckFalse{
+    background-position: 0px -12px;
+}
+
+#houseView .houseCheckTrue{
+    background-position: 0px 0px;
+}
+
+#houseView .houseOdd{
+    background-color: #eef;
+}
+
+#houseView #housePropertiesCont{
+    margin: 0px 0px 0px 16px;
+}
+
+#houseView .housePropertiesCol{
+    float: left;
+    margin: 0px 8px 16px 0px;
+}
+
+#houseView .houseOptions{
+    margin: 16px 0px 0px 0px;
+}
+
+#houseView .liimage{
+    float: left;
+    margin: 0px 0px 0px 4px;
+}
+
+#houseView #imageList{
+    margin: 0px 0px 0px 0px;
+    padding: 24px 0px 24px 16px;
+    height: 100px;
+    overflow: hidden;
+}
+
+#houseView .imageThumbCont{
+    width: 180px;
+    height: 100px;
+    overflow: hidden;
+}
+
+#houseView .default-image{
+    height: 100%;
+    overflow: hidden;
+}
+
+#houseView #houseInfo{
+    margin: 0px 0px 0px 0px;
+    padding: 24px 0px 0px 0px;
+}
+
+#houseView .optionIcon{
+    margin: 0px 4px 0px 0px;
+    vertical-align: -30%;
+}
+
+#houseView #houseMap{
+    clear: both;
+    margin: 32px 0px 32px 0px;
+}
+
+#houseView .map{
+    margin: 0px auto;
+    width: 300px;
+    height: 220px;
+}
+
+/* ADD/EDIT HOUSE VIEW */
+#addEditHouseView .centerImage{
+    margin: 0px auto;
+}
+
+#addEditHouseView .edit-title{
+    margin: 12px 0px 24px 24px;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+}
+
+#addEditHouseView .input{
+    clear: both;
+    padding: 3px 0;
+}
+
+#addEditHouseView .input .short{
+    width: 40px;
+}
+
+#addEditHouseView .required {
+    background: url("img/required.gif") no-repeat scroll 160px -2px transparent;
+}
+
+#addEditHouseView .input label{
+    float: left;
+    margin: 0px 8px 16px 0px;
+    width: 160px;
+    text-align: right;
+}
+
+#addEditHouseView .input.checkbox{
+    margin: 0px 0px 0px 96px;
+}
+
+#addEditHouseView .checkbox label{
+    width: auto;
+    text-align: left;
+}
+
+#addEditHouseView .checkbox input{
+    border: 1px solid #ddd;
+}
+
+#addEditHouseView .input input{
+    float: left;
+    border: 1px solid #ddd;
+    margin: 0px 8px 16px 6px;
+    font-family: 'Open Sans',Verdana,Tahoma,Arial,sans-serif;
+    font-size: 10px;
+}
+
+#addEditHouseView .input select{
+    float: left;
+    border: 1px solid #ddd;
+    margin: 0px 8px 16px 6px;
+    font-family: 'Open Sans',Verdana,Tahoma,Arial,sans-serif;
+    font-size: 10px;
+}
+
+#addEditHouseView .input textarea{
+    float: left;
+    border: 1px solid #ddd;
+    margin: 0px 8px 16px 6px;
+    font-family: 'Open Sans',Verdana,Tahoma,Arial,sans-serif;
+    font-size: 10px;
+}
+
+#addEditHouseView .submit{
+    clear: both;
+    margin: 0px 0px 0px 48px;
+}
+
+#addEditHouseView .submit input{
+    border: 0 none;
+    margin: 16px 0px 0px 0px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+#addEditHouseView #mapDiv{
+    clear: both;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+    margin: 16px 24px 16px 24px;
+    padding: 8px;
+}
+
+#addEditHouseView .mapMarker{
+    margin: 0px 0px 8px 12px;
+    padding: 4px;
+}
+
+#addEditHouseView .map{
+    padding: 0px 0px 0px 10px;
+    margin: 7px 0 0 0;
+    height: 250px;
+}
+
+/* PROFILE VIEW */
+#profileView #profileCont{
+    margin: 0px 0px 0px 0px;
+    padding: 32px;
+    text-align: center;
+}
+
+#profileView #profileEdit{
+    margin: 32px 0px 0px 12px;
+    text-align: center;
+}
+
+#profileView #profileBan{
+    margin: 32px auto 0px auto;
+}
+
+#profileView .profileClear{
+    clear: both;
+}
+
+#profileView .profileBlock{
+    float: left;
+    margin: 0px 32px 64px 0px;
+    padding: 0px 8px 0px 8px;
+    width: 240px;
+    overflow: hidden;
+}
+
+#profileView .profileTitle{
+    margin: 24px 0px 8px 18px;
+    font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+#profileView .profileInfo{
+    float: left;
+    margin: 0px 0px 16px 24px;
+    font-size: 1.0em;
+}
+
+#profileView .profileOptions{
+    margin: 16px 0px 0px 0px;
+}
+
+#profileView .optionIcon{
+    margin: 0px 4px 0px 0px;
+    vertical-align: -30%;
+}
+
+#profileView #myHouse{
+    width: 500px;
+}
+
+#profileView #myHousePic{
+    margin: 0px 0px 0px 24px;
+}
+
+#profileView #myHouseInfo{
+    margin: 24px 0px 0px 24px;
+}
+
+/* REAL ESTATE VIEW */
+#realestateView #profileEdit{
+    margin: 16px 0px 0px 0px;
+}
+
+#realestateView #profileRss,#profileBan{
+    margin: 16px 0px 0px 0px;
+}
+
+#realestateView #profileRss img,#profileBan img{
+    margin: 0px 4px 0px 0px;
+}
+
+#realestateView .profileClear{
+    clear: both;
+}
+
+#realestateView .profileBlock{
+    float: left;
+    margin: 0px 64px 64px 16px;
+    padding: 0px 8px 0px 8px;
+}
+
+#realestateView .profileTitle{
+    margin: 12px 0px 8px 18px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#realestateView .profileInfo{
+    margin: 0px 0px 0px 24px;
+    font-size: 1.0em;
+}
+
+/* REGISTER VIEW */
+#registerView{
+    margin: 0px auto 20px auto;
+    width: 600px;
+    overflow: hidden;   
+}
+
+#registerView .form-title{
+    clear: both;
+    margin: 16px 0px 32px 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#registerView ul{
+}
+
+#registerView .form-center{
+    margin: 8px auto;
+    text-align: center;
+}
+
+#registerView .form-buttons{
+    margin: 20px auto;
+    width: 220px;
+}
+
+#registerView .form-elem{
+    margin: 0px 8px 12px 0px;
+    font-size: 1.2em;
+}
+
+#registerView .form-label{
+    float: left;
+    width: 160px;
+    text-align: right;
+}
+
+#registerView .form-input{
+    float: left;
+    width: 300px;
+    overflow: hidden;
+}
+
+#registerView .form-submit{
+    float: left;
+}
+
+#registerView .button{
+    border: 0px;
+    width: 100px;
+    height: 24px;
+    cursor: pointer;
+}
+
+#registerView .form-input input.input-elem{
+    border: 1px solid #ddd;
+    padding: 2px;
+    width: 220px;
+    height: 14px;
+}
+
+#registerView .form-input textarea.input-elem{
+    border: 1px solid #ddd;
+    padding: 2px;
+    width: 220px;
+}
+
+#registerView .formCheckbox{
+    margin: 8px 8px 8px 0px;
+}
+
+#registerView .checkLabel{
+    padding: 0px 10px 0px 0px;
+}
+
+#registerView .register-form-comment {
+    font-size: 0.8em;
+    font-style: italic;
+    margin: 2px 0px 0px 0px;
+}
+
+/* TODO: add custom class to differentiate between other views stars */
+#registerView .required {
+    background: url("img/required.gif") no-repeat scroll right top transparent;
+}
+
+/* PROFILE EDIT VIEW */
+#profileEditView #profileName{
+    margin: 16px 0px 0px 0px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#profileEditView #profileEmail{
+    margin: 8px 0px 0px 0px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+#profileEditView .profileFrame{
+    clear: both;
+    padding: 0px 0px 24px 0px;
+}
+
+#profileEditView .editTitle{
+    margin: 0px 0px 24px 16px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#profileEditView .editSubTitle{
+    margin: 0px 0px 8px 32px;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#profileEditView .avatarLabel{
+    margin: 0px 0px 8px 32px;
+}
+
+#profileEditView #avatarField{
+    margin: 0px 0px 16px 32px;
+}
+
+#profileEditView #avatarField label{
+    display: none;
+}
+
+#profileEditView #avatarField.file input{
+    border: 1px solid #ddd;
+}
+
+#profileEditView .error-message{
+    margin: 4px 0px 0px 0px;
+    color: #f00;
+}
+
+#profileEditView .input select{
+    border: 1px solid #ddd;
+    padding: 4px;
+    font-size: 12px;
+}
+
+#profileEditView .textarea label {
+    float: left;
+}
+
+#profileEditView .input{
+    clear: both;
+    padding: 3px 0;
+}
+
+#profileEditView .radio,.checkbox{
+    margin: 12px 0px 16px 64px;
+}
+
+#profileEditView .input label{
+    float: left;
+    margin: 8px 12px 0px 0px;
+    width: 160px;
+    text-align: right;
+}
+
+#profileEditView .checkbox input{
+    float: left;
+    margin: 8px 0px 0px 8px;
+}
+
+#profileEditView .checkbox label{
+    float: left;
+    margin: 8px 0px 0px 8px;
+    width: auto;
+}
+
+#profileEditView .input input[type=text]{
+    border: 1px solid #ddd;
+    padding: 4px;
+}
+
+#profileEditView .longBox{
+    width: 100px;
+}
+
+#profileEditView .shortBox{
+    width: 30px;
+}
+
+#profileEditView .button{
+    border: 0px;
+    margin: 16px 0px 16px 24px;
+    width: 100px;
+    height: 24px;
+    cursor: pointer;
+}
+
+#profileEditView .required{
+    background-position: 160px 4px;
+}
+
+/* ISSUE REPORT VIEW */
+#issueView .form-title{
+    clear: both;
+    margin: 16px 0px 32px 8px;
+}
+
+#issueView .form-center{
+    margin: 8px auto;
+    text-align: center;
+}
+
+#issueView .form-buttons{
+    margin: 20px auto;
+    width: 220px;
+}
+
+#issueView .form-elem{
+    margin: 0px 8px 12px 0px;
+}
+
+#issueView .form-label{
+    float: left;
+    width: 100px;
+    text-align: right;
+}
+
+#issueView .form-input{
+    float: left;
+    width: 310px;
+    overflow: hidden;
+}
+
+#issueView .form-submit{
+    float: left;
+    padding: 24px 0px 0px 0px;
+}
+
+#issueView .button{
+    border: 0px;
+    width: 100px;
+    height: 24px;
+    cursor: pointer;
+}
+
+#issueView .form-input input.input-elem{
+    border: 1px solid #ddd;
+    padding: 2px;
+    width: 300px;
+    height: 14px;
+}
+
+#issueView .form-input textarea.input-elem{
+    border: 1px solid #ddd;
+    padding: 2px;
+    width: 300px;
 }
 

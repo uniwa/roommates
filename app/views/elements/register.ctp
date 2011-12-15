@@ -1,92 +1,5 @@
-<style>
-    .form-title{
-        clear: both;
-        margin: 16px 0px 32px 8px;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    #main-inner ul{
-        margin: 0px 0px 20px 0px;
-    }
-
-    #main-inner{
-        margin: 0px auto;
-        padding: 0px 0px 0px 0px;
-        width: 540px;
-    }
-
-    .form-center{
-        margin: 8px auto;
-        text-align: center;
-    }
-
-    .form-buttons{
-        margin: 20px auto;
-        width: 220px;
-    }
-
-    .form-elem{
-        margin: 0px 8px 12px 0px;
-        font-size: 1.2em;
-    }
-
-    .form-label{
-        float: left;
-        width: 160px;
-        text-align: right;
-    }
-    .form-input{
-        float: left;
-        width: 240px;
-        overflow: no-scroll;
-    }
-
-    .form-submit{
-        float: left;
-    }
-
-    .button{
-        border: 0px;
-        width: 100px;
-        height: 24px;
-        cursor: pointer;
-    }
-
-    .form-input input.input-elem{
-        border: 1px solid #ddd;
-        padding: 2px;
-        width: 220px;
-        height: 14px;
-    }
-
-    .form-input textarea.input-elem{
-        border: 1px solid #ddd;
-        padding: 2px;
-        width: 220px;
-    }
-
-    .formCheckbox{
-        margin: 8px 8px 8px 0px;
-    }
-
-    .checkLabel{
-        padding: 0px 10px 0px 0px;
-    }
-
-    .register-form-comment {
-        font-size: 0.8em;
-        font-style: italic;
-        margin: 2px 0px 0px 0px;
-    }
-
-    /* TODO: add custom class to differentiate between other views stars */
-    .required {
-        background: url("img/required.gif") no-repeat scroll right top transparent;
-    }
-</style>
-
-<div id='main-inner'>
+<div id='registerView'>
+<div id='mainCenter' class='mainLogin'>
 <?php
     $registerType = ($type == 'owner')?'registerowner':'registerrealestate';
     echo $this->Form->create('User', array('action' => $registerType));
@@ -211,3 +124,5 @@
         </li>
     </ul>
 </div>
+</div>
+
