@@ -65,14 +65,26 @@ class UsersController extends AppController{
     // is invoked by (vendors/html2ps) PdfComponent's member function process()
     // in order to produce the pdf version of that html. Only local access
     // should be allowed to this function (by means of .htaccess or otherwise).
-    function pdf($id = null) {
+    function pdf($id=null) {
 
         if( is_null($id) )    return;
+
+        if( empty( $this->params['url']['hash'] ) ) {
+            $this->cakeError('error404');
+        }
 
         $this->User->id = $id;
         $user = $this->User->read();
 
+        if( empty($user) ) {
+            $this->cakeError('error404');
+        }
+
         $this->set('data', $user);
+
+        $valid = $this->getDataHash($user);
+        $hash = $this->params['url']['hash'];
+        if( $hash !== $valid )  $this->cakeError('error404');
 
         // get municipality (name) in order to print it onto the 
         // email which is to be sent for registration approval
@@ -87,21 +99,28 @@ class UsersController extends AppController{
     } 
 
     // Initiates the creation of the pdf equivalent of the application form.
-    private function getRegistrationPdf($id) {
+    // Returns the full path to the file created.
+    private function getRegistrationPdf($data) {
 
-        if(is_null($id))   return;
+        if(is_null($data))   return;
+
+        $id = $data['User']['id'];
 
         App::import('Component', 'Pdf');
         $filename = 'user_id_' . $id;
-        // files are stored under html2ps/out/ directory
-        $outDir = APP.'vendors'.DS.'html2ps'.DS.'out'.DS;
+
+        $outDir = constant('HTML2PS_PDF_OUT_DIR');
+
         $filepath = $outDir . $filename . '.pdf';
+
+        $hash = $this->getDataHash($data);
 
         $Pdf = new PdfComponent();
         $Pdf->filename = $filename; // Without .pdf
         $Pdf->output = 'file';
         $Pdf->init();
-        $Pdf->process(Router::url('/', true) . 'users/pdf/' . $id);
+        $Pdf->process(
+            Router::url('/', true) . 'users/pdf/' . $id . '?hash='. $hash);
 
         return $filepath;
     }
@@ -325,8 +344,14 @@ class UsersController extends AppController{
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
 
-                    // uses $this->data
-                    $this->notifyOfRegistration();
+                    // contains all the necessary info for the pdf
+                    // note: the only reason for using this is to avoid adding
+                    // the id element into $this->data manually
+                    $fraction = array(
+                        'User' => $this->data['User'],
+                        'RealEstate' => $this->data['RealEstate']);
+                    $fraction['User']['id'] = $uid;
+                    $this->notifyOfRegistration($fraction);
 
                     //"Η εγγραφή σας ολοκληρώθηκε με επιτυχία."
                     $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
@@ -431,54 +456,59 @@ class UsersController extends AppController{
         if( isset($attachments) ) {
             $this->Email->attachments = $attachments;
         }
-
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
 
     // Sends emails to applicant and authority.
-    private function notifyOfRegistration() {
-        if( empty( $this->data) )   return;
+    private function notifyOfRegistration($data) {
+        if( empty($data) )   return;
 
         // get municipality (name) in order to print it onto the 
         // email which is to be sent for registration approval
-        $municipality = $this->data['RealEstate']['municipality_id'];
+        $municipality = $data['RealEstate']['municipality_id'];
         if( isset($municipality) ) {
             $municipality = $this->getMunicipalityData($municipality);
         }
-        $this->set('data', $this->data );
+        $this->set('data', $data );
         $this->set('municipality', $municipality);
 
-        $this->notifyAuthority();
+        $filepath = $this->getRegistrationPdf($data);
 
-        $filepath = $this->getRegistrationPdf($this->User->id);
         if( file_exists($filepath) ) {
 
-            $attachments = array('roommates.pdf' => $filepath);
-            $this->notifyApplicant(
-                $this->data['RealEstate']['email'], $attachments);
+            $this->set('pdf_success', true);
+            $attachmentName = 'roommates_'.$data['User']['username'].'.pdf';
+            $attachments = array($attachmentName => $filepath);
+
+            $this->notifyAuthority($attachments);
+            $this->notifyApplicant($data['RealEstate']['email'], $attachments);
+
+            // remove temporary files
+            $this->deleteFiles(constant('HTML2PS_PDF_OUT_DIR'));
+            $this->deleteFiles(constant('HTML2PS_PDF_CACHE_DIR'));
+        } else {
+
+            // inform authority that the application form could not be printed
+            $this->set('pdf_success', false);
+            $this->notifyAuthority();
+            $this->notifyApplicant($data['RealEstate']['email']);
         }
     }
 
     // Sends the registration application form to the supplied $email address.
-    // The $attachments is an array of files to be included.
-    private function notifyApplicant($email, $attachments) {
+    // The $attachments is an array of files to be included; may be null
+    private function notifyApplicant($email, $attachments=null) {
         if( empty($email) ) return;
 
         $subject = Configure::read('registration.applicant_subject');
         if( empty($subject) ) {
             $subject = 'Αίτηση εγγραφής στην υπηρεσία roommates';
         }
-        $body =
-            'Το παρόν μήνυμα εστάλη ως αποτέλεσμα της εγγραφής σας ως πάροχο'
-            . ' χώρων στέγασης στο σύστημα εύρεσης συγκατοίκων του ΤΕΙ'
-            . ' Αθήνας. Το συνημμένο αρχείο αποτελεί την αίτηση η οποία πρέπει'
-            . ' να ελεγχθεί, υπογραφεί και υποβληθεί στην αρμόδια αρχή'
-            . ' έγκρισης μέσω τηλεομοιότυπου (fax).';
 
         $this->sendEmail(
-            'admin@roommates.edu.teiath.gr', $email, $subject, $body,
-            $attachments, 'default', 'default' );
+            'admin@roommates.edu.teiath.gr', $email, $subject, '',
+            $attachments, 'registration_applicant_notification', 'default' );
     }
 
     // Sends email to the Authority to inform of user registration. The
@@ -494,7 +524,7 @@ class UsersController extends AppController{
         foreach( $recipients as $to ) {
             $this->sendEmail(
                 'admin@roommates.edu.teiath.gr', $to, $subject, '',
-                $attachments, 'registered', 'registered' );
+                $attachments, 'registration_authority_notification', 'default' );
         }
     }
 
@@ -504,6 +534,35 @@ class UsersController extends AppController{
             'conditions' => array('Municipality.id' => $municipality_id)
         ));
         return $data;
+    }
+
+    // [$data] must contain the following arrays: User and RealEstate.
+    private function getDataHash($data=null) {
+
+        if( is_null($data) )    return '';
+
+        $hashThis =
+            "{$data['RealEstate']['firstname']}."
+            . "{$data['RealEstate']['lastname']}."
+            . "{$data['RealEstate']['type']}."
+            . "{$data['User']['id']}."
+            . "{$data['User']['username']}";
+
+        return Security::hash( $hashThis, 'sha1', true );
+    }
+
+    // Deletes all writable files in the given directory. First level childern
+    // are only affected (ie, it does not delete files within sub-directories).
+    private function deleteFiles($directory) {
+
+        $contents = scandir($directory);
+        foreach( $contents as $child ) {
+
+            $fullpath = $directory.$child;
+            if( is_file($fullpath) && is_writable($fullpath) ) {
+                unlink($fullpath);
+            }
+        }
     }
 }
 ?>

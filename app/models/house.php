@@ -30,7 +30,7 @@ class House extends AppModel {
             ),
             'number' => array(
                 'rule' => array('range', 0, 67), /* 66 municipalities in db - ids between 1 and 66 */
-                'message' => 'Παρουσιάστικε κάποιο σφάλμα.',
+                'message' => 'Παρουσιάστηκε κάποιο σφάλμα.',
                 'allowEmpty' => true
             )
         ),

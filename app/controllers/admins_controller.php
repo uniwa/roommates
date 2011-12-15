@@ -47,7 +47,7 @@ class AdminsController extends AppController
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'manage_realestate');
-        $this->set('title_for_layout','Διαχείριση ενοικιαστών');
+        $this->set('title_for_layout','Διαχείριση εκμισθωτών');
 
         $this->checkAccess();
 

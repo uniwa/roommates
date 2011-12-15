@@ -1,13 +1,13 @@
 <IfModule mod_rewrite.c>
    # deny access if pdf action was requested..
-   SetEnvIf   Request_URI "/users/pdf"    deny_pdf
+   #SetEnvIf   Request_URI "/users/pdf"    deny_pdf
 
    # ..but make allowances for when request sourced from localhost
-   SetEnvIf   Remote_Addr "127\.0\.0\.1"  !deny_pdf
+   #SetEnvIf   Remote_Addr "127\.0\.0\.1"  !deny_pdf
 
-   order allow,deny
-   allow from all
-   deny from env=deny_pdf
+   #order allow,deny
+   #allow from all
+   #deny from env=deny_pdf
 
    RewriteEngine on
 #   RewriteCond    %{REQUEST_URI} users/pdf/.*

@@ -37,7 +37,8 @@
                 ->margins['right']) / $this->media->pixels;
             global $g_pt_scale;
             $g_pt_scale = $g_pt_scale * 1.43;
-            $this->p = PipelineFactory::create_default_pipeline("","");
+            $this->p = PipelineFactory::create_default_pipeline(
+                "", APP.'webroot/1.pdf');
 
             switch ($this->output) {
                 case 'download':

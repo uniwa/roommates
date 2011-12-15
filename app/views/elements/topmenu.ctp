@@ -60,7 +60,7 @@
                     if(isset($selected_action) && $selected_action == 'manage_realestate'){
                         $linkClass .= ' menu-selected';
                     }
-                    echo $this->Html->link('Διαχείριση ενοικιαστών', array('controller' => 'admins',
+                    echo $this->Html->link('Διαχείριση εκμισθωτών', array('controller' => 'admins',
                         'action' => 'manage_realestates'), array('class' => $linkClass));
                 }
             ?>
