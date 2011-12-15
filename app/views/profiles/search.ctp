@@ -31,9 +31,7 @@
                     </div>
                 </li>
                 <li class='form-line'>
-                    <div class='form-elem form-label'>
-                        Ταξινόμηση
-                    </div>
+                    <div class='form-elem form-label'>Ταξινόμηση</div>
                     <div class='form-elem form-input'>
                         <?php
                             echo $this->Form->input('orderby',

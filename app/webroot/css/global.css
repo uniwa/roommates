@@ -292,13 +292,6 @@ input[type='submit']{
     overflow: hidden;
 }
 
-#mainWrapper{
-    margin: -16px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
-    width: 100%;
-    height: 100%;
-}
-
 #leftbar{
     float: left;
     margin: 0px 0px 0px 0px;
@@ -870,26 +863,26 @@ img.info{
     color: #333;
 }
 
-.left-form{
+.leftSearch .left-form-cont{
     margin: 0px auto;
-    width: 300px;
+    width: 320px;
 }
 
 .left-form ul{
     margin: 0px 0px 20px 0px;
 }
 
-.form-buttons{
+.leftSearch .form-buttons{
     margin: 10px auto;
-    width: 220px;
+    padding: 0px 0px 64px 0px;
 }
 
-.form-elem{
+.leftSearch .form-elem{
     margin: 0px 0px 12px 0px;
     font-size: 1.2em;
 }
 
-.form-label{
+.leftSearch .form-label{
     float: left;
     width: 100px;
 }
@@ -1016,8 +1009,6 @@ ul.collapsible{
 
 .form-buttons{
     margin: 10px 0px 0px 0px;
-/*    margin: 10px auto;
-    width: 120px;*/
 }
 
 .form-elem{
@@ -1309,7 +1300,14 @@ ul.collapsible{
 }
 
 /* HOUSE VIEW */
-.houseview .profileTitle{
+#houseView{
+    margin: -16px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    width: 100%;
+    height: 100%;
+}
+
+#houseView .profileTitle{
     margin: 0px 0px 4px 0px;
     font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
     font-size: 1.2em;
@@ -1317,12 +1315,12 @@ ul.collapsible{
     color: #333;
 }
 
-.houseview #houseEdit{
+#houseView #houseEdit{
     clear: both;
     margin: 0px 0px 0px 44px;
 }
 
-.houseview .houseTitle{
+#houseView .houseTitle{
     margin: 0px 0px 16px 18px;
     font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
     font-size: 1.2em;
@@ -1330,42 +1328,42 @@ ul.collapsible{
     color: #333;
 }
 
-.houseview .houseClear{
+#houseView .houseClear{
     clear: both;
 }
 
-.houseview .houseLine{
+#houseView .houseLine{
     padding: 6px;
     overflow: hidden;
 }
 
-.houseview .houseLineLong{
+#houseView .houseLineLong{
     width: 340px;
 }
 
-.houseview .houseLineShort{
+#houseView .houseLineShort{
     width: 160px;
 }
 
-.houseview .houseProperty{
+#houseView .houseProperty{
     float: left;
     text-align: right;
 }
 
-.houseview .houseV{
+#houseView .houseV{
     width: 130px;
 }
 
-.houseview .houseC{
+#houseView .houseC{
     width: 140px;
 }
 
-.houseview .houseValue{
+#houseView .houseValue{
     float: left;
     margin: 0px 0px 0px 8px;
 }
 
-.houseview .houseCheck{
+#houseView .houseCheck{
     background-image: url('img/check.png');
     background-repeat: no-repeat;
     margin: 0px 0px 0px 8px;
@@ -1374,77 +1372,81 @@ ul.collapsible{
     text-indent: -9999px;
 }
 
-.houseview .houseCheckFalse{
+#houseView .houseCheckFalse{
     background-position: 0px -12px;
 }
 
-.houseview .houseCheckTrue{
+#houseView .houseCheckTrue{
     background-position: 0px 0px;
 }
 
-.houseview .houseOdd{
+#houseView .houseOdd{
     background-color: #eef;
 }
 
-.houseview #housePropertiesCont{
+#houseView #housePropertiesCont{
     margin: 0px 0px 0px 16px;
 }
 
-.houseview .housePropertiesCol{
+#houseView .housePropertiesCol{
     float: left;
     margin: 0px 8px 16px 0px;
 }
 
-.houseview .houseOptions{
+#houseView .houseOptions{
     margin: 16px 0px 0px 0px;
 }
 
-.houseview .liimage{
+#houseView .liimage{
     float: left;
     margin: 0px 0px 0px 4px;
 }
 
-.houseview #imageList{
+#houseView #imageList{
     margin: 0px 0px 0px 0px;
     padding: 24px 0px 24px 16px;
     height: 100px;
     overflow: hidden;
 }
 
-.houseview .imageThumbCont{
+#houseView .imageThumbCont{
     width: 180px;
     height: 100px;
     overflow: hidden;
 }
 
-.houseview .default-image{
+#houseView .default-image{
     height: 100%;
     overflow: hidden;
 }
 
-.houseview #houseInfo{
+#houseView #houseInfo{
     margin: 0px 0px 0px 0px;
     padding: 24px 0px 0px 0px;
 }
 
-.houseview .optionIcon{
+#houseView .optionIcon{
     margin: 0px 4px 0px 0px;
     vertical-align: -30%;
 }
 
-.houseview #houseMap{
+#houseView #houseMap{
     clear: both;
     margin: 32px 0px 32px 0px;
 }
 
-.houseview .map{
+#houseView .map{
     margin: 0px auto;
     width: 300px;
     height: 220px;
 }
 
 /* ADD/EDIT HOUSE VIEW */
-.addEditHouseView .edit-title{
+#addEditHouseView .centerImage{
+    margin: 0px auto;
+}
+
+#addEditHouseView .edit-title{
     margin: 12px 0px 24px 24px;
     font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
     font-size: 1.3em;
@@ -1452,40 +1454,40 @@ ul.collapsible{
     color: #333;
 }
 
-.addEditHouseView .input{
+#addEditHouseView .input{
     clear: both;
     padding: 3px 0;
 }
 
-.addEditHouseView .input .short{
+#addEditHouseView .input .short{
     width: 40px;
 }
 
-.addEditHouseView .required {
+#addEditHouseView .required {
     background: url("img/required.gif") no-repeat scroll 160px -2px transparent;
 }
 
-.addEditHouseView .input label{
+#addEditHouseView .input label{
     float: left;
     margin: 0px 8px 16px 0px;
     width: 160px;
     text-align: right;
 }
 
-.addEditHouseView .input.checkbox{
+#addEditHouseView .input.checkbox{
     margin: 0px 0px 0px 96px;
 }
 
-.addEditHouseView .checkbox label{
+#addEditHouseView .checkbox label{
     width: auto;
     text-align: left;
 }
 
-.addEditHouseView .checkbox input{
+#addEditHouseView .checkbox input{
     border: 1px solid #ddd;
 }
 
-.addEditHouseView .input input{
+#addEditHouseView .input input{
     float: left;
     border: 1px solid #ddd;
     margin: 0px 8px 16px 6px;
@@ -1493,7 +1495,7 @@ ul.collapsible{
     font-size: 10px;
 }
 
-.addEditHouseView .input select{
+#addEditHouseView .input select{
     float: left;
     border: 1px solid #ddd;
     margin: 0px 8px 16px 6px;
@@ -1501,7 +1503,7 @@ ul.collapsible{
     font-size: 10px;
 }
 
-.addEditHouseView .input textarea{
+#addEditHouseView .input textarea{
     float: left;
     border: 1px solid #ddd;
     margin: 0px 8px 16px 6px;
@@ -1509,19 +1511,19 @@ ul.collapsible{
     font-size: 10px;
 }
 
-.addEditHouseView .submit{
+#addEditHouseView .submit{
     clear: both;
     margin: 0px 0px 0px 48px;
 }
 
-.addEditHouseView .submit input{
+#addEditHouseView .submit input{
     border: 0 none;
     margin: 16px 0px 0px 0px;
     padding: 4px;
     cursor: pointer;
 }
 
-.addEditHouseView #mapDiv{
+#addEditHouseView #mapDiv{
     clear: both;
     border: 1px solid #eee;
     background-color: #f9f9f9;
@@ -1529,12 +1531,12 @@ ul.collapsible{
     padding: 8px;
 }
 
-.addEditHouseView .mapMarker{
+#addEditHouseView .mapMarker{
     margin: 0px 0px 8px 12px;
     padding: 4px;
 }
 
-.addEditHouseView .map{
+#addEditHouseView .map{
     padding: 0px 0px 0px 10px;
     margin: 7px 0 0 0;
     height: 250px;

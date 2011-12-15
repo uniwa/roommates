@@ -369,7 +369,7 @@ EOT;
         $roleClass = 'student';
         $roleTitle = 'φοιτητής';
     }
-    echo "<div id='mainWrapper' class='{$classCont} houseview'>";
+    echo "<div id='houseView' class='{$classCont}'>";
 ?>
 <div id='leftbar' class='leftSearch'>
     <div id='houseCont'>
