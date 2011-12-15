@@ -150,7 +150,7 @@ class HousesController extends AppController {
             $this->Auth->allow( 'search' );
         }
 
-        if ($this->isWebService()) $this->Auth->allow('webService');
+        $this->Auth->allow('webService');
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -1234,15 +1234,6 @@ class HousesController extends AppController {
             $string = $string . $char;
         }
         return $string;
-    }
-
-    /// Returns whether this is web service call or not
-    private function isWebService() {
-        if (isset($this->params['url']['url']) &&
-            (strpos($this->params['url']['url'], 'api/houses') !== false))
-            return true;
-        else
-            return false;
     }
 
 
