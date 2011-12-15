@@ -5,12 +5,16 @@ class UsersController extends AppController{
 
 	var $name = "Users";
     var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
-    var $components = array('Token', 'Recaptcha.Recaptcha', 'Email');
+    var $components = array('Token', 'Recaptcha.Recaptcha', 'Email', 'RequestHandler');
     //var $helpers = array('RecaptchaPlugin.Recaptcha');
-    var $helpers = array('Auth', 'Html');
+    var $helpers = array('Auth', 'Html', 'Xml');
 
     function beforeFilter() {
         parent::beforeFilter();
+
+        if ($this->isWebService())
+            $this->Auth->allow('webService');
+
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
 
@@ -86,7 +90,7 @@ class UsersController extends AppController{
         $hash = $this->params['url']['hash'];
         if( $hash !== $valid )  $this->cakeError('error404');
 
-        // get municipality (name) in order to print it onto the 
+        // get municipality (name) in order to print it onto the
         // email which is to be sent for registration approval
         $municipality = $user['RealEstate']['municipality_id'];
 
@@ -96,7 +100,7 @@ class UsersController extends AppController{
         $this->set('municipality', $municipality);
 
         $this->layout = false;
-    } 
+    }
 
     // Initiates the creation of the pdf equivalent of the application form.
     // Returns the full path to the file created.
@@ -464,7 +468,7 @@ class UsersController extends AppController{
     private function notifyOfRegistration($data) {
         if( empty($data) )   return;
 
-        // get municipality (name) in order to print it onto the 
+        // get municipality (name) in order to print it onto the
         // email which is to be sent for registration approval
         $municipality = $data['RealEstate']['municipality_id'];
         if( isset($municipality) ) {
@@ -564,6 +568,24 @@ class UsersController extends AppController{
             }
         }
     }
+
+    private function isWebService() {
+        if (isset($this->params['url']['url']) &&
+            (strpos($this->params['url']['url'], 'api/users') !== false))
+            return true;
+        else
+            return false;
+    }
+
+    function webService($id = null) {
+        if ($this->RequestHandler->isGet()) {
+            $this->layout = 'xml/default';
+            $this->User->recursive = -1;
+            $results = $this->User->find('all');
+
+            $this->set('users', $results);
+            $this->render('xml/get');
+        }
+    }
 }
 ?>
-
