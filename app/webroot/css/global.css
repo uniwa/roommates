@@ -1679,7 +1679,7 @@ ul.collapsible{
 
 #registerView .form-input{
     float: left;
-    width: 300px;
+    width: 250px;
     overflow: hidden;
 }
 
@@ -1721,9 +1721,8 @@ ul.collapsible{
     margin: 2px 0px 0px 0px;
 }
 
-/* TODO: add custom class to differentiate between other views stars */
 #registerView .required {
-    background: url("img/required.gif") no-repeat scroll right top transparent;
+    background: url("../img/required.gif") no-repeat scroll right top transparent;
 }
 
 /* PROFILE EDIT VIEW */
