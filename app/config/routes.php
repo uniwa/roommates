@@ -32,16 +32,50 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
+    /* enable rss*/
+    Router::parseExtensions('rss');
+
     // REST URI mapping
+
+    // Houses web service
     Router::connect(
-                '/api/houses/*',
-                array('controller' => 'houses', 'action' => 'webservice')
+                '/api/houses',
+                array('controller' => 'houses',
+                      'action' => 'handleGetRequest',
+                      '[method]' => 'GET')
     );
 
+    Router::connect(
+                '/api/house',
+                array('controller' => 'houses',
+                      'action' => 'handlePostRequest',
+                      '[method]' => 'POST')
+    );
+
+    // display an error if the request method is POST with id
+    Router::connect(
+                'api/house/*',
+                array('controller' => 'houses',
+                      'action' => 'webServicesError',
+                      '[method]' => 'POST')
+    );
+
+    Router::connect(
+                '/api/house/*',
+                array('controller' => 'houses',
+                      'action' => 'handlePutRequest',
+                      '[method]' => 'PUT')
+    );
+
+    Router::connect(
+                '/api/house/*',
+                array('controller' => 'houses',
+                      'action' => 'handleDeleteRequest',
+                      '[method]' => 'DELETE')
+    );
+
+    // Users web service
     Router::connect(
                 '/api/users/*',
                 array('controller' => 'users', 'action' => 'webservice')
     );
-
-    /* enable rss*/
-    Router::parseExtensions('rss');
