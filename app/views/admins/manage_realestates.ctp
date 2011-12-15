@@ -150,6 +150,10 @@
         border-right: 0px;
         width: 80px;
     }
+    .alias{
+        border-right:0;
+        width:10px;
+    }
 
     .admpaginator{
         clear: both;
@@ -349,6 +353,9 @@
                 <div class='col enabled'>
                     ενεργός
                 </div>
+                <div class='col alias'>
+                    a
+                </div>
             </div>
             <?php
                 $count = 0;
@@ -414,6 +421,14 @@
                                 'action' => 'enable',
                                 $user['RealEstate']['id']),
                                 array('title' => 'ενεργοποίηση', 'escape' => false)));
+                    ?>
+                </div>
+                <div class='col alias'>
+                    <?php
+                        echo $this->Html->link('ϗ', array(
+                            'controller' => 'users',
+                            'action' => 'switchUser',
+                            $user['User']['id']));
                     ?>
                 </div>
             </div>

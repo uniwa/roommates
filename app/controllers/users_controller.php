@@ -60,6 +60,44 @@ class UsersController extends AppController{
 		$this->redirect( $this->Auth->logout() );
 	}
 
+    function switchUser($id=null) {
+// TODO: MAKE SURE $id CORRESPONDS TO REAL_ESTATE (prevent greedy admins)
+
+        if( $this->Session->read('Auth.User.role') != 'admin' ) {
+
+            // user may be a 'masked' admin (ie, admin logged in as realestate)
+            if($this->Session->check('Manager.id')) {
+                $this->Auth->logout(); //required?
+
+                $managerId = $this->Session->read('Manager.id');
+
+                $this->Auth->login($managerId);
+
+                $redirect_url =
+                    $this->Session->check('Manager.return_url') ?
+                    $this->Session->read('Manager.return_url') :
+                    array(
+                        'controller' => 'admins',
+                        'action' => 'manage_realestates');
+
+                $this->Session->delete('Manager');
+                $this->redirect($redirect_url);
+            }
+            $this->cakeError('error404');
+        }
+
+        $managerId = $this->Auth->user('id');
+        $this->Session->write('Manager.id', $managerId);
+        // url to redirect admin after they logout as realestate
+        $this->Session->write(
+            'Manager.return_url',
+            Router::url('/', true));
+
+//        $this->Auth->login(/*$id*/ array('username'=>'rapturous', 'password'=>'12345678'));
+
+        $this->redirect(array('controller' => 'pages', 'action' => 'display'));
+    }
+
     // Produces a registration application html form for the given user $id.
     // Currently, only users of role 'RealEstate' are supported. This function
     // is invoked by (vendors/html2ps) PdfComponent's member function process()
