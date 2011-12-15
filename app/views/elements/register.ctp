@@ -98,6 +98,7 @@
             ?>
         </li>
         <?php } // foreach ?>
+        <?php if ($type != 'from_admin') { // ignore recaptcha and legal notes ?>
         <li class='form-line'>
             <textarea rows="6" cols="80" readonly="readonly">
                 <?php echo $terms_text; ?>
@@ -113,6 +114,7 @@
         <li class='form-line form-center'>
             <?php echo $this->Recaptcha->display(); ?>
         </li>
+        <?php } // END recaptcha and legal notes ignore ?>
         <li class='form-line form-buttons'>
             <div class='form-elem form-submit'>
                 <?php
