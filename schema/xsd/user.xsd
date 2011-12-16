@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns:tns="http://www.roommates.teiath.gr/schemas/user"
+targetNamespace="http://www.roommates.teiath.gr/schemas/user"
+elementFormDefault="qualified">
+
+<!-- Email type -->
+<xs:simpleType name="email_type">
+    <xs:restriction base="xs:string">
+        <xs:pattern value="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<!-- Gender -->
+<xs:simpleType name="gender_type">
+    <xs:restriction base="xs:string">
+        <xs:enumeration value="male"/>
+        <xs:enumeration value="female"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<!-- AFM -->
+<xs:simpleType name="afm_type">
+    <xs:restriction base="xs:string">
+        <xs:pattern value="\d{10}"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<!-- Postal Code -->
+<xs:simpleType name="postal_code_type">
+    <xs:restriction base="xs:string">
+        <xs:pattern value="\d{5}"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<!-- Core person data -->
+<xs:complexType name="core_person_type">
+    <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="email" type="tns:email_type"/>
+        <xs:element name="phone_number" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:integer" use="optional"/>
+</xs:complexType>
+
+<!-- Admin type -->
+<xs:complexType name="admin_type">
+    <xs:complexContent bane="tns:core_person_type"/>
+</xs:complexType>
+
+<!-- Student type -->
+<xs:complexType name="student_type">
+    <xs:complexContent>
+        <xs:extension base="tns:core_person_type">
+            <xs:sequence>
+                <xs:element name="gender" type="tns:gender_type"/>
+                <xs:element name="year_birth" type="xs:integer"/>
+                <xs:element name="photo" type="xs:base64Binary" minOccurs="0"/>
+                <xs:element name="is_smoker" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="have_pet" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="have_children" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="cohabit" type="xs:boolean" minOccurs="0"/>
+            </xs:sequence>
+        </xs:extension>
+    </xs:complexContent>
+</xs:complexType>
+
+<!-- Student seeking for roommates -->
+<xs:complexType name="student_roommate_type">
+    <xs:complexContent>
+        <xs:extension base="tns:student_type">
+            <xs:sequence>
+                <xs:element name="current_roommates" type="xs:integer"/>
+                <xs:element name="required_roommates" type="xs:integer"/>
+            </xs:sequence>
+        </xs:extension>
+    </xs:complexContent>
+</xs:complexType>
+
+<!-- Core legal data -->
+<xs:complexType name="legal_data_type">
+    <xs:sequence>
+        <xs:element name="afm" type="tns:afm_type"/>
+        <xs:element name="doy" type="xs:string"/>
+        <xs:element name="municipality" type="xs:string"/>
+        <xs:element name="address" type="xs:string"/>
+        <xs:element name="postal_code" type="tns:postal_code_type"/>
+    </xs:sequence>
+</xs:complexType>
+
+<!-- Legal entities type. Modeled after a (contact) person -->
+<xs:complexType name="legal_entity_type">
+    <xs:complexContent>
+        <xs:extension base="tns:core_person_type">
+            <xs:sequence>
+                <xs:element name="legal_data" type="tns:legal_data_type"/>
+            </xs:sequence>
+        </xs:extension>
+    </xs:complexContent>
+</xs:complexType>
+
+<!-- Real Estate Office type -->
+<xs:complexType name="real_estate_type">
+    <xs:complexContent>
+        <xs:extension base="tns:legal_entity_type"/>
+    </xs:complexContent>
+</xs:complexType>
+
+<!-- Private landowner type -->
+<xs:complexType name="private_landowner_type">
+    <xs:complexContent>
+        <xs:extension base="tns:legal_entity_type"/>
+    </xs:complexContent>
+</xs:complexType>
+
+<!-- Any user type -->
+<xs:complexType name="any_user_type">
+    <xs:choice>
+
+        <xs:element name="student" type="tns:student_roommate_type"/>
+        <xs:element name="real_estate" type="tns:real_estate_type"/>
+        <xs:element name="private_landowner" type="tns:private_landowner_type"/>
+        <xs:element name="admin" type="tns:admin_type"/>
+    </xs:choice>
+</xs:complexType>
+
+<!-- An enevelope of multiple users -->
+<xs:complexType name="array_of_users_type">
+    <xs:sequence>
+        <xs:element name="user" type="tns:any_user_type" minOccurs="0"
+            maxOccurs="unbounded"/>
+    </xs:sequence>
+</xs:complexType>
+
+</xs:schema>
