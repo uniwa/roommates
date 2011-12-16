@@ -2,15 +2,6 @@
     $html->script('sorting', false);
 ?>
 
-<!--
-<div id='top-frame' class='frame'>
-    <div id='top-title' class='title'>
-    </div>
-    <div id='options' class='options'>
-    </div>
-</div>
--->
-
 <div id='bottom-frame' class='frame'>
     <div class='frame-container'>
         <div id='bottom-title' class='title'>

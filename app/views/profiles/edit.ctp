@@ -1,138 +1,3 @@
-<style>
-    #leftbar{
-        float: left;
-        margin: 0px 32px 0px 32px;
-        padding: 32px;
-        width: 150px;
-    }
-
-    #main-inner{
-        float: left;
-        border-left: 1px solid #ddd;
-        margin: 10px 0px 20px 0px;
-        padding: 24px 24px 24px 64px;
-    }
-
-    #profilePic{
-        margin: 0px auto;
-        padding: 2px;
-        width: 100px;
-        height: 100px;
-    }
-
-    #profileName{
-        margin: 16px 0px 0px 0px;
-        text-align: center;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    #profileEmail{
-        margin: 8px 0px 0px 0px;
-        text-align: center;
-        font-size: 1.2em;
-    }
-
-    .profileFrame{
-        clear: both;
-        padding: 0px 0px 24px 0px;
-    }
-
-    .editTitle{
-        margin: 0px 0px 24px 16px;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    .editSubTitle{
-        margin: 0px 0px 8px 32px;
-        font-size: 1em;
-        font-weight: bold;
-    }
-
-    .avatarLabel{
-        margin: 0px 0px 8px 32px;
-    }
-
-    #avatarField{
-        margin: 0px 0px 16px 32px;
-    }
-
-    #avatarField label{
-        display: none;
-    }
-
-    #avatarField.file input{
-        border: 1px solid #ddd;
-    }
-
-    .error-message{
-        margin: 4px 0px 0px 0px;
-        color: #f00;
-    }
-
-    .input select{
-        border: 1px solid #ddd;
-        padding: 4px;
-        font-size: 12px;
-    }
-
-    .textarea label {
-        float: left;
-    }
-
-    .input{
-        clear: both;
-        padding: 3px 0;
-    }
-
-    .radio,.checkbox{
-        margin: 12px 0px 16px 64px;
-    }
-
-    .input label{
-        float: left;
-        margin: 8px 12px 0px 0px;
-        width: 160px;
-        text-align: right;
-    }
-
-    .checkbox input{
-        float: left;
-        margin: 8px 0px 0px 8px;
-    }
-
-    .checkbox label{
-        float: left;
-        margin: 8px 0px 0px 8px;
-        width: auto;
-    }
-
-    .input input[type=text]{
-        border: 1px solid #ddd;
-        padding: 4px;
-    }
-
-    .longBox{
-        width: 100px;
-    }
-
-    .shortBox{
-        width: 30px;
-    }
-
-    .button{
-        border: 0px;
-        margin: 16px 0px 16px 24px;
-        width: 100px;
-        height: 24px;
-        cursor: pointer;
-    }
-
-    .required{
-        background-position: 160px 4px;
-    }
-</style>
 <?php
     $name = $profile['firstname'].' '.$profile['lastname'];
     $email = $profile['email'];
@@ -144,7 +9,8 @@
     }
     $profileThumb = $this->Html->image($picture, array('alt' => $name));
 ?>
-<div id='leftbar'>
+<div id='profileEditView'>
+<div id='leftbar' class='leftGeneral'>
     <div id='profilePic'>
         <?php
             echo $profileThumb;
@@ -159,7 +25,7 @@
         </div>
     </div>
 </div>
-<div id='main-inner'>
+<div id='main-inner' class='mainGeneral'>
     <div class='profileFrame'>
         <?php echo $this->Form->create('Profile', array('type' => 'file')); ?>
         <div class='editTitle'>
@@ -247,4 +113,4 @@
         ?>
     </div>
 </div>
-
+</div>

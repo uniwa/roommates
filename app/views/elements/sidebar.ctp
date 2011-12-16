@@ -1,5 +1,3 @@
-<?php ?>
-
 <div id="navigation" class="column">
     <ul id="nav">
         <li class="page_item current_page_item home">
