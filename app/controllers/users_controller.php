@@ -632,5 +632,30 @@ class UsersController extends AppController{
             $this->render('xml/get');
         }
     }
+
+    function get_profile_bin_image($id) {
+        // returns user avatar image for given profile $id encoded in base64
+        // params: $id -> profile id
+        if ($id == null) return null;
+
+        $conditions = array('Profile.id' => $id);
+        $name = $this->Profile->find('first',
+            array('conditions' => $conditions, 'fields' => 'avatar'));
+
+        if (empty($name)) {
+            return null;
+        }
+
+        // build image file path
+        $filepath = WWW_ROOT . "img/uploads/profiles/" . $id . "/" . $name['Profile']['avatar'];
+
+        if (! file_exists($filepath)) {
+            return null;
+        }
+
+        $bin = fread(fopen($filepath, "r"), filesize($filepath));
+        return base64_encode($bin);
+    }
+
 }
 ?>

@@ -1605,5 +1605,30 @@ class HousesController extends AppController {
         return $n;
     }
 
+    private function get_house_bin_image($id) {
+        // returns default house image for given $id encoded in base64
+        // params: $id -> house id
+        if ($id == null) return null;
+
+        $conditions = array('House.id' => $id, 'Image.is_default' => 1);
+        $name = $this->House->Image->find('first',
+            array('conditions' => $conditions, 'fields' => 'location'));
+
+        if (empty($name)) {
+            return null;
+        }
+
+        // build image file path
+        $filepath = WWW_ROOT . "img/uploads/houses/" . $id . "/" .
+            "thumb_" . $name['Image']['location'];
+
+        if (! file_exists($filepath)) {
+            return null;
+        }
+
+        $bin = fread(fopen($filepath, "r"), filesize($filepath));
+        return base64_encode($bin);
+    }
+
 }
 ?>
