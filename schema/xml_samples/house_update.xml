@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<house xmlns="http://www.roommates.teiath.gr/schemas/house" id = "1">
+    <address>new edited address 5</address>
+    <postal_code>12345</postal_code>
+    <area>345</area>
+    <bedroom_num>3</bedroom_num>
+    <bathroom_num>1</bathroom_num>
+    <price>666</price>
+    <construction_year>1821</construction_year>
+    <solar_heater>0</solar_heater>
+    <furnitured>0</furnitured>
+    <aircondition>1</aircondition>
+    <garden>0</garden>
+    <parking>1</parking>
+    <shared_pay>1</shared_pay>
+    <security_doors>0</security_doors>
+    <disability_facilities>0</disability_facilities>
+    <storeroom>1</storeroom>
+    <availability_date><![CDATA[2012-10-10]]></availability_date>
+    <rent_period>12</rent_period>
+    <description>trololoooo ol oltolotosroro</description>
+    <created><![CDATA[2011-12-1T20:14:45]]></created>
+    <modified><![CDATA[2012-1-3T23:21:31]]></modified>
+    <currently_hosting>2</currently_hosting>
+    <total_places>3</total_places>
+    <user_id>2</user_id>
+    <visible>1</visible>
+    <latitude>37.9865711339956</latitude>
+    <longitude>23.6764577301635</longitude>
+    <geo_distance>341.31</geo_distance>
+    <free_places>1</free_places>
+    <municipality>
+        <name>ΑΘΗΝΑΙΩΝ</name>
+    </municipality>
+    <floor>
+        <type>1ος όροφος</type>
+    </floor>
+    <house_type>
+        <type>studio</type>
+    </house_type>
+    <heating_type>
+        <type>αυτόνομη</type>
+    </heating_type>
+    <image></image>
+</house>
