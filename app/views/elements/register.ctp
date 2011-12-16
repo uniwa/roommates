@@ -43,7 +43,7 @@
     $inputelems['lname']['input'] = $this->Form->input('RealEstate.lastname', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['lname']['label'] = 'Επίθετο';
-    if($type == 'owner' || $type = 'from_admin'){
+    if($type == 'owner' || $type == 'from_admin'){
         $inputType = 'hidden';
     }else{
         $inputType = 'text';
