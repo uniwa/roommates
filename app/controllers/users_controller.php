@@ -62,19 +62,22 @@ class UsersController extends AppController{
 
     // Enables currently logged in 'admin' user to act with the permissions of
     // $id user. Currently, $id may only belong to a 'realestate' of type
-    // 'owner'. If this function is invoked by a non-admin user, the account
-    // will be reset to its initial permissions.
+    // 'owner'. If this function is invoked by a non-admin user (with or without
+    // specifying an $id), the account will be reset to its initial permissions,
+    // if applicable.
     function switchUser($id=null) {
 
         if( $this->Session->read('Auth.User.role') != 'admin' ) {
 
             // user may be a 'masked' admin (an admin logged in as realestate)
+            // if so, re-acquire their account
             if( $this->Session->check('Manager.id') ) {
 
                 $managerId = $this->Session->read('Manager.id');
                 $managerRole = $this->Session->read('Manager.role');
                 $managerUsername = $this->Session->read('Manager.username');
 
+                // change Session Auth variable to re-acquire admin permissions
                 $this->alterAuth($managerId, $managerRole, $managerUsername);
 
                 $redirect_url =
@@ -84,7 +87,8 @@ class UsersController extends AppController{
                         'controller' => 'admins',
                         'action' => 'manage_realestates');
 
-                // ensure that topuser.ctp will display link to (casual) logout
+                // ensure that topuser.ctp will now display link to (casual)
+                // logout
                 $this->Session->delete('Manager');
                 $this->redirect($redirect_url);
             }
@@ -92,14 +96,14 @@ class UsersController extends AppController{
         }
 
         // make sure that no $id of improper account was requested
-        $user = $this->ascertainRole($id, 'owner');
-
+        $user = $this->ascertainManageable($id, 'owner');
         if( empty($user) )   $this->cakeError('error404');
 
         $this->transmuteRole($user);
+        $this->redirect(array('controller' => 'pages', 'action' => 'display'));
     }
 
-    // Alters id, role and username under Auth.User session variable,
+    // Alters id, role and username under 'Auth.User' session variable,
     // effectively changing the permissions of the currently logged in user to
     // those of the supplied one.
     private function alterAuth($id, $role, $username) {
@@ -110,19 +114,25 @@ class UsersController extends AppController{
 
     // Returns the realestate data that correspond to the supplied $user_id
     // given that it ($user_id) actually belongs to a $type realestate account.
-    private function ascertainRole($user_id, $type) {
-        //$this->loadModel('RealEstate');
+    // This is the function to alter in order to weave a more sophisticated
+    // (or intricate) record approval policy.
+    private function ascertainManageable($user_id, $type) {
         return $this->RealEstate->find('first', array('conditions' => array(
             'RealEstate.user_id' => $user_id, 'RealEstate.type' => $type)));
     }
 
     // Does the actual switching of account by copying the current user's data
-    // into the 'Manager' session variable, replacing Auth.User.id, username and
-    // role with the $user info supplied and redirecting to the home page.
+    // into the 'Manager' session variable and replacing 'Auth.User.' -id
+    // -username and -role session variables with the $user info supplied.
+    // $user must contain: id, role and username
     private function transmuteRole($user) {
         $managerId = $this->Session->read('Auth.User.id');
         $managerRole = $this->Session->read('Auth.User.role');
         $managerUsername = $this->Session->read('Auth.User.username');
+
+        $userId = $user['User']['id'];
+        $userUsername = $user['User']['username'];
+        $userRole = $user['User']['role'];
 
         // store current user data so as to switch back to this account
         $this->Session->write('Manager.id', $managerId);
@@ -133,18 +143,16 @@ class UsersController extends AppController{
         $this->Session->write( 'Manager.return_url', Router::url( array(
             'controller' => 'admins', 'action' => 'manage_realestates'), true));
 
-        $this->Session->write('Auth.User.id', $user['User']['id']);
-        $this->Session->write('Auth.User.username', $user['User']['username']);
-        $this->Session->write('Auth.User.role', $user['User']['role']);
-
-        $this->redirect(array('controller' => 'pages', 'action' => 'display'));
+        $this->alterAuth($userId, $userRole, $userUsername);
     }
 
     // Produces a registration application html form for the given user $id.
     // Currently, only users of role 'RealEstate' are supported. This function
     // is invoked by (vendors/html2ps) PdfComponent's member function process()
-    // in order to produce the pdf version of that html. Only local access
-    // should be allowed to this function (by means of .htaccess or otherwise).
+    // in order to produce the pdf version of that html. This function requires
+    // a 'hash' parameter to be specified in the url the contents of which
+    // should match the value returned by $this->getDataHash() of the supplied
+    // $id data.
     function pdf($id=null) {
 
         if( is_null($id) )    return;
