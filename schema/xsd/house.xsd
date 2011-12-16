@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.roommates.teiath.gr/schemas/HouseTypes"
+    xmlns:tns="http://www.roommates.teiath.gr/schemas/house"                              
+    elementFormDefault="qualified">
+
+       
+
+    <!--restrictions about postal_code field spacing and strlen-->
+    <xs:simpleType name="postal_code_type">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="collapse"/>
+            <xs:minLength value="0"/>
+            <xs:maxLength value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about bedroom_num field min-max value-->
+    <xs:simpleType name="bedroom_num_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about bathroom_num field min-max value plus null value
+         inside element-->
+    <xs:simpleType name="bathroom_num_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]){0,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about construction year field min-max value-->
+    <xs:simpleType name="construction_year_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]){0,4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about rent period field max value-->
+    <xs:simpleType name="rent_period_type">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]){0,4}"/>            
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--restrictions about description field spacing and strlen-->
+    <xs:simpleType name="description_type">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="preserve"/>
+            <xs:minLength value="0"/>
+            <xs:maxLength value="256"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+
+    <!--type for heating field: nested element type, attribute id-->
+    <xs:simpleType name="heating_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="κεντρική"/>
+            <xs:enumeration value="αυτόνομη"/> 
+            <xs:enumeration value="δεν διαθέτει"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+     <!--type for municipality type field: nested element name and attribute id-->
+    <xs:complexType name="heating_type">
+        <xs:sequence>
+            <xs:element name="type" type="tns:heating_enumerations_type"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:simpleType name="house_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="studio"/>
+            <xs:enumeration value="γκαρσονιέρα"/>
+            <xs:enumeration value="μονοκατοικία"/>
+            <xs:enumeration value="μεζονέτα"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--type for house_type field: nested element type and attribute id-->
+    <xs:complexType name="house_category_type">
+        <xs:sequence>
+            <xs:element name="type" type="tns:house_enumerations_type"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+    <!--restrictions about hosting_type field  min-max value-->
+    <xs:simpleType name="one_to_nine_type">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="municipality_enumerations_type">
+        <xs:restriction base="xs:string">
+
+            <xs:enumeration value="ΑΓΙΑΣ ΒΑΡΒΑΡΑΣ"/>
+            <xs:enumeration value="ΑΓΙΑΣ ΠΑΡΑΣΚΕΥΗΣ"/>
+            <xs:enumeration value="ΑΓΙΟΥ ΔΗΜΗΤΡΙΟΥ"/>
+            <xs:enumeration value="ΑΓΙΩΝ ΑΝΑΡΓΥΡΩΝ - ΚΑΜΑΤΕΡΟΥ"/>
+            <xs:enumeration value="ΑΓΚΙΣΤΡΙΟΥ"/>
+            <xs:enumeration value="ΑΘΗΝΑΙΩΝ"/>
+            <xs:enumeration value="ΑΙΓΑΛΕΩ"/>
+            <xs:enumeration value="ΑΙΓΙΝΑΣ"/>
+            <xs:enumeration value="ΑΛΙΜΟΥ"/>
+            <xs:enumeration value="ΑΜΑΡΟΥΣΙΟΥ"/>
+            <xs:enumeration value="ΑΣΠΡΟΠΥΡΓΟΥ"/>
+            <xs:enumeration value="ΑΧΑΡΝΩΝ"/>
+            <xs:enumeration value="ΒΑΡΗΣ - ΒΟΥΛΑΣ - ΒΟΥΛΙΑΓΜΕΝΗΣ"/>
+            <xs:enumeration value="ΒΡΙΛΗΣΣΙΩΝ"/>
+            <xs:enumeration value="ΒΥΡΩΝΟΣ"/>
+            <xs:enumeration value="ΓΑΛΑΤΣΙΟΥ"/>
+            <xs:enumeration value="ΓΛΥΦΑΔΑΣ"/>
+            <xs:enumeration value="ΔΑΦΝΗΣ - ΥΜΗΤΤΟΥ"/>
+            <xs:enumeration value="ΔΙΟΝΥΣΟΥ"/>
+            <xs:enumeration value="ΕΛΕΥΣΙΝΑΣ"/>
+            <xs:enumeration value="ΕΛΛΗΝΙΚΟΥ - ΑΡΓΥΡΟΥΠΟΛΗΣ"/>
+            <xs:enumeration value="ΖΩΓΡΑΦΟΥ"/>
+            <xs:enumeration value="ΗΛΙΟΥΠΟΛΕΩΣ"/>
+            <xs:enumeration value="ΗΡΑΚΛΕΙΟΥ"/>
+            <xs:enumeration value="ΙΛΙΟΥ (ΝΕΩΝ ΛΙΟΣΙΩΝ)"/>
+            <xs:enumeration value="ΚΑΙΣΑΡΙΑΝΗΣ"/>
+            <xs:enumeration value="ΚΑΛΛΙΘΕΑΣ"/>
+            <xs:enumeration value="ΚΕΡΑΤΣΙΝΙΟΥ - ΔΡΑΠΕΤΣΩΝΑΣ"/>
+            <xs:enumeration value="ΚΗΦΙΣΙΑΣ"/>
+            <xs:enumeration value="ΚΟΡΥΔΑΛΛΟΥ"/>
+            <xs:enumeration value="ΚΡΩΠΙΑΣ"/>
+            <xs:enumeration value="ΚΥΘΗΡΩΝ"/>
+            <xs:enumeration value="ΛΑΥΡΕΩΤΙΚΗΣ"/>
+            <xs:enumeration value="ΛΥΚΟΒΡΥΣΗΣ - ΠΕΥΚΗΣ"/>
+            <xs:enumeration value="ΜΑΝΔΡΑΣ - ΕΙΔΥΛΛΙΑΣ"/>
+            <xs:enumeration value="ΜΑΡΑΘΩΝΟΣ"/>
+            <xs:enumeration value="ΜΑΡΚΟΠΟΥΛΟΥ ΜΕΣΟΓΑΙΑΣ"/>
+            <xs:enumeration value="ΜΕΓΑΡΕΩΝ"/>
+            <xs:enumeration value="ΜΕΤΑΜΟΡΦΩΣΕΩΣ"/>
+            <xs:enumeration value="ΜΟΣΧΑΤΟΥ - ΤΑΥΡΟΥ"/>
+            <xs:enumeration value="ΝΕΑΣ ΙΩΝΙΑΣ"/>
+            <xs:enumeration value="ΝΕΑΣ ΣΜΥΡΝΗΣ"/>
+            <xs:enumeration value="ΝΙΚΑΙΑΣ - ΑΓΙΟΥ ΙΩΑΝΝΗ ΡΕΝΤΗ"/>
+            <xs:enumeration value="ΠΑΙΑΝΙΑΣ"/>
+            <xs:enumeration value="ΠΑΛΑΙΟΥ ΦΑΛΗΡΟΥ"/>
+            <xs:enumeration value="ΠΑΛΛΗΝΗΣ"/>
+            <xs:enumeration value="ΠΑΠΑΓΟΥ - ΧΟΛΑΡΓΟΥ"/>
+            <xs:enumeration value="ΠΕΙΡΑΙΩΣ"/>
+            <xs:enumeration value="ΠΕΝΤΕΛΗΣ"/>
+            <xs:enumeration value="ΠΕΡΑΜΑΤΟΣ"/>
+            <xs:enumeration value="ΠΕΡΙΣΤΕΡΙΟΥ"/>
+            <xs:enumeration value="ΠΕΤΡΟΥΠΟΛΕΩΣ"/>
+            <xs:enumeration value="ΠΟΡΟΥ"/>
+            <xs:enumeration value="ΡΑΦΗΝΑΣ - ΠΙΚΕΡΜΙΟΥ"/>
+            <xs:enumeration value="ΣΑΛΑΜΙΝΑΣ"/>
+            <xs:enumeration value="ΣΑΡΩΝΙΚΟΥ"/>
+            <xs:enumeration value="ΣΠΑΤΩΝ - ΑΡΤΕΜΙΔΟΣ"/>
+            <xs:enumeration value="ΣΠΕΤΣΩΝ"/>
+            <xs:enumeration value="ΤΡΟΙΖΗΝΙΑΣ"/>
+            <xs:enumeration value="ΥΔΡΑΣ"/>
+            <xs:enumeration value="ΦΙΛΑΔΕΛΦΕΙΑΣ - ΧΑΛΚΗΔΟΝΟΣ"/>
+            <xs:enumeration value="ΦΙΛΟΘΕΗΣ - ΨΥΧΙΚΟΥ"/>
+            <xs:enumeration value="ΦΥΛΗΣ"/>
+            <xs:enumeration value="ΧΑΙΔΑΡΙΟΥ"/>
+            <xs:enumeration value="ΧΑΛΑΝΔΡΙΟΥ"/>
+            <xs:enumeration value="ΩΡΩΠΟΥ"/>   
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="municipality_type">
+        <xs:sequence>
+            <xs:element name="name" type="tns:municipality_enumerations_type"/>
+         </xs:sequence>
+    </xs:complexType>
+
+   <xs:simpleType name="floor_enumerations_type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="υπόγειο"/>
+            <xs:enumeration value="ημιυπόγειο"/>
+            <xs:enumeration value="υπερυψωμένο"/>
+            <xs:enumeration value="ισόγειο"/>
+            <xs:enumeration value="ημιόροφος"/>
+            <xs:enumeration value="1ος όροφος"/>
+            <xs:enumeration value="2ος όροφος"/>
+            <xs:enumeration value="3ος όροφος"/>
+            <xs:enumeration value="4ος όροφος"/>
+            <xs:enumeration value="5ος όροφος"/>
+            <xs:enumeration value="6ος όροφος"/>
+            <xs:enumeration value="7ος όροφος"/>
+            <xs:enumeration value="8+ όροφος"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--type for municipality type field: nested element name and attribute id-->
+    <xs:complexType name="floor_type">
+        <xs:sequence>
+            <xs:element name="type" type="tns:floor_enumerations_type"/>
+         </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:complexType name="house_type">
+        <xs:sequence>
+            <xs:element name="address" type="xs:string"/>
+            <xs:element name="postal_code" type="tns:postal_code_type"/>
+            <xs:element name="area" type="xs:integer"/>
+            <xs:element name="bedroom_num" type="tns:bedroom_num_type"/>
+            <xs:element name="bathroom_num" type="tns:bathroom_num_type"/>
+            <xs:element name="price" type="xs:integer"/>
+            <xs:element name="construction_year" type="tns:construction_year_type"/>
+            <xs:element name="solar_heater" type="xs:boolean"/>
+            <xs:element name="furnitured" type="xs:boolean"/>
+            <xs:element name="aircodition" type="xs:boolean"/>
+            <xs:element name="garden" type="xs:boolean"/>
+            <xs:element name="parking" type="xs:boolean"/>
+            <xs:element name="shared_pay" type="xs:boolean"/>
+            <xs:element name="security_doors" type="xs:boolean"/>
+            <xs:element name="disability_facilities" type="xs:boolean"/>
+            <xs:element name="storeroom" type="xs:boolean"/>
+            <xs:element name="availability_date" type="xs:date"/>
+            <xs:element name="rent_period" type = "tns:rent_period_type"/>
+            <xs:element name="description" type = "tns:description_type"/>
+            <xs:element name="created" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="modified" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="currently_hosting" type="xs:integer"/>
+            <xs:element name="total_places" type="tns:one_to_nine_type"/>
+            <xs:element name="user_id" type="xs:integer" minOccurs="0"/>
+            <xs:element name="visible" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="latitude" type="xs:double" minOccurs="0"/>
+            <xs:element name="longitude" type="xs:double" minOccurs="0"/>
+            <xs:element name="geo_distance" type="xs:double" minOccurs="0"/>
+            <xs:element name="free_places" type="xs:integer" minOccurs="0"/>
+            <xs:element name="municipality" type="tns:municipality_type"/>
+            <xs:element name="floor" type="tns:floor_type"/>
+            <xs:element name="house_type" type="tns:house_category_type"/>
+            <xs:element name="heating_type" type="tns:heating_type"/> 
+            <xs:element name="image" type="xs:base64Binary" minOccurs="0"/>
+        </xs:sequence> 
+    </xs:complexType>
+
+</xs:schema>
