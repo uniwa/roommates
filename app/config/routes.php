@@ -76,5 +76,14 @@
     // Users web service
     Router::connect(
                 '/webservice/users/*',
-                array('controller' => 'users', 'action' => 'webservice')
+                array('controller' => 'users',
+                      'action' => 'handleGetRequest',
+                      '[method]' => 'GET')
+    );
+
+    Router::connect(
+                '/webservice/user/*',
+                array('controller' => 'users',
+                      'action' => 'handleGetRequest',
+                      '[method]' => 'GET')
     );

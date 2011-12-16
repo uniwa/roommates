@@ -617,7 +617,7 @@ class UsersController extends AppController{
     // REST - Web Services
     // ------------------------------------------------------------------------
 
-    function webService($id = null) {
+    function handleGetRequest($id = null) {
         if ($this->RequestHandler->isGet()) {
             $this->layout = 'xml/default';
             $this->User->recursive = 0;
@@ -625,9 +625,7 @@ class UsersController extends AppController{
             $options['conditions'] = array(
                 'User.id' => 1,
             );
-            $options['fields'] = array(
-                'Profile.firstname'
-            );
+            $options['fields'] = $this->getStudentXmlFields();
             $results = $this->User->find('all', $options);
 
             $this->set('users', $results);
