@@ -1377,7 +1377,9 @@ class HousesController extends AppController {
             }
             $this->data['House']['user_id'] = $user_id;
             $this->data['House']['geo_distance'] = $this->computeDistance();
+            $this->unsetXmlElements();
             $this->setRequiredIds();
+
             if ($this->House->save($this->data) != false) {
                 // success
                 $this->webServiceStatus(200);
@@ -1411,8 +1413,10 @@ class HousesController extends AppController {
                 return;
             }
 
+            $this->unsetXmlElements();
             $this->data['House']['id'] = $id;
             $this->data['House']['geo_distance'] = $this->computeDistance();
+            $this->data['House']['user_id'] = $user_id;
             $this->setRequiredIds();
             if ($this->House->saveAll($this->data)) {
                 $this->webServiceStatus(200);
@@ -1641,6 +1645,14 @@ class HousesController extends AppController {
 
         $bin = fread(fopen($filepath, "r"), filesize($filepath));
         return base64_encode($bin);
+    }
+
+    private function unsetXmlElements() {
+        unset($this->data['House']['xmlns']);
+        unset($this->data['House']['id']);
+        unset($this->data['House']['created']);
+        unset($this->data['House']['modified']);
+        unset($this->data['House']['free_places']);
     }
 
 }

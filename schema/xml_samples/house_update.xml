@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <house xmlns="http://www.roommates.teiath.gr/schemas/house" id = "1">
-    <address>new edited address 5</address>
+    <address><![CDATA[new edited address 5]]></address>
     <postal_code>12345</postal_code>
     <area>345</area>
     <bedroom_num>3</bedroom_num>
