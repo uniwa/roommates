@@ -431,13 +431,15 @@
                 </div>
                 <div class='col alias'>
                     <?php
-                        $iconConnect = $this->Html->image('switch.png',
-                            array('alt' => 'σύνδεση'));
-                        $textConnect = "<div class='switchUser'>σύνδεση ως</div>";
-                        echo $this->Html->link($textConnect,
-                            array('controller' => 'users',
-                            'action' => 'switchUser', $user['User']['id']),
-                            array('title' => 'σύνδεση ως', 'escape' => false));
+                        if($user['RealEstate']['type'] == 'owner'){
+                            $iconConnect = $this->Html->image('switch.png',
+                                array('alt' => 'σύνδεση'));
+                            $textConnect = "<div class='switchUser'>σύνδεση ως</div>";
+                            echo $this->Html->link($textConnect,
+                                array('controller' => 'users',
+                                'action' => 'switchUser', $user['User']['id']),
+                                array('title' => 'σύνδεση ως', 'escape' => false));
+                        }
                     ?>
                 </div>
             </div>
