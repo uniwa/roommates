@@ -1,182 +1,15 @@
-<style>
-    #leftbar{
-        float: left;
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 16px;
-        width: 300px;
-    }
-
-    #main-inner{
-        float: left;
-        border-left: 1px solid #ddd;
-        margin: 10px 0px 10px 2px;
-        padding: 0px 0px 0px 0px;
-        width: 620px;
-        min-height: 500px;
-    }
-
-    .form-title{
-        clear: both;
-        margin: 12px 0px 12px 8px;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    .left-form ul{
-        margin: 0px 0px 20px 0px;
-    }
-
-    .left-form ul{
-        margin: 0px 0px 20px 0px;
-    }
-
-    .form-buttons{
-        margin: 10px auto;
-        width: 220px;
-    }
-
-    .form-elem{
-        margin: 0px 8px 8px 0px;
-        font-size: 1.2em;
-    }
-
-    .form-label{
-        float: left;
-        width: 100px;
-    }
-
-    .form-input{
-        float: left;
-        width: 140px;
-        overflow: no-scroll;
-    }
-
-    .form-submit{
-        float: left;
-    }
-
-    .button{
-        border: 0px;
-        width: 100px;
-        height: 24px;
-        cursor: pointer;
-    }
-
-    .buttonAdd{
-        background-color: #aaa;
-        margin: 12px 0px 0px 48px;
-        padding: 4px 12px 4px 12px;
-    }
-
-    .search-title{
-/*        margin: 12px 0px 8px 48px;*/
-        text-align: center;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    .search-subtitle{
-/*        margin: 0px 0px 12px 64px;*/
-        text-align: center;
-        font-size: 1.2em;
-        font-style: italic;
-    }
-
-    .pagination{
-        margin: 0px auto 12px auto;
-        text-align: center;
-    }
-
-    .pagination ul li{
-        display: inline;
-    }
-
-    .pagination ul li.current{
-        border: 1px solid #59A4D8;
-        padding: 0px 2px 0px 2px;
-        font-weight: bold;
-    }
-
-    .pagination ul li.disabled{
-        color: #aaa;
-    }
-
-    .housetable{
-        margin: 0px 0px 0px 8px;
-    }
-
-    .colodd{
-        background-color: #f3f3f3;
-    }
-
-    .rowodd{
-        background-color: #f3f3f3;
-    }
-
-    .rowtitle{
-        background-color: #ccc;
-        border-bottom: 1px solid #000;
-        font-weight: bold;
-        text-decoration: none;
-    }
-
-    .row{
-        clear: both;
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .col{
-        float: left;
-/*        border-right: 1px solid #bbb;*/
-        margin: 0px 4px 0px 0px;
-        padding: 4px;
-        text-align: center;
-    }
-
-    .num{
-        width: 12px;
-    }
-
-    .address{
-        width: 180px;
-        overflow: hidden;
-    }
-
-    .type{
-        width: 100px;
-    }
-
-    .area{
-        width: 60px;
-    }
-
-    .price{
-        width: 50px;
-    }
-
-    .delete{
-        width: 100px;
-        text-align: center;
-    }
-
-    .admpaginator{
-        clear: both;
-        margin: 20px auto 20px auto;
-        text-align: center;
-    }
-</style>
-
-<div id='leftbar'>
-    <div class='left-form-cont'>
+<div id='leftbar' class='leftSearch'>
+    <div class='left-form-cont-house'>
         <div class='form-title'>
             <h2>Προσθήκη σπιτιού</h2>
         </div>
-        <?php
-            $addLink = array('controller' => 'houses', 'action' => 'add');
-            $addClass = 'button buttonAdd';
-            echo $this->Html->link('προσθήκη', $addLink, array('class' => $addClass));
-        ?>
+        <div class='button'>
+            <?php
+                $addLink = array('controller' => 'houses', 'action' => 'add');
+                $addClass = 'buttonAdd';
+                echo $this->Html->link('προσθήκη', $addLink, array('class' => $addClass));
+            ?>
+        </div>
         <div class='form-title'>
             <h2>Αναζήτηση σπιτιών</h2>
         </div>
@@ -225,7 +58,7 @@
         </ul>
     </div>
 </div>
-<div id='main-inner'>
+<div id='main-inner' class='mainSearch'>
     <div class='results'>
     <?php
         if (isset($results)) {
@@ -291,16 +124,16 @@
                 <div class='col num'>
                     #
                 </div>
-                <div class='col address'>
+                <div class='col manage-address'>
                     <?php echo $this->Paginator->sort('Διεύθυνση', 'House.price'); ?>
                 </div>
-                <div class='col type'>
+                <div class='col manage-type'>
                     <?php echo $this->Paginator->sort('Τύπος', 'House.type'); ?>
                 </div>
-                <div class='col area'>
+                <div class='col manage-area'>
                     <?php echo $this->Paginator->sort('Εμβαδόν', 'House.area'); ?>
                 </div>
-                <div class='col price'>
+                <div class='col manage-price'>
                     <?php echo $this->Paginator->sort('Ενοίκιο', 'House.price'); ?>
                 </div>
             </div>
@@ -319,22 +152,22 @@
                 <div class='col num'>
                     <?php echo $count; ?>
                 </div>
-                <div class='col address'>
+                <div class='col manage-address'>
                     <?php
                         echo $this->Html->link($house['House']['address'],
                             "/houses/view/{$house['House']['id']}");
                     ?>
                 </div>
-                <div class='col type'>
+                <div class='col manage-type'>
                     <?php echo $house['HouseType']['type']; ?>
                 </div>
-                <div class='col area'>
+                <div class='col manage-area'>
                     <?php echo $house['House']['area']; ?>
                 </div>
-                <div class='col price'>
+                <div class='col manage-price'>
                     <?php echo $house['House']['price']; ?>
                 </div>
-                <div class='col delete'>
+                <div class='col manage-delete'>
                     <?php
                         echo $this->Html->link('διαγραφή',
                             array('action' => 'delete', $house['House']['id']),

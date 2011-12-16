@@ -1,56 +1,3 @@
-<style>
-    #leftbar{
-        float: left;
-        margin: 0px 0px 0px 32px;
-        padding: 32px;
-    }
-    
-    #main-inner{
-        float: left;
-        border-left: 1px solid #ddd;
-        margin: 10px 0px 20px 0px;
-        padding: 24px;
-    }
-    
-    #profilePic{
-        width: 128px;
-        height: 128px;
-        padding: 2px;
-    }
-    
-    #profileEdit{
-        margin: 16px 0px 0px 0px;
-    }
-    
-    #profileRss,#profileBan{
-        margin: 16px 0px 0px 0px;
-    }
-    
-    #profileRss img,#profileBan img{
-        margin: 0px 4px 0px 0px;
-    }
-    
-    .profileClear{
-        clear: both;
-    }
-    
-    .profileBlock{
-        float: left;
-        margin: 0px 64px 64px 16px;
-        padding: 0px 8px 0px 8px;
-    }
-
-    .profileTitle{
-        margin: 12px 0px 8px 18px;
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-
-    .profileInfo{
-        margin: 0px 0px 0px 24px;
-        font-size: 1.0em;
-    }
-</style>
 <?php
     $role = $this->Session->read('Auth.User.role');
     // Profile info
@@ -72,7 +19,8 @@
 		echo $title.': '.$span['open'].$option.$span['close']."<br \>\n";
 	}
 ?>
-<div id='leftbar'>
+<div id='realestateView'>
+<div id='leftbar' class='leftGeneral'>
     <div id='profilePic'>
         <?php
             $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
@@ -112,7 +60,7 @@
         ?>
     </div>
 </div>
-<div id='main-inner'>
+<div id='main-inner' class='mainGeneral'>
     <div class='profileBlock profileClear'>
         <div id='myName' class='profileTitle'>
             <h2><?php echo $company; ?></h2>
@@ -134,4 +82,4 @@
         </div>
     </div>
 </div>
-
+</div>

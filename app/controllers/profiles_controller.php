@@ -89,6 +89,9 @@ class ProfilesController extends AppController {
             $municipality = $municipality[$pref_municipality];
             $this->set('municipality', $municipality);
         }
+        else {
+            $this->set('municipality', '');
+        }
         // get house id of this user - NULL if he doesn't own one
         if(isset($profile["User"]["House"][0]["id"])){
             $houseid = $profile["User"]["House"][0]["id"];

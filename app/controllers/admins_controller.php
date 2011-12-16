@@ -47,7 +47,7 @@ class AdminsController extends AppController
         // this variable is used to display properly
         // the selected element on header
         $this->set('selected_action', 'manage_realestate');
-        $this->set('title_for_layout','Διαχείριση ενοικιαστών');
+        $this->set('title_for_layout','Διαχείριση εκμισθωτών');
 
         $this->checkAccess();
 
@@ -60,6 +60,19 @@ class AdminsController extends AppController
         );
         $user = new User();
         $this->set('limit', $this->paginate['limit']);
+
+        // work around named parameters in url
+        if (! empty($this->params['named'])) {
+            if (isset($this->params['named']['name'])) {
+                $this->params['url']['name'] = $this->params['named']['name'];
+            }
+            if (isset($this->params['named']['banned'])) {
+                $this->params['url']['banned'] = $this->params['named']['banned'];
+            }
+            if (isset($this->params['named']['disabled'])) {
+                $this->params['url']['disabled'] = $this->params['named']['disabled'];
+            }
+        }
 
         if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])
             || isset($this->params['url']['disabled'])){

@@ -7,6 +7,8 @@ class AuthHelper extends AppHelper{
     private $user_id;
     private $profile_id;
     private $house_id;
+    private $banned;
+    private $estate_id;
 
     /*
      * Extract Auth array from $this->data

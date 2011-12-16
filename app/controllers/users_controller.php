@@ -21,9 +21,11 @@ class UsersController extends AppController{
         $this->Auth->allow('registerowner');
         $this->Auth->allow('registerrealestate');
 
-        if( $this->params['action'] === 'register' && $this->Auth->user() ) {
+        if( $this->params['action'] === 'register' ) {
+            if ($this->Auth->user() || $this->Auth->User('role') != 'admin') {
 
-            $this->cakeError( 'error403' );
+                $this->cakeError( 'error403' );
+            }
         }
     }
 
@@ -65,14 +67,26 @@ class UsersController extends AppController{
     // is invoked by (vendors/html2ps) PdfComponent's member function process()
     // in order to produce the pdf version of that html. Only local access
     // should be allowed to this function (by means of .htaccess or otherwise).
-    function pdf($id = null) {
+    function pdf($id=null) {
 
         if( is_null($id) )    return;
+
+        if( empty( $this->params['url']['hash'] ) ) {
+            $this->cakeError('error404');
+        }
 
         $this->User->id = $id;
         $user = $this->User->read();
 
+        if( empty($user) ) {
+            $this->cakeError('error404');
+        }
+
         $this->set('data', $user);
+
+        $valid = $this->getDataHash($user);
+        $hash = $this->params['url']['hash'];
+        if( $hash !== $valid )  $this->cakeError('error404');
 
         // get municipality (name) in order to print it onto the 
         // email which is to be sent for registration approval
@@ -87,21 +101,28 @@ class UsersController extends AppController{
     } 
 
     // Initiates the creation of the pdf equivalent of the application form.
-    private function getRegistrationPdf($id) {
+    // Returns the full path to the file created.
+    private function getRegistrationPdf($data) {
 
-        if(is_null($id))   return;
+        if(is_null($data))   return;
+
+        $id = $data['User']['id'];
 
         App::import('Component', 'Pdf');
         $filename = 'user_id_' . $id;
-        // files are stored under html2ps/out/ directory
-        $outDir = APP.'vendors'.DS.'html2ps'.DS.'out'.DS;
+
+        $outDir = constant('HTML2PS_PDF_OUT_DIR');
+
         $filepath = $outDir . $filename . '.pdf';
+
+        $hash = $this->getDataHash($data);
 
         $Pdf = new PdfComponent();
         $Pdf->filename = $filename; // Without .pdf
         $Pdf->output = 'file';
         $Pdf->init();
-        $Pdf->process(Router::url('/', true) . 'users/pdf/' . $id);
+        $Pdf->process(
+            Router::url('/', true) . 'users/pdf/' . $id . '?hash='. $hash);
 
         return $filepath;
     }
@@ -279,21 +300,31 @@ class UsersController extends AppController{
         }
     }
 
-    function register() {
+    private function register($from_admin = false) {
+        // core register function
+        //
+        // $from_admin parameter shows that admin registers
+        // another user, used for bypassing legal notes and
+        // captcha field
+
         if ($this->data) {
-            // user must accept the real estate terms
-            if ($this->data["User"]["estate_terms"] != "1") {
-                $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης
-για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
+            if (! $from_admin) {
+                // user must accept the real estate terms
+                if ($this->data["User"]["estate_terms"] != "1") {
+                    $this->Session->setFlash("Πρέπει να αποδεχθείτε τους όρους χρήσης
+    για να ολοκληρωθεί η εγγραφή σας στο σύστημα.", 'default', array('class' => 'flashRed'));
+                    $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                    return;
+                }
             }
 
             // check for valid captcha
-            if (! $this->Recaptcha->verify()) {
-                $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
-                $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
-                return;
+            if (! $from_admin) {
+                if (! $this->Recaptcha->verify()) {
+                    $this->Session->setFlash($this->Recaptcha->error, 'default', array('class' => 'flashRed'));
+                    $this->data['User']['password'] = $this->data['User']['password_confirm'] = "";
+                    return;
+                }
             }
 
             $userdata["User"]["username"] = $this->data["User"]["username"];
@@ -303,8 +334,15 @@ class UsersController extends AppController{
             $userdata["User"]["banned"] = 0;
             /* terms are shown on register page and cannot proceed without accepting */
             $userdata["User"]["terms_accepted"] = 1;
-            /* we need enabled = 0 because all users are enabled in db by default */
-            $userdata["User"]["enabled"] = 0;
+
+            if ($from_admin) {
+                /* if admin registers a user then enable by default */
+                $userdata["User"]["enabled"] = 1;
+            }
+            else {
+                /* we need enabled = 0 because all users are enabled in db by default */
+                $userdata["User"]["enabled"] = 0;
+            }
 
             $this->User->begin();
             /* try saving user model */
@@ -317,6 +355,7 @@ class UsersController extends AppController{
             else {
                 /* try saving real estate profile */
                 $uid = $this->User->id;
+                $uname = $userdata["User"]["username"];
                 if ( $this->create_estate_profile($uid, $this->data) == false) {
                     $this->User->rollback();
                 }
@@ -325,15 +364,36 @@ class UsersController extends AppController{
                     // registration successfull - send to login
                     // TODO: maybe redirect to some public page
 
-                    // uses $this->data
-                    $this->notifyOfRegistration();
+                    // contains all the necessary info for the pdf
+                    // note: the only reason for using this is to avoid adding
+                    // the id element into $this->data manually
+                    $fraction = array(
+                        'User' => $this->data['User'],
+                        'RealEstate' => $this->data['RealEstate']);
+                    $fraction['User']['id'] = $uid;
+                    $this->notifyOfRegistration($fraction);
 
-                    //"Η εγγραφή σας ολοκληρώθηκε με επιτυχία."
                     $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
                             ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
                         'default', array('class' => 'flashBlue'));
 
-                    $this->redirect('login');
+                    if ($from_admin) {
+                        $this->Session->setFlash("Η εγγραφή εκ μέρους τρίτου πραγματοποιήθηκε με επιτυχία.",
+                                'default', array('class' => 'flashBlue'));
+
+                        // if admin registers on behalf of other users, redirect to RE management screen
+                        $this->redirect(array('controller' => 'admins',
+                                            'action' => 'manage_realestates',
+                                            'name' => "$uname",
+                                            'banned' => '0',
+                                            'disabled' => '0'));
+                    }
+                    else {
+                        $this->Session->setFlash("Η εγγραφή πραγματοποιήθηκε."
+                                ." Ελέγξτε την εισερχόμενη αλληλογραφία σας.",
+                                'default', array('class' => 'flashBlue'));
+                        $this->redirect('login');
+                    }
                 }
             }
 
@@ -358,6 +418,13 @@ class UsersController extends AppController{
         $this->set('title_for_layout','Εγγραφή νέου μεσιτικού γραφείου');
         $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
         $this->register();
+    }
+
+    function registerfromadmin() {
+        $this->set('selected_action', 'register');
+        $this->set('title_for_layout','Εγγραφή νέου ιδιώτη από τον διαχειριστή');
+        $this->set('municipalities', $this->Municipality->find('list', array('fields' => array('name'))));
+        $this->register(true);
     }
 
     private function create_estate_profile($id, $data) {
@@ -407,12 +474,15 @@ class UsersController extends AppController{
         }
     }
 
+    // Creates XML request to Redmine for reporting an issue
     private function createXmlRequest($data){
+        // Set project id
+        $projectID = 8;
         $req = "<?xml version=\"1.0\"?>";
         $req .= "<issue>";
         $req .= "<subject>{$data['subject']}</subject>";
         $req .= "<description>{$data['description']}</description>";
-        $req .= "<project_id>8</project_id>"; // TODO: change project id
+        $req .= "<project_id>{$projectID}</project_id>";
         $req .= "</issue>";
 
         return $req;
@@ -431,54 +501,59 @@ class UsersController extends AppController{
         if( isset($attachments) ) {
             $this->Email->attachments = $attachments;
         }
-
         $this->Email->sendAs = 'both';
         $this->Email->send();
     }
 
     // Sends emails to applicant and authority.
-    private function notifyOfRegistration() {
-        if( empty( $this->data) )   return;
+    private function notifyOfRegistration($data) {
+        if( empty($data) )   return;
 
         // get municipality (name) in order to print it onto the 
         // email which is to be sent for registration approval
-        $municipality = $this->data['RealEstate']['municipality_id'];
+        $municipality = $data['RealEstate']['municipality_id'];
         if( isset($municipality) ) {
             $municipality = $this->getMunicipalityData($municipality);
         }
-        $this->set('data', $this->data );
+        $this->set('data', $data );
         $this->set('municipality', $municipality);
 
-        $this->notifyAuthority();
+        $filepath = $this->getRegistrationPdf($data);
 
-        $filepath = $this->getRegistrationPdf($this->User->id);
         if( file_exists($filepath) ) {
 
-            $attachments = array('roommates.pdf' => $filepath);
-            $this->notifyApplicant(
-                $this->data['RealEstate']['email'], $attachments);
+            $this->set('pdf_success', true);
+            $attachmentName = 'roommates_'.$data['User']['username'].'.pdf';
+            $attachments = array($attachmentName => $filepath);
+
+            $this->notifyAuthority($attachments);
+            $this->notifyApplicant($data['RealEstate']['email'], $attachments);
+
+            // remove temporary files
+            $this->deleteFiles(constant('HTML2PS_PDF_OUT_DIR'));
+            $this->deleteFiles(constant('HTML2PS_PDF_CACHE_DIR'));
+        } else {
+
+            // inform authority that the application form could not be printed
+            $this->set('pdf_success', false);
+            $this->notifyAuthority();
+            $this->notifyApplicant($data['RealEstate']['email']);
         }
     }
 
     // Sends the registration application form to the supplied $email address.
-    // The $attachments is an array of files to be included.
-    private function notifyApplicant($email, $attachments) {
+    // The $attachments is an array of files to be included; may be null
+    private function notifyApplicant($email, $attachments=null) {
         if( empty($email) ) return;
 
         $subject = Configure::read('registration.applicant_subject');
         if( empty($subject) ) {
             $subject = 'Αίτηση εγγραφής στην υπηρεσία roommates';
         }
-        $body =
-            'Το παρόν μήνυμα εστάλη ως αποτέλεσμα της εγγραφής σας ως πάροχο'
-            . ' χώρων στέγασης στο σύστημα εύρεσης συγκατοίκων του ΤΕΙ'
-            . ' Αθήνας. Το συνημμένο αρχείο αποτελεί την αίτηση η οποία πρέπει'
-            . ' να ελεγχθεί, υπογραφεί και υποβληθεί στην αρμόδια αρχή'
-            . ' έγκρισης μέσω τηλεομοιότυπου (fax).';
 
         $this->sendEmail(
-            'admin@roommates.edu.teiath.gr', $email, $subject, $body,
-            $attachments, 'default', 'default' );
+            'admin@roommates.edu.teiath.gr', $email, $subject, '',
+            $attachments, 'registration_applicant_notification', 'default' );
     }
 
     // Sends email to the Authority to inform of user registration. The
@@ -494,7 +569,7 @@ class UsersController extends AppController{
         foreach( $recipients as $to ) {
             $this->sendEmail(
                 'admin@roommates.edu.teiath.gr', $to, $subject, '',
-                $attachments, 'registered', 'registered' );
+                $attachments, 'registration_authority_notification', 'default' );
         }
     }
 
@@ -504,6 +579,35 @@ class UsersController extends AppController{
             'conditions' => array('Municipality.id' => $municipality_id)
         ));
         return $data;
+    }
+
+    // [$data] must contain the following arrays: User and RealEstate.
+    private function getDataHash($data=null) {
+
+        if( is_null($data) )    return '';
+
+        $hashThis =
+            "{$data['RealEstate']['firstname']}."
+            . "{$data['RealEstate']['lastname']}."
+            . "{$data['RealEstate']['type']}."
+            . "{$data['User']['id']}."
+            . "{$data['User']['username']}";
+
+        return Security::hash( $hashThis, 'sha1', true );
+    }
+
+    // Deletes all writable files in the given directory. First level childern
+    // are only affected (ie, it does not delete files within sub-directories).
+    private function deleteFiles($directory) {
+
+        $contents = scandir($directory);
+        foreach( $contents as $child ) {
+
+            $fullpath = $directory.$child;
+            if( is_file($fullpath) && is_writable($fullpath) ) {
+                unlink($fullpath);
+            }
+        }
     }
 }
 ?>

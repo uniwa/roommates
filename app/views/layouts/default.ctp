@@ -3,6 +3,7 @@
 <head>
     <title><?php echo $title_for_layout; ?></title>
     <?php echo $this->Html->charset('utf-8'); ?>
+    <link href='http://fonts.googleapis.com/css?family=Didact+Gothic&subset=latin,greek' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:700&subset=latin,greek' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,greek' rel='stylesheet' type='text/css'>
     <base href="<?php echo Router::url('/'); ?>"/>
@@ -63,6 +64,8 @@
      <?php echo $this->element('footer'); ?>
 
     </div>
+    <!-- Inlude Piwik element -->
+    <?php echo $this->element('piwik'); ?>
 </body>
 </html>
 

@@ -59,20 +59,22 @@ class  AppController extends Controller{
 	protected function getAuthUserIds(){
 
 		$user_id = $this->Auth->user('id');
-
 		$this->loadModel('User');
-
 		$this->User->id = $user_id;
-
 		$user = $this->User->read();
 
-		return array(  	'User' => array('id' => $user['User']['id'],
-                                        'banned' => $user['User']['banned'] ),
-                        'Profile' =>array( 'id' => $user['Profile']['id'] ),
-                        'House' => array('id' => isset($user['House'][0]['id']) ?
-                                                 $user['House'][0]['id'] : NULL),
-                        'RealEstate' => array('id' => $user['RealEstate']['id'])
-        );
+        $uid = $user['User']['id'];
+        $ubanned = $user['User']['banned'];
+        $pid = isset($user['Profile']['id'])?$user['Profile']['id']:NULL;
+        $hid = isset($user['House'][0]['id'])?$user['House'][0]['id']:NULL;
+        $reid = isset($user['RealEstate']['id'])?$user['RealEstate']['id']:NULL;
+
+        $result['User'] = array('id' =>  $uid, 'banned' => $ubanned);
+        $result['Profile'] = array('id' => $pid);
+        $result['House'] = array('id' => $hid);
+        $result['RealEstate'] = array('id' => $reid);
+        
+		return $result;
 
 	}
 }
