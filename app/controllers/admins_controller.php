@@ -4,6 +4,15 @@ class AdminsController extends AppController
 {
     var $name = 'Admins';
     var $uses = array();
+    var $paginate = array(
+        'RealEstate' => array('fields' => array('User.username','User.banned',
+            'User.enabled','RealEstate.id','RealEstate.firstname',
+            'RealEstate.lastname','RealEstate.company_name','RealEstate.email'),
+            'limit' => 50),
+        'User' => array('fields' => array('User.username','User.banned',
+            'Profile.id','Profile.firstname','Profile.lastname','Profile.email'),
+            'limit' => 50)
+    );
 
     function manage_users(){
         // this variable is used to display properly
@@ -14,14 +23,12 @@ class AdminsController extends AppController
         $this->checkAccess();
 
         App::import('Model', 'User');
-        $paginate = array(
-            'fields' => array('User.username', 'User.banned',
+        $paginate = array('fields' => array('User.username', 'User.banned',
             'Profile.id', 'Profile.firstname', 'Profile.lastname',
             'Profile.email'),
-            'limit' => 50
-        );
+            'limit' => 50);
         $user = new User();
-        $this->set('limit', $this->paginate['limit']);
+        $this->set('limit', $this->paginate['User']['limit']);
 
         if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])){
             $parameters = $this->params['url'];
@@ -52,14 +59,8 @@ class AdminsController extends AppController
         $this->checkAccess();
 
         App::import('Model', 'User');
-        $paginate = array(
-            'fields' => array('User.username', 'User.banned', 'User.enabled',
-            'RealEstate.id', 'RealEstate.firstname', 'RealEstate.lastname',
-            'RealEstate.email'),
-            'limit' => 50
-        );
         $user = new User();
-        $this->set('limit', $this->paginate['limit']);
+        $this->set('limit', $this->paginate['RealEstate']['limit']);
 
         // work around named parameters in url
         if (! empty($this->params['named'])) {
@@ -89,10 +90,10 @@ class AdminsController extends AppController
                 $conditions['enabled'] = 0;
             }
             $conditions['User.role'] = 'realestate';
-            $results = $this->paginate('User', $conditions);
+            $results = $this->paginate('RealEstate', $conditions);
         }else{
             $conditions['User.role'] = 'realestate';
-            $results = $this->paginate('User', $conditions);
+            $results = $this->paginate('RealEstate', $conditions);
         }
         $this->set('results', $results);
     }
