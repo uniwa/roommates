@@ -39,7 +39,7 @@
 
     // Houses web service
     Router::connect(
-                '/webservice/houses',
+                '/webservice/houses/*',
                 array('controller' => 'houses',
                       'action' => 'handleGetRequest',
                       '[method]' => 'GET')

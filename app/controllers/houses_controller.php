@@ -1331,6 +1331,11 @@ class HousesController extends AppController {
     // ------------------------------------------------------------------------
 
     function handleGetRequest($id = null) {
+        if ((strpos($this->params['url']['url'], 'houses') == true) &&
+            ($id != null)) {
+            $this->webServiceStatus(404);
+            return;
+        }
         $house_conds = $this->getHouseConditions();
         if ($id != null) array_push($house_conds, array('House.id' => $id));
         $result = $this->simpleSearch(  $house_conds,
