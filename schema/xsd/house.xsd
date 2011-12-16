@@ -1,59 +1,10 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:ht="http://www.roommates.teiath.gr/schemas/HouseTypes"
     targetNamespace="http://www.roommates.teiath.gr/schemas/HouseTypes"
+    xmlns:tns="http://www.roommates.teiath.gr/schemas/house"                              
     elementFormDefault="qualified">
 
-
-    <xs:element name="house" type="ht:house_type"/>
-
-
-    <xs:complexType name="house_type">
-        <xs:sequence>
-            <xs:element name="address" type="ht:address_type"/>
-            <xs:element name="postal_code" type="ht:postal_code_type"/>
-            <xs:element name="area" type="xs:integer"/>
-            <xs:element name="bedroom_num" type="ht:bedroom_num_type"/>
-            <xs:element name="bathroom_num" type="ht:bedroom_num_type"/>
-            <xs:element name="price" type="xs:integer"/>
-            <xs:element name="construction_year" type="ht:construction_year_type"/>
-            <xs:element name="solar_heater" type="xs:boolean"/>
-            <xs:element name="furnitured" type="xs:boolean"/>
-            <xs:element name="aircondition" type="xs:boolean"/>
-            <xs:element name="garden" type="xs:boolean"/>
-            <xs:element name="parking" type="xs:boolean"/>
-            <xs:element name="shared_pay" type="xs:boolean"/>
-            <xs:element name="security_doors" type="xs:boolean"/>
-            <xs:element name="disability_facilities" type="xs:boolean"/>
-            <xs:element name="storeroom" type="xs:boolean"/>
-            <xs:element name="availability_date" type="xs:date"/>
-            <xs:element name="rent_period" type="ht:rent_period_type"/>
-            <xs:element name="description" type="ht:description_type"/>
-            <xs:element name="floor" type="ht:floor_type"/>
-            <xs:element name="house_type" type="ht:type_house_type"/>
-            <xs:element name="currently_hosting" type="ht:one_to_nine_type"/>
-            <xs:element name="total_places" type="ht:one_to_nine_type"/>
-            <xs:element name="municipality" type="ht:municipality_type"/>
-            <xs:element name="visible" type="xs:boolean"/>
-            <xs:element name="latitude" type="ht:coordinates_type"/>
-            <xs:element name="longitude" type="ht:coordinates_type"/>
-        </xs:sequence>
-        </xs:complexType>
-        
-    <xs:simpleType name="coordinates_type">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="([0-9]*[.][0-9]*){0,1}"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-     <!--restrictions about address field spacing and strlen-->
-    <xs:simpleType name="address_type">
-        <xs:restriction base="xs:string">
-            <xs:whiteSpace value="preserve"/>
-            <xs:minLength value="1"/>
-            <xs:maxLength value="50"/>
-        </xs:restriction>
-    </xs:simpleType>
+       
 
     <!--restrictions about postal_code field spacing and strlen-->
     <xs:simpleType name="postal_code_type">
@@ -72,7 +23,7 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <!--restrictions about batroom_num field min-max value plus null value
+    <!--restrictions about bathroom_num field min-max value plus null value
          inside element-->
     <xs:simpleType name="bathroom_num_type">
         <xs:restriction base="xs:string">
@@ -103,12 +54,7 @@
         </xs:restriction>
     </xs:simpleType>
 
-     <!--type for municipality type field: nested element name and attribute id-->
-    <xs:complexType name="heating_type">
-        <xs:sequence>
-            <xs:element name="type" type="ht:heating_enumerations_type"/>
-        </xs:sequence>
-    </xs:complexType>
+
 
     <!--type for heating field: nested element type, attribute id-->
     <xs:simpleType name="heating_enumerations_type">
@@ -119,11 +65,10 @@
         </xs:restriction>
     </xs:simpleType>
 
-
-    <!--type for house_type field: nested element type and attribute id-->
-    <xs:complexType name="type_house_type">
+     <!--type for municipality type field: nested element name and attribute id-->
+    <xs:complexType name="heating_type">
         <xs:sequence>
-            <xs:element name="type" type="ht:house_enumerations_type"/>
+            <xs:element name="type" type="tns:heating_enumerations_type"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -137,6 +82,13 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <!--type for house_type field: nested element type and attribute id-->
+    <xs:complexType name="house_category_type">
+        <xs:sequence>
+            <xs:element name="type" type="tns:house_enumerations_type"/>
+        </xs:sequence>
+    </xs:complexType>
+
 
 
     <!--restrictions about hosting_type field  min-max value-->
@@ -147,18 +99,6 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="dateTime_type">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="([1-2][0-9][0-9][0-9][-][0-1][0-9][-][0-3][0-9][ ][0-2][0-9][:][0-5][0-9][:][0-5][0-9])"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <!--type for municipality type field: nested element name and attribute id-->
-    <xs:complexType name="municipality_type">
-        <xs:sequence>
-            <xs:element name="name" type="ht:municipality_enumerations_type"/>
-         </xs:sequence>
-    </xs:complexType>
 
     <xs:simpleType name="municipality_enumerations_type">
         <xs:restriction base="xs:string">
@@ -232,10 +172,10 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <!--type for municipality type field: nested element name and attribute id-->
-    <xs:complexType name="floor_type">
+
+    <xs:complexType name="municipality_type">
         <xs:sequence>
-            <xs:element name="type" type="ht:floor_enumerations_type"/>
+            <xs:element name="name" type="tns:municipality_enumerations_type"/>
          </xs:sequence>
     </xs:complexType>
 
@@ -257,22 +197,58 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <!--type for municipality type field: nested element name and attribute id-->
+    <xs:complexType name="floor_type">
+        <xs:sequence>
+            <xs:element name="type" type="tns:floor_enumerations_type"/>
+         </xs:sequence>
+    </xs:complexType>
+    
 
-    <!--type for image_type field: nested element name and attribute id-->
-    <xs:complexType name="image_type">
-         <xs:sequence>
-            <xs:element name="location">
-                <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:whiteSpace value="collapse"/>
-                        <xs:minLength value="0"/>
-                        <xs:maxLength value="100"/>
-                     </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
+    <xs:complexType name="house_type">
+        <xs:sequence>
+            <xs:element name="address" type="xs:string"/>
+            <xs:element name="postal_code" type="tns:postal_code_type"/>
+            <xs:element name="area" type="xs:integer"/>
+            <xs:element name="bedroom_num" type="tns:bedroom_num_type"/>
+            <xs:element name="bathroom_num" type="tns:bathroom_num_type"/>
+            <xs:element name="price" type="xs:integer"/>
+            <xs:element name="construction_year" type="tns:construction_year_type"/>
+            <xs:element name="solar_heater" type="xs:boolean"/>
+            <xs:element name="furnitured" type="xs:boolean"/>
+            <xs:element name="aircodition" type="xs:boolean"/>
+            <xs:element name="garden" type="xs:boolean"/>
+            <xs:element name="parking" type="xs:boolean"/>
+            <xs:element name="shared_pay" type="xs:boolean"/>
+            <xs:element name="security_doors" type="xs:boolean"/>
+            <xs:element name="disability_facilities" type="xs:boolean"/>
+            <xs:element name="storeroom" type="xs:boolean"/>
+            <xs:element name="availability_date" type="xs:date"/>
+            <xs:element name="rent_period" type = "tns:rent_period_type"/>
+            <xs:element name="description" type = "tns:description_type"/>
+            <xs:element name="created" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="modified" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="currently_hosting" type="xs:integer"/>
+            <xs:element name="total_places" type="tns:one_to_nine_type"/>
+            <xs:element name="user_id" type="xs:integer" minOccurs="0"/>
+            <xs:element name="visible" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="latitude" type="xs:double" minOccurs="0"/>
+            <xs:element name="longitude" type="xs:double" minOccurs="0"/>
+            <xs:element name="geo_distance" type="xs:double" minOccurs="0"/>
+            <xs:element name="free_places" type="xs:integer" minOccurs="0"/>
+            <xs:element name="municipality" type="tns:municipality_type"/>
+            <xs:element name="floor" type="tns:floor_type"/>
+            <xs:element name="house_type" type="tns:house_category_type"/>
+            <xs:element name="heating_type" type="tns:heating_type"/> 
+            <xs:element name="image" type="xs:base64Binary" minOccurs="0"/>
+        </xs:sequence> 
+    </xs:complexType>
+
+    <!--An envelope for multiple houses-->
+    <xs:complexType name="array_of_houses_type">
+        <xs:sequence>
+            <xs:element name="house" type="tns:house_type" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
 </xs:schema>
-
-

@@ -23,7 +23,7 @@
         $inputelems['uname']['error'] = "<div class='error-message'>". $user_errors["username"] ."</div>";
     }
 
-    /* set error for non-matching passowrds */
+    /* set error for non-matching passwords */
     if (isset($user_errors["password_confirm"])) {
         $inputelems['pass1']['error'] = "<div class='error-message'>". $user_errors["password_confirm"] ."</div>";
         $inputelems['pass2']['error'] = "<div class='error-message'>". $user_errors["password_confirm"] ."</div>";
@@ -43,7 +43,7 @@
     $inputelems['lname']['input'] = $this->Form->input('RealEstate.lastname', array(
         'label' => '', 'class' => 'input-elem'));
     $inputelems['lname']['label'] = 'Επίθετο';
-    if($type == 'owner' || $type = 'from_admin'){
+    if($type == 'owner' || $type == 'from_admin'){
         $inputType = 'hidden';
     }else{
         $inputType = 'text';
@@ -114,7 +114,6 @@
         </li>
         <li class='form-line form-center'>
             <?php
-                // TODO: fix "required" star's position
                 echo $this->Form->checkbox('estate_terms', array('hidden' => false, 'checked' => false, 'class' => 'formCheckbox'));
                 echo $this->Form->label('estate_terms', 'Διάβασα και αποδέχομαι τους όρους χρησης', array('class' => 'checkLabel required'));
             ?>
