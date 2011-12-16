@@ -46,6 +46,13 @@
     );
 
     Router::connect(
+                '/webservice/house/*',
+                array('controller' => 'houses',
+                      'action' => 'handleGetRequest',
+                      '[method]' => 'GET')
+    );
+
+    Router::connect(
                 '/webservice/house',
                 array('controller' => 'houses',
                       'action' => 'handlePostRequest',
