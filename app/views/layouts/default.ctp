@@ -38,6 +38,9 @@
     </div>
     <div id='container'>
         <?php
+            if($userBanned){
+                echo $this->element('banned');
+            }
             echo $this->Session->flash();
             echo $this->Session->flash('auth');
         ?>
@@ -51,11 +54,6 @@
 
         <div id='main-cont'>
             <div id='main'>
-                <?php
-                    if($userBanned){
-                        echo $this->element('banned');
-                    }
-                ?>
                 <!-- /#content -->
                 <?php echo $content_for_layout; ?>
             </div>
