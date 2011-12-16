@@ -1350,6 +1350,7 @@ class HousesController extends AppController {
     function handlePostRequest($id = null) {
         if ($id != null) {
             $this->webServiceError(400);
+            return;
         }
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
