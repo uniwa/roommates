@@ -1355,9 +1355,8 @@ class HousesController extends AppController {
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            // TODO deprecate this render when we build error system
-            $this->set('results', 'authentication failed');
-            $this->render('xml/create');
+            // access denied
+            $this->webServiceStatus(403);
             return;
         }
 
@@ -1366,47 +1365,49 @@ class HousesController extends AppController {
             if ($user_role == 'user') {
                 $house_count = $this->count_houses($user_id);
                 if ($house_count >= 1) {
-                    $this->set('results', 'cannot add more than one houses');
-                    $this->render('xml/create');
+                    // users add only one house
+                    $this->webServiceStatus(412);
                     return;
                 }
             }
             elseif ($user_role == 'admin') {
-                $this->set('results', 'admin cannot add houses');
-                $this->render('xml/create');
+                // admin cannot add houses
+                $this->webServiceStatus(412);
                 return;
             }
             $this->data['House']['user_id'] = $user_id;
             $this->data['House']['geo_distance'] = $this->computeDistance();
             $this->setRequiredIds();
-            $this->House->save($this->data);
+            if ($this->House->save($this->data) != false) {
+                // success
+                $this->webServiceStatus(200);
+                return;
+            } else {
+                $this->webServiceStatus(500);
+                return;
+            }
         }
-        // TODO return a confirmation/failure message instead
-        $this->set('results', $this->data);
-        $this->layout = 'xml/default';
-        $this->render('xml/create');
+        // empty data
+        $this->webServiceStatus(400);
+        return;
     }
 
     function handlePutRequest($id = null) {
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            // TODO deprecate this render when we build error system
-            $this->set('results', 'authentication failed');
-            $this->render('xml/create');
+            $this->webServiceStatus(403);
             return;
         }
 
         if ($id != null) {
             if (! $this->house_exist($id) ) {
-                $this->set('results', 'cannot find house to modify');
-                $this->render('xml/create');
+                $this->webServiceStatus(404);
                 return;
             }
 
             if (! $this->owns_house($user_id, $id) ) {
-                $this->set('results', 'access to house with id '.$id.' is denied');
-                $this->render('xml/create');
+                $this->webServiceStatus(403);
                 return;
             }
 
@@ -1414,73 +1415,69 @@ class HousesController extends AppController {
             $this->data['House']['geo_distance'] = $this->computeDistance();
             $this->setRequiredIds();
             if ($this->House->saveAll($this->data)) {
-                $this->set('results', $this->data);
+                $this->webServiceStatus(200);
+                return;
             } else {
-                // TODO find a better error message!!!
-                $this->set('results', "You, sir, have been trolled!");
+                $this->webServiceStatus(500);
+                return;
             }
-            $this->layout = 'xml/default';
-            $this->render('xml/create');
         } else {
             // TODO if the $id === null then create the house
+            // for now just say we didn't find the house
+            $this->webServiceStatus(404);
+            return;
         }
     }
 
     function handleDeleteRequest($id = null) {
-        $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            // TODO deprecate this render when we build error system
-            $this->set('results', 'authentication failed');
-            $this->render('xml/create');
+            $this->webServiceStatus(403);
             return;
         }
 
         if ($id != null) {
             if (! $this->house_exist($id) ) {
-                $this->set('results', 'cannot find house to modify');
-                $this->render('xml/create');
+                $this->webServiceStatus(404);
                 return;
             }
 
             if (! $this->owns_house($user_id, $id) ) {
-                $this->set('results', 'access to house with id '.$id.' is denied');
-                $this->render('xml/create');
+                $this->webServiceStatus(403);
                 return;
             }
-
-            $this->layout = 'xml/default';
 
             $this->House->id = $id;
             $this->House->begin();
             /* delete associated images first */
             if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
                 $this->House->rollback();
-                $this->render('xml/delete');
+                $this->webServiceStatus(500);
                 return;
             }
             else {
                 /* remove from FS */
                 if (! $this->House->Image->delete_all($id) ) {
                     $this->House->rollback();
-                    $this->render('xml/delete');
+                    $this->webServiceStatus(500);
                     return;
                 }
                 else {
                     /* delete house */
                     if (! $this->House->delete( $id ) ) {
                         $this->House->rollback();
-                        $this->render('xml/delete');
+                        $this->webServiceStatus(500);
                         return;
                     }
                 }
             }
             $this->House->commit();
-            $this->set('results', 'success');
-            $this->render('xml/create');
+            $this->webServiceStatus(200);
+            return;
 
         } else {
-            // TODO return some error
+            $this->webServiceStatus(412);
+            return;
         }
 
     }
