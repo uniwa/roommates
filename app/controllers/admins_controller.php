@@ -61,7 +61,8 @@ class AdminsController extends AppController
         App::import('Model', 'User');
         $user = new User();
         $this->set('limit', $this->paginate['RealEstate']['limit']);
-/*
+
+        // work around named parameters in url
         if (! empty($this->params['named'])) {
             if (isset($this->params['named']['name'])) {
                 $this->params['url']['name'] = $this->params['named']['name'];
@@ -73,7 +74,7 @@ class AdminsController extends AppController
                 $this->params['url']['disabled'] = $this->params['named']['disabled'];
             }
         }
-*/
+
         if(isset($this->params['url']['name']) || isset($this->params['url']['banned'])
             || isset($this->params['url']['disabled'])){
             $parameters = $this->params['url'];
