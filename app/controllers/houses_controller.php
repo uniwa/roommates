@@ -1349,7 +1349,7 @@ class HousesController extends AppController {
 
     function handlePostRequest($id = null) {
         if ($id != null) {
-            $this->webServiceError(400);
+            $this->webServiceStatus(400);
             return;
         }
         $this->layout = 'xml/default';
@@ -1485,7 +1485,7 @@ class HousesController extends AppController {
 
     }
 
-    private function webServiceError($id) {
+    private function webServiceStatus($id) {
         if (array_key_exists($id, $this->xml_status) ) {
             $this->set('code', $id);
             $this->set('msg', $this->xml_status[$id]);
