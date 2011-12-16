@@ -620,15 +620,54 @@ class UsersController extends AppController{
     function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
             $this->layout = 'xml/default';
-            $this->User->recursive = -1;
-            $results = $this->User->find('all');
+            $this->User->recursive = 0;
+            $options = array();
+            $options['conditions'] = array(
+                'User.id' => 1,
+            );
+            $options['fields'] = array(
+                'Profile.firstname'
+            );
+            $results = $this->User->find('all', $options);
 
             $this->set('users', $results);
             $this->render('xml/get');
         }
     }
 
-    function get_profile_bin_image($id) {
+    private function getStudentXmlFields() {
+        return array(
+            'Profile.firstname',
+            'Profile.lastname',
+            'Profile.email',
+            'Profile.phone',
+            'Profile.gender',
+            'Profile.dob',
+            'Profile.smoker',
+            'Profile.pet',
+            'Profile.child',
+            'Profile.couple',
+            'Profile.we_are',
+            // probably avatar will be set manually (base64)
+//             'Profile.avatar',
+        );
+    }
+
+    private function getRealEstateXmlFields() {
+        return array(
+            'RealEstate.firstname',
+            'RealEstate.lastname',
+            'RealEstate.email',
+            'RealEstate.phone',
+            'RealEstate.afm',
+            'RealEstate.doy',
+            'RealEstate.municipality_id',
+            'RealEstate.address',
+            'RealEstate.postal_code',
+        );
+    }
+
+    private function get_profile_bin_image($id) {
         // returns user avatar image for given profile $id encoded in base64
         // params: $id -> profile id
         if ($id == null) return null;
