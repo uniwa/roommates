@@ -237,6 +237,7 @@ class HousesController extends AppController {
             $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->save($this->data)) {
+                $this->log('User '.$this->Auth->user('username').' add new house', 'activity');
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
@@ -298,12 +299,15 @@ class HousesController extends AppController {
                         'default', array('class' => 'flashRed'));
                     $this->redirect($redirectTarget);
                 }
+
             }
         }
         $this->House->commit();
 
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
-                    'default', array('class' => 'flashBlue'));
+            'default', array('class' => 'flashBlue'));
+
+        $this->log( 'User '.$this->Auth->user('username').' delete his house', 'activity');
         $this->redirect($redirectTarget);
     }
 
@@ -339,7 +343,8 @@ class HousesController extends AppController {
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-
+                
+                $this->log( 'User '.$this->Auth->user('username').' edit his house', 'activity');
                 // post requires municipality name, house type and user role
                 $this->House->recursive = 2;
                 $house = $this->House->read();
@@ -386,6 +391,9 @@ class HousesController extends AppController {
 
 
         if($this->Auth->user('id') != $user_id) {
+
+            $this->log( 'User '.$this->Auth->user('username').
+                ' try to intervene'.$house['User']['username']."'s profile", 'warning');
             $this->cakeError( 'error403' );
         }
     }
