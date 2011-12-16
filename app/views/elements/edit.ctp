@@ -44,10 +44,10 @@
                 'id' => 'updateMap', 'class' => 'mapMarker',
                 'title' =>
                     'Απόπειρα προσδιορισμού της θέσης του σπιτιού βάσει των πεδίων διεύθυνσης.'));
-            echo $this->Html->link('Επαναφορά χάρτη','', array(
+            echo $this->Html->link('Απόκρυψη σπιτιού από χάρτη','', array(
                 'id' => 'eraseLatLng', 'class' => 'mapMarker',
                 'title' =>
-                    'Αφαίρεση της οποιαδήποτε πληροφορίας σχετικά με τη θέση του σπιτιού.'));
+                    'Απόκρυψη χάρτη και απόστασης σπιτιού από ΤΕΙ από τους χρήστες.'));
             echo "<div class='map' id='editMap'></div></div>";
 
             echo $form->input('latitude', array('type' => 'hidden'));
