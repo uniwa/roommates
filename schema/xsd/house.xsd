@@ -244,4 +244,11 @@
         </xs:sequence> 
     </xs:complexType>
 
+    <!--An envelope for multiple houses-->
+    <xs:complexType name="array_of_houses_type">
+        <xs:sequence>
+            <xs:element name="house" type="tns:house_type" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
 </xs:schema>
