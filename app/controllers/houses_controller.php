@@ -1337,6 +1337,10 @@ class HousesController extends AppController {
                                         null, null, false, null,
                                         $this->getResponseXmlFields(),
                                         true);
+
+        for ($i = 0; $i<count($result); $i++) {
+            $result[$i]['Image'] = $this->get_house_bin_image($result[$i]['House']['id']);
+        }
         $this->set('houses', $result);
         $this->layout = 'xml/default';
         $this->render('xml/public');
