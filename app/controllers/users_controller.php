@@ -12,8 +12,7 @@ class UsersController extends AppController{
     function beforeFilter() {
         parent::beforeFilter();
 
-        if ($this->isWebService())
-            $this->Auth->allow('webService');
+        $this->Auth->allow('webService');
 
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
@@ -614,13 +613,9 @@ class UsersController extends AppController{
         }
     }
 
-    private function isWebService() {
-        if (isset($this->params['url']['url']) &&
-            (strpos($this->params['url']['url'], 'api/users') !== false))
-            return true;
-        else
-            return false;
-    }
+    // ------------------------------------------------------------------------
+    // REST - Web Services
+    // ------------------------------------------------------------------------
 
     function webService($id = null) {
         if ($this->RequestHandler->isGet()) {
