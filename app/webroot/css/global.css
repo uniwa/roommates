@@ -1175,7 +1175,7 @@ ul.collapsible{
     width: 180px;
 }
 
-.banned,.enabled{
+.banned,.enabled,.alias{
     width: 60px;
 }
 
@@ -1241,6 +1241,15 @@ ul.collapsible{
     background-image: url('../img/accept_16.png');
 }
 
+.switchUser{
+    background-image: url('../img/switch.png');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    text-indent: -9999px;
+}
 /* FAQ */
 .faqitem{
     margin: -40px 0px 0px 0px;
@@ -1464,7 +1473,7 @@ ul.collapsible{
 }
 
 #addEditHouseView .required {
-    background: url("img/required.gif") no-repeat scroll 160px -2px transparent;
+    background: url('../img/required.gif') no-repeat scroll 160px -2px transparent;
 }
 
 #addEditHouseView .input label{

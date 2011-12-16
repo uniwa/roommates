@@ -186,12 +186,11 @@ class HousesController extends AppController {
 
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $house['House']['user_id']) {
-            if (    $house["User"]["banned"] == 1 ||
-                    (   $house['House']['visible'] == 0 &&
-                        $house['House']['user_id'] != $this->Auth->User('id')
-                    )
-            )
-                $this->cakeError('error404');
+            if(($house["User"]["banned"] == 1)
+                || ($house["User"]["enabled"] == 0)
+                || ($house['House']['visible'] == 0)){
+                    $this->cakeError('error404');
+            }
         }
 
         $this->set('house', $house);
@@ -413,7 +412,7 @@ class HousesController extends AppController {
         $order = array('House.modified' => 'desc');
         $conditions = array('House.visible' => 1,
             'House.user_id !=' => $this->Auth->User('id'),
-            'User.banned' => 0);
+            'User.banned' => 0, 'User.enabled' => 1);
         $results = $this->simpleSearch($conditions, null, $order, false);
         $results = array_slice($results, 0, 5);
         return $results;
@@ -427,7 +426,8 @@ class HousesController extends AppController {
         $order = array('House.modified' => 'desc', 'House.id' => 'asc');
 
         // exclude logged user's house
-        array_push($prefs['house_prefs'], array('House.user_id !=' => $this->Auth->User('id')));
+        array_push($prefs['house_prefs'], array(
+            'House.user_id !=' => $this->Auth->User('id'), 'User.enabled' => 1));
         $results = $this->simpleSearch($prefs['house_prefs'],
                                        empty($prefs['mates_prefs']) ?
                                             null : $prefs['mates_prefs'],
@@ -463,7 +463,7 @@ class HousesController extends AppController {
 
 
         $uid = $this->Auth->User('id');
-        $houseConditions['House.visible'] = 1;
+//        $houseConditions['House.visible'] = 1;
         $houseConditions['House.user_id'] = $uid;
         if(!empty($this->params['url']['house_type'])){
             $houseConditions['House.house_type_id'] .= $this->params['url']['house_type'];
@@ -951,6 +951,7 @@ class HousesController extends AppController {
         }
 
         $house_conditions['User.banned !='] = 1;
+        $house_conditions['User.enabled'] = 1;
 
         return $house_conditions;
     }
