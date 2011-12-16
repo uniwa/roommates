@@ -183,12 +183,11 @@ class HousesController extends AppController {
 
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $house['House']['user_id']) {
-            if (    $house["User"]["banned"] == 1 ||
-                    (   $house['House']['visible'] == 0 &&
-                        $house['House']['user_id'] != $this->Auth->User('id')
-                    )
-            )
-                $this->cakeError('error404');
+            if(($house["User"]["banned"] == 1)
+                || ($house["User"]["enabled"] == 0)
+                || ($house['House']['visible'] == 0)){
+                    $this->cakeError('error404');
+            }
         }
 
         $this->set('house', $house);
