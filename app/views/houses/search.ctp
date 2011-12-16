@@ -541,6 +541,15 @@
                 echo "<li class='{$resultClass}'>";
                 echo "<div class='result'>";
                 echo "<div class='role {$roleClass}'>{$roleTitle}</div>";
+
+                $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
+                $houseid = $house['House']['id'];
+                $housePrice = $house['House']['price'];
+                $houseMunicipality = $municipality_options[$house['House']['municipality_id']];
+                $houseType = $house_types[$house['House']['house_type_id']];
+                $houseArea = $house['House']['area'];
+                $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
+                $geoDistance = $house['House']['geo_distance'];
             ?>
                     <div class='result-photo'>
                     <div class='result-photo-wrap'>
@@ -553,7 +562,7 @@
                             if(!empty($house['Image'][0]['location'])) {
                                 $house_image = 'uploads/houses/'.$house_id.'/thumb_'.$house['Image'][0]['location'];
                             }
-                            $altText = 'εικόνα '.$house['House']['address'];
+                            $altText = 'εικόνα '.$houseTypeArea;
 							$houseImage = $this->Html->image($house_image,
 							    array('alt' => $altText));
 							echo $this->Html->link($houseImage, array(
@@ -567,14 +576,6 @@
                     </div>
                     <div class='result-desc'>
                         <?php
-                            $furnished = $house['House']['furnitured'] ? 'Επιπλωμένο' : 'Μη επιπλωμένο';
-                            $houseid = $house['House']['id'];
-                            $housePrice = $house['House']['price'];
-                            $houseMunicipality = $municipality_options[$house['House']['municipality_id']];
-                            $houseType = $house_types[$house['House']['house_type_id']];
-                            $houseArea = $house['House']['area'];
-                            $houseTypeArea = $houseType.', '.$houseArea.' τ.μ.';
-                            $geoDistance = $house['House']['geo_distance'];
                             // allow posts to Facebook only by a 'user' (as in role)
                             if($this->Session->read('Auth.User.role') == 'user'){
                                 $this_url = substr($get_vars, 0, -1); //replace last character (ampersand)
@@ -607,7 +608,7 @@
                         ?>
                         <div class='desc-title houseClear'>
                             <?php
-                                echo $this->Html->link("{$houseType}, {$houseArea} τ.μ.",
+                                echo $this->Html->link($houseTypeArea,
                                     array('controller' => 'houses','action' => 'view', $houseid));
                             ?>
                         </div>
