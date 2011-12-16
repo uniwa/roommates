@@ -5,11 +5,11 @@ class AdminsController extends AppController
     var $name = 'Admins';
     var $uses = array();
     var $paginate = array(
-        'RealEstate' => array('fields' => array('User.username','User.banned',
-            'User.enabled','RealEstate.id','RealEstate.firstname',
+        'RealEstate' => array('fields' => array('User.id','User.username','User.banned',
+            'User.enabled','RealEstate.id','RealEstate.firstname','RealEstate.type',
             'RealEstate.lastname','RealEstate.company_name','RealEstate.email'),
             'limit' => 50),
-        'User' => array('fields' => array('User.username','User.banned',
+        'User' => array('fields' => array('User.id','User.username','User.banned',
             'Profile.id','Profile.firstname','Profile.lastname','Profile.email'),
             'limit' => 50)
     );
