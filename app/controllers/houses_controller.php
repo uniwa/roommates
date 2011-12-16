@@ -1481,8 +1481,15 @@ class HousesController extends AppController {
 
     }
 
-    function webServiceError($id = null) {
-        // TODO implement display an error
+    private function webServiceError($id) {
+        if (array_key_exists($id, $this->xml_status) ) {
+            $this->set('code', $id);
+            $this->set('msg', $this->xml_status[$id]);
+        } else {
+            die('ERROR: UNDEFINED XML STATUS CODE');
+        }
+        $this->layout = 'xml/default';
+        $this->render('xml/status');
     }
 
     //////////////////////////////////////////////////
