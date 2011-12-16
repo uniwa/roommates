@@ -1343,6 +1343,11 @@ class HousesController extends AppController {
                                         $this->getResponseXmlFields(),
                                         true);
 
+        if (empty($result)) {
+            $this->webServiceStatus(404);
+            return;
+        }
+
         // return the Image itself base64 encoded
         for ($i = 0; $i<count($result); $i++) {
             $result[$i]['Image'] = $this->get_house_bin_image($result[$i]['House']['id']);
