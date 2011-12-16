@@ -9,16 +9,18 @@
                 if(!$userNull){
                     $uname = $this->Session->read('Auth.User.username');
                     $linkContent = "αποσύνδεση ({$uname})";
+                    $extraTags = array('class' => 'menu-item menu-user menu-login');
                     // link to switch-back to admin role or (casual) logout
                     if($this->Session->check('Manager.id')){
                         echo $this->Html->link($linkContent, array(
                             'controller' => 'users',
-                            'action' => 'switchUser'));
+                            'action' => 'switchUser'),
+                            $extraTags);
                     } else {
                         echo $this->Html->link($linkContent, array(
                             'controller' => 'users',
                             'action' => 'logout'),
-                            array('class' => 'menu-item menu-user menu-login'));
+                            $extraTags);
                     }
                 }else{
                     if(isset($selected_action)){
