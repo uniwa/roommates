@@ -53,17 +53,9 @@
     );
 
     Router::connect(
-                '/webservice/house',
-                array('controller' => 'houses',
-                      'action' => 'handlePostRequest',
-                      '[method]' => 'POST')
-    );
-
-    // display an error if the request method is POST with id
-    Router::connect(
                 '/webservice/house/*',
                 array('controller' => 'houses',
-                      'action' => 'webServicesError',
+                      'action' => 'handlePostRequest',
                       '[method]' => 'POST')
     );
 
