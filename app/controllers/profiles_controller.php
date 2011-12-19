@@ -59,6 +59,7 @@ class ProfilesController extends AppController {
         $this->set('title_for_layout','Προφίλ χρήστη');
 
     	$this->checkExistence($id);
+$this->log('user '.$this->Auth->User('id').' view profile '.$id, 'info');
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         // get profile  contains:
@@ -160,6 +161,7 @@ class ProfilesController extends AppController {
         $this->set('title_for_layout','Επεξεργασία προφίλ');
         $this->checkExistence($id);
         $this->checkAccess( $id );
+$this->log('user '.$this->Auth->User('id').' edit profile '.$id, 'info');
         $this->Profile->id = $id;
         $this->Profile->recursive = 2;
         $profile = $this->Profile->read();
@@ -236,6 +238,7 @@ class ProfilesController extends AppController {
             }
 
             if ($this->Profile->saveAll($this->data)){
+$this->log('user '.$this->Auth->User('id').' save profile '.$id, 'info');
                 $this->Session->setFlash('Το προφίλ ενημερώθηκε.','default',
                     array('class' => 'flashBlue'));
                 $this->redirect(array('action'=> "view", $id));
@@ -246,6 +249,7 @@ class ProfilesController extends AppController {
     function deleteImage ($id = NULL) {
         $this->checkExistence($id);
         $this->checkAccess( $id );
+$this->log('user '.$this->Auth->User('id').' delete image '.$id, 'info');
         $this->Profile->id = $id;
         $this->Profile->recursive = -1;
         $profile = $this->Profile->read();
@@ -282,6 +286,7 @@ class ProfilesController extends AppController {
         $this->set('selected_action', 'profiles_search');
 
         $this->set('title_for_layout','Αναζήτηση συγκατοίκων');
+$this->log('user '.$this->Auth->User('id').' search profile', 'info');
 		if($this->data){
 		    // Set up the URL that we will redirect to
 		    $url = array('controller' => 'profiles', 'action' => 'search');
@@ -448,6 +453,7 @@ class ProfilesController extends AppController {
                                         'couple' => $search_args['pref_couple'],
                                         'has_house' => !empty($this->data['User']['hasHouse'])  ));
 */
+$this->log('user '.$this->Auth->User('id').' save search preferences', 'info');
         $this->Session->setFlash('Τα κριτήρια αναζήτησης αποθηκεύτηκαν στις προτιμήσεις σας.',
             'default', array('class' => 'flashBlue'));
     }
@@ -460,6 +466,7 @@ class ProfilesController extends AppController {
         $this->params['named'] = $prefs;
         $this->params['named']['searchtype'] = 'byprefs';
         $this->simpleSearch();
+$this->log('user '.$this->Auth->User('id').' search saved preferences', 'info');
     }
 
     //check user's access
@@ -533,6 +540,8 @@ class ProfilesController extends AppController {
         $this->User->id = $profile["Profile"]["user_id"];
         if ($this->User->save($user, array('validate'=>false))) {
             $this->User->commit();
+$actionBanUnban = ($status)?'ban':'unban';
+$this->log('admin '.$this->Auth->User('id').' '.$actionBanUnban.' user '.$id, 'info');
             return True;
         } else {
             $this->User->rollback();
@@ -587,6 +596,7 @@ class ProfilesController extends AppController {
         $this->Email->layout = 'default';
         $this->Email->sendAs = 'both';
         $this->Email->send();
+$this->log('email send: user '.$id.' ban', 'info');
     }
 
     private function denyRole($role){
