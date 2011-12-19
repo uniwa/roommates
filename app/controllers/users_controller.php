@@ -771,6 +771,15 @@ class UsersController extends AppController{
         }
     }
 
+    private function get_role($id) {
+        // return role of user with given id
+        $this->User->recursive = -1;
+        $conditions = array('User.id' => $id);
+        $user = $this->User->find('first',
+            array('conditions' => $conditions, 'fields' => 'role'));
+        return $user['User']['role'];
+    }
+
     private function getStudentXmlFields() {
         return array(
             'Profile.firstname',
