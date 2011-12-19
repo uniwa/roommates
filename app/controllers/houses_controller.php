@@ -186,12 +186,11 @@ class HousesController extends AppController {
 
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $house['House']['user_id']) {
-            if (    $house["User"]["banned"] == 1 ||
-                    (   $house['House']['visible'] == 0 &&
-                        $house['House']['user_id'] != $this->Auth->User('id')
-                    )
-            )
-                $this->cakeError('error404');
+            if(($house["User"]["banned"] == 1)
+                || ($house["User"]["enabled"] == 0)
+                || ($house['House']['visible'] == 0)){
+                    $this->cakeError('error404');
+            }
         }
 
         $this->set('house', $house);
@@ -241,6 +240,7 @@ class HousesController extends AppController {
             $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->save($this->data)) {
+                $this->log('User '.$this->Auth->user('username').' add new house', 'activity');
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
@@ -302,12 +302,15 @@ class HousesController extends AppController {
                         'default', array('class' => 'flashRed'));
                     $this->redirect($redirectTarget);
                 }
+
             }
         }
         $this->House->commit();
 
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
-                    'default', array('class' => 'flashBlue'));
+            'default', array('class' => 'flashBlue'));
+
+        $this->log( 'User '.$this->Auth->user('username').' delete his house', 'activity');
         $this->redirect($redirectTarget);
     }
 
@@ -343,7 +346,8 @@ class HousesController extends AppController {
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-
+                
+                $this->log( 'User '.$this->Auth->user('username').' edit his house', 'activity');
                 // post requires municipality name, house type and user role
                 $this->House->recursive = 2;
                 $house = $this->House->read();
@@ -390,6 +394,9 @@ class HousesController extends AppController {
 
 
         if($this->Auth->user('id') != $user_id) {
+
+            $this->log( 'User '.$this->Auth->user('username').
+                ' try to intervene'.$house['User']['username']."'s profile", 'warning');
             $this->cakeError( 'error403' );
         }
     }
@@ -413,7 +420,7 @@ class HousesController extends AppController {
         $order = array('House.modified' => 'desc');
         $conditions = array('House.visible' => 1,
             'House.user_id !=' => $this->Auth->User('id'),
-            'User.banned' => 0);
+            'User.banned' => 0, 'User.enabled' => 1);
         $results = $this->simpleSearch($conditions, null, $order, false);
         $results = array_slice($results, 0, 5);
         return $results;
@@ -427,7 +434,8 @@ class HousesController extends AppController {
         $order = array('House.modified' => 'desc', 'House.id' => 'asc');
 
         // exclude logged user's house
-        array_push($prefs['house_prefs'], array('House.user_id !=' => $this->Auth->User('id')));
+        array_push($prefs['house_prefs'], array(
+            'House.user_id !=' => $this->Auth->User('id'), 'User.enabled' => 1));
         $results = $this->simpleSearch($prefs['house_prefs'],
                                        empty($prefs['mates_prefs']) ?
                                             null : $prefs['mates_prefs'],
@@ -463,7 +471,7 @@ class HousesController extends AppController {
 
 
         $uid = $this->Auth->User('id');
-        $houseConditions['House.visible'] = 1;
+//        $houseConditions['House.visible'] = 1;
         $houseConditions['House.user_id'] = $uid;
         if(!empty($this->params['url']['house_type'])){
             $houseConditions['House.house_type_id'] .= $this->params['url']['house_type'];
@@ -951,6 +959,7 @@ class HousesController extends AppController {
         }
 
         $house_conditions['User.banned !='] = 1;
+        $house_conditions['User.enabled'] = 1;
 
         return $house_conditions;
     }
@@ -1331,12 +1340,22 @@ class HousesController extends AppController {
     // ------------------------------------------------------------------------
 
     function handleGetRequest($id = null) {
+        if ((strpos($this->params['url']['url'], 'houses') == true) &&
+            ($id != null)) {
+            $this->webServiceStatus(404);
+            return;
+        }
         $house_conds = $this->getHouseConditions();
         if ($id != null) array_push($house_conds, array('House.id' => $id));
         $result = $this->simpleSearch(  $house_conds,
                                         null, null, false, null,
                                         $this->getResponseXmlFields(),
                                         true);
+
+        if (empty($result)) {
+            $this->webServiceStatus(404);
+            return;
+        }
 
         // return the Image itself base64 encoded
         for ($i = 0; $i<count($result); $i++) {

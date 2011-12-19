@@ -1,4 +1,3 @@
-<div 
 <div id='leftbar' class='leftManage'>
     <div class='left-form-cont'>
         <div class='form-title'>
@@ -143,6 +142,9 @@
                 <div class='col enabled'>
                     ενεργός
                 </div>
+                <div class='col alias'>
+                    σύνδεση
+                </div>
             </div>
             <?php
                 $count = 0;
@@ -210,6 +212,19 @@
                                 array('title' => 'ενεργοποίηση', 'escape' => false)));
                     ?>
                 </div>
+                <div class='col alias'>
+                    <?php
+                        if($user['RealEstate']['type'] == 'owner'){
+                            $iconConnect = $this->Html->image('switch.png',
+                                array('alt' => 'σύνδεση'));
+                            $textConnect = "<div class='switchUser'>σύνδεση ως</div>";
+                            echo $this->Html->link($textConnect,
+                                array('controller' => 'users',
+                                'action' => 'switchUser', $user['User']['id']),
+                                array('title' => 'σύνδεση ως', 'escape' => false));
+                        }
+                    ?>
+                </div>
             </div>
             <?php } //foreach ?>
         </div>
@@ -230,5 +245,3 @@
         } //isset results
     ?>
 </div>
-
-

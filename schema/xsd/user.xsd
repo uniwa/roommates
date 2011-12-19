@@ -36,16 +36,17 @@ elementFormDefault="qualified">
 <!-- Core person data -->
 <xs:complexType name="core_person_type">
     <xs:sequence>
-        <xs:element name="name" type="xs:string"/>
+        <xs:element name="firstname" type="xs:string"/>
+        <xs:element name="lastname" type="xs:string"/>
         <xs:element name="email" type="tns:email_type"/>
-        <xs:element name="phone_number" type="xs:string"/>
+        <xs:element name="phone" type="xs:string"/>
     </xs:sequence>
     <xs:attribute name="id" type="xs:integer" use="optional"/>
 </xs:complexType>
 
 <!-- Admin type -->
 <xs:complexType name="admin_type">
-    <xs:complexContent bane="tns:core_person_type"/>
+    <xs:complexContent base="tns:core_person_type"/>
 </xs:complexType>
 
 <!-- Student type -->
@@ -54,12 +55,12 @@ elementFormDefault="qualified">
         <xs:extension base="tns:core_person_type">
             <xs:sequence>
                 <xs:element name="gender" type="tns:gender_type"/>
-                <xs:element name="year_birth" type="xs:integer"/>
-                <xs:element name="photo" type="xs:base64Binary" minOccurs="0"/>
-                <xs:element name="is_smoker" type="xs:boolean" minOccurs="0"/>
-                <xs:element name="have_pet" type="xs:boolean" minOccurs="0"/>
-                <xs:element name="have_children" type="xs:boolean" minOccurs="0"/>
-                <xs:element name="cohabit" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="dob" type="xs:integer"/>
+                <xs:element name="avatar" type="xs:base64Binary" minOccurs="0"/>
+                <xs:element name="smoker" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="pet" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="child" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="couple" type="xs:boolean" minOccurs="0"/>
             </xs:sequence>
         </xs:extension>
     </xs:complexContent>
@@ -70,8 +71,8 @@ elementFormDefault="qualified">
     <xs:complexContent>
         <xs:extension base="tns:student_type">
             <xs:sequence>
-                <xs:element name="current_roommates" type="xs:integer"/>
-                <xs:element name="required_roommates" type="xs:integer"/>
+                <xs:element name="we_are" type="xs:integer"/>
+                <xs:element name="max_roommates" type="xs:integer"/>
             </xs:sequence>
         </xs:extension>
     </xs:complexContent>
@@ -85,6 +86,7 @@ elementFormDefault="qualified">
         <xs:element name="municipality" type="xs:string"/>
         <xs:element name="address" type="xs:string"/>
         <xs:element name="postal_code" type="tns:postal_code_type"/>
+        <xs:element name="fax" type="xs:string" minOccurs="0"/>
     </xs:sequence>
 </xs:complexType>
 
@@ -102,7 +104,11 @@ elementFormDefault="qualified">
 <!-- Real Estate Office type -->
 <xs:complexType name="real_estate_type">
     <xs:complexContent>
-        <xs:extension base="tns:legal_entity_type"/>
+        <xs:extension base="tns:legal_entity_type">
+            <xs:sequence>
+                <xs:element name="company_name" type="xs:string"/>
+            </xs:sequence>
+        </xs:extension>
     </xs:complexContent>
 </xs:complexType>
 

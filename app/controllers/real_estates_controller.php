@@ -26,7 +26,7 @@ class RealEstatesController extends AppController {
         // hide banned users unless we are admin
         if ($this->Auth->User('role') != 'admin' &&
             $this->Auth->User('id') != $estate['RealEstate']['user_id']) {
-            if ($estate["User"]["banned"] == 1) {
+            if (($estate["User"]["banned"] == 1) || ($estate["User"]["enabled"] == 0)){
                 $this->cakeError('error404');
             }
         }
