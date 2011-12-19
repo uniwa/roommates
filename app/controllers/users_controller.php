@@ -630,6 +630,9 @@ class UsersController extends AppController{
 
             $this->set('users', $results);
             $this->render('xml/get');
+        } else {
+            // if its not GET request
+            $this->webServiceStatus(400);
         }
     }
 
