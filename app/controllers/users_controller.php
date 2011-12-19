@@ -619,6 +619,11 @@ class UsersController extends AppController{
 
     function handleGetRequest($id = null) {
         if ($this->RequestHandler->isGet()) {
+            if (!$this->checWebservicekUri($id)) {
+                $this->webServiceStatus(400);
+                return;
+            }
+
             $this->layout = 'xml/default';
             $this->User->recursive = 0;
             $options = array();
@@ -633,6 +638,7 @@ class UsersController extends AppController{
         } else {
             // if its not GET request
             $this->webServiceStatus(400);
+            return;
         }
     }
 
@@ -702,6 +708,22 @@ class UsersController extends AppController{
         }
         $this->layout = 'xml/default';
         $this->render('xml/status');
+    }
+
+    private function checWebservicekUri($id) {
+        // Checks if the request URI is correct, eg:
+        // ".../webservice/users" => Correct
+        // ".../webservice/users/{id}" => Wrong
+        // ".../webservice/user/{id}" => Correct
+        // ".../webservice/user" => Wrong
+        $url = $this->params['url']['url'];
+        if (strpos($url, 'users') !== false && $id === null)
+            return true;
+
+        if (strpos($url, 'user/') !== false && $id !== null)
+            return true;
+
+        return false;
     }
 
 }
