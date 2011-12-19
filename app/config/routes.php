@@ -77,13 +77,11 @@
     Router::connect(
                 '/webservice/users/*',
                 array('controller' => 'users',
-                      'action' => 'handleGetRequest',
-                      '[method]' => 'GET')
+                      'action' => 'handleGetRequest')
     );
 
     Router::connect(
                 '/webservice/user/*',
                 array('controller' => 'users',
-                      'action' => 'handleGetRequest',
-                      '[method]' => 'GET')
+                      'action' => 'handleGetRequest')
     );
