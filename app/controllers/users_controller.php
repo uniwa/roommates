@@ -114,7 +114,7 @@ class UsersController extends AppController{
     private function alterAuth($id, $role, $username) {
         $this->Session->write('Auth.User.id', $id);
         $this->Session->write('Auth.User.role', $role);
-        $this->Session->write('Auth.User.username', $username);        
+        $this->Session->write('Auth.User.username', $username);
     }
 
     // Returns the realestate data that correspond to the supplied $user_id
@@ -720,7 +720,7 @@ class UsersController extends AppController{
             $this->layout = 'xml/default';
             $this->User->recursive = 0;
             $options = array();
-            $options['conditions'] = array('User.id' => 1);
+//             $options['conditions'] = array('User.id' => 1);
             $options['fields'] = $this->getStudentXmlFields();
             $results = $this->User->find('all', $options);
 
