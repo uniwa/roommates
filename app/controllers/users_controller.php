@@ -60,7 +60,7 @@ $this->log('user '.$this->data['User']['username'].' login submit', 'info');
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
         //and redirect them to where they need to go
-$this->log('user '.$this->Auth->user('username').' logout', 'info');
+$this->log('user '.$this->Auth->User('username').' logout', 'info');
         $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
