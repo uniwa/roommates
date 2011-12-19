@@ -39,25 +39,28 @@ class UsersController extends AppController{
          *while terms are not accepted, redirect him to terms action.
          *If rules are accepted, redirect him to main page
          */
-        if( isset( $this->data ) && $this->Auth->user('terms_accepted') === '0' ){
-            $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
-
-        } else if( isset( $this->data ) &&  $this->Auth->user( 'terms_accepted' === "1" ) ) {
-            if ($this->Auth->user('enabled') == '0') {
-                $this->Session->setFlash('Ο λογαριασμός σας δεν έχει ενεργοποιηθεί από τον διαχειριστή.',
-                        'default', array('class' => 'flashRed'));
-                $this->redirect($this->Auth->logout());
+        if(isset( $this->data )){
+$this->log('login submit user: '.$this->data['User']['username'], 'info');
+            if($this->Auth->user('terms_accepted') === '0' ){
+                $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
+            } else {
+                if ($this->Auth->user('enabled') == '0') {
+                    $this->Session->setFlash('Ο λογαριασμός σας δεν έχει ενεργοποιηθεί από τον διαχειριστή.',
+                            'default', array('class' => 'flashRed'));
+                    $this->redirect($this->Auth->logout());
+                }
+                /* redirect in pre-fixed url */
+                $this->User->id = $this->Auth->user('id');  //target correct record
+                $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
+                $this->redirect( $this->Auth->redirect() );
             }
-            /* redirect in pre-fixed url */
-            $this->User->id = $this->Auth->user('id');  //target correct record
-            $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
-            $this->redirect( $this->Auth->redirect() );
         }
     }
 
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
         //and redirect them to where they need to go
+$this->log('logout user: '.$this->Auth->user('username'), 'info');
         $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
