@@ -619,17 +619,20 @@ class UsersController extends AppController{
 
     function handleGetRequest($id = null) {
         if ($this->RequestHandler->isGet()) {
+
+            // TODO authentication
+
             if (!$this->checWebservicekUri($id)) {
                 $this->webServiceStatus(400);
                 return;
             }
 
+            $this->getSearchConditions();
+
             $this->layout = 'xml/default';
             $this->User->recursive = 0;
             $options = array();
-            $options['conditions'] = array(
-                'User.id' => 1,
-            );
+            $options['conditions'] = array('User.id' => 1);
             $options['fields'] = $this->getStudentXmlFields();
             $results = $this->User->find('all', $options);
 
@@ -672,7 +675,92 @@ class UsersController extends AppController{
             'RealEstate.municipality_id',
             'RealEstate.address',
             'RealEstate.postal_code',
+            'RealEstate.type',
         );
+    }
+
+    private function getSearchConditions() {
+//         pr($this->params['url']); die();
+
+        $search_params = $this->params['url'];
+
+        $estate_conds = array();
+        $student_conds = array();
+
+        // common conditions for both students and real estates
+        if (isset($search_params['firstname']) && $search_params['firstname'] != '') {
+            $student_conds['Profile.firstname'] = $search_params['firstname'];
+            $estate_conds['RealEstate.firstname'] = $search_params['firstname'];
+        }
+
+        if (isset($search_params['lastname']) && $search_params['lastname'] != '') {
+            $student_conds['Profile.lastname'] = $search_params['lastname'];
+            $estate_conds['RealEstate.lastname'] = $search_params['lastname'];
+        }
+
+        if (isset($search_params['email']) && $search_params['email'] != '') {
+            $student_conds['Profile.email'] = $search_params['email'];
+            $estate_conds['RealEstate.email'] = $search_params['email'];
+        }
+
+        if (isset($search_params['phone']) && $search_params['phone'] != '') {
+            $student_conds['Profile.phone'] = $search_params['phone'];
+            $estate_conds['RealEstate.phone'] = $search_params['phone'];
+        }
+
+        // student conditions
+        if (isset($search_params['gender']) && $search_params['gender'] < 2 &&
+            $search_params['gender'] != null)
+        {
+            $student_conds['Profile.gender'] = $search_params['gender'];
+        }
+
+        if (isset($search_params['dob']) && $search_params['dob'] != null)
+            $student_conds['Profile.dob'] = $search_params['dob'];
+
+        if (isset($search_params['smoker']) && $search_params['smoker'] == 1)
+            $student_conds['Profile.smoker'] = 1;
+
+        if (isset($search_params['pet']) && $search_params['pet'] == 1)
+            $student_conds['Profile.pet'] = 1;
+
+        if (isset($search_params['child']) && $search_params['child'] == 1)
+            $student_conds['Profile.child'] = 1;
+
+        if (isset($search_params['couple']) && $search_params['couple'] == 1)
+            $student_conds['Profile.couple'] = 1;
+
+        if (isset($search_params['we_are']) && $search_params['we_are'] != null)
+            $student_conds['Profile.we_are'] = $search_params['we_are'];
+
+        if (isset($search_params['max_roommates']) && $search_params['max_roommates'] != null)
+            $student_conds['Profile.max_roommates'] = $search_params['max_roommates'];
+
+        // real estates conditions
+        if (isset($search_params['afm']) && $search_params['afm'] != null)
+            $estate_conds['RealEstate.afm'] = $search_params['afm'];
+
+        if (isset($search_params['doy']) && $search_params['doy'] != null)
+            $estate_conds['RealEstate.doy'] = $search_params['doy'];
+
+        if (isset($search_params['address']) && $search_params['address'] != null)
+            $estate_conds['RealEstate.address'] = $search_params['address'];
+
+        if (isset($search_params['postal_code']) && $search_params['postal_code'] != null)
+            $estate_conds['RealEstate.postal_code'] = $search_params['postal_code'];
+
+        if (isset($search_params['municipality']) && $search_params['municipality'] != null)
+        {
+            $municipality_id = $this->Municipality->find('first', array(
+                                    'fields' => array('id'),
+                                    'conditions' => array(
+                                        'Municipality.name' => $search_params['municipality'])
+                               ));
+            if (!empty($municipality_id))
+                $estate_conds['RealEstate.municipality_id'] = $municipality_id['Municipality']['id'];
+        }
+
+        return array($student_conds, $estate_conds);
     }
 
     private function get_profile_bin_image($id) {
@@ -725,6 +813,10 @@ class UsersController extends AppController{
 
         return false;
     }
+
+    // ------------------------------------------------------------------------
+    // REST - Web Services End
+    // ------------------------------------------------------------------------
 
 }
 ?>
