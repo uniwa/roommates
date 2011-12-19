@@ -40,7 +40,7 @@ class UsersController extends AppController{
          *If rules are accepted, redirect him to main page
          */
         if(isset( $this->data )){
-$this->log('login submit user: '.$this->data['User']['username'], 'info');
+$this->log('user '.$this->data['User']['username'].' login submit', 'info');
             if($this->Auth->user('terms_accepted') === '0' ){
                 $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
             } else {
@@ -60,7 +60,7 @@ $this->log('login submit user: '.$this->data['User']['username'], 'info');
 	function logout(){
 		//Provides a quick way to de-authenticate someone,
         //and redirect them to where they need to go
-$this->log('logout user: '.$this->Auth->user('username'), 'info');
+$this->log('user '.$this->Auth->user('username').' logout', 'info');
         $this->Session->destroy();
 		$this->redirect( $this->Auth->logout() );
 	}
