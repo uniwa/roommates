@@ -12,7 +12,7 @@ class UsersController extends AppController{
     function beforeFilter() {
         parent::beforeFilter();
 
-        $this->Auth->allow('webService');
+        $this->Auth->allow('handleGetRequest');
 
         /* dont redirect automatically, needed for login() to work */
         $this->Auth->autoRedirect = false;
@@ -646,6 +646,7 @@ class UsersController extends AppController{
             'Profile.child',
             'Profile.couple',
             'Profile.we_are',
+            'Profile.max_roommates',
             // probably avatar will be set manually (base64)
 //             'Profile.avatar',
         );
