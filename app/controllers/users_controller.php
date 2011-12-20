@@ -734,7 +734,26 @@ class UsersController extends AppController{
                             'conditions' => array('User.id' => $id)
                           ));
 
-// pr($result); die();
+                if (empty($result)) {
+                    $this->webServiceStatus(404);
+                    return;
+                }
+
+                if ($result['User']['role'] === 'user') {
+                    $result = $this->modifyStudentResult($result);
+                    unset($result['RealEstate']);
+                } else if ($result['User']['role'] === 'realestate') {
+                    $result = $this->modifyRealEstateResult($result);
+                    unset($result['Profile']);
+                } else {
+                    $this->webServiceStatus(404);
+                    return;
+                }
+
+                $this->set('users', $result);
+                $this->layout = 'xml/default';
+                $this->render('xml/get');
+                return;
             }
 
             $all_conditions = $this->getSearchConditions();
@@ -752,15 +771,13 @@ class UsersController extends AppController{
                             'conditions' => $student_conds,
                         ));
 
-            for ($i = 0; $i < count($students); $i++) {
+            for ($i = 0; $i < count($students); $i++)
                 $students[$i] = $this->modifyStudentResult($students[$i]);
-            }
 
             //-----------------------------------------------------------------
             // REAL ESTATE
             //-----------------------------------------------------------------
 
-            $municipalities = $this->getMunicipalities();
             // Get the real estates that fulfill the search params
             $this->User->recursive = 0;
             $estates = $this->User->find('all', array(
@@ -768,40 +785,22 @@ class UsersController extends AppController{
                             'conditions' => $estate_conds,
                         ));
 
-            // The operations below aim to help the xml serialization
             for ($i = 0; $i < count($estates); $i++)
+                $estates[$i] = $this->modifyRealEstateResult($estates[$i]);
+
+            if ($all_conditions['student_only'] === true &&
+                $all_conditions['estate_only'] === true)
             {
-                // Set the User.id as RealEstate.id
-                $estates[$i]['RealEstate'] = array_merge(
-                    array('id' => $estates[$i]['User']['id']), $estates[$i]['RealEstate']);
-                unset($estates[$i]['User']);
-
-                // Replace the municipality id with its respective name
-                $estates[$i]['RealEstate']['municipality'] =
-                    $estates[$i]['RealEstate']['municipality_id'] !== null
-                    ? $municipalities[$estates[$i]['RealEstate']['municipality_id']]
-                    : '' ;
-                unset($estates[$i]['RealEstate']['municipality_id']);
-
-                // If the RealEstate's type is owner unset the necessary fields
-                // and rename the key to private_landowner.
-                // Else, reorder the elements so as to help the xml serialization
-                if ($estates[$i]['RealEstate']['type'] === 'owner')
-                {
-                    unset($estates[$i]['RealEstate']['company_name']);
-                    unset($estates[$i]['RealEstate']['type']);
-                    $estates[$i]['private_landowner'] = $estates[$i]['RealEstate'];
-                    unset($estates[$i]['RealEstate']);
-                } else {
-                    // if type == realestate
-                    $tmp = $estates[$i]['RealEstate']['company_name'];
-                    unset($estates[$i]['RealEstate']['company_name']);
-                    $estates[$i]['RealEstate']['company_name'] = $tmp;
-                    unset($estates[$i]['RealEstate']['type']);
-                }
+                $this->webServiceStatus(412);
+                return;
+            } else if ($all_conditions['student_only'] === true) {
+                $results = $students;
+            } else if ($all_conditions['estate_only'] === true) {
+                $results = $estates;
+            } else {
+                $results = array_merge($students, $estates);
             }
 
-            $results = array_merge($students, $estates);
             $this->set('users', $results);
             $this->layout = 'xml/default';
             $this->render('xml/get');
@@ -823,6 +822,41 @@ class UsersController extends AppController{
         unset($student['Profile']);
 
         return $student;
+    }
+
+    private function modifyRealEstateResult($estate) {
+        // This function aims to help the xml serialization
+        $municipalities = $this->getMunicipalities();
+        // Set the User.id as RealEstate.id
+        $estate['RealEstate'] = array_merge(
+            array('id' => $estate['User']['id']), $estate['RealEstate']);
+        unset($estate['User']);
+
+        // Replace the municipality id with its respective name
+        $estate['RealEstate']['municipality'] =
+            $estate['RealEstate']['municipality_id'] !== null
+            ? $municipalities[$estate['RealEstate']['municipality_id']]
+            : '' ;
+        unset($estate['RealEstate']['municipality_id']);
+
+        // If the RealEstate's type is owner unset the necessary fields
+        // and rename the key to private_landowner.
+        // Else, reorder the elements so as to help the xml serialization
+        if ($estate['RealEstate']['type'] === 'owner')
+        {
+            unset($estate['RealEstate']['company_name']);
+            unset($estate['RealEstate']['type']);
+            $estate['private_landowner'] = $estate['RealEstate'];
+            unset($estate['RealEstate']);
+        } else {
+            // if type == realestate
+            $tmp = $estate['RealEstate']['company_name'];
+            unset($estate['RealEstate']['company_name']);
+            $estate['RealEstate']['company_name'] = $tmp;
+            unset($estate['RealEstate']['type']);
+        }
+
+        return $estate;
     }
 
     private function get_credentials() {
