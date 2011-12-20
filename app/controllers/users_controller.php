@@ -709,11 +709,11 @@ class UsersController extends AppController{
         if ($this->RequestHandler->isGet()) {
 
             // TODO authentication
-            $user_id = $this->authenticate();
-            if ($user_id == null) {
-                $this->webServiceStatus(403);
-                return;
-            }
+//             $user_id = $this->authenticate();
+//             if ($user_id == null) {
+//                 $this->webServiceStatus(403);
+//                 return;
+//             }
 
             // $this->get_role($user_id);
 
@@ -742,10 +742,12 @@ class UsersController extends AppController{
                 if ($result['User']['role'] === 'user') {
                     $result = $this->modifyStudentResult($result);
                     unset($result['RealEstate']);
-                } else if ($result['User']['role'] === 'realestate') {
+                }
+                else if ($result['User']['role'] === 'realestate') {
                     $result = $this->modifyRealEstateResult($result);
                     unset($result['Profile']);
-                } else {
+                }
+                else {
                     $this->webServiceStatus(404);
                     return;
                 }
@@ -756,49 +758,23 @@ class UsersController extends AppController{
                 return;
             }
 
-            $all_conditions = $this->getSearchConditions();
-            $student_conds = $all_conditions['student'];
-            $estate_conds = $all_conditions['real_estate'];
+            $conditions = $this->getSearchConditions();
 
-            //-----------------------------------------------------------------
-            // STUDENTS
-            //-----------------------------------------------------------------
-
-            // Get the students that fulfill the search params
-            $this->User->recursive = 0;
-            $students = $this->User->find('all', array(
-                            'fields' => $this->getStudentXmlFields(),
-                            'conditions' => $student_conds,
-                        ));
-
-            for ($i = 0; $i < count($students); $i++)
-                $students[$i] = $this->modifyStudentResult($students[$i]);
-
-            //-----------------------------------------------------------------
-            // REAL ESTATE
-            //-----------------------------------------------------------------
-
-            // Get the real estates that fulfill the search params
-            $this->User->recursive = 0;
-            $estates = $this->User->find('all', array(
-                            'fields' => $this->getRealEstateXmlFields(),
-                            'conditions' => $estate_conds,
-                        ));
-
-            for ($i = 0; $i < count($estates); $i++)
-                $estates[$i] = $this->modifyRealEstateResult($estates[$i]);
-
-            if ($all_conditions['student_only'] === true &&
-                $all_conditions['estate_only'] === true)
+            if ($conditions['student_only'] === true &&
+                $conditions['estate_only'] === true)
             {
                 $this->webServiceStatus(412);
                 return;
-            } else if ($all_conditions['student_only'] === true) {
-                $results = $students;
-            } else if ($all_conditions['estate_only'] === true) {
-                $results = $estates;
-            } else {
-                $results = array_merge($students, $estates);
+            }
+            else if ($conditions['student_only'] === true) {
+                $results = $this->findStudents($conditions['student']);
+            }
+            else if ($conditions['estate_only'] === true) {
+                $results = $this->findRealEstates($conditions['real_estate']);
+            }
+            else {
+                $results = array_merge($this->findStudents($conditions['student']),
+                                       $this->findRealEstates($conditions['real_estate']));
             }
 
             $this->set('users', $results);
@@ -809,6 +785,32 @@ class UsersController extends AppController{
             $this->webServiceStatus(400);
             return;
         }
+    }
+
+    private function findStudents($conditions) {
+        $this->User->recursive = 0;
+        $students = $this->User->find('all', array(
+                        'fields' => $this->getStudentXmlFields(),
+                        'conditions' => $conditions,
+                    ));
+
+        for ($i = 0; $i < count($students); $i++)
+            $students[$i] = $this->modifyStudentResult($students[$i]);
+
+        return $students;
+    }
+
+    private function findRealEstates($conditions) {
+        $this->User->recursive = 0;
+        $estates = $this->User->find('all', array(
+                        'fields' => $this->getRealEstateXmlFields(),
+                        'conditions' => $conditions,
+                    ));
+
+        for ($i = 0; $i < count($estates); $i++)
+            $estates[$i] = $this->modifyRealEstateResult($estates[$i]);
+
+        return $estates;
     }
 
     private function modifyStudentResult($student) {
