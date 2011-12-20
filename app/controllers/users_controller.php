@@ -828,6 +828,9 @@ class UsersController extends AppController{
             ? $student['Profile']['gender'] = 'male'
             : $student['Profile']['gender'] = 'female';
 
+        $student['Profile']['avatar'] =
+                        $this->get_profile_bin_image($student['User']['id']);
+
         unset($student['User']);
         $student['student'] = $student['Profile'];
         unset($student['Profile']);
@@ -922,6 +925,7 @@ class UsersController extends AppController{
             'Profile.pet',
             'Profile.child',
             'Profile.couple',
+            'Profile.avatar',
             'Profile.we_are',
             'Profile.max_roommates',
         );
@@ -1130,11 +1134,11 @@ class UsersController extends AppController{
     }
 
     private function get_profile_bin_image($id) {
-        // returns user avatar image for given profile $id encoded in base64
-        // params: $id -> profile id
+        // returns user avatar image for given user $id encoded in base64
+        // params: $id -> user id
         if ($id == null) return null;
 
-        $conditions = array('Profile.id' => $id);
+        $conditions = array('Profile.user_id' => $id);
         $name = $this->Profile->find('first',
             array('conditions' => $conditions, 'fields' => 'avatar'));
 
