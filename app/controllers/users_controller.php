@@ -733,9 +733,18 @@ class UsersController extends AppController{
                 $fields = array_merge($this->getStudentXmlFields(),
                                       $this->getRealEstateXmlFields());
                 array_push($fields,'User.role');
+
+                $conditions = array('User.id' => $id);
+                if ($this->get_role($user_id) === 'user') {
+                    $conditions['User.banned'] = 0;
+                    $conditions['User.enabled'] = 1;
+                    $conditions['Profile.visible'] = 1;
+                }
+
+                $this->User->recursive = 0;
                 $result = $this->User->find('first', array(
                             'fields' => $fields,
-                            'conditions' => array('User.id' => $id)
+                            'conditions' => $conditions
                           ));
 
                 if (empty($result)) {
