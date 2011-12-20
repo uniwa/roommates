@@ -22,14 +22,14 @@ elementFormDefault="qualified">
 <!-- AFM -->
 <xs:simpleType name="afm_type">
     <xs:restriction base="xs:string">
-        <xs:pattern value="\d{10}"/>
+        <xs:pattern value="\d{9}"/>
     </xs:restriction>
 </xs:simpleType>
 
 <!-- Postal Code -->
 <xs:simpleType name="postal_code_type">
     <xs:restriction base="xs:string">
-        <xs:pattern value="\d{5}"/>
+        <xs:pattern value="\d{5}|"/>
     </xs:restriction>
 </xs:simpleType>
 
@@ -46,7 +46,9 @@ elementFormDefault="qualified">
 
 <!-- Admin type -->
 <xs:complexType name="admin_type">
-    <xs:complexContent base="tns:core_person_type"/>
+    <xs:complexContent>
+        <xs:extension base="tns:core_person_type"/>
+    </xs:complexContent>
 </xs:complexType>
 
 <!-- Student type -->
@@ -79,7 +81,7 @@ elementFormDefault="qualified">
 </xs:complexType>
 
 <!-- Core legal data -->
-<xs:complexType name="legal_data_type">
+<xs:group name="legal_data_group">
     <xs:sequence>
         <xs:element name="afm" type="tns:afm_type"/>
         <xs:element name="doy" type="xs:string"/>
@@ -88,15 +90,16 @@ elementFormDefault="qualified">
         <xs:element name="fax" type="xs:string" minOccurs="0"/>
         <xs:element name="municipality" type="xs:string"/>
     </xs:sequence>
-</xs:complexType>
+</xs:group>
 
 <!-- Legal entities type. Modeled after a (contact) person -->
 <xs:complexType name="legal_entity_type">
     <xs:complexContent>
         <xs:extension base="tns:core_person_type">
-            <xs:sequence>
+            <xs:group ref="tns:legal_data_group"/>
+            <!--xs:sequence>
                 <xs:element name="legal_data" type="tns:legal_data_type"/>
-            </xs:sequence>
+            </xs:sequence-->
         </xs:extension>
     </xs:complexContent>
 </xs:complexType>
@@ -137,5 +140,18 @@ elementFormDefault="qualified">
             maxOccurs="unbounded"/>
     </xs:sequence>
 </xs:complexType>
+
+<!--xs:element name="users" type="tns:array_of_users_type"/-->
+
+<xs:element name="users">
+    <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="student" type="tns:student_roommate_type"/>
+            <xs:element name="real_estate" type="tns:real_estate_type"/>
+            <xs:element name="private_landowner" type="tns:private_landowner_type"/>
+            <xs:element name="admin" type="tns:admin_type"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:element>
 
 </xs:schema>
