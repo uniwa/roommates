@@ -722,6 +722,21 @@ class UsersController extends AppController{
                 return;
             }
 
+            // if user requests a single profile/realestate
+            if ($id !== null)
+            {
+                $this->User->recursive = 0;
+                $fields = array_merge($this->getStudentXmlFields(),
+                                      $this->getRealEstateXmlFields());
+                array_push($fields,'User.role');
+                $result = $this->User->find('first', array(
+                            'fields' => $fields,
+                            'conditions' => array('User.id' => $id)
+                          ));
+
+// pr($result); die();
+            }
+
             $all_conditions = $this->getSearchConditions();
             $student_conds = $all_conditions['student'];
             $estate_conds = $all_conditions['real_estate'];
@@ -737,15 +752,8 @@ class UsersController extends AppController{
                             'conditions' => $student_conds,
                         ));
 
-            // Set the User.id as Profile.id in order to help the
-            // xml serialization. Also change the key from Profile
-            // to student.
             for ($i = 0; $i < count($students); $i++) {
-                $students[$i]['Profile'] = array_merge(array('id' => $students[$i]['User']['id']),
-                                                       $students[$i]['Profile']);
-                unset($students[$i]['User']);
-                $students[$i]['student'] = $students[$i]['Profile'];
-                unset($students[$i]['Profile']);
+                $students[$i] = $this->modifyStudentResult($students[$i]);
             }
 
             //-----------------------------------------------------------------
@@ -802,6 +810,19 @@ class UsersController extends AppController{
             $this->webServiceStatus(400);
             return;
         }
+    }
+
+    private function modifyStudentResult($student) {
+        // Set the User.id as Profile.id in order to help the
+        // xml serialization. Also change the key from Profile
+        // to student.
+        $student['Profile'] = array_merge(array('id' => $student['User']['id']),
+                                                $student['Profile']);
+        unset($student['User']);
+        $student['student'] = $student['Profile'];
+        unset($student['Profile']);
+
+        return $student;
     }
 
     private function get_credentials() {
