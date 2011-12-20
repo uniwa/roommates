@@ -984,13 +984,13 @@ class UsersController extends AppController{
         // student conditions
         if (isset($search_params['gender']))
         {
-            if ($search_params['gender'] === '1')
+            if ($search_params['gender'] === 'female')
             {
                 $student_conds['Profile.gender'] = 1;
                 $has_student = true;
             }
 
-            if ($search_params['gender'] === '0')
+            if ($search_params['gender'] === 'male')
             {
                 $student_conds['Profile.gender'] = 0;
                 $has_student = true;
