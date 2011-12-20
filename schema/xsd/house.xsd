@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     targetNamespace="http://www.roommates.teiath.gr/schemas/HouseTypes"
-    xmlns:tns="http://www.roommates.teiath.gr/schemas/house"                              
+    xmlns:tns="http://www.roommates.teiath.gr/schemas/house"
     elementFormDefault="qualified">
 
-       
 
     <!--restrictions about postal_code field spacing and strlen-->
     <xs:simpleType name="postal_code_type">
@@ -41,7 +40,7 @@
     <!--restrictions about rent period field max value-->
     <xs:simpleType name="rent_period_type">
         <xs:restriction base="xs:string">
-            <xs:pattern value="([0-9]){0,4}"/>            
+            <xs:pattern value="([0-9]){0,4}"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -168,7 +167,7 @@
             <xs:enumeration value="ΦΥΛΗΣ"/>
             <xs:enumeration value="ΧΑΙΔΑΡΙΟΥ"/>
             <xs:enumeration value="ΧΑΛΑΝΔΡΙΟΥ"/>
-            <xs:enumeration value="ΩΡΩΠΟΥ"/>   
+            <xs:enumeration value="ΩΡΩΠΟΥ"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -203,7 +202,7 @@
             <xs:element name="type" type="tns:floor_enumerations_type"/>
          </xs:sequence>
     </xs:complexType>
-    
+
 
     <xs:complexType name="house_type">
         <xs:sequence>
@@ -241,7 +240,7 @@
             <xs:element name="house_type" type="tns:house_category_type"/>
             <xs:element name="heating_type" type="tns:heating_type"/> 
             <xs:element name="image" type="xs:base64Binary" minOccurs="0"/>
-        </xs:sequence> 
+        </xs:sequence>
     </xs:complexType>
 
     <!--An envelope for multiple houses-->

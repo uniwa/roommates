@@ -3,7 +3,17 @@ class  AppController extends Controller{
 
 	var $components = array('Auth', 'Session', 'RequestHandler');
 	var $helpers  = array('Html', 'Form', 'Session','Auth');
-	var $uses = array('User', 'Profile');
+    var $uses = array('User', 'Profile');
+
+    // Web Service XML Status codes
+    var $xml_status = array(
+        200 => 'Το αίτημα ολοκληρώθηκε με επιτυχία',
+        400 => 'Το αίτημα έχει λάθος μορφή',
+        403 => 'Απαγορεύεται η πρόσβαση',
+        404 => 'Το συγκεκριμένο resource δεν βρέθηκε',
+        412 => 'Δεν πληρούνται οι προϋποθέσεις για την ολοκλήρωση του αιτήματος',
+        500 => 'Εσωτερικό πρόβλημα του συστήματος');
+
 
     function beforeFilter(){
         /*

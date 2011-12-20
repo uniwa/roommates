@@ -32,11 +32,56 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
-    // REST URI mapping
-    Router::connect(
-                '/api/houses/*',
-                array('controller' => 'houses', 'action' => 'webservice')
-    );
-
     /* enable rss*/
     Router::parseExtensions('rss');
+
+    // REST URI mapping
+
+    // Houses web service
+    Router::connect(
+                '/webservice/houses/*',
+                array('controller' => 'houses',
+                      'action' => 'handleGetRequest',
+                      '[method]' => 'GET')
+    );
+
+    Router::connect(
+                '/webservice/house/*',
+                array('controller' => 'houses',
+                      'action' => 'handleGetRequest',
+                      '[method]' => 'GET')
+    );
+
+    Router::connect(
+                '/webservice/house/*',
+                array('controller' => 'houses',
+                      'action' => 'handlePostRequest',
+                      '[method]' => 'POST')
+    );
+
+    Router::connect(
+                '/webservice/house/*',
+                array('controller' => 'houses',
+                      'action' => 'handlePutRequest',
+                      '[method]' => 'PUT')
+    );
+
+    Router::connect(
+                '/webservice/house/*',
+                array('controller' => 'houses',
+                      'action' => 'handleDeleteRequest',
+                      '[method]' => 'DELETE')
+    );
+
+    // Users web service
+    Router::connect(
+                '/webservice/users/*',
+                array('controller' => 'users',
+                      'action' => 'handleGetRequest')
+    );
+
+    Router::connect(
+                '/webservice/user/*',
+                array('controller' => 'users',
+                      'action' => 'handleGetRequest')
+    );
