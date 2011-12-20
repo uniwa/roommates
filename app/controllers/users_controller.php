@@ -753,18 +753,24 @@ class UsersController extends AppController{
                             'conditions' => $estate_conds,
                         ));
 
+            // The operations below aim to help the xml serialization
             for ($i = 0; $i < count($estates); $i++)
             {
+                // Set the User.id as RealEstate.id
                 $estates[$i]['RealEstate'] = array_merge(
                     array('id' => $estates[$i]['User']['id']), $estates[$i]['RealEstate']);
                 unset($estates[$i]['User']);
 
+                // Replace the municipality id with its respective name
                 $estates[$i]['RealEstate']['municipality'] =
                     $estates[$i]['RealEstate']['municipality_id'] !== null
                     ? $municipalities[$estates[$i]['RealEstate']['municipality_id']]
                     : '' ;
                 unset($estates[$i]['RealEstate']['municipality_id']);
 
+                // If the RealEstate's type is owner unset the necessary fields
+                // and rename the key to private_landowner.
+                // Else, reorder the elements so as to help the xml serialization
                 if ($estates[$i]['RealEstate']['type'] === 'owner')
                 {
                     unset($estates[$i]['RealEstate']['company_name']);
@@ -772,6 +778,7 @@ class UsersController extends AppController{
                     $estates[$i]['private_landowner'] = $estates[$i]['RealEstate'];
                     unset($estates[$i]['RealEstate']);
                 } else {
+                    // if type == realestate
                     $tmp = $estates[$i]['RealEstate']['company_name'];
                     unset($estates[$i]['RealEstate']['company_name']);
                     $estates[$i]['RealEstate']['company_name'] = $tmp;
@@ -825,8 +832,6 @@ class UsersController extends AppController{
     }
 
     private function getSearchConditions() {
-//         pr($this->params['url']); die();
-
         $search_params = $this->params['url'];
 
         $estate_conds = array();
@@ -1052,6 +1057,8 @@ class UsersController extends AppController{
     }
 
     private function getMunicipalities() {
+        // Convenience function that returns an array of id => name
+        // representing each municipality's id and name.
         $temp = $this->Municipality->find('all');
         $municipalities = array();
         for ($i = 1; $i <= count($temp); $i++)
