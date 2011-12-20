@@ -709,6 +709,13 @@ class UsersController extends AppController{
         if ($this->RequestHandler->isGet()) {
 
             // TODO authentication
+            $user_id = $this->authenticate();
+            if ($user_id == null) {
+                $this->webServiceStatus(403);
+                return;
+            }
+
+            // $this->get_role($user_id);
 
             if (!$this->checWebservicekUri($id)) {
                 $this->webServiceStatus(400);
@@ -795,6 +802,46 @@ class UsersController extends AppController{
             $this->webServiceStatus(400);
             return;
         }
+    }
+
+    private function get_credentials() {
+        // get basic auth from http header
+        // decode and return username and password
+        if (!isset($_SERVER['PHP_AUTH_USER'])) {
+            return NULL;
+        }
+        return array('username' => $_SERVER['PHP_AUTH_USER'],
+                     'password' => $_SERVER['PHP_AUTH_PW']);
+    }
+
+
+    private function authenticate() {
+        // return user id if user authenticates successfully
+        // return NULL otherwise
+        $credentials = $this->get_credentials();
+        if ($credentials == NULL) return NULL;
+
+        $user = array('User.username' => $credentials['username'],
+                      'User.password' => $credentials['password']);
+
+        if ($this->Auth->login($user) == false) {
+            return NULL;
+        }
+        else {
+            $conditions = array('User.username' => $credentials['username']);
+            $user = $this->User->find('first',
+                array('conditions' => $conditions, 'fields' => 'id'));
+            return $user['User']['id'];
+        }
+    }
+
+    private function get_role($id) {
+        // return role of user with given id
+        $this->User->recursive = -1;
+        $conditions = array('User.id' => $id);
+        $user = $this->User->find('first',
+            array('conditions' => $conditions, 'fields' => 'role'));
+        return $user['User']['role'];
     }
 
     private function getStudentXmlFields() {
