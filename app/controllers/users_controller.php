@@ -823,6 +823,11 @@ class UsersController extends AppController{
         // to student.
         $student['Profile'] = array_merge(array('id' => $student['User']['id']),
                                                 $student['Profile']);
+
+        $student['Profile']['gender'] === '0'
+            ? $student['Profile']['gender'] = 'male'
+            : $student['Profile']['gender'] = 'female';
+
         unset($student['User']);
         $student['student'] = $student['Profile'];
         unset($student['Profile']);
