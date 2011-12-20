@@ -709,13 +709,17 @@ class UsersController extends AppController{
         if ($this->RequestHandler->isGet()) {
 
             // TODO authentication
-//             $user_id = $this->authenticate();
-//             if ($user_id == null) {
-//                 $this->webServiceStatus(403);
-//                 return;
-//             }
+            $user_id = $this->authenticate();
+            if ($user_id == null) {
+                $this->webServiceStatus(403);
+                return;
+            }
 
-            // $this->get_role($user_id);
+            $user_role = $this->get_role($user_id);
+            if ($user_role === 'realestate') {
+                $this->webServiceStatus(403);
+                return;
+            }
 
             if (!$this->checWebservicekUri($id)) {
                 $this->webServiceStatus(400);
@@ -1098,10 +1102,21 @@ class UsersController extends AppController{
             }
         }
 
-        // testing
         $student_conds['User.role'] = 'user';
         $estate_conds['User.role'] = 'realestate';
-        // testing
+
+        $user_id = $this->authenticate();
+        if ($user_id !== null) {
+            $user_role = $this->get_role($user_id);
+            if ($user_role === 'user') {
+                $student_conds['User.banned'] = 0;
+                $student_conds['User.enabled'] = 1;
+                $student_conds['Profile.visible'] = 1;
+
+                $estate_conds['User.banned'] = 0;
+                $estate_conds['User.enabled'] = 1;
+            }
+        }
 
         return array('student' => $student_conds,
                      'real_estate' => $estate_conds,
