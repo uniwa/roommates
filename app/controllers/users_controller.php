@@ -733,8 +733,8 @@ class UsersController extends AppController{
             // Set the User.id as Profile.id in order to help the
             // xml serialization. Also change the key from Profile
             // to student.
-            for($i = 0; $i < count($students); $i++) {
-                $students[$i]['Profile'] = array_merge(array('id' =>$students[$i]['User']['id']),
+            for ($i = 0; $i < count($students); $i++) {
+                $students[$i]['Profile'] = array_merge(array('id' => $students[$i]['User']['id']),
                                                        $students[$i]['Profile']);
                 unset($students[$i]['User']);
                 $students[$i]['student'] = $students[$i]['Profile'];
@@ -745,7 +745,42 @@ class UsersController extends AppController{
             // REAL ESTATE
             //-----------------------------------------------------------------
 
-            $this->set('users', $students);
+            $municipalities = $this->getMunicipalities();
+            // Get the real estates that fulfill the search params
+            $this->User->recursive = 0;
+            $estates = $this->User->find('all', array(
+                            'fields' => $this->getRealEstateXmlFields(),
+                            'conditions' => $estate_conds,
+                        ));
+
+            for ($i = 0; $i < count($estates); $i++)
+            {
+                $estates[$i]['RealEstate'] = array_merge(
+                    array('id' => $estates[$i]['User']['id']), $estates[$i]['RealEstate']);
+                unset($estates[$i]['User']);
+
+                $estates[$i]['RealEstate']['municipality'] =
+                    $estates[$i]['RealEstate']['municipality_id'] !== null
+                    ? $municipalities[$estates[$i]['RealEstate']['municipality_id']]
+                    : '' ;
+                unset($estates[$i]['RealEstate']['municipality_id']);
+
+                if ($estates[$i]['RealEstate']['type'] === 'owner')
+                {
+                    unset($estates[$i]['RealEstate']['company_name']);
+                    unset($estates[$i]['RealEstate']['type']);
+                    $estates[$i]['private_landowner'] = $estates[$i]['RealEstate'];
+                    unset($estates[$i]['RealEstate']);
+                } else {
+                    $tmp = $estates[$i]['RealEstate']['company_name'];
+                    unset($estates[$i]['RealEstate']['company_name']);
+                    $estates[$i]['RealEstate']['company_name'] = $tmp;
+                    unset($estates[$i]['RealEstate']['type']);
+                }
+            }
+
+            $results = array_merge($students, $estates);
+            $this->set('users', $results);
             $this->layout = 'xml/default';
             $this->render('xml/get');
         } else {
@@ -769,8 +804,6 @@ class UsersController extends AppController{
             'Profile.couple',
             'Profile.we_are',
             'Profile.max_roommates',
-            // probably avatar will be set manually (base64)
-//             'Profile.avatar',
         );
     }
 
@@ -782,9 +815,11 @@ class UsersController extends AppController{
             'RealEstate.phone',
             'RealEstate.afm',
             'RealEstate.doy',
-            'RealEstate.municipality_id',
             'RealEstate.address',
             'RealEstate.postal_code',
+            'RealEstate.fax',
+            'RealEstate.municipality_id',
+            'RealEstate.company_name',
             'RealEstate.type',
         );
     }
@@ -1014,6 +1049,17 @@ class UsersController extends AppController{
             return true;
 
         return false;
+    }
+
+    private function getMunicipalities() {
+        $temp = $this->Municipality->find('all');
+        $municipalities = array();
+        for ($i = 1; $i <= count($temp); $i++)
+        {
+            $municipalities[$i] = $temp[$i - 1]['Municipality']['name'];
+        }
+
+        return $municipalities;
     }
 
     // ------------------------------------------------------------------------
