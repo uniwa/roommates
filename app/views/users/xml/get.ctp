@@ -1,5 +1,9 @@
 <?php
-    $serialized = '<users>'.$xml->serialize($users, array('format' => 'tags')).'</users>';
+    $users = array('users' => $users);
+    $serialized = $xml->serialize($users, array(
+        'format' => 'tags',
+        'namespaces' => array(
+            'tns' => 'http://www.roommates.teiath.gr/schemas/user' )));
     $output = new Xml($serialized);
 
     // set the element "id" as attribute for each
