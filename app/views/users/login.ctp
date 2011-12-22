@@ -10,7 +10,7 @@
             <div class='loginCredential'>
                 <?php
                     echo $this->Form->input('username',
-                        array('label' => 'Όνομα χρήστη', 'class' => 'loginInputCredential'));
+                        array('label' => 'Όνομα χρήστη', 'class' => 'loginInputCredential', 'autofocus' => 'autofocus' ));
                 ?>
             </div>
             <div class='loginCredential'>
