@@ -1,17 +1,41 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://www.roommates.teiath.gr/schemas/HouseTypes"
     xmlns:tns="http://www.roommates.teiath.gr/schemas/house"
+    targetNamespace="http://www.roommates.teiath.gr/schemas/house"
     elementFormDefault="qualified">
 
+    <xs:simpleType name="empty_string">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+        </xs:restriction>
+
+    </xs:simpleType>
+
+    <!-- A boolean that may be left empty of content -->
+    <xs:simpleType name="emptyable_boolean">
+        <xs:union memberTypes="xs:boolean tns:empty_string"/>
+    </xs:simpleType>
+
+    <!-- A date that may be left empty of content -->
+    <xs:simpleType name="emptyable_date">
+        <xs:union memberTypes="xs:date tns:empty_string"/>
+    </xs:simpleType>
+
+    <!-- A double that may be left empty of content -->
+    <xs:simpleType name="emptyable_double">
+        <xs:union memberTypes="xs:double tns:empty_string"/>
+    </xs:simpleType>
+
+    <!-- A double that may be left empty of content -->
+    <xs:simpleType name="emptyable_float">
+        <xs:union memberTypes="xs:float tns:empty_string"/>
+    </xs:simpleType>
 
     <!--restrictions about postal_code field spacing and strlen-->
     <xs:simpleType name="postal_code_type">
-        <xs:restriction base="xs:string">
-            <xs:whiteSpace value="collapse"/>
-            <xs:minLength value="0"/>
-            <xs:maxLength value="5"/>
-        </xs:restriction>
+    <xs:restriction base="xs:string">
+        <xs:pattern value="\d{5}|"/>
+    </xs:restriction>
     </xs:simpleType>
 
     <!--restrictions about bedroom_num field min-max value-->
@@ -76,6 +100,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="studio"/>
             <xs:enumeration value="γκαρσονιέρα"/>
+            <xs:enumeration value="διαμέρισμα"/>
             <xs:enumeration value="μονοκατοικία"/>
             <xs:enumeration value="μεζονέτα"/>
         </xs:restriction>
@@ -213,34 +238,35 @@
             <xs:element name="bathroom_num" type="tns:bathroom_num_type"/>
             <xs:element name="price" type="xs:integer"/>
             <xs:element name="construction_year" type="tns:construction_year_type"/>
-            <xs:element name="solar_heater" type="xs:boolean"/>
-            <xs:element name="furnitured" type="xs:boolean"/>
-            <xs:element name="aircodition" type="xs:boolean"/>
-            <xs:element name="garden" type="xs:boolean"/>
-            <xs:element name="parking" type="xs:boolean"/>
-            <xs:element name="shared_pay" type="xs:boolean"/>
-            <xs:element name="security_doors" type="xs:boolean"/>
-            <xs:element name="disability_facilities" type="xs:boolean"/>
-            <xs:element name="storeroom" type="xs:boolean"/>
-            <xs:element name="availability_date" type="xs:date"/>
+            <xs:element name="solar_heater" type="tns:emptyable_boolean"/>
+            <xs:element name="furnitured" type="tns:emptyable_boolean"/>
+            <xs:element name="aircondition" type="tns:emptyable_boolean"/>
+            <xs:element name="garden" type="tns:emptyable_boolean"/>
+            <xs:element name="parking" type="tns:emptyable_boolean"/>
+            <xs:element name="shared_pay" type="tns:emptyable_boolean"/>
+            <xs:element name="security_doors" type="tns:emptyable_boolean"/>
+            <xs:element name="disability_facilities" type="tns:emptyable_boolean"/>
+            <xs:element name="storeroom" type="tns:emptyable_boolean"/>
+            <xs:element name="availability_date" type="tns:emptyable_date"/>
             <xs:element name="rent_period" type = "tns:rent_period_type"/>
             <xs:element name="description" type = "tns:description_type"/>
-            <xs:element name="created" type="xs:dateTime" minOccurs="0"/>
-            <xs:element name="modified" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="created" type="xs:dateTime"/>
+            <xs:element name="modified" type="xs:dateTime"/>
             <xs:element name="currently_hosting" type="xs:integer"/>
             <xs:element name="total_places" type="tns:one_to_nine_type"/>
-            <xs:element name="user_id" type="xs:integer" minOccurs="0"/>
-            <xs:element name="visible" type="xs:boolean" minOccurs="0"/>
-            <xs:element name="latitude" type="xs:double" minOccurs="0"/>
-            <xs:element name="longitude" type="xs:double" minOccurs="0"/>
-            <xs:element name="geo_distance" type="xs:double" minOccurs="0"/>
-            <xs:element name="free_places" type="xs:integer" minOccurs="0"/>
+            <xs:element name="user_id" type="xs:integer"/>
+            <xs:element name="visible" type="tns:emptyable_boolean"/>
+            <xs:element name="latitude" type="tns:emptyable_double"/>
+            <xs:element name="longitude" type="tns:emptyable_double"/>
+            <xs:element name="geo_distance" type="tns:emptyable_float"/>
+            <xs:element name="free_places" type="xs:integer"/>
             <xs:element name="municipality" type="tns:municipality_type"/>
             <xs:element name="floor" type="tns:floor_type"/>
             <xs:element name="house_type" type="tns:house_category_type"/>
             <xs:element name="heating_type" type="tns:heating_type"/> 
-            <xs:element name="image" type="xs:base64Binary" minOccurs="0"/>
+            <xs:element name="image" type="xs:base64Binary"/>
         </xs:sequence>
+        <xs:attribute name="id" type="xs:integer" use="optional"/>
     </xs:complexType>
 
     <!--An envelope for multiple houses-->
@@ -249,5 +275,7 @@
             <xs:element name="house" type="tns:house_type" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
+
+    <xs:element name="houses" type="tns:array_of_houses_type" />
 
 </xs:schema>

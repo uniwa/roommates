@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:tns="http://www.roommates.teiath.gr/schemas/user"
     targetNamespace="http://www.roommates.teiath.gr/schemas/user"
-    elementFormDefault="unqualified">
+    elementFormDefault="qualified">
 
 <xs:simpleType name="empty_string">
     <xs:restriction base="xs:string">
