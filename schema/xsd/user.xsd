@@ -2,7 +2,24 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:tns="http://www.roommates.teiath.gr/schemas/user"
     targetNamespace="http://www.roommates.teiath.gr/schemas/user"
-    elementFormDefault="qualified">
+    elementFormDefault="unqualified">
+
+<xs:simpleType name="empty_string">
+    <xs:restriction base="xs:string">
+        <xs:enumeration value=""/>
+    </xs:restriction>
+
+</xs:simpleType>
+
+<!-- A boolean that may be left empty of content -->
+<xs:simpleType name="emptyable_boolean">
+    <xs:union memberTypes="xs:boolean tns:empty_string"/>
+</xs:simpleType>
+
+<!-- An integer that may be left empty of content -->
+<xs:simpleType name="emptyable_integer">
+    <xs:union memberTypes="xs:integer tns:empty_string"/>
+</xs:simpleType>
 
 <!-- Email type -->
 <xs:simpleType name="email_type">
@@ -58,10 +75,10 @@
             <xs:sequence>
                 <xs:element name="gender" type="tns:gender_type"/>
                 <xs:element name="dob" type="xs:integer"/>
-                <xs:element name="smoker" type="xs:boolean"/>
-                <xs:element name="pet" type="xs:boolean"/>
-                <xs:element name="child" type="xs:boolean"/>
-                <xs:element name="couple" type="xs:boolean"/>
+                <xs:element name="smoker" type="tns:emptyable_boolean"/>
+                <xs:element name="pet" type="tns:emptyable_boolean"/>
+                <xs:element name="child" type="tns:emptyable_boolean"/>
+                <xs:element name="couple" type="tns:emptyable_boolean"/>
                 <xs:element name="avatar" type="xs:base64Binary"/>
             </xs:sequence>
         </xs:extension>
@@ -73,8 +90,8 @@
     <xs:complexContent>
         <xs:extension base="tns:student_type">
             <xs:sequence>
-                <xs:element name="we_are" type="xs:integer"/>
-                <xs:element name="max_roommates" type="xs:integer"/>
+                <xs:element name="we_are" type="tns:emptyable_integer"/>
+                <xs:element name="max_roommates" type="tns:emptyable_integer"/>
             </xs:sequence>
         </xs:extension>
     </xs:complexContent>
