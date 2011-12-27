@@ -13,6 +13,7 @@
 #   RewriteCond    %{REQUEST_URI} users/pdf/.*
 #   RewriteCond    %{REMOTE_ADDR} !^127\.0\.0\.1
 #   RewriteRule    (.*) app/webroot/ [F]
+   Rewriterule    ^phpmyadmin/.*$ - [PT]
    RewriteRule    ^$ app/webroot/ [L]
    RewriteRule    (.*) app/webroot/$1 [L]
 </IfModule>

@@ -150,7 +150,10 @@ class HousesController extends AppController {
             $this->Auth->allow( 'search' );
         }
 
-        if ($this->isWebService()) $this->Auth->allow('webService');
+        $this->Auth->allow('handleGetRequest');
+        $this->Auth->allow('handlePostRequest');
+        $this->Auth->allow('handlePutRequest');
+        $this->Auth->allow('handleDeleteRequest');
 
         if(!class_exists('L10n'))
             App::import('Core','L10n');
@@ -237,6 +240,7 @@ class HousesController extends AppController {
             $this->data['House']['geo_distance'] = $this->computeDistance();
 
             if ($this->House->save($this->data)) {
+                $this->log('User '.$this->Auth->user('username').' add new house', 'activity');
                 $this->Session->setFlash('Το σπίτι αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
                 $hid = $this->House->id;
@@ -298,12 +302,15 @@ class HousesController extends AppController {
                         'default', array('class' => 'flashRed'));
                     $this->redirect($redirectTarget);
                 }
+
             }
         }
         $this->House->commit();
 
         $this->Session->setFlash('Το σπίτι διαγράφηκε με επιτυχία.',
-                    'default', array('class' => 'flashBlue'));
+            'default', array('class' => 'flashBlue'));
+
+        $this->log( 'User '.$this->Auth->user('username').' delete his house', 'activity');
         $this->redirect($redirectTarget);
     }
 
@@ -339,7 +346,8 @@ class HousesController extends AppController {
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-
+                
+                $this->log( 'User '.$this->Auth->user('username').' edit his house', 'activity');
                 // post requires municipality name, house type and user role
                 $this->House->recursive = 2;
                 $house = $this->House->read();
@@ -386,6 +394,9 @@ class HousesController extends AppController {
 
 
         if($this->Auth->user('id') != $user_id) {
+
+            $this->log( 'User '.$this->Auth->user('username').
+                ' try to intervene'.$house['User']['username']."'s profile", 'warning');
             $this->cakeError( 'error403' );
         }
     }
@@ -1237,15 +1248,6 @@ class HousesController extends AppController {
         return $string;
     }
 
-    /// Returns whether this is web service call or not
-    private function isWebService() {
-        if (isset($this->params['url']['url']) &&
-            (strpos($this->params['url']['url'], 'api/houses') !== false))
-            return true;
-        else
-            return false;
-    }
-
 
     private function getResponseXmlFields() {
         $fields = array('House.id',
@@ -1272,8 +1274,12 @@ class HousesController extends AppController {
                         'House.modified',
                         'House.currently_hosting',
                         'House.total_places',
-                        'House.free_places',
+                        'House.user_id',
+                        'House.visible',
+                        'House.latitude',
+                        'House.longitude',
                         'House.geo_distance',
+                        'House.free_places',
                         'Municipality.name',
                         'Floor.type',
                         'HouseType.type',
@@ -1333,37 +1339,47 @@ class HousesController extends AppController {
     // REST - Web Services
     // ------------------------------------------------------------------------
 
-    function webService($id = null) {
-        if ($this->RequestHandler->isGet()) {
-            $this->handleGetRequest($id);
-        } else if ($this->RequestHandler->isPost()) {
-            $this->handlePostRequest();
-        } else if ($this->RequestHandler->isPut()) {
-            $this->handlePutRequest($id);
-        } else if ($this->RequestHandler->isDelete()) {
-            $this->handleDeleteRequest($id);
+    function handleGetRequest($id = null) {
+        if ((strpos($this->params['url']['url'], 'houses') == true) &&
+            ($id != null)) {
+            $this->webServiceStatus(404);
+            return;
         }
-    }
-
-    private function handleGetRequest($id) {
         $house_conds = $this->getHouseConditions();
         if ($id != null) array_push($house_conds, array('House.id' => $id));
         $result = $this->simpleSearch(  $house_conds,
                                         null, null, false, null,
                                         $this->getResponseXmlFields(),
                                         true);
+
+        if (empty($result)) {
+            $this->webServiceStatus(404);
+            return;
+        }
+
+        // return the Image itself base64 encoded
+        for ($i = 0; $i<count($result); $i++) {
+            $result[$i]['Image'] = $this->get_house_bin_image($result[$i]['House']['id']);
+
+            // latitude and longitude are never returned
+            $result[$i]['House']['latitude'] = null;
+            $result[$i]['House']['longitude'] = null;
+        }
         $this->set('houses', $result);
         $this->layout = 'xml/default';
         $this->render('xml/public');
     }
 
-    private function handlePostRequest() {
+    function handlePostRequest($id = null) {
+        if ($id != null) {
+            $this->webServiceStatus(400);
+            return;
+        }
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            // TODO deprecate this render when we build error system
-            $this->set('results', 'authentication failed');
-            $this->render('xml/create');
+            // access denied
+            $this->webServiceStatus(403);
             return;
         }
 
@@ -1372,123 +1388,136 @@ class HousesController extends AppController {
             if ($user_role == 'user') {
                 $house_count = $this->count_houses($user_id);
                 if ($house_count >= 1) {
-                    $this->set('results', 'cannot add more than one houses');
-                    $this->render('xml/create');
+                    // users add only one house
+                    $this->webServiceStatus(412);
                     return;
                 }
             }
             elseif ($user_role == 'admin') {
-                $this->set('results', 'admin cannot add houses');
-                $this->render('xml/create');
+                // admin cannot add houses
+                $this->webServiceStatus(412);
                 return;
             }
             $this->data['House']['user_id'] = $user_id;
             $this->data['House']['geo_distance'] = $this->computeDistance();
+            $this->unsetXmlElements();
             $this->setRequiredIds();
-            $this->House->save($this->data);
+
+            if ($this->House->save($this->data) != false) {
+                // success
+                $this->webServiceStatus(200);
+                return;
+            } else {
+                $this->webServiceStatus(500);
+                return;
+            }
         }
-        // TODO return a confirmation/failure message instead
-        $this->set('results', $this->data);
-        $this->layout = 'xml/default';
-        $this->render('xml/create');
+        // empty data
+        $this->webServiceStatus(400);
+        return;
     }
 
-    private function handlePutRequest($id) {
+    function handlePutRequest($id = null) {
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            // TODO deprecate this render when we build error system
-            $this->set('results', 'authentication failed');
-            $this->render('xml/create');
+            $this->webServiceStatus(403);
             return;
         }
 
         if ($id != null) {
             if (! $this->house_exist($id) ) {
-                $this->set('results', 'cannot find house to modify');
-                $this->render('xml/create');
+                $this->webServiceStatus(404);
                 return;
             }
 
             if (! $this->owns_house($user_id, $id) ) {
-                $this->set('results', 'access to house with id '.$id.' is denied');
-                $this->render('xml/create');
+                $this->webServiceStatus(403);
                 return;
             }
 
+            $this->unsetXmlElements();
             $this->data['House']['id'] = $id;
             $this->data['House']['geo_distance'] = $this->computeDistance();
+            $this->data['House']['user_id'] = $user_id;
             $this->setRequiredIds();
             if ($this->House->saveAll($this->data)) {
-                $this->set('results', $this->data);
+                $this->webServiceStatus(200);
+                return;
             } else {
-                // TODO find a better error message!!!
-                $this->set('results', "You, sir, have been trolled!");
+                $this->webServiceStatus(500);
+                return;
             }
-            $this->layout = 'xml/default';
-            $this->render('xml/create');
         } else {
-            // TODO return some error
+            // TODO if the $id === null then create the house
+            // for now just say we didn't find the house
+            $this->webServiceStatus(404);
+            return;
         }
     }
 
-    private function handleDeleteRequest($id) {
-        $this->layout = 'xml/default';
+    function handleDeleteRequest($id = null) {
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            // TODO deprecate this render when we build error system
-            $this->set('results', 'authentication failed');
-            $this->render('xml/create');
+            $this->webServiceStatus(403);
             return;
         }
 
         if ($id != null) {
             if (! $this->house_exist($id) ) {
-                $this->set('results', 'cannot find house to modify');
-                $this->render('xml/create');
+                $this->webServiceStatus(404);
                 return;
             }
 
             if (! $this->owns_house($user_id, $id) ) {
-                $this->set('results', 'access to house with id '.$id.' is denied');
-                $this->render('xml/create');
+                $this->webServiceStatus(403);
                 return;
             }
-
-            $this->layout = 'xml/default';
 
             $this->House->id = $id;
             $this->House->begin();
             /* delete associated images first */
             if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
                 $this->House->rollback();
-                $this->render('xml/delete');
+                $this->webServiceStatus(500);
                 return;
             }
             else {
                 /* remove from FS */
                 if (! $this->House->Image->delete_all($id) ) {
                     $this->House->rollback();
-                    $this->render('xml/delete');
+                    $this->webServiceStatus(500);
                     return;
                 }
                 else {
                     /* delete house */
                     if (! $this->House->delete( $id ) ) {
                         $this->House->rollback();
-                        $this->render('xml/delete');
+                        $this->webServiceStatus(500);
                         return;
                     }
                 }
             }
             $this->House->commit();
-            $this->set('results', 'success');
-            $this->render('xml/create');
+            $this->webServiceStatus(200);
+            return;
 
         } else {
-            // TODO return some error
+            $this->webServiceStatus(412);
+            return;
         }
 
+    }
+
+    private function webServiceStatus($id) {
+        if (array_key_exists($id, $this->xml_status) ) {
+            $this->set('code', $id);
+            $this->set('msg', $this->xml_status[$id]);
+        } else {
+            die('ERROR: UNDEFINED XML STATUS CODE');
+        }
+        $this->layout = 'xml/default';
+        $this->render('xml/status');
     }
 
     //////////////////////////////////////////////////
@@ -1614,6 +1643,39 @@ class HousesController extends AppController {
         $conditions = array('user_id' => $id);
         $n = $this->House->find('count', array('conditions' => $conditions));
         return $n;
+    }
+
+    private function get_house_bin_image($id) {
+        // returns default house image for given $id encoded in base64
+        // params: $id -> house id
+        if ($id == null) return null;
+
+        $conditions = array('House.id' => $id, 'Image.is_default' => 1);
+        $name = $this->House->Image->find('first',
+            array('conditions' => $conditions, 'fields' => 'location'));
+
+        if (empty($name)) {
+            return null;
+        }
+
+        // build image file path
+        $filepath = WWW_ROOT . "img/uploads/houses/" . $id . "/" .
+            "thumb_" . $name['Image']['location'];
+
+        if (! file_exists($filepath)) {
+            return null;
+        }
+
+        $bin = fread(fopen($filepath, "r"), filesize($filepath));
+        return base64_encode($bin);
+    }
+
+    private function unsetXmlElements() {
+        unset($this->data['House']['xmlns']);
+        unset($this->data['House']['id']);
+        unset($this->data['House']['created']);
+        unset($this->data['House']['modified']);
+        unset($this->data['House']['free_places']);
     }
 
 }

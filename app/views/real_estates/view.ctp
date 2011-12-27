@@ -21,43 +21,47 @@
 ?>
 <div id='realestateView'>
 <div id='leftbar' class='leftGeneral'>
-    <div id='profilePic'>
-        <?php
-            $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
-            echo $profilePic;
-        ?>
-    </div>
-    <div id='profileBan'>
-        <?php
-            if($role == 'admin' &&
-                $realEstate['RealEstate']['user_id'] != $this->Session->read('Auth.User.id')){
-                if($realEstate['User']['banned'] == 0){
-                    $banContent = $this->Html->image('ban.png', array('alt' => $company));
-                    $banContent .= ' Κλείδωμα χρήστη';
-                    $banClass = 'banButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να κλειδώσετε τον λογαριασμό αυτού του χρήστη;";
-                    $banCase = 'ban';
-                }else{
-                    $banContent = $this->Html->image('unban.png', array('alt' => $company));
-                    $banContent .= ' Ξεκλείδωμα χρήστη';
-                    $banClass = 'unbanButton';
-                    $banMsg = "Είστε σίγουρος ότι θέλετε να ξεκλειδώσετε τον λογαριασμό αυτού του χρήστη;";
-                    $banCase = 'unban';
+    <div id='profileCont'>
+        <div id='profilePic'>
+            <?php
+                $profilePic = $this->Html->image($profileThumb, array('alt' => $name));
+                echo $profilePic;
+            ?>
+        </div>
+        <div id='profileBan'>
+            <?php
+                if($role == 'admin' &&
+                    $realEstate['RealEstate']['user_id'] != $this->Session->read('Auth.User.id')){
+                    if($realEstate['User']['banned'] == 0){
+                        $banContent = $this->Html->image('delete_16.png', array(
+                            'alt' => $company, 'class' => 'optionIcon'));
+                        $banContent .= ' Κλείδωμα χρήστη';
+                        $banClass = 'banButton';
+                        $banMsg = "Είστε σίγουρος ότι θέλετε να κλειδώσετε τον λογαριασμό αυτού του χρήστη;";
+                        $banCase = 'ban';
+                    }else{
+                        $banContent = $this->Html->image('accept_16.png', array(
+                            'alt' => $company, 'class' => 'optionIcon'));
+                        $banContent .= ' Ξεκλείδωμα χρήστη';
+                        $banClass = 'unbanButton';
+                        $banMsg = "Είστε σίγουρος ότι θέλετε να ξεκλειδώσετε τον λογαριασμό αυτού του χρήστη;";
+                        $banCase = 'unban';
+                    }
+                    $banLink = $this->Html->link($banContent, array(
+                        'controller' => 'real_estates', 'action' => $banCase, $realEstate['RealEstate']['id']),
+                        array('class' => $banClass, 'escape' => false), $banMsg);
+                    echo $banLink;
                 }
-                $banLink = $this->Html->link($banContent, array(
-                    'controller' => 'real_estates', 'action' => $banCase, $realEstate['RealEstate']['id']),
-                    array('class' => $banClass, 'escape' => false), $banMsg);
-                echo $banLink;
-            }
-        ?>
-    </div>
-    <div id='profileEdit'>
-        <?php
-//            if($this->Session->read('Auth.User.id') == $realEstate['User']['id']){
-//                echo $html->link('Επεξεργασία στοιχείων',
-//                    array('action' => 'edit', $realEstate['RealEstate']['id']));
-//            }
-        ?>
+            ?>
+        </div>
+        <div id='profileEdit'>
+            <?php
+    //            if($this->Session->read('Auth.User.id') == $realEstate['User']['id']){
+    //                echo $html->link('Επεξεργασία στοιχείων',
+    //                    array('action' => 'edit', $realEstate['RealEstate']['id']));
+    //            }
+            ?>
+        </div>
     </div>
 </div>
 <div id='main-inner' class='mainGeneral'>
