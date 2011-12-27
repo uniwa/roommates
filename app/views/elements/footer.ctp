@@ -13,12 +13,15 @@
             </li>
             <li>
                 <?php
-                    $linkClass = 'menu-item menu-footer';
-                    if(isset($selected_action) && $selected_action == 'help'){
-                        $linkClass .= ' menu-selected';
+                    $userNull = $this->Session->read("Auth.User") == NULL;
+                    if(!$userNull){
+                        $linkClass = 'menu-item menu-footer';
+                        if(isset($selected_action) && $selected_action == 'help'){
+                            $linkClass .= ' menu-selected';
+                        }
+                        echo $this->Html->link('Αναφορά προβλήματος', array('controller' => 'users',
+                            'action' => 'help'), array('class' => $linkClass));
                     }
-                    echo $this->Html->link('Αναφορά προβλήματος', array('controller' => 'users',
-                        'action' => 'help'), array('class' => $linkClass));
                 ?>
             </li>
             <li>
