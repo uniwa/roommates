@@ -1360,6 +1360,10 @@ class HousesController extends AppController {
         // return the Image itself base64 encoded
         for ($i = 0; $i<count($result); $i++) {
             $result[$i]['Image'] = $this->get_house_bin_image($result[$i]['House']['id']);
+
+            // latitude and longitude are never returned
+            $result[$i]['House']['latitude'] = null;
+            $result[$i]['House']['longitude'] = null;
         }
         $this->set('houses', $result);
         $this->layout = 'xml/default';
