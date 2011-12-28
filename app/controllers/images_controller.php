@@ -70,7 +70,7 @@ class ImagesController extends AppController {
             if ($this->Image->save($this->data)) {
                 $this->Session->setFlash('Η εικόνα αποθηκεύτηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-
+$this->log('user '.$this->Auth->User('id').' add image '.$newName.' for house '.$id, 'info');
                 // *ATTENTION*
                 // $this->referer() in this redirect will break on Nth image
                 // upload due to max image count, redirect only on house view
@@ -109,6 +109,7 @@ class ImagesController extends AppController {
                 $this->Image->delImage($house_id, $image['Image']['location']);
                 $this->Session->setFlash('Η εικόνα διαγραφήκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
+$this->log('user '.$this->Auth->User('id').' delete image '.$image['Image']['location'].' for house '.$house_id, 'info');
             }
             else {
                 $this->Session->setFlash('Η εικόνα δεν διαγραφηκε.',
@@ -150,6 +151,7 @@ class ImagesController extends AppController {
             else {
                 $this->Session->setFlash('Η νέα προεπιλεγμένη εικόνα ορίστικε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
+$this->log('user '.$this->Auth->User('id').' set default image '.$imageData['Image']['location'].' for house '.$house_id, 'info');
             }
         }
         $this->redirect(array('controller' => 'houses', 'action' => 'view', $house_id));
