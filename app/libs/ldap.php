@@ -26,7 +26,13 @@ class ldap {
         $this->ldapPassword = Configure::read( 'Ldap.password' );
 
         /*Connect to LDAP*/
-        $this->ldap =  ldap_connect( $this->ldapServer, $this->ldapPort );
+        if ($this->ldapPort == '') {
+            $this->ldap =  ldap_connect( $this->ldapServer )
+                or die("unable to connect to ldap");
+        } else {
+            $this->ldap =  ldap_connect( $this->ldapServer, $this->ldapPort )
+                or die("unable to connect to ldap");
+        }
 
         ldap_set_option($this->ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
         ldap_set_option($this->ldap, LDAP_OPT_REFERRALS, 0);
@@ -44,7 +50,7 @@ class ldap {
          * Bind ldap directory with user's credentials
          * if user has not ldap acount returns false
          **/
-       @$good = ldap_bind( $this->ldap, 'uid='.$user.', ou=people,'.$this->baseDN, $pass );
+       @$good = ldap_bind( $this->ldap, 'uid='.$user.','.$this->baseDN, $pass );
         if( $good === true ) {
 
             return true;

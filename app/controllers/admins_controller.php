@@ -21,7 +21,7 @@ class AdminsController extends AppController
         $this->set('title_for_layout','Διαχείριση χρηστών');
 
         $this->checkAccess();
-
+$this->log('admin '.$this->Auth->User('id').' manage users', 'info');
         App::import('Model', 'User');
         $paginate = array('fields' => array('User.username', 'User.banned',
             'Profile.id', 'Profile.firstname', 'Profile.lastname',
@@ -57,7 +57,7 @@ class AdminsController extends AppController
         $this->set('title_for_layout','Διαχείριση εκμισθωτών');
 
         $this->checkAccess();
-
+$this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         App::import('Model', 'User');
         $user = new User();
         $this->set('limit', $this->paginate['RealEstate']['limit']);

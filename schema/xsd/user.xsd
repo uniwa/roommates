@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-xmlns:tns="http://www.roommates.teiath.gr/schemas/user"
-targetNamespace="http://www.roommates.teiath.gr/schemas/user"
-elementFormDefault="qualified">
+    xmlns:tns="http://www.roommates.teiath.gr/schemas/user"
+    targetNamespace="http://www.roommates.teiath.gr/schemas/user"
+    elementFormDefault="qualified">
+
+<xs:simpleType name="empty_string">
+    <xs:restriction base="xs:string">
+        <xs:enumeration value=""/>
+    </xs:restriction>
+
+</xs:simpleType>
+
+<!-- A boolean that may be left empty of content -->
+<xs:simpleType name="emptyable_boolean">
+    <xs:union memberTypes="xs:boolean tns:empty_string"/>
+</xs:simpleType>
+
+<!-- An integer that may be left empty of content -->
+<xs:simpleType name="emptyable_integer">
+    <xs:union memberTypes="xs:integer tns:empty_string"/>
+</xs:simpleType>
 
 <!-- Email type -->
 <xs:simpleType name="email_type">
@@ -22,14 +39,14 @@ elementFormDefault="qualified">
 <!-- AFM -->
 <xs:simpleType name="afm_type">
     <xs:restriction base="xs:string">
-        <xs:pattern value="\d{10}"/>
+        <xs:pattern value="\d{9}"/>
     </xs:restriction>
 </xs:simpleType>
 
 <!-- Postal Code -->
 <xs:simpleType name="postal_code_type">
     <xs:restriction base="xs:string">
-        <xs:pattern value="\d{5}"/>
+        <xs:pattern value="\d{5}|"/>
     </xs:restriction>
 </xs:simpleType>
 
@@ -46,7 +63,9 @@ elementFormDefault="qualified">
 
 <!-- Admin type -->
 <xs:complexType name="admin_type">
-    <xs:complexContent base="tns:core_person_type"/>
+    <xs:complexContent>
+        <xs:extension base="tns:core_person_type"/>
+    </xs:complexContent>
 </xs:complexType>
 
 <!-- Student type -->
@@ -56,11 +75,11 @@ elementFormDefault="qualified">
             <xs:sequence>
                 <xs:element name="gender" type="tns:gender_type"/>
                 <xs:element name="dob" type="xs:integer"/>
-                <xs:element name="smoker" type="xs:boolean" minOccurs="0"/>
-                <xs:element name="pet" type="xs:boolean" minOccurs="0"/>
-                <xs:element name="child" type="xs:boolean" minOccurs="0"/>
-                <xs:element name="couple" type="xs:boolean" minOccurs="0"/>
-                <xs:element name="avatar" type="xs:base64Binary" minOccurs="0"/>
+                <xs:element name="smoker" type="tns:emptyable_boolean"/>
+                <xs:element name="pet" type="tns:emptyable_boolean"/>
+                <xs:element name="child" type="tns:emptyable_boolean"/>
+                <xs:element name="couple" type="tns:emptyable_boolean"/>
+                <xs:element name="avatar" type="xs:base64Binary"/>
             </xs:sequence>
         </xs:extension>
     </xs:complexContent>
@@ -71,32 +90,30 @@ elementFormDefault="qualified">
     <xs:complexContent>
         <xs:extension base="tns:student_type">
             <xs:sequence>
-                <xs:element name="we_are" type="xs:integer"/>
-                <xs:element name="max_roommates" type="xs:integer"/>
+                <xs:element name="we_are" type="tns:emptyable_integer"/>
+                <xs:element name="max_roommates" type="tns:emptyable_integer"/>
             </xs:sequence>
         </xs:extension>
     </xs:complexContent>
 </xs:complexType>
 
 <!-- Core legal data -->
-<xs:complexType name="legal_data_type">
+<xs:group name="legal_data_group">
     <xs:sequence>
         <xs:element name="afm" type="tns:afm_type"/>
         <xs:element name="doy" type="xs:string"/>
         <xs:element name="address" type="xs:string"/>
         <xs:element name="postal_code" type="tns:postal_code_type"/>
-        <xs:element name="fax" type="xs:string" minOccurs="0"/>
+        <xs:element name="fax" type="xs:string"/>
         <xs:element name="municipality" type="xs:string"/>
     </xs:sequence>
-</xs:complexType>
+</xs:group>
 
 <!-- Legal entities type. Modeled after a (contact) person -->
 <xs:complexType name="legal_entity_type">
     <xs:complexContent>
         <xs:extension base="tns:core_person_type">
-            <xs:sequence>
-                <xs:element name="legal_data" type="tns:legal_data_type"/>
-            </xs:sequence>
+            <xs:group ref="tns:legal_data_group"/>
         </xs:extension>
     </xs:complexContent>
 </xs:complexType>
@@ -120,22 +137,20 @@ elementFormDefault="qualified">
 </xs:complexType>
 
 <!-- Any user type -->
-<xs:complexType name="any_user_type">
+<xs:group name="any_user_group">
     <xs:choice>
-
         <xs:element name="student" type="tns:student_roommate_type"/>
         <xs:element name="real_estate" type="tns:real_estate_type"/>
         <xs:element name="private_landowner" type="tns:private_landowner_type"/>
         <xs:element name="admin" type="tns:admin_type"/>
     </xs:choice>
-</xs:complexType>
+</xs:group>
 
 <!-- An enevelope of multiple users -->
 <xs:complexType name="array_of_users_type">
-    <xs:sequence>
-        <xs:element name="user" type="tns:any_user_type" minOccurs="0"
-            maxOccurs="unbounded"/>
-    </xs:sequence>
+    <xs:group ref="tns:any_user_group" minOccurs="0" maxOccurs="unbounded"/>
 </xs:complexType>
+
+<xs:element name="users" type="tns:array_of_users_type"/>
 
 </xs:schema>

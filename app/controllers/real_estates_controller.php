@@ -19,6 +19,7 @@ class RealEstatesController extends AppController {
         $this->set('title_for_layout','Στοιχεία επικοινωνίας');
 
     	$this->checkExistence($id);
+$this->log('user '.$this->Auth->User('id').' view realestate '.$id, 'info');
         $this->RealEstate->id = $id;
         $this->RealEstate->recursive = 2;
         $estate = $this->RealEstate->read();
@@ -69,6 +70,8 @@ class RealEstatesController extends AppController {
         $this->User->id = $realEstate["RealEstate"]["user_id"];
         if ($this->User->save($user, array('validate'=>'first'))) {
             $this->User->commit();
+$actionBanUnban = ($status)?'ban':'unban';
+$this->log('admin '.$this->Auth->User('id').' '.$actionBanUnban.' realestate '.$id, 'info');
             return True;
         } else {
             $this->User->rollback();
@@ -130,6 +133,8 @@ class RealEstatesController extends AppController {
         $this->User->id = $realEstate['RealEstate']['user_id'];
         if($this->User->save($user, array('validate'=>'first'))){
             $this->User->commit();
+$actionDisableEnable = ($status)?'disable':'enable';
+$this->log('admin '.$this->Auth->User('id').' '.$actionDisableEnable.' realestate '.$id, 'info');
             return True;
         }else{
             $this->User->rollback();
@@ -184,6 +189,7 @@ class RealEstatesController extends AppController {
         $this->Email->template = 'banned';
         $this->Email->sendAs = 'both';
         $this->Email->send();
+$this->log('email send: realestate '.$id.' ban', 'info');
     }
     
     private function email_enabled_user($id){
@@ -197,6 +203,7 @@ class RealEstatesController extends AppController {
         $this->Email->template = 'enabled';
         $this->Email->sendAs = 'both';
         $this->Email->send();
+$this->log('email send: realestate '.$id.' enable', 'info');
     }
 
     private function email_disabled_user($id){
@@ -210,6 +217,7 @@ class RealEstatesController extends AppController {
         $this->Email->template = 'disabled';
         $this->Email->sendAs = 'both';
         $this->Email->send();
+$this->log('email send: realestate '.$id.' disable', 'info');
     }
 }
 ?>

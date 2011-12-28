@@ -1615,6 +1615,12 @@ ul.collapsible{
 }
 
 /* REAL ESTATE VIEW */
+#realestateView #profileCont{
+    margin: 0px 0px 0px 0px;
+    padding: 32px;
+    text-align: center;
+}
+
 #realestateView #profileEdit{
     margin: 16px 0px 0px 0px;
 }
@@ -1646,6 +1652,11 @@ ul.collapsible{
 #realestateView .profileInfo{
     margin: 0px 0px 0px 24px;
     font-size: 1.0em;
+}
+
+#realestateView .optionIcon{
+    margin: 0px 4px 0px 0px;
+    vertical-align: -30%;
 }
 
 /* REGISTER VIEW */
