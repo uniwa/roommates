@@ -999,7 +999,7 @@ ul.collapsible{
 }
 
 .left-form-cont-house{
-    margin: 0px auto; 
+    margin: 0px auto;
     width: 320px;
 }
 
@@ -1663,7 +1663,7 @@ ul.collapsible{
 #registerView{
     margin: 0px auto 20px auto;
     width: 600px;
-    overflow: hidden;   
+    overflow: hidden;
 }
 
 #registerView .form-title{
@@ -1832,6 +1832,7 @@ ul.collapsible{
     float: left;
     margin: 8px 0px 0px 8px;
     width: auto;
+    text-align: left;
 }
 
 #profileEditView .input input[type=text]{
@@ -1915,4 +1916,3 @@ ul.collapsible{
     padding: 2px;
     width: 300px;
 }
-
