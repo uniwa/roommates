@@ -42,10 +42,14 @@ class UsersController extends AppController{
          *while terms are not accepted, redirect him to terms action.
          *If rules are accepted, redirect him to main page
          */
-        if(isset( $this->data )){
+        if(isset( $this->data ) && $this->Auth->user()) {
 $this->log('user '.$this->data['User']['username'].' login submit', 'info');
             if($this->Auth->user('terms_accepted') === '0' ){
                 $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
+            } elseif ($this->Auth->user('terms_accepted') == '1') {
+                // save login time
+                $this->User->id = $this->Auth->user('id');
+                $this->User->saveField('last_login', date(DATE_ATOM));
             } else {
                 if ($this->Auth->user('enabled') == '0') {
                     $this->Session->setFlash('Ο λογαριασμός σας δεν έχει ενεργοποιηθεί από τον διαχειριστή.',
@@ -53,8 +57,6 @@ $this->log('user '.$this->data['User']['username'].' login submit', 'info');
                     $this->redirect($this->Auth->logout());
                 }
                 /* redirect in pre-fixed url */
-                $this->User->id = $this->Auth->user('id');  //target correct record
-                $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
                 $this->redirect( $this->Auth->redirect() );
             }
         }
