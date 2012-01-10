@@ -56,9 +56,9 @@ $this->log('user '.$this->data['User']['username'].' login submit', 'info');
                             'default', array('class' => 'flashRed'));
                     $this->redirect($this->Auth->logout());
                 }
-                /* redirect in pre-fixed url */
-                $this->redirect( $this->Auth->redirect() );
             }
+            /* redirect in pre-fixed url */
+            $this->redirect( $this->Auth->redirect() );
         }
     }
 
