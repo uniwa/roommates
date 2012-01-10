@@ -339,6 +339,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
          * end up with a broken user (no profile). We need to handle this
          * more gracefully. * FIXME *
          */
+        /*
         if (Configure::read('debug') != 0 ) {
             if (! isset($ldap_data) ) {
                 $ldap_data['first_name'] = 'firsname';
@@ -346,6 +347,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
                 $ldap_data['email'] = 'roommates@teiath.gr';
             }
         }
+         */
 
         $profile["Profile"]["firstname"] = $ldap_data['first_name'];
         $profile["Profile"]["lastname"] = $ldap_data['last_name'];

@@ -1015,7 +1015,7 @@ class AuthComponent extends Object {
         if( $ldap->auth( $username,  $password ) ) {
 
             $info = $ldap->getInfo( $username ) ;
-            if (empty($info)) {
+            if (empty($info["first_name"]) || empty($info["last_name"]) || empty($info["email"])) {
                 return false;
             }
             return $info;
