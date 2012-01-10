@@ -42,10 +42,14 @@ class UsersController extends AppController{
          *while terms are not accepted, redirect him to terms action.
          *If rules are accepted, redirect him to main page
          */
-        if(isset( $this->data )){
+        if(isset( $this->data ) && $this->Auth->user()) {
 $this->log('user '.$this->data['User']['username'].' login submit', 'info');
             if($this->Auth->user('terms_accepted') === '0' ){
                 $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
+            } elseif ($this->Auth->user('terms_accepted') == '1') {
+                // save login time
+                $this->User->id = $this->Auth->user('id');
+                $this->User->saveField('last_login', date(DATE_ATOM));
             } else {
                 if ($this->Auth->user('enabled') == '0') {
                     $this->Session->setFlash('Ο λογαριασμός σας δεν έχει ενεργοποιηθεί από τον διαχειριστή.',
@@ -53,8 +57,6 @@ $this->log('user '.$this->data['User']['username'].' login submit', 'info');
                     $this->redirect($this->Auth->logout());
                 }
                 /* redirect in pre-fixed url */
-                $this->User->id = $this->Auth->user('id');  //target correct record
-                $this->User->saveField('last_login', date(DATE_ATOM));  //save login time
                 $this->redirect( $this->Auth->redirect() );
             }
         }
@@ -339,6 +341,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
          * end up with a broken user (no profile). We need to handle this
          * more gracefully. * FIXME *
          */
+        /*
         if (Configure::read('debug') != 0 ) {
             if (! isset($ldap_data) ) {
                 $ldap_data['first_name'] = 'firsname';
@@ -346,6 +349,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
                 $ldap_data['email'] = 'roommates@teiath.gr';
             }
         }
+         */
 
         $profile["Profile"]["firstname"] = $ldap_data['first_name'];
         $profile["Profile"]["lastname"] = $ldap_data['last_name'];

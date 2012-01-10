@@ -691,7 +691,6 @@ class AuthComponent extends Object {
 		}
 
         if ( $user = $this->ldapIdentify($data) ){
-
 			$this->Session->write($this->sessionKey, $user);
             $this->_loggedIn = true;
         } else if( $user = $this->dbIdentify( $data ) ) {
@@ -952,9 +951,10 @@ class AuthComponent extends Object {
 
         //comment it to check access in ldap problems with passwords hashing must change it
         //must check access in ldap 
-        if( !$ldapUser ) {
+        if ($ldapUser == false) {
 
             return false;
+
         } else {
 
             $inside_user = $model->find( 'first', 
@@ -986,7 +986,6 @@ class AuthComponent extends Object {
 
             return $this->identify( $inside_user[ $this->userModel ][ $model->primaryKey ] ,  $conditions );
         }
-     
     }
 
     function dbIdentify( $user=null , $conditions=null ){
@@ -1015,7 +1014,7 @@ class AuthComponent extends Object {
         if( $ldap->auth( $username,  $password ) ) {
 
             $info = $ldap->getInfo( $username ) ;
-            if (empty($info)) {
+            if (empty($info["first_name"]) || empty($info["last_name"]) || empty($info["email"])) {
                 return false;
             }
             return $info;
