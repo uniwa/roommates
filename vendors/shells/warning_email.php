@@ -6,35 +6,50 @@ class WarningEmailShell extends Shell{
 
     function main(){
         
-        $one_month_ago = date("Y-m-d"/*, strtotime('-29 days')*/); ////because daysAsSql returns yesterday, count 29 instead of 30 days //-29
-        $two_months_ago= date("Y-m-d"/*, strtotime('-59 days')*/);//-59
-        //pr($one_month_ago);die();
+        $one_month_ago = date("Y-m-d", strtotime('-1 month'));
+        $two_months_ago= date("Y-m-d", strtotime('-2 months'));
 
         App::import('Helper', 'Time');
         $time = new TimeHelper();
-        $inactivity_warning_conditions = $time->daysAsSql($one_month_ago, $one_month_ago, "last_login", true);
-        $inactivity_deactivation_conditions = $time->daysAsSql($two_months_ago, $two_months_ago, "last_login", true);
-        
+        $inactivity_warning_conditions = "(last_login like '".$one_month_ago. "%')";
+    $inactivity_deactivation_conditions = "(last_login like '".$two_months_ago. "%')";
+
         //get users who have not accessed their account for the last month
-        $inactivate_users = $this->User->find('all', array('conditions' => $inactivity_warning_conditions));
+        $inactivate_users = 
+        $this->User->find('all', 
+            array('conditions' => $inactivity_warning_conditions));
         //get users who have not accessed their account for the two last months
-        $deactivated_users = $this->User->find('all', array('conditions' => $inactivity_deactivation_conditions));
-        
-        //get inactivate users emails and send warning email
-        $inactivate_users_emails = array();
-        for ($i=0; $i<count($inactivate_users); $i++){
-            array_push($inactivate_users_emails, $inactivate_users[$i]['Profile']['email']);
-        }
-        $this->email($inactivate_users_emails, 'warn');
-        
+        $deactivated_users =
+        $this->User->find('all', 
+            array('conditions' => $inactivity_deactivation_conditions));
+
         //get soon-to-be deactivated users emails, deactivate them and send relevant info email
         $deactivated_users_emails = array();
         for ($i=0; $i<count($deactivated_users); $i++){
-            array_push($deactivated_users_emails, $deactivated_users[$i]['Profile']['email']);
+        if (isset($deactivated_users[$i]['Profile']['email'])) {
+                array_push($deactivated_users_emails, $deactivated_users[$i]['Profile']['email']);
         }
-        $this->deactivate($deactivated_users);
-        //pr('end');die();
-        $this->email($deactivated_users_emails, 'deactivate');
+        }
+
+        //get inactivate users emails and send warning email
+        $inactivate_users_emails = array();
+        for ($i=0; $i<count($inactivate_users); $i++){
+        if (isset($inactivate_users[$i]['Profile']['email'])) {
+            if ( in_array($inactivate_users[$i]['Profile']['email'], $deactivated_users_emails) ) {
+                continue;
+            }
+                    array_push($inactivate_users_emails, $inactivate_users[$i]['Profile']['email']);
+        } 
+        }
+
+    if (! empty($inactivate_users_emails)) {
+            $this->email($inactivate_users_emails, 'warn');
+    }
+        
+    if (! empty($deactivated_users_emails)) {
+            $this->deactivate($deactivated_users);
+            $this->email($deactivated_users_emails, 'deactivate');
+    }
                 
     }
 
