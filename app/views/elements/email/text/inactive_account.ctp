@@ -2,4 +2,4 @@
 
 Εάν επιθυμείτε το προφίλ και το σπίτι σας να εξακολουθούν να ειναι ορατά στους χρήστες της υπηρεσίας, παρακαλούμε συνδεθείτε στη σελίδα.
 
-http://roommates.edu.teiath.gr/users/login
+https://roommates.teiath.gr/users/login

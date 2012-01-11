@@ -3,6 +3,6 @@
 
 <p>Για να τον ενεργοποιήσετε, παρακαλούμε συνδεθείτε στη σελίδα</p> 
 
-<p>http://roommates.edu.teiath.gr/users/login</p> 
+<p>https://roommates.teiath.gr/users/login</p> 
 
 <p>και αποεπιλέξτε τα σχετικά checkboxes που βρίσκονται στις σελίδες του προφίλ και σπιτιού σας. </p>
