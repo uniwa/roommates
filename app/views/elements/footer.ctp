@@ -55,7 +55,7 @@
                         'alt' => 'Ενεργά προφίλ χρηστών',
                         'title' => 'Ενεργά προφίλ χρηστών',
                         'class' => 'info'));
-                    $iconHouses = $this->Html->image('favicon.ico', array(
+                    $iconHouses = $this->Html->image('house-count.png', array(
                         'alt' => 'Καταχωρημένα σπίτια',
                         'title' => 'Καταχωρημένα σπίτια',
                         'class' => 'info'));
