@@ -1745,6 +1745,20 @@ ul.collapsible{
     background: url("../img/required.gif") no-repeat scroll right top transparent;
 }
 
+#registerView #help-cont{
+    clear: both;
+    padding: 1px 0 0 0;
+}
+
+#registerView #help-email{
+    border: 1px solid #999;
+    background-color: #eef;
+    margin: 32px 0px 0px 0px;
+    padding: 6px 0;
+    font-style: italic;
+    text-align: center;
+}
+
 /* PROFILE EDIT VIEW */
 #profileEditView #profileName{
     margin: 16px 0px 0px 0px;
