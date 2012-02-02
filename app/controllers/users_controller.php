@@ -235,7 +235,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
             $formData = array();
             $formData['subject'] = $this->data['subject'];
-            $formData['category'] = "bug";
+            $formData['category'] = $this->data['category'];
             $formData['userid'] = $userid;
             $formData['username'] = $username;
             $formData['description'] = $this->data['description'];
