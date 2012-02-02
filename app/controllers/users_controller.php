@@ -228,7 +228,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
         // the selected element on header
         $this->set('selected_action', 'help');
         $this->set('title_for_layout', 'Αναφορά προβλήματος');
-        $issuesCategories = array('texniko', 'merimna');
+        $issuesCategories = array('τεχνικό', 'μέριμνα');
         $this->set('issues_categories', $issuesCategories);
 
         if(isset($this->data)){
@@ -237,6 +237,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
             $formData = array();
             $formData['subject'] = $this->data['subject'];
+
             $formData['category'] = $this->data['category'];
             $formData['userid'] = $userid;
             $formData['username'] = $username;
