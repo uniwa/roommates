@@ -18,20 +18,18 @@
                     ?>
                 </div>
             </li>
-    <!--
             <li class='form-line'>
                 <div class='form-elem form-label'>
-                    Τύπος προβλήματος
+                    Κατηγορία
                 </div>
                 <div class='form-elem form-input'>
                     <?php
                         echo $this->Form->input('category', array(
                             'label' => '', 'type' => 'select',
-                            'options' => $issuesCategories, 'class' => 'input-elem'));
+                            'options' => $issues_categories, 'class' => 'input-elem'));
                     ?>
                 </div>
             </li>
-    -->
             <li class='form-line'>
                 <div class='form-elem form-label'>
                     Περιγραφή
