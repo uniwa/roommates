@@ -147,7 +147,9 @@
     <div id='help-cont'>
         <div id='help-email'>
             <p>Για οποιαδήποτε διευκρίνιση σχετικά με τη διαδικασία εγγραφής,</p>
-            <p>μπορείτε να επικοινωνήσετε με το roommates@teiath.gr</p>
+            <p>μπορείτε να επικοινωνήσετε με το <?php
+                echo $this->Html->link('roommates@teiath.gr', 'mailto:roommates@teiath.gr');
+            ?>.</p>
         </div>
     </div>
 </div>
