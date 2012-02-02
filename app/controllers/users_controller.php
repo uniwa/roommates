@@ -228,6 +228,8 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
         // the selected element on header
         $this->set('selected_action', 'help');
         $this->set('title_for_layout', 'Αναφορά προβλήματος');
+        $issuesCategories = array('texniko', 'merimna');
+        $this->set('issues_categories', $issuesCategories);
 
         if(isset($this->data)){
             $userid = $this->Auth->user('id');
