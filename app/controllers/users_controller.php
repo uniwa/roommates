@@ -234,11 +234,11 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
         if(isset($this->data)){
             $userid = $this->Auth->user('id');
             $username = $this->Auth->user('username');
-            $categories = array('texniko', 'merimna');
 
             $formData = array();
             $formData['subject'] = $this->data['subject'];
-            $formData['category'] = $categories[$this->data['category']];
+
+            $formData['category'] = $this->data['category'];
             $formData['userid'] = $userid;
             $formData['username'] = $username;
             $formData['description'] = $this->data['description'];
