@@ -42,13 +42,31 @@ class  AppController extends Controller{
          * 2) is not rss file extension in /houses/index action
          * 3) user is alredy logged in and terms has not accepted from him
          */
+        $auth = $this->Auth->user();
+
+        if (isset($auth)) {
+            if ($this->RequestHandler->isPost() && $this->params['action'] == 'terms') {
+                //pr($this->data['User']['accept']);
+                if ($this->data['User']['accept'] == 1) {
+                    $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
+                }
+            }
+
+            if ($this->Auth->user('terms_accepted') == 0) {
+                if ($this->params['action'] != 'terms' && $this->params['action'] != 'logout') {
+                    $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
+                }
+            }
+        }
+
+        /*
         if( $this->params['controller'] != 'users'
-            && !( $this->params['controller'] == 'houses' &&( $this->params['action'] == 'index'|| $this->params['action'] == 'search' ) 
+            && !( $this->params['controller'] == 'houses' &&( $this->params['action'] == 'index'|| $this->params['action'] == 'search' )
                 && $this->RequestHandler->isRss() ) &&
             ( $this->Auth->user() != null && $this->Auth->user('terms_accepted') === "0" )  ){
-
-                  $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
-              }
+            $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
+        }
+        */
     }
 
 	/*
@@ -83,7 +101,7 @@ class  AppController extends Controller{
         $result['Profile'] = array('id' => $pid);
         $result['House'] = array('id' => $hid);
         $result['RealEstate'] = array('id' => $reid);
-        
+
 		return $result;
 
 	}
