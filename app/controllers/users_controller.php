@@ -45,6 +45,7 @@ class UsersController extends AppController{
         if(isset( $this->data ) && $this->Auth->user()) {
 $this->log('user '.$this->data['User']['username'].' login submit', 'info');
             if($this->Auth->user('terms_accepted') === '0' ){
+                $this->Auth->Session->write('Auth.User.terms_flag', false );
                 $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
             } elseif ($this->Auth->user('terms_accepted') == '1') {
                 // save login time

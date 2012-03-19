@@ -48,11 +48,11 @@ class  AppController extends Controller{
             if ($this->RequestHandler->isPost() && $this->params['action'] == 'terms') {
                 //pr($this->data['User']['accept']);
                 if ($this->data['User']['accept'] == 1) {
-                    $this->Auth->Session->write('Auth.User.terms_accepted', "1" );
+                    $this->Auth->Session->write('Auth.User.terms_flag', true );
                 }
             }
 
-            if ($this->Auth->user('terms_accepted') == 0) {
+            if ($this->Auth->user('terms_flag') === false) {
                 if ($this->params['action'] != 'terms' && $this->params['action'] != 'logout') {
                     $this->redirect( array( 'controller' => 'users', 'action' => 'terms' ) );
                 }
