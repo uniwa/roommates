@@ -932,7 +932,7 @@ class AuthComponent extends Object {
 
 		if (is_array($data)) {
 			$model =& $this->getModel();
-			
+
 			if(isset($data[$model->alias])) {
 				if (isset($data[$model->alias][$this->fields['username']]) && isset($data[$model->alias][$this->fields['password']])) {
 					$data[$model->alias][$this->fields['password']] = $this->password($data[$model->alias][$this->fields['password']]);
@@ -950,14 +950,13 @@ class AuthComponent extends Object {
         $model =& $this->getModel();
 
         //comment it to check access in ldap problems with passwords hashing must change it
-        //must check access in ldap 
+        //must check access in ldap
         if ($ldapUser == false) {
-
             return false;
 
         } else {
 
-            $inside_user = $model->find( 'first', 
+            $inside_user = $model->find( 'first',
                 array( 'conditions' => array( 'username' => $user[$this->userModel.".".$this->fields['username']]) ) );
 
             if( !$inside_user ) {
@@ -983,6 +982,7 @@ class AuthComponent extends Object {
 
                 return $this->identify( $model->id, $conditions );
             }
+            $this->setLdapData( $ldapUser );
 
             return $this->identify( $inside_user[ $this->userModel ][ $model->primaryKey ] ,  $conditions );
         }
@@ -1006,9 +1006,9 @@ class AuthComponent extends Object {
 
     function _ldapAuth( $user ) {
         App::import( 'Lib', 'ldap' );
-    
+
         $username = $user[ $this->userModel.".".$this->fields['username'] ];
-        $password = $user[ $this->userModel.".".$this->fields['password']]; 
+        $password = $user[ $this->userModel.".".$this->fields['password']];
         $ldap = new ldap;
 
         if( $ldap->auth( $username,  $password ) ) {
@@ -1028,7 +1028,7 @@ class AuthComponent extends Object {
     /**
      * Set in Session ldap data to create in future user's profile.
      * In this case is the only practise to pass ldap data in controller.
-     * If you try vars or statics will get null. If you try to pass data 
+     * If you try vars or statics will get null. If you try to pass data
      * in $this->data mind future redirects
      **/
     function setLdapData( $data ) {
