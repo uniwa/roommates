@@ -18,6 +18,7 @@ class UsersController extends AppController{
         $this->Auth->autoRedirect = false;
 
         $this->Auth->allow('publicTerms');
+        $this->Auth->allow('api');
         $this->Auth->allow('faq');
         $this->Auth->allow('register');
         $this->Auth->allow('pdf');
@@ -304,6 +305,14 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
         }
 
+    }
+
+    function api() {
+        $this->set('title_for_layout','Υπηρεσίες διαλειτουργικότητας (web services)');
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'users_api');
     }
 
     function faq() {
