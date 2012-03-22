@@ -34,6 +34,16 @@
                         'action' => 'faq'), array('class' => $linkClass));
                 ?>
             </li>
+            <li>
+                <?php
+                    $linkClass = 'menu-item menu-footer';
+                    if(isset($selected_action) && $selected_action == 'users_api'){
+                        $linkClass .= ' menu-selected';
+                    }
+                    echo $this->Html->link('API', array('controller' => 'users',
+                        'action' => 'api'), array('class' => $linkClass));
+                ?>
+            </li>
         </ul>
     </div>
     <div id='footer-main'>
@@ -68,4 +78,3 @@
         </div>
     </div>
 </div>
-
