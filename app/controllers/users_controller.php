@@ -7,7 +7,7 @@ class UsersController extends AppController{
     var $uses = array("Profile", "User", "Preference", "Municipality", "RealEstate");
     var $components = array('Token', 'Recaptcha.Recaptcha', 'Email', 'RequestHandler');
     //var $helpers = array('RecaptchaPlugin.Recaptcha');
-    var $helpers = array('Auth', 'Html', 'Xml');
+    var $helpers = array('Auth', 'Html', 'Xml', 'Javascript');
 
     function beforeFilter() {
         parent::beforeFilter();
@@ -727,21 +727,25 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
     function handleGetRequest($id = null) {
         if ($this->RequestHandler->isGet()) {
 
-            // TODO authentication
+            if ($_SERVER['HTTP_ACCEPT'] === 'application/json')
+                $contentType = 'json';
+            else
+                $contentType = 'xml';
+
             $user_id = $this->authenticate();
             if ($user_id == null) {
-                $this->webServiceStatus(403);
+                $this->webServiceStatus(403, $contentType);
                 return;
             }
 
             $user_role = $this->get_role($user_id);
             if ($user_role === 'realestate') {
-                $this->webServiceStatus(403);
+                $this->webServiceStatus(403, $contentType);
                 return;
             }
 
             if (!$this->checWebservicekUri($id)) {
-                $this->webServiceStatus(400);
+                $this->webServiceStatus(400, $contentType);
                 return;
             }
 
@@ -767,7 +771,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
                           ));
 
                 if (empty($result)) {
-                    $this->webServiceStatus(404);
+                    $this->webServiceStatus(404, $contentType);
                     return;
                 }
 
@@ -780,11 +784,18 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
                     unset($result['Profile']);
                 }
                 else {
-                    $this->webServiceStatus(404);
+                    $this->webServiceStatus(404, $contentType);
                     return;
                 }
 
                 $this->set('users', $result);
+
+                if ($contentType === 'json') {
+                    $this->layout = 'json/default';
+                    $this->render('json/get');
+                    return;
+                }
+
                 $this->layout = 'xml/default';
                 $this->render('xml/get');
                 return;
@@ -795,7 +806,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
             if ($conditions['student_only'] === true &&
                 $conditions['estate_only'] === true)
             {
-                $this->webServiceStatus(412);
+                $this->webServiceStatus(412, $contentType);
                 return;
             }
             else if ($conditions['student_only'] === true) {
@@ -810,11 +821,18 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
             }
 
             $this->set('users', $results);
+
+            if ($contentType === 'json') {
+                $this->layout = 'json/default';
+                $this->render('json/get');
+                return;
+            }
+
             $this->layout = 'xml/default';
             $this->render('xml/get');
         } else {
             // if its not GET request
-            $this->webServiceStatus(400);
+            $this->webServiceStatus(400, $contentType);
             return;
         }
     }
@@ -1185,13 +1203,20 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
         return base64_encode($bin);
     }
 
-    private function webServiceStatus($id) {
+    private function webServiceStatus ($id, $contentType = 'xml') {
         if (array_key_exists($id, $this->xml_status) ) {
             $this->set('code', $id);
             $this->set('msg', $this->xml_status[$id]);
         } else {
-            die('ERROR: UNDEFINED XML STATUS CODE');
+            die('ERROR: UNDEFINED STATUS CODE');
         }
+
+        if ($contentType === 'json') {
+            $this->layout = 'json/default';
+            $this->render('json/status');
+            return;
+        }
+
         $this->layout = 'xml/default';
         $this->render('xml/status');
     }
