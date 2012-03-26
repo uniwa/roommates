@@ -1377,6 +1377,12 @@ class HousesController extends AppController {
     }
 
     function handlePostRequest($id = null) {
+
+        if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
+            $json_data = json_decode(file_get_contents("php://input"), true);
+            if (!empty($json_data)) $this->data = $this->jsonKeysToCamelcase($json_data);
+        }
+
         if ($id != null) {
             $this->webServiceStatus(400);
             return;
@@ -1684,5 +1690,39 @@ class HousesController extends AppController {
         unset($this->data['House']['free_places']);
     }
 
+    private function jsonKeysToCamelcase ($json_data) {
+
+        if (isset($json_data['house'])) {
+            if (isset($json_data['house']['municipality'])) {
+                $json_data['house']['Municipality'] = $json_data['house']['municipality'];
+                unset($json_data['house']['municipality']);
+            }
+
+            if (isset($json_data['house']['floor'])) {
+                $json_data['house']['Floor'] = $json_data['house']['floor'];
+                unset($json_data['house']['floor']);
+            }
+
+            if (isset($json_data['house']['house_type'])) {
+                $json_data['house']['HouseType'] = $json_data['house']['house_type'];
+                unset($json_data['house']['house_type']);
+            }
+
+            if (isset($json_data['house']['heating_type'])) {
+                $json_data['house']['HeatingType'] = $json_data['house']['heating_type'];
+                unset($json_data['house']['heating_type']);
+            }
+
+            if (isset($json_data['house']['image'])) {
+                $json_data['house']['Image'] = $json_data['house']['image'];
+                unset($json_data['house']['image']);
+            }
+
+            $json_data['House'] = $json_data['house'];
+            unset($json_data['house']);
+        }
+
+        return $json_data;
+    }
 }
 ?>
