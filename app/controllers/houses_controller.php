@@ -1343,8 +1343,12 @@ class HousesController extends AppController {
 
         if ($_SERVER['HTTP_ACCEPT'] === 'application/json')
             $contentType = 'json';
-        else
-            $contentType = 'xml';
+        else {
+            if( isset( $this->params['url']['callback'] ) )
+                $contentType = 'jsonp';
+            else
+                $contentType = 'xml';
+        }
 
         if ((strpos($this->params['url']['url'], 'houses') == true) &&
             ($id != null)) {
@@ -1376,9 +1380,13 @@ class HousesController extends AppController {
         if ($contentType === 'json') {
             $this->layout = 'json/default';
             $this->render('json/public');
-        } else {
+        } else if ( $contentType === 'xml' ){
             $this->layout = 'xml/default';
             $this->render('xml/public');
+        } else {
+            $this->set( 'callback', $this->params['url']['callback'] );
+            $this->layout = 'jsonp/default';
+            $this->render('jsonp/public');
         }
     }
 
@@ -1559,7 +1567,11 @@ class HousesController extends AppController {
             $this->layout = 'json/default';
             $this->render('json/status');
         }
-        else {
+        else if( $contentType === 'jsonp' ) {
+            $this->layout = 'jsonp/default';
+            $this->render( 'jsonp/status' );
+        }
+        else { 
             die('ERROR: INCORRECT CONTENT TYPE');
         }
     }
