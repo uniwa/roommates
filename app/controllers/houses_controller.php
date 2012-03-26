@@ -1527,15 +1527,25 @@ class HousesController extends AppController {
 
     }
 
-    private function webServiceStatus($id) {
+    private function webServiceStatus($id, $contentType = 'xml') {
         if (array_key_exists($id, $this->xml_status) ) {
             $this->set('code', $id);
             $this->set('msg', $this->xml_status[$id]);
         } else {
-            die('ERROR: UNDEFINED XML STATUS CODE');
+            die('ERROR: UNDEFINED STATUS CODE');
         }
-        $this->layout = 'xml/default';
-        $this->render('xml/status');
+
+        if ($contentType === 'xml') {
+            $this->layout = 'xml/default';
+            $this->render('xml/status');
+        }
+        else if ($contentType === 'json') {
+            $this->layout = 'json/default';
+            $this->render('json/status');
+        }
+        else {
+            die('ERROR: INCORRECT CONTENT TYPE');
+        }
     }
 
     //////////////////////////////////////////////////
