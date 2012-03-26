@@ -8,7 +8,7 @@ class HousesController extends AppController {
 
     var $name = 'Houses';
     var $components = array('RequestHandler', 'Token');
-    var $helpers = array('Text', 'Time', 'Html', 'Xml');
+    var $helpers = array('Text', 'Time', 'Html', 'Xml', 'Javascript');
     var $paginate = array('limit' => 15);
     var $uses = array('House', 'HouseType', 'Image',
                       'HeatingType', 'Municipality', 'Floor');
@@ -346,7 +346,7 @@ class HousesController extends AppController {
             if ($this->House->saveAll($this->data, array('validate'=>'first'))) {
                 $this->Session->setFlash('Το σπίτι ενημερώθηκε με επιτυχία.',
                     'default', array('class' => 'flashBlue'));
-                
+
                 $this->log( 'User '.$this->Auth->user('username').' edit his house', 'activity');
                 // post requires municipality name, house type and user role
                 $this->House->recursive = 2;
@@ -1365,9 +1365,15 @@ class HousesController extends AppController {
             $result[$i]['House']['latitude'] = null;
             $result[$i]['House']['longitude'] = null;
         }
+
         $this->set('houses', $result);
-        $this->layout = 'xml/default';
-        $this->render('xml/public');
+        if ($_SERVER['HTTP_ACCEPT'] === 'application/json') {
+            $this->layout = 'json/default';
+            $this->render('json/public');
+        } else {
+            $this->layout = 'xml/default';
+            $this->render('xml/public');
+        }
     }
 
     function handlePostRequest($id = null) {
