@@ -1340,9 +1340,15 @@ class HousesController extends AppController {
     // ------------------------------------------------------------------------
 
     function handleGetRequest($id = null) {
+
+        if ($_SERVER['HTTP_ACCEPT'] === 'application/json')
+            $contentType = 'json';
+        else
+            $contentType = 'xml';
+
         if ((strpos($this->params['url']['url'], 'houses') == true) &&
             ($id != null)) {
-            $this->webServiceStatus(404);
+            $this->webServiceStatus(404, $contentType);
             return;
         }
         $house_conds = $this->getHouseConditions();
@@ -1353,7 +1359,7 @@ class HousesController extends AppController {
                                         true);
 
         if (empty($result)) {
-            $this->webServiceStatus(404);
+            $this->webServiceStatus(404, $contentType);
             return;
         }
 
@@ -1367,7 +1373,7 @@ class HousesController extends AppController {
         }
 
         $this->set('houses', $result);
-        if ($_SERVER['HTTP_ACCEPT'] === 'application/json') {
+        if ($contentType === 'json') {
             $this->layout = 'json/default';
             $this->render('json/public');
         } else {
@@ -1381,17 +1387,19 @@ class HousesController extends AppController {
         if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
             $json_data = json_decode(file_get_contents("php://input"), true);
             if (!empty($json_data)) $this->data = $this->jsonKeysToCamelcase($json_data);
-        }
+            $contentType = 'json';
+        } else
+            $contentType = 'xml';
 
         if ($id != null) {
-            $this->webServiceStatus(400);
+            $this->webServiceStatus(400, $contentType);
             return;
         }
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
             // access denied
-            $this->webServiceStatus(403);
+            $this->webServiceStatus(403, $contentType);
             return;
         }
 
@@ -1401,13 +1409,13 @@ class HousesController extends AppController {
                 $house_count = $this->count_houses($user_id);
                 if ($house_count >= 1) {
                     // users add only one house
-                    $this->webServiceStatus(412);
+                    $this->webServiceStatus(412, $contentType);
                     return;
                 }
             }
             elseif ($user_role == 'admin') {
                 // admin cannot add houses
-                $this->webServiceStatus(412);
+                $this->webServiceStatus(412, $contentType);
                 return;
             }
             $this->data['House']['user_id'] = $user_id;
@@ -1417,15 +1425,15 @@ class HousesController extends AppController {
 
             if ($this->House->save($this->data) != false) {
                 // success
-                $this->webServiceStatus(200);
+                $this->webServiceStatus(200, $contentType);
                 return;
             } else {
-                $this->webServiceStatus(500);
+                $this->webServiceStatus(500, $contentType);
                 return;
             }
         }
         // empty data
-        $this->webServiceStatus(400);
+        $this->webServiceStatus(400, $contentType);
         return;
     }
 
@@ -1434,23 +1442,25 @@ class HousesController extends AppController {
         if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
             $json_data = json_decode(file_get_contents("php://input"), true);
             if (!empty($json_data)) $this->data = $this->jsonKeysToCamelcase($json_data);
-        }
+            $contentType = 'json';
+        } else
+            $contentType = 'xml';
 
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            $this->webServiceStatus(403);
+            $this->webServiceStatus(403, $contentType);
             return;
         }
 
         if ($id != null) {
             if (! $this->house_exist($id) ) {
-                $this->webServiceStatus(404);
+                $this->webServiceStatus(404, $contentType);
                 return;
             }
 
             if (! $this->owns_house($user_id, $id) ) {
-                $this->webServiceStatus(403);
+                $this->webServiceStatus(403, $contentType);
                 return;
             }
 
@@ -1460,35 +1470,41 @@ class HousesController extends AppController {
             $this->data['House']['user_id'] = $user_id;
             $this->setRequiredIds();
             if ($this->House->saveAll($this->data)) {
-                $this->webServiceStatus(200);
+                $this->webServiceStatus(200, $contentType);
                 return;
             } else {
-                $this->webServiceStatus(500);
+                $this->webServiceStatus(500, $contentType);
                 return;
             }
         } else {
             // TODO if the $id === null then create the house
             // for now just say we didn't find the house
-            $this->webServiceStatus(404);
+            $this->webServiceStatus(404, $contentType);
             return;
         }
     }
 
     function handleDeleteRequest($id = null) {
+
+        if ($_SERVER['HTTP_ACCEPT'] === 'application/json')
+            $contentType = 'json';
+        else
+            $contentType = 'xml';
+
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
-            $this->webServiceStatus(403);
+            $this->webServiceStatus(403, $contentType);
             return;
         }
 
         if ($id != null) {
             if (! $this->house_exist($id) ) {
-                $this->webServiceStatus(404);
+                $this->webServiceStatus(404, $contentType);
                 return;
             }
 
             if (! $this->owns_house($user_id, $id) ) {
-                $this->webServiceStatus(403);
+                $this->webServiceStatus(403, $contentType);
                 return;
             }
 
@@ -1497,31 +1513,31 @@ class HousesController extends AppController {
             /* delete associated images first */
             if ( ! $this->House->Image->deleteAll(array("house_id" => $id)) ) {
                 $this->House->rollback();
-                $this->webServiceStatus(500);
+                $this->webServiceStatus(500, $contentType);
                 return;
             }
             else {
                 /* remove from FS */
                 if (! $this->House->Image->delete_all($id) ) {
                     $this->House->rollback();
-                    $this->webServiceStatus(500);
+                    $this->webServiceStatus(500, $contentType);
                     return;
                 }
                 else {
                     /* delete house */
                     if (! $this->House->delete( $id ) ) {
                         $this->House->rollback();
-                        $this->webServiceStatus(500);
+                        $this->webServiceStatus(500, $contentType);
                         return;
                     }
                 }
             }
             $this->House->commit();
-            $this->webServiceStatus(200);
+            $this->webServiceStatus(200, $contentType);
             return;
 
         } else {
-            $this->webServiceStatus(412);
+            $this->webServiceStatus(412, $contentType);
             return;
         }
 
