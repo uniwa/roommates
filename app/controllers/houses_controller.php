@@ -1430,6 +1430,12 @@ class HousesController extends AppController {
     }
 
     function handlePutRequest($id = null) {
+
+        if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
+            $json_data = json_decode(file_get_contents("php://input"), true);
+            if (!empty($json_data)) $this->data = $this->jsonKeysToCamelcase($json_data);
+        }
+
         $this->layout = 'xml/default';
         $user_id = $this->authenticate();
         if ($user_id == NULL) {
