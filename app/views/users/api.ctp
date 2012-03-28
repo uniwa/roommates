@@ -784,6 +784,8 @@
                         House XSD
                 </p>
 <textarea readonly=true cols=100 rows=100>
+<?php
+$xmlstr = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:tns="http://www.roommates.teiath.gr/schemas/house"
@@ -1064,12 +1066,18 @@
 
     <xs:element name="houses" type="tns:array_of_houses_type" />
 
-</xs:schema></textarea>
+</xs:schema>
+XML;
+echo $xmlstr;
+?>
+</textarea>
                 <p class="P19" id="xsd-user">
                         User XSD
                 </p>
                 <textarea readonly=true cols=100 rows=100>
-                <?xml version="1.0" encoding="UTF-8"?>
+<?php
+$xmlstr = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:tns="http://www.roommates.teiath.gr/schemas/user"
     targetNamespace="http://www.roommates.teiath.gr/schemas/user"
@@ -1224,7 +1232,11 @@
 
 <xs:element name="users" type="tns:array_of_users_type"/>
 
-</xs:schema></textarea>
+</xs:schema>
+XML;
+echo $xmlstr;
+?>
+</textarea>
         </div>
 
 
