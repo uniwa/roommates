@@ -1568,6 +1568,7 @@ class HousesController extends AppController {
             $this->render('json/status');
         }
         else if( $contentType === 'jsonp' ) {
+            $this->set('callback', $this->params['url']['callback'] );
             $this->layout = 'jsonp/default';
             $this->render( 'jsonp/status' );
         }
