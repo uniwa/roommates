@@ -3,7 +3,7 @@ class  AppController extends Controller{
 
 	var $components = array('Auth', 'Session', 'RequestHandler');
 	var $helpers  = array('Html', 'Form', 'Session','Auth');
-    var $uses = array('User', 'Profile');
+    var $uses = array('User', 'Profile', 'House');
 
     // Web Service XML Status codes
     var $xml_status = array(
@@ -32,7 +32,7 @@ class  AppController extends Controller{
 		$this->Auth->authError = "";
 
 		// Define variables for active profiles and houses
-		$active['houses'] = $this->Profile->find('count');//, array('conditions' => array('House.visible' => '1')));
+		$active['houses'] = $this->House->find('count', array('conditions' => array('House.visible' => '1')));
 		$active['profiles'] = $this->Profile->find('count', array('conditions' => array('Profile.visible' => '1')));
         $this->set('active', $active);
 
