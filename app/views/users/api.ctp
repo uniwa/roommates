@@ -286,8 +286,12 @@
         #api-index ol {padding-left: 3em;}
         #api-index ol li { font-size: 12pt; padding-bottom: 3px; list-style-type:circle !important;}
         #api-doc { margin: 0 5em 0 5em;}
-        #add-request { font-family: "liberation mono", monospace, courier-new !important; }
+        .add-request {
+                font-family: "liberation mono", monospace, courier-new !important;
+                font-size: 12px !important;
+        }
         #xsd textarea { margin-left: 5em; }
+        .bold { font-style: strong; }
 	</style>
 <div id="api-doc">
 <div id="api-index">
@@ -299,9 +303,18 @@
                 <li><a href="users/api#appendix">ΠΑΡΑΡΤΗΜΑ (ΚΑΛΛΙΚΡΑΤΙΚΟΙ ΔΗΜΟΙ)</a></li>
         </ol>
 </div>
-
-        <p class="P29" id="api">Εγχειρίδιο προγραμματιστή</p><p
-        class="P15"> </p>
+        <br />
+        <br />
+        <p class="P29" id="api">Εγχειρίδιο προγραμματιστή</p>
+        <br />
+        <br />
+        <p class="P13">
+        Το εγχειρίδιο προγραμματιστή περιγράφει τους διαδικτυακούς πόρους
+        τους οποίους μπορεί να χρησιμοποιήσει κάποιος για να αξιοποιήσει τις
+        υπηρεσίες διαλειτουργικότητας που προσφέρει η υπηρεσία <span class='bold'>+κατοικώ</span>.
+        Παρέχεται διεπαφή για XML, JSON και JSONP.
+        </p>
+        <p class="P15"> </p>
         <p class=
         "P15"> </p><p class="P16">Επιστροφή λίστας σπιτιών</p><p class="P13">
          </p><table border="0" cellspacing="0" cellpadding="0" class="Table1"
@@ -314,8 +327,7 @@
         "P24">method</p></td><td style="text-align:left;width:5.125in; "
         class="Table1_B2"><p class="P24">GET</p></td></tr><tr><td style=
         "text-align:left;width:1.375in; " class="Table1_A3"><p class="P24">
-        XML</p><p class="P24">request</p></td><td style=
-        "text-align:left;width:5.125in; " class="Table1_B3"><p class="P24">
+        request body</p></td><td style="text-align:left;width:5.125in; " class="Table1_B3"><p class="P24">
         OXI</p></td></tr><tr><td style="text-align:left;width:1.375in; "
         class="Table1_A3"><p class="P24">παράμετροι</p></td><td style=
         "text-align:left;width:5.125in; " class="Table1_B4"><p class="P24">
@@ -513,7 +525,7 @@
         "Table3_A1"><p class="P24">method</p></td><td style=
         "text-align:left;width:5.2083in; " class="Table3_B2"><p class="P24">
         GET</p></td></tr><tr><td style="text-align:left;width:1.2917in; "
-        class="Table3_A3"><p class="P24">XML</p><p class="P24">request
+        class="Table3_A3"><p class="P24">request body
         </p></td><td style="text-align:left;width:5.2083in; " class=
         "Table3_B3"><p class="P24">OXI</p></td></tr><tr><td style=
         "text-align:left;width:1.2917in; " class="Table3_A3"><p class="P24">
@@ -532,9 +544,9 @@
         style="text-align:left;width:1.3313in; " class="Table4_A1"><p class=
         "P24">method</p></td><td style="text-align:left;width:5.1688in; "
         class="Table4_B2"><p class="P24">POST</p></td></tr><tr><td style=
-        "text-align:left;width:1.3313in; " class="Table4_A3"><p class="P24">
-        XML</p><p class="P24">request</p></td><td style=
-        "text-align:left;width:5.1688in; " class="Table4_B3"><p class="P24">
+        "text-align:left;width:1.3313in; " class="Table4_A3">
+        <p class="P24">request body</p></td>
+        <td style="text-align:left;width:5.1688in; " class="Table4_B3"><p class="P24">
         NAI</p></td></tr><tr><td style="text-align:left;width:1.3313in; "
         class="Table4_A3"><p class="P24">παράμετροι</p></td><td style=
         "text-align:left;width:5.1688in; " class="Table4_B4"><p class="P24">
@@ -545,8 +557,59 @@
         class="P15"> </p><p class="P15"> </p><p class="P15"> </p><p class=
         "P15">Η προσθήκη σπιτιού γίνεται με ένα XML request της παρακάτω
         μορφής:</p>
-
-        <div id="add-request">
+        <br /><br /><br />
+        <div class="add-request">
+        <pre class="P18">
+<?php
+$xmlstr = <<<XML
+<?xml version="1.0" encoding="utf-8" ?>
+<house xmlns="http://www.roommates.teiath.gr/schemas/house">
+    <address>foo bar</address>
+    <postal_code>12345</postal_code>
+    <area >345</area>
+    <bedroom_num>3</bedroom_num>
+    <bathroom_num>1</bathroom_num>
+    <price>350</price>
+    <construction_year>1990</construction_year>
+    <solar_heater>0</solar_heater>
+    <furnitured>0</furnitured>
+    <aircondition>1</aircondition>
+    <garden>0</garden>
+    <parking>0</parking>
+    <shared_pay>1</shared_pay>
+    <security_doors>0</security_doors>
+    <disability_facilities>0</disability_facilities>
+    <storeroom>0</storeroom>
+    <availability_date><![CDATA[2012-1-3]]></availability_date>
+    <rent_period>12</rent_period>
+    <description />
+    <currently_hosting>1</currently_hosting>
+    <total_places>2</total_places>
+    <user_id>2</user_id>
+    <visible >1</visible>
+    <latitude>37.9865711339956</latitude>
+    <longitude>23.6764577301635</longitude>
+    <geo_distance >341.31</geo_distance>
+    <free_places >1</free_places>
+    <municipality>
+        <name></name>
+    </municipality>
+    <floor>
+        <type></type>
+    </floor>
+    <house_type>
+        <type >studio</type>
+    </house_type>
+    <heating_type >
+        <type></type>
+    </heating_type>
+    <image></image>
+</house>
+XML;
+echo htmlentities($xmlstr);
+?>
+</pre>
+<!--
                 <p class="P15"> </p><p class="P18">&lt;?xml version="1.0"
                 encoding="utf-8" ?&gt;</p><p class="P18">&lt;house
                 xmlns="http://www.roommates.teiath.gr/schemas/house"&gt;</p><p class=
@@ -586,6 +649,48 @@
                 ="P18">    &lt;/heating_type&gt; </p><p class="P18">    &lt;image
                 &gt;&lt;/image&gt;</p><p class="P18"> &lt;/house&gt;</p>
         </div>
+-->
+        <br/>
+        <p class="P15">ή με την χρήση json request της παρακάτω μορφής:</p>
+        <br/>
+        <div class="add-request"><pre class="P18">
+        {u'house':
+           {'address': 'foo bar',
+            'aircondition': '1',
+            'area': '345',
+            'availability_date': '2012-10-10',
+            'bathroom_num': '1',
+            'bedroom_num': '3',
+            'construction_year': '1990',
+            'created': '',
+            'currently_hosting': '1',
+            'description': None,
+            'disability_facilities': '0',
+            'floor': {'type': "1ος όροφος"},
+            'free_places': '1',
+            'furnitured': '0',
+            'garden': '0',
+            'geo_distance': '341.31',
+            'heating_type': {'type': "αυτόνομη"},
+            'house_type': {'type': 'studio'},
+            'id': '1',
+            'image': None,
+            'latitude': '37.9865711339956',
+            'longitude': '23.6764577301635',
+            'modified': '2012-1-3T23:21:31',
+            'municipality': {'name': "ΑΘΗΝΑΙΩΝ"},
+            'parking': '1',
+            'postal_code': '12345',
+            'price': '350',
+            'rent_period': '12',
+            'security_doors': '0',
+            'shared_pay': '1',
+            'solar_heater': '0',
+            'storeroom': '1',
+            'total_places': '3',
+            'user_id': '2',
+            'visible': '1'}
+        }</pre></div>
         
         <p class="P15"> </p><p class="P15"> </p><p class= "P15"> </p><p class= "P14">Αλλαγή ενός σπιτιού
         </p><p class="P13"> </p><table border="0" cellspacing="0" cellpadding
@@ -598,7 +703,7 @@
         "Table5_A1"><p class="P24">method</p></td><td style=
         "text-align:left;width:5.134in; " class="Table5_B2"><p class="P24">
         PUT</p></td></tr><tr><td style="text-align:left;width:1.366in; "
-        class="Table5_A3"><p class="P24">XML request</p></td><td style=
+        class="Table5_A3"><p class="P24">request body</p></td><td style=
         "text-align:left;width:5.134in; " class="Table5_B3"><p class="P24">
         ΝΑΙ</p></td></tr><tr><td style="text-align:left;width:1.366in; "
         class="Table5_A3"><p class="P24">παράμετροι</p></td><td style=
@@ -607,7 +712,8 @@
         class="Table5_A3"><p class="P24">αυθεντικοποίηση</p></td><td style=
         "text-align:left;width:5.134in; " class="Table5_B5"><p class="P24">
         NAI</p></td></tr></table><p class="P15"> </p><p class="P15">To XML
-        request είναι της ίδιας μορφής που απαιτεί το POST method.</p><p
+        request είναι της ίδιας μορφής που απαιτεί το POST method. Πρέπει
+        να συμπληρώνονται και τα πεδία τα οποία δεν είναι επιθυμητό να μεταβληθούν.</p><p
         class="P15"> </p><p class="P15"> </p><p class="P16">Διαγραφή ενός
         σπιτιού</p><p class="P15"> </p><table border="0" cellspacing="0"
         cellpadding="0" class="Table7"><colgroup><col width="152"/><col width
@@ -619,7 +725,7 @@
         "Table7_A1"><p class="P24">method</p></td><td style=
         "text-align:left;width:5.134in; " class="Table7_B2"><p class="P24">
         DELETE</p></td></tr><tr><td style="text-align:left;width:1.366in; "
-        class="Table7_A3"><p class="P24">XML request</p></td><td style=
+        class="Table7_A3"><p class="P24">request body</p></td><td style=
         "text-align:left;width:5.134in; " class="Table7_B3"><p class="P24">
         ΟΧΙ</p></td></tr><tr><td style="text-align:left;width:1.366in; "
         class="Table7_A3"><p class="P24">παράμετροι</p></td><td style=
@@ -639,7 +745,7 @@
         "P24">method</p></td><td style="text-align:left;width:5.134in; "
         class="Table8_B2"><p class="P24">GET</p></td></tr><tr><td style=
         "text-align:left;width:1.366in; " class="Table8_A3"><p class="P24">
-        XML request</p></td><td style="text-align:left;width:5.134in; " class
+        request body</p></td><td style="text-align:left;width:5.134in; " class
         ="Table8_B3"><p class="P24">OXI</p></td></tr><tr><td style=
         "text-align:left;width:1.366in; " class="Table8_A3"><p class="P24">
         παράμετροι</p></td><td style="text-align:left;width:5.134in; " class=
@@ -647,7 +753,7 @@
         "text-align:left;width:1.366in; " class="Table8_A3"><p class="P24">
         αυθεντικοποίηση</p></td><td style="text-align:left;width:5.134in; "
         class="Table8_B5"><p class="P24">NAI</p></td></tr></table><p class=
-        "P17">Παράμετροι οι οποίοι χρησιμοποιούνται για τον περιορισμό των
+        "P17">Παράμετροι οι οποίες χρησιμοποιούνται για τον περιορισμό των
         αποτελεσμάτων του αιτήματος.</p><p class="P16"> </p><table border="0"
         cellspacing="0" cellpadding="0" class="Table10"><colgroup><col width
         ="188"/><col width="293"/><col width="241"/></colgroup><tr><td style
@@ -658,16 +764,16 @@
         Περιγραφή</p></td></tr><tr><td style=
         "text-align:left;width:1.6979in; " class="Table10_A2"><p class="P25">
         firstname</p></td><td style="text-align:left;width:2.6354in; " class
-        = "Table10_B2"><p class="P25">Χαρακτήρες</p></td><td style=
+        = "Table10_B2"><p class="P25">χαρακτήρες</p></td><td style=
         "text-align:left;width:2.1667in; " class="Table10_C2"><p class="P25">
         όνομα</p></td></tr><tr><td style="text-align:left;width:1.6979in; "
         class="Table10_A3"><p class="P25">lastname</p></td><td style=
         "text-align:left;width:2.6354in; " class="Table10_B3"><p class="P25">
-        Χαρακτήρες</p></td><td style="text-align:left;width:2.1667in; " class
+        χαρακτήρες</p></td><td style="text-align:left;width:2.1667in; " class
         ="Table10_C4"><p class="P25">επίθετο</p></td></tr><tr><td style=
         "text-align:left;width:1.6979in; " class="Table10_A4"><p class="P25">
         email</p></td><td style="text-align:left;width:2.6354in; " class=
-        "Table10_B4"><p class="P25">Διεύθυνση email</p></td><td style=
+        "Table10_B4"><p class="P25">διεύθυνση email</p></td><td style=
         "text-align:left;width:2.1667in; " class="Table10_C4"><p class="P6">
         email</p></td></tr><tr><td style="text-align:left;width:1.6979in; "
         class="Table10_A5"><p class="P25">phone</p></td><td style=
@@ -683,9 +789,9 @@
         female</p></td></tr><tr><td style="text-align:left;width:1.6979in; "
         class="Table10_A8"><p class="P25">dob</p></td><td style=
         "text-align:left;width:2.6354in; " class="Table10_B8"><p class="P25">
-        Ημερομηνία της μορφής “YYYY”</p></td><td style=
+        ημερομηνία της μορφής “YYYY”</p></td><td style=
         "text-align:left;width:2.1667in; " class="Table10_C8"><p class="P25">
-        Ημερομηνία γέννησης</p></td></tr><tr><td rowspan="2" style=
+        ημερομηνία γέννησης</p></td></tr><tr><td rowspan="2" style=
         "text-align:left;width:1.6979in; " class="Table10_A10"><p class="P25"
         >smoker</p></td><td style="text-align:left;width:2.6354in; " class=
         "Table10_B10"><p class="P25">0</p></td><td rowspan="2" style=
@@ -740,13 +846,13 @@
         ΑΦΜ</p></td></tr><tr><td style="text-align:left;width:1.6979in; "
         class="Table11_A3"><p class="P25">doy</p></td><td style=
         "text-align:left;width:2.6354in; " class="Table11_B3"><p class="P25">
-        Χαρακτήρες</p></td><td style="text-align:left;width:2.1667in; " class
+        χαρακτήρες</p></td><td style="text-align:left;width:2.1667in; " class
         ="Table11_C4"><p class="P25">ΔΟΥ</p></td></tr><tr><td style=
         "text-align:left;width:1.6979in; " class="Table11_A4"><p class="P25">
         address</p></td><td style="text-align:left;width:2.6354in; " class=
         "Table11_B4"><p class="P25">αλφαριθμητικό</p></td><td style=
         "text-align:left;width:2.1667in; " class="Table11_C4"><p class="P6">
-        Διεύθυνση</p></td></tr><tr><td style=
+        διεύθυνση</p></td></tr><tr><td style=
         "text-align:left;width:1.6979in; " class="Table11_A5"><p class="P25">
         postal_code</p></td><td style="text-align:left;width:2.6354in; "
         class="Table11_B5"><p class="P25">αριθμητικό</p></td><td style=
@@ -769,7 +875,7 @@
         "Table9_A1"><p class="P24">method</p></td><td style=
         "text-align:left;width:5.134in; " class="Table9_B2"><p class="P24">
         GET</p></td></tr><tr><td style="text-align:left;width:1.366in; "
-        class="Table9_A3"><p class="P24">XML request</p></td><td style=
+        class="Table9_A3"><p class="P24">request body</p></td><td style=
         "text-align:left;width:5.134in; " class="Table9_B3"><p class="P24">
         OXI</p></td></tr><tr><td style="text-align:left;width:1.366in; "
         class="Table9_A3"><p class="P24">παράμετροι</p></td><td style=
