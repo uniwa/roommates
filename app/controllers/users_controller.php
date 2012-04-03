@@ -727,10 +727,17 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
     function handleGetRequest($id = null) {
         if ($this->RequestHandler->isGet()) {
 
-            if ($_SERVER['HTTP_ACCEPT'] === 'application/json')
+            if ($_SERVER['HTTP_ACCEPT'] === 'application/json') {
                 $contentType = 'json';
-            else
-                $contentType = 'xml';
+            }
+            else {
+                if ( isset($this->params['url']['callback']) ) {
+                    $contentType = 'jsonp';
+                }
+                else {
+                    $contentType = 'xml';
+                }
+            }
 
             $user_id = $this->authenticate();
             if ($user_id == null) {
@@ -796,6 +803,12 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
                     return;
                 }
 
+                if ($contentType === 'jsonp') {
+                    $this->layout = 'jsonp/default';
+                    $this->render('jsonp/get');
+                    return;
+                }
+
                 $this->layout = 'xml/default';
                 $this->render('xml/get');
                 return;
@@ -825,6 +838,12 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
             if ($contentType === 'json') {
                 $this->layout = 'json/default';
                 $this->render('json/get');
+                return;
+            }
+
+            if ($contentType === 'jsonp') {
+                $this->layout = 'jsonp/default';
+                $this->render('jsonp/get');
                 return;
             }
 
@@ -1215,6 +1234,12 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
             $this->layout = 'json/default';
             $this->render('json/status');
             return;
+        }
+
+        if ($contentType === 'jsonp') {
+                $this->layout = 'json/default';
+                $this->render('json/status');
+                return;
         }
 
         $this->layout = 'xml/default';
