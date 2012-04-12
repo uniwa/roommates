@@ -9,6 +9,11 @@
     define( 'HTML2PS_PDF_OUT_DIR', $html2ps_tmp_dir );
     define( 'HTML2PS_PDF_CACHE_DIR', $html2ps_tmp_dir );
 
+    // defines the FAX number to which registration forms should be sent for
+    // (user account) approval. Take note that this appears in HTML so you are
+    // advised to use $nbsp; instead of plain spaces.
+    $config['registration']['authority_fax'] = '';
+
     // emails will be sent to each recipient separately
     $config['registration']['authority_recipients'] = array();
 

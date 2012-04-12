@@ -181,6 +181,9 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
         }
 
         $this->set('data', $user);
+        $this->set(
+            'authority_fax',
+            Configure::read('registration.authority_fax'));
 
         $valid = $this->getDataHash($user);
         $hash = $this->params['url']['hash'];
@@ -661,8 +664,11 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
             $subject = 'Αίτηση εγγραφής στην υπηρεσία roommates';
         }
 
+        $extra_info = array(
+                        'fax' => Configure::read('registration.authority_fax'));
+
         $this->sendEmail(
-            'admin@roommates.edu.teiath.gr', $email, $subject, '',
+            'admin@roommates.edu.teiath.gr', $email, $subject, $extra_info,
             $attachments, 'registration_applicant_notification', 'default' );
     }
 
