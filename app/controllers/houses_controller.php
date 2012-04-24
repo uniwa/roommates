@@ -1148,10 +1148,13 @@ class HousesController extends AppController {
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
         $facebook = $this->Session->read( 'facebook' );
+        $access_token = "AAAClNp5BfXcBAJHbZAw5ddMDWPdHpBd4dBifCAuDksYnCQ7FJkoh7NfSyRucMxdrFGgPSgcYdQOwUAnPmPElABczkZAtvIM7CMSbDSuiMCNQcKyixDhXiZCfwZCZB8jwZD";
 
         try {
-            $facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
-
+            //$facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
+            // TODO: get page id funtion
+            $facebook->api( '/333982839984150/feed', 'POST', array(
+                'access_token' => $access_token,
                 'message' =>
                     $update
                     . $house['HouseType']['type'] . ' '
