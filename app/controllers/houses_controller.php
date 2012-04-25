@@ -1149,12 +1149,24 @@ class HousesController extends AppController {
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
         $facebook = $this->Session->read( 'facebook' );
-        $access_token = "AAAClNp5BfXcBAJHbZAw5ddMDWPdHpBd4dBifCAuDksYnCQ7FJkoh7NfSyRucMxdrFGgPSgcYdQOwUAnPmPElABczkZAtvIM7CMSbDSuiMCNQcKyixDhXiZCfwZCZB8jwZD";
 
         try {
-            //$facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
-            // TODO: get page id funtion
-            $facebook->api( '/333982839984150/feed', 'POST', array(
+            // TODO move these in config/facebook.php
+            $app_id = "181654001909111";
+            $app_secret = "5d277ae0dec8481b6afca3a81656eef0";
+            $access_token = "AAAClNp5BfXcBAMpUEk1xmjpzD0kdtWRjN6aEodPxGFnnK5DMRNRDPjvIYSdusSoXdXBv5botAdUhi0t3JR0ZB1R00y43Y1f0WWnLEKOhr7FbF9VMtuV5GgrHOKSYZD";
+            $page_id = "333982839984150";
+            // ---
+
+            $config = array(
+                'appId' => $app_id,
+                'secret' => $app_secret
+            );
+
+            $facebook = new Facebook($config);
+            $user_id = $facebook->getUser();
+
+            $fb_res = $facebook->api( '/'. $page_id .'/feed', 'POST', array(
                 'access_token' => $access_token,
                 'message' =>
                     $update
@@ -1172,10 +1184,9 @@ class HousesController extends AppController {
             ) );
 
         } catch( FacebookApiException $e ) {
-
             $this->Session->setFlash(
-                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο '
-                . 'Facebook.',
+                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο ' .
+                'Facebook.',
                 'default',
                 array('class' => 'flashRed') );
         }
