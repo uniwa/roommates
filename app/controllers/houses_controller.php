@@ -204,7 +204,8 @@ class HousesController extends AppController {
             }
         }
 
-		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
+        // accessed by the View, in order to compile the
+        // appopriate link to post to Facebook
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
 		$this->set( 'fb_app_uri', $fb_app_uri );
