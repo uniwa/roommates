@@ -26,54 +26,54 @@ class HousesController extends AppController {
             return $this->set(compact('houses'));
         }
 
-		$order = array('House.modified' => 'desc');
-		$selectedOrder = 0;
+        $order = array('House.modified' => 'desc');
+        $selectedOrder = 0;
 
-		if(isset($this->params['named']['selection'])){
-			$selectedOrder = $this->params['named']['selection'];
-			$ascoptions = array('asc', 'desc');
-			$orderField = 'House.modified';
-			switch($selectedOrder){
-				case 0:
-					$orderField = 'House.modified';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 1:
-					$orderField = 'House.price';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 2:
-					$orderField = 'House.price';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 3:
-					$orderField = 'House.municipality_id';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 4:
-					$orderField = 'House.municipality_id';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 5:
-					$orderField = 'House.area';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 6:
-					$orderField = 'House.area';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 7:
-					$orderField = 'House.free_places';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 8:
-					$orderField = 'House.free_places';
-					$ascDesc = $ascoptions[1];
-					break;
-			}
-			//$order = array($orderField => $ascDesc);
+        if(isset($this->params['named']['selection'])){
+            $selectedOrder = $this->params['named']['selection'];
+            $ascoptions = array('asc', 'desc');
+            $orderField = 'House.modified';
+            switch($selectedOrder){
+                case 0:
+                    $orderField = 'House.modified';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 1:
+                    $orderField = 'House.price';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 2:
+                    $orderField = 'House.price';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 3:
+                    $orderField = 'House.municipality_id';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 4:
+                    $orderField = 'House.municipality_id';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 5:
+                    $orderField = 'House.area';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 6:
+                    $orderField = 'House.area';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 7:
+                    $orderField = 'House.free_places';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 8:
+                    $orderField = 'House.free_places';
+                    $ascDesc = $ascoptions[1];
+                    break;
+            }
+            //$order = array($orderField => $ascDesc);
             $options['order'] = array($orderField => $ascDesc);
-		}
+        }
 
         $orderOptions = array(  'τελευταία ενημέρωση',
                                 'ενοίκιο αύξουσα',
@@ -163,10 +163,10 @@ class HousesController extends AppController {
         // not sure for this solution
         $_SESSION['Config']['language'] = 'gr';
 
-		/* facebook instance initialization */
-		if( !$this->Session->check( 'facebook' ) ) {
-		    $this->facebookInit( );
-	    }
+        /* facebook instance initialization */
+        if( !$this->Session->check( 'facebook' ) ) {
+            $this->facebookInit( );
+        }
 
     }
 
