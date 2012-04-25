@@ -208,8 +208,8 @@ class HousesController extends AppController {
         // appopriate link to post to Facebook
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
-		$this->set( 'fb_app_uri', $fb_app_uri );
-		$this->set( 'facebook', $this->Session->read( 'facebook' ) );
+        $this->set( 'fb_app_uri', $fb_app_uri );
+        $this->set( 'facebook', $this->Session->read( 'facebook' ) );
     }
 
     function add() {
@@ -834,12 +834,12 @@ class HousesController extends AppController {
                                                        'Profile.user_id' => $this->Auth->user('id'))));
         $search_args = $this->params['url'];
         //Profile preferences
-		$ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
-		$ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
+        $ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
+        $ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
         // House preferences
-		$priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
-		$areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
-		$areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
+        $priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
+        $areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
+        $areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
         $this->House->User->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
                         // House
