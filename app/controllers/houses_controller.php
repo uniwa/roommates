@@ -1148,26 +1148,25 @@ class HousesController extends AppController {
 
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
-        $facebook = $this->Session->read( 'facebook' );
+
+        $fb_app_id = Configure::read('fb_app_id');
+        $fb_page_id = Configure::read('fb_page_id');
+        $fb_secret = Configure::read('fb_secret');
+        $fb_cookie = Configure::read('fb_cookie');
+        $fb_token = Configure::read('fb_token');
+        //$facebook = $this->Session->read( 'facebook' );
 
         try {
-            // TODO move these in config/facebook.php
-            $app_id = "181654001909111";
-            $app_secret = "5d277ae0dec8481b6afca3a81656eef0";
-            $access_token = "AAAClNp5BfXcBAMpUEk1xmjpzD0kdtWRjN6aEodPxGFnnK5DMRNRDPjvIYSdusSoXdXBv5botAdUhi0t3JR0ZB1R00y43Y1f0WWnLEKOhr7FbF9VMtuV5GgrHOKSYZD";
-            $page_id = "333982839984150";
-            // ---
-
             $config = array(
-                'appId' => $app_id,
-                'secret' => $app_secret
+                'appId' => $fb_app_id,
+                'secret' => $fb_secret,
+                'cookie' => $fb_cookie
             );
 
             $facebook = new Facebook($config);
-            $user_id = $facebook->getUser();
 
-            $fb_res = $facebook->api( '/'. $page_id .'/feed', 'POST', array(
-                'access_token' => $access_token,
+            $fb_res = $facebook->api( '/'. $fb_page_id .'/feed', 'POST', array(
+                'access_token' => $fb_token,
                 'message' =>
                     $update
                     . $house['HouseType']['type'] . ' '
