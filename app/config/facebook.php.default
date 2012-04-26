@@ -1,6 +1,10 @@
 <?php
-    $config['fb_app_id'] = '';
-    $config['fb_secret'] = '';
-    $config['fb_app_uri'] = 'http://localhost/';
-    
-?>
+
+$config['fb_app_id'] = '';
+$config['fb_page_id'] = '';
+$config['fb_secret'] = '';
+$config['fb_cookie'] = true;
+$config['fb_token'] = '';
+
+// redirect here
+$config['fb_app_uri'] = 'http://localhost/';

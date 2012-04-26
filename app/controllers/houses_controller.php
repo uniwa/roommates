@@ -26,54 +26,54 @@ class HousesController extends AppController {
             return $this->set(compact('houses'));
         }
 
-		$order = array('House.modified' => 'desc');
-		$selectedOrder = 0;
+        $order = array('House.modified' => 'desc');
+        $selectedOrder = 0;
 
-		if(isset($this->params['named']['selection'])){
-			$selectedOrder = $this->params['named']['selection'];
-			$ascoptions = array('asc', 'desc');
-			$orderField = 'House.modified';
-			switch($selectedOrder){
-				case 0:
-					$orderField = 'House.modified';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 1:
-					$orderField = 'House.price';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 2:
-					$orderField = 'House.price';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 3:
-					$orderField = 'House.municipality_id';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 4:
-					$orderField = 'House.municipality_id';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 5:
-					$orderField = 'House.area';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 6:
-					$orderField = 'House.area';
-					$ascDesc = $ascoptions[1];
-					break;
-				case 7:
-					$orderField = 'House.free_places';
-					$ascDesc = $ascoptions[0];
-					break;
-				case 8:
-					$orderField = 'House.free_places';
-					$ascDesc = $ascoptions[1];
-					break;
-			}
-			//$order = array($orderField => $ascDesc);
+        if(isset($this->params['named']['selection'])){
+            $selectedOrder = $this->params['named']['selection'];
+            $ascoptions = array('asc', 'desc');
+            $orderField = 'House.modified';
+            switch($selectedOrder){
+                case 0:
+                    $orderField = 'House.modified';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 1:
+                    $orderField = 'House.price';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 2:
+                    $orderField = 'House.price';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 3:
+                    $orderField = 'House.municipality_id';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 4:
+                    $orderField = 'House.municipality_id';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 5:
+                    $orderField = 'House.area';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 6:
+                    $orderField = 'House.area';
+                    $ascDesc = $ascoptions[1];
+                    break;
+                case 7:
+                    $orderField = 'House.free_places';
+                    $ascDesc = $ascoptions[0];
+                    break;
+                case 8:
+                    $orderField = 'House.free_places';
+                    $ascDesc = $ascoptions[1];
+                    break;
+            }
+            //$order = array($orderField => $ascDesc);
             $options['order'] = array($orderField => $ascDesc);
-		}
+        }
 
         $orderOptions = array(  'τελευταία ενημέρωση',
                                 'ενοίκιο αύξουσα',
@@ -163,10 +163,10 @@ class HousesController extends AppController {
         // not sure for this solution
         $_SESSION['Config']['language'] = 'gr';
 
-		/* facebook instance initialization */
-		if( !$this->Session->check( 'facebook' ) ) {
-		    $this->facebookInit( );
-	    }
+        /* facebook instance initialization */
+        if( !$this->Session->check( 'facebook' ) ) {
+            $this->facebookInit( );
+        }
 
     }
 
@@ -204,11 +204,12 @@ class HousesController extends AppController {
             }
         }
 
-		/* accessed by the View, in order to compile the appopriate link to post to Facebook */
+        // accessed by the View, in order to compile the
+        // appopriate link to post to Facebook
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
-		$this->set( 'fb_app_uri', $fb_app_uri );
-		$this->set( 'facebook', $this->Session->read( 'facebook' ) );
+        $this->set( 'fb_app_uri', $fb_app_uri );
+        $this->set( 'facebook', $this->Session->read( 'facebook' ) );
     }
 
     function add() {
@@ -833,12 +834,12 @@ class HousesController extends AppController {
                                                        'Profile.user_id' => $this->Auth->user('id'))));
         $search_args = $this->params['url'];
         //Profile preferences
-		$ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
-		$ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
+        $ageMin = (isset($search_args['min_age']))?$search_args['min_age']:NULL;
+        $ageMax = (isset($search_args['max_age']))?$search_args['max_age']:NULL;
         // House preferences
-		$priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
-		$areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
-		$areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
+        $priceMax = (isset($search_args['max_price']))?$search_args['max_price']:NULL;
+        $areaMin = (isset($search_args['min_area']))?$search_args['min_area']:NULL;
+        $areaMax = (isset($search_args['max_area']))?$search_args['max_area']:NULL;
         $this->House->User->Profile->Preference->save(array(
                         'id' => $profile['Preference']['id'],
                         // House
@@ -1147,11 +1148,25 @@ class HousesController extends AppController {
 
         $fb_app_uri = Configure::read( 'fb_app_uri' );
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
-        $facebook = $this->Session->read( 'facebook' );
+
+        $fb_app_id = Configure::read('fb_app_id');
+        $fb_page_id = Configure::read('fb_page_id');
+        $fb_secret = Configure::read('fb_secret');
+        $fb_cookie = Configure::read('fb_cookie');
+        $fb_token = Configure::read('fb_token');
+        //$facebook = $this->Session->read( 'facebook' );
 
         try {
-            $facebook->api( $facebook->getAppId( ) . '/feed', 'POST', array(
+            $config = array(
+                'appId' => $fb_app_id,
+                'secret' => $fb_secret,
+                'cookie' => $fb_cookie
+            );
 
+            $facebook = new Facebook($config);
+
+            $fb_res = $facebook->api( '/'. $fb_page_id .'/feed', 'POST', array(
+                'access_token' => $fb_token,
                 'message' =>
                     $update
                     . $house['HouseType']['type'] . ' '
@@ -1168,10 +1183,9 @@ class HousesController extends AppController {
             ) );
 
         } catch( FacebookApiException $e ) {
-
             $this->Session->setFlash(
-                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο '
-                . 'Facebook.',
+                'Προέκυψε ένα σφάλμα κατά την κοινοποίηση της αγγελίας στο ' .
+                'Facebook.',
                 'default',
                 array('class' => 'flashRed') );
         }
