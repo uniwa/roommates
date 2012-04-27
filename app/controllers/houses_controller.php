@@ -211,8 +211,8 @@ class HousesController extends AppController {
         $this->set( 'fb_app_uri', $fb_app_uri );
         $this->set( 'facebook', $this->Session->read( 'facebook' ) );
 
-        $fb_page_id = Configure::read('fb_page_id');
-        $this->set( 'fb_page_id', $fb_page_id );
+        $fb_app_id = Configure::read('fb_app_id');
+        $this->set( 'fb_app_id', $fb_app_id );
     }
 
     function add() {

@@ -206,7 +206,7 @@
         }
         // don't show 'available_places' if house does not belong to a 'user' (as in role)
         $fbUrl = "http://www.facebook.com/dialog/feed";
-        $fbUrl .= "?app_id=".$fb_page_id;
+        $fbUrl .= "?app_id=".$fb_app_id;
         $fbUrl .= "&name=".urlencode('Δείτε περισσότερα εδώ...');
         $fbUrl .= "&link={$fb_app_uri}houses/view/{$houseid}";
         $fbUrl .= "&caption=".urlencode('«Συγκατοικώ»');
