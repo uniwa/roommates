@@ -210,6 +210,9 @@ class HousesController extends AppController {
         $fb_app_uri = $this->appendIfAbsent( $fb_app_uri, '/' );
         $this->set( 'fb_app_uri', $fb_app_uri );
         $this->set( 'facebook', $this->Session->read( 'facebook' ) );
+
+        $fb_page_id = Configure::read('fb_page_id');
+        $this->set( 'fb_page_id', $fb_page_id );
     }
 
     function add() {
