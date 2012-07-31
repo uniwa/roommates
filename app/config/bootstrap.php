@@ -61,3 +61,4 @@ function showDebug($msg){
 }
 
 include_once('captcha.php');
+include_once('redmine.php');
