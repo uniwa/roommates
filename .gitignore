@@ -7,6 +7,9 @@
 #ldap configuration
 /app/config/ldap.php
 
+#redmine configuration
+/app/config/redmine.php
+
 # captcha keys
 /app/config/captcha.php
 

@@ -563,6 +563,10 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
     private function createIssue($data){
         if(isset($data)){
+            // read from redmine config
+            $_redmine_url = Configure::read('redmine.url');
+            $_redmine_token = Configure::read('redmine.token');
+
             $reqData['subject'] = $data['subject'];
             $reqData['description'] = "{$data['userid']} {$data['username']}\n";
             $reqData['description'] .= "{$data['category']}\n";
@@ -570,9 +574,9 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
             $reqXml = $this->createXmlRequest($reqData);
 
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://redmine.edu.teiath.gr/issues.xml");
+            curl_setopt($ch, CURLOPT_URL, $_redmine_url);
             curl_setopt($ch, CURLOPT_POST, false);
-            curl_setopt($ch, CURLOPT_USERPWD, "7806cada9458077b3251b341ff3ffc072987e5bc:password");
+            curl_setopt($ch, CURLOPT_USERPWD, $_redmine_token);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
             curl_setopt($ch, CURLOPT_POSTFIELDS, $reqXml);
             curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
@@ -590,12 +594,12 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
     // Creates XML request to Redmine for reporting an issue
     private function createXmlRequest($data){
         // Set project id
-        $projectID = 8;
+        $_redmine_projectID = Configure::read('redmine.projectID');
         $req = "<?xml version=\"1.0\"?>";
         $req .= "<issue>";
         $req .= "<subject>{$data['subject']}</subject>";
         $req .= "<description>{$data['description']}</description>";
-        $req .= "<project_id>{$projectID}</project_id>";
+        $req .= "<project_id>{$_redmine_projectID}</project_id>";
         $req .= "</issue>";
 
         return $req;

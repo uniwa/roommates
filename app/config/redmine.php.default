@@ -1,0 +1,5 @@
+<?php
+$config['redmine']['url'] = 'http://redmine.edu.teiath.gr/issues.xml';
+$config['redmine']['token'] = '12345:pw';
+$config['redmine']['projectID'] = '0';
+?>
