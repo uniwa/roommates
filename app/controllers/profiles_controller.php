@@ -114,38 +114,6 @@ $this->log('user '.$this->Auth->User('id').' view profile '.$id, 'info');
         }
     }
 
-/*
-    function add(){
-    	if (!empty($this->data)) {
-             //var_dump($this->data); die();
-
-            if ($this->Profile->saveAll($this->data, array('validate'=>'first'))) {
-                 $this->Session->setFlash('Το προφίλ προστέθηκε.',
-                    array('class' => 'flashBlue'));
-                 $this->redirect(array('action' => 'index'));
-            }
-        }
-
-        $dob = array();
-        foreach ( range((int)date('Y') - 17, (int)date('Y') - 80) as $year ) {
-            $dob[$year] = $year;
-        }
-		$genderLabels = Configure::read('GenderLabels');
-		$this->set('genderLabels', $genderLabels);
-        $this->set('available_birth_dates', $dob);
-    }
-
-
-    function delete($id) {
-
-          if ($this->Profile->delete($id, $cascade = true)) {
-             $this->Session->setFlash('Το προφίλ διεγράφη.',
-                array('class' => 'flashBlue'));
-             $this->redirect(array('action'=> 'index'));
-    	  }
-    }
-*/
-
     function edit($id = null){
         $this->denyRole('realestate');
         // this variable is used to display properly
