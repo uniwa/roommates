@@ -72,6 +72,21 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 		$this->redirect( $this->Auth->logout() );
 	}
 
+    function transition() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'transition');
+        $this->set('title_for_layout', 'Μετάβαση σε λογαριασμό του ΤΕΙ');
+
+        /*In case user tries to login with some credentials
+         *while terms are not accepted, redirect him to terms action.
+         *If rules are accepted, redirect him to main page
+         */
+        if (isset($this->data) && $this->Auth->user()) {
+            debug($this->data);die;
+        }
+    }
+
     // Enables currently logged in 'admin' user to act with the permissions of
     // $id user. Currently, $id may only belong to a 'realestate' of type
     // 'owner'. If this function is invoked by a non-admin user (with or without
