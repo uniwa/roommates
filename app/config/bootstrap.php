@@ -64,5 +64,5 @@ include_once('captcha.php');
 Configure::load( 'redmine' );
 // Deadline for making the transition to the ldap account mandatory
 // repeats every year
-define('DEADLINE_MONTH', '11');
-define('DEADLINE_DAY', '30');
+define('DEADLINE_MONTH', 11);
+define('DEADLINE_DAY', 30);
