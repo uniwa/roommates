@@ -619,6 +619,15 @@ input[type='submit']{
     background-color: #f44;
 }
 
+.freshman-msg {
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    margin: 0px auto 0px auto;
+    padding: 4px 0px 6px 0px;
+    background-color: #acf;
+}
+
 .terms h2, .faq h2 {
 	font-size:1.2em;
 	font-weight: bold;
