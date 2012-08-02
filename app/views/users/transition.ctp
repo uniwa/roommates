@@ -15,8 +15,8 @@
             </div>
             <div class='loginCredential'>
                 <?php
-                    echo $this->Form->input('password',
-                        array('label' => 'Συνθηματικό', 'class' => 'loginInputCredential'));
+                    echo $this->Form->input('ldap_password',
+                        array('type' => 'password', 'label' => 'Συνθηματικό', 'class' => 'loginInputCredential'));
                 ?>
             </div>
             <div class='loginCredential'>
