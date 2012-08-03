@@ -130,11 +130,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             return;
         }
 
-        // TODO: what should happen if the previous 'fresh' students could not
-        // be deleted?
-        if ($this->delete_fresh_students()) {
-            $this->create_fresh_student($handle, $delimiter);
-        }
+        $this->create_fresh_student($handle, $delimiter);
 
         fclose($handle);
         die;
