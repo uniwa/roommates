@@ -66,3 +66,6 @@ Configure::load( 'redmine' );
 // repeats every year
 define('DEADLINE_MONTH', 11);
 define('DEADLINE_DAY', 30);
+
+// delimiter that separates fields in the csv file (for importing students)
+define('CSV_DELIMITER', ';');

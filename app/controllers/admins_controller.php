@@ -120,9 +120,6 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     }
 
     public function import_users() {
-        $delimiter = ';';
-
-
         // temporary csv file
         $filename = WWW_ROOT . 'rm_CSV.csv';
         $handle = fopen($filename, 'r');
@@ -184,7 +181,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         // locale needs to be set in order for fgetcsv() to accept greek letters
         setLocale(LC_ALL, 'el_GR.utf8');
 
-        $fields = fgetcsv($handle, 0, $delimiter);
+        $fields = fgetcsv($handle, 0, CSV_DELIMITER);
         // check if the handle corresponds to an acceptable csv stream
         if ($fields === false) {
             //ERROR
