@@ -203,7 +203,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         // TODO: instead of writing one user at a time, create and store groups
         // of users
-        while ($data = fgetcsv($handle, 0, CSV_DELIMITER)) {
+        while ($data = fgetcsv($handle, 0, FRESH_CSV_DELIMITER)) {
             ++$records_total;
 
             $username = $data[$i_am];
@@ -246,7 +246,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     // bootstrap.php).
     private function csv_fields($handle) {
 
-        $fields = fgetcsv($handle, 0, CSV_DELIMITER);
+        $fields = fgetcsv($handle, 0, FRESH_CSV_DELIMITER);
         // check if the handle corresponds to an acceptable csv stream
         if ($fields === false) return null;
 
