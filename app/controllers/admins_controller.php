@@ -98,6 +98,20 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         $this->set('results', $results);
     }
 
+    // Import CSV file with info about successful applicants
+    function import_csv() {
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'import_csv');
+        $this->set('title_for_layout','Επιτυχόντες ΤΕΙ Αθήνας');
+
+        if (isset($this->data)) {
+            // check if file is uploaded
+            // check file type
+            // call import function
+        }
+    }
+
     private function checkAccess() {
         if($this->Session->read('Auth.User.role') != 'admin'){
             $this->cakeError('error403');
