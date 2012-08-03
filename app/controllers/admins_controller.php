@@ -136,7 +136,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         // TODO: what should happen if the previous 'fresh' students could not
         // be deleted?
         if ($this->delete_fresh_students()) {
-            $this->_create_fresh_student($handle, $delimiter);
+            $this->create_fresh_student($handle, $delimiter);
         }
 
         fclose($handle);
@@ -175,7 +175,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         return true;
     }
 
-    private function _create_fresh_student($handle, $delimiter) {
+    private function create_fresh_student($handle, $delimiter) {
 
         // locale needs to be set in order for fgetcsv() to accept greek letters
         setLocale(LC_ALL, 'el_GR.utf8');
