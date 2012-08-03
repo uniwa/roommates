@@ -3,7 +3,8 @@
 class AdminsController extends AppController
 {
     var $name = 'Admins';
-    var $uses = array();
+    var $uses = array('User', 'Profile');
+    var $components = array('Token');
     var $paginate = array(
         'RealEstate' => array('fields' => array('User.id','User.username','User.banned',
             'User.enabled','RealEstate.id','RealEstate.firstname','RealEstate.type',
@@ -118,5 +119,76 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         }
     }
 
+    public function import_users() {
+        $delimiter = ';';
+
+
+        // temporary csv file
+        $filename = WWW_ROOT . 'rm_CSV.csv';
+        $handle = fopen($filename, 'r');
+
+        // show some message about error reading file
+        if ($handle === false) {
+            // ERROR
+            return;
+        }
+
+        $this->_create_fresh_student($handle, $delimiter);
+
+        fclose($handle);
+        die;
+    }
+
+    private function _create_fresh_student($handle, $delimiter) {
+
+        // locale needs to be set in order for fgetcsv() to accept greek letters
+        setLocale(LC_ALL, 'el_GR.utf8');
+
+        $fields = fgetcsv($handle, 0, $delimiter);
+        // check if the handle corresponds to an acceptable csv stream
+        if ($fields === false) {
+            //ERROR
+            return;
+        }
+
+        // get the indices where the fields we are interested in lay
+        // if any of the indices below equals null, then the process should be
+        // terminated
+        $i_am = array_search('Α_Μ', $fields);
+        $i_fname = array_search('ΟΝΟΜΑ', $fields);
+        $i_lname = array_search('ΕΠΩΝΥΜΟ', $fields);
+
+        // set default values that apply to all new users
+        $fresh = array(
+            'User' => array('role' => 'user',
+                            'fresh' => 1),
+            'Profile' => array('dob' => date('Y') - 18,
+            // TODO: can move these to a 'defaults' variable in Profile model
+                               'gender' => 0,
+                               'visible' => 1),
+            'Preference' => $this->Profile->defaults
+        );
+        $options = array('validate' => false);
+
+        // TODO: instead of writing one user at a time, create and store groups
+        // of users
+        while ($data = fgetcsv($handle, 0, $delimiter)) {
+
+            $fresh['User']['username'] = $data[$i_am];
+            // TODO: set the appropriate hash
+            $fresh['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
+
+            $fresh['Profile']['firstname'] = $data[$i_fname];
+            $fresh['Profile']['lastname'] = $data[$i_lname];
+
+            // TODO: read email from some configuration
+            $fresh['Profile']['email'] = 'default@email.com';
+            // TODO: provide some (more) proper salt
+            $fresh['Profile']['token'] = $this->Token->generate($data[$i_am]);
+
+            // create new profile and an associated user and preferences
+            $result = $this->Profile->saveAll($fresh, $options);
+        }
+    }
 }
 ?>
