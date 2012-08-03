@@ -183,21 +183,8 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     private function create_fresh_student($handle) {
 
         // locale needs to be set in order for fgetcsv() to accept greek letters
-        setLocale(LC_ALL, 'el_GR.utf8');
-
-        $fields = fgetcsv($handle, 0, CSV_DELIMITER);
-        // check if the handle corresponds to an acceptable csv stream
-        if ($fields === false) {
-            //ERROR
-            return;
-        }
-
-        // get the indices where the fields we are interested in lay
-        // if any of the indices below equals null, then the process should be
-        // terminated
-        $i_am = array_search('Α_Μ', $fields);
-        $i_fname = array_search('ΟΝΟΜΑ', $fields);
-        $i_lname = array_search('ΕΠΩΝΥΜΟ', $fields);
+        $defaultLocale = setLocale(LC_CTYPE, 0);
+        setLocale(LC_CTYPE, 'el_GR.utf8');
 
         // set default values that apply to all new users
         $fresh = array(
@@ -237,7 +224,44 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // create new profile and an associated user and preferences
             $result = $this->Profile->saveAll($fresh, $options);
         }
+
+        setLocale(LC_CTYPE, $defaultLocale);
+
         echo 'Total: ' . $records_total . ' , successful: ' . $records_success;
+        return array('total' => $records_total,
+                     'success' => $records_success;
+    }
+
+    // Returns (mixed)
+    // NULL, if the specified handle does not correspond to a csv file or if it
+    // a csv file that does not contain the mandatory fields ('username',
+    // 'firstname', 'lastname'),
+    //
+    // an array with keys:
+    //  [uname]
+    //  [fname]
+    //  [lname]
+    // with a value that corresponds to the index of each field
+    // Uses constants to identify the actual value of the fields to pick (see
+    // bootstrap.php).
+    private function csv_fields($handle) {
+
+        $fields = fgetcsv($handle, 0, CSV_DELIMITER);
+        // check if the handle corresponds to an acceptable csv stream
+        if ($fields === false) return null;
+
+        // get the indices where the fields we are interested in lay
+        $i_uname = array_search(FRESH_CSV_UNAME, $fields);
+        $i_fname = array_search(FRESH_CSV_FNAME, $fields);
+        $i_lname = array_search(FRESH_CSV_LNAME, $fields);
+
+        // if any of the mandatory indices cannot be found, then terminate the
+        // process
+        if (! ($i_uname && $i_fname && $i_name)) return null;
+
+        return array('uname' => $i_uname,
+                     'fname' => $i_fname,
+                     'lname' => $i_lname);
     }
 }
 ?>
