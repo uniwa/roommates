@@ -3,7 +3,7 @@
 class AdminsController extends AppController
 {
     var $name = 'Admins';
-    var $uses = array('User', 'Profile');
+    var $uses = array('User', 'Profile', 'Preference');
     var $components = array('Token');
     var $paginate = array(
         'RealEstate' => array('fields' => array('User.id','User.username','User.banned',
@@ -133,10 +133,46 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             return;
         }
 
-        $this->_create_fresh_student($handle, $delimiter);
+        // TODO: what should happen if the previous 'fresh' students could not
+        // be deleted?
+        if ($this->delete_fresh_students()) {
+            $this->_create_fresh_student($handle, $delimiter);
+        }
 
         fclose($handle);
         die;
+    }
+
+    // Removes all user records that have their 'fresh' attribute set to true.
+    // Should be invoked before importing new students, though it is not
+    // necessary; this is done to remove obsolete/old records.
+    public function delete_fresh_students() {
+
+        // Profile is associated with Preferences with a belongsTo relationship
+        // (but why? don't preferences define a profile so as to be declared
+        // part of it? - anyway). Because of this, delete cannot cascade from
+        // User to Profile and then to Preference, but only from User to
+        // Profile. So, it is imperative to delete preferences manually (unless
+        // the model association is changed -- but that might break something).
+
+        $options = array(
+            'conditions' => array('User.fresh' => true),
+            'fields' => array('Profile.preference_id'));
+        $profiles = $this->Profile->find('all', $options);
+        // these are the preferences that correspond to profiles that are to be
+        // deleted
+        $prefs = Set::classicExtract($profiles, '{n}.Profile.preference_id');
+
+        // TODO: the following deletion should run as transaction dependent on
+        // the outcome of the deletion of preferences
+
+        // delete users and profiles
+        $success = $this->User->deleteAll(array('User.fresh' => true));
+
+        // manually delete preferences of the deleted profiles
+        $this->Preference->deleteAll(array('Preference.id' => $prefs));
+
+        return true;
     }
 
     private function _create_fresh_student($handle, $delimiter) {
