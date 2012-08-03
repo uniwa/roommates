@@ -108,8 +108,21 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         if (isset($this->data)) {
             // check if file is uploaded
-            // check file type
-            // call import function
+            $file = $this->data['Admin']['submittedfile'];
+            if (is_uploaded_file($file['tmp_name'])) {
+                if ($file['type'] === 'text/csv') {
+                    $handle = fopen($file['tmp_name'], 'r');
+
+                    // show some message about error reading file
+                    if ($handle === false) {
+                        // ERROR
+                        return;
+                    } else {
+                        $this->handle_import($handle);
+                    }
+                }
+            } else {
+            }
         }
     }
 
@@ -119,17 +132,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         }
     }
 
-    public function import_users() {
-        // temporary csv file
-        $filename = WWW_ROOT . 'rm_CSV.csv';
-        $handle = fopen($filename, 'r');
-
-        // show some message about error reading file
-        if ($handle === false) {
-            // ERROR
-            return;
-        }
-
+    public function handle_import($handle) {
         $outcome = $this->create_fresh_student($handle);
 
         fclose($handle);
