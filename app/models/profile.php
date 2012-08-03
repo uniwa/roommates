@@ -92,6 +92,19 @@ class Profile extends AppModel {
 		),
 );
 
+    var $defaults = array(
+        'age_min' => NULL,
+        'age_max' => NULL,
+        'pref_gender' => 2,
+        'pref_smoker' => 2,
+        'pref_pet' => 2,
+        'pref_child' => 2,
+        'pref_couple' => 2,
+        /* house preferences - only fields that don't default to NULL */
+        'pref_furnitured' => 2,
+        'pref_has_photo' => 0,
+        'pref_disability_facilities' => 0);
+
 	function isValidDate($check) {
 		$dob = (int)$check["dob"];
 		return $dob >= date('Y')-80 && $dob <= date('Y')-17;
