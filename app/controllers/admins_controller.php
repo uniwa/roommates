@@ -130,7 +130,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             return;
         }
 
-        $this->create_fresh_student($handle, $delimiter);
+        $this->create_fresh_student($handle);
 
         fclose($handle);
         die;
@@ -172,7 +172,15 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         return true;
     }
 
-    private function create_fresh_student($handle, $delimiter) {
+    // returns
+    //  false: when the supplied handle does not correspond to a supported csv
+    //  file or the mandatory fields are not included (i.e. there is no 'id',
+    //  'firstname' or 'lastname' columns)
+    //
+    //  an array with keys:
+    //  [total] the total number of records in the csv (without the headers)
+    //  [success] the number of newly created students (User+Profile+Preference)
+    private function create_fresh_student($handle) {
 
         // locale needs to be set in order for fgetcsv() to accept greek letters
         setLocale(LC_ALL, 'el_GR.utf8');
@@ -203,9 +211,16 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         );
         $options = array('validate' => false);
 
+        $records_total = 0;
+        $records_success = 0;
+
         // TODO: instead of writing one user at a time, create and store groups
         // of users
-        while ($data = fgetcsv($handle, 0, $delimiter)) {
+        while ($data = fgetcsv($handle, 0, CSV_DELIMITER)) {
+            ++$records_total;
+
+            $username = $data[$i_am];
+            if ($this->User->findByUsername($username)) continue;
 
             $fresh['User']['username'] = $data[$i_am];
             // TODO: set the appropriate hash
@@ -222,6 +237,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // create new profile and an associated user and preferences
             $result = $this->Profile->saveAll($fresh, $options);
         }
+        echo 'Total: ' . $records_total . ' , successful: ' . $records_success;
     }
 }
 ?>
