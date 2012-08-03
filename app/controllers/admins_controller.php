@@ -130,10 +130,27 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             return;
         }
 
-        $this->create_fresh_student($handle);
+        $outcome = $this->create_fresh_student($handle);
 
         fclose($handle);
-        die;
+
+        if ($outcome === false) {
+            $msg = 'Η μορφή του αρχείου δεν είναι η αναμενόμενη';
+            $class = 'flashRed';
+        } else {
+            $new = $outcome['success'];
+            switch ($new) {
+                case 0: $msg = "Δεν εισήχθησαν νέοι φοιτητές"; break;
+                case 1: $msg = 'Εισήχθη 1 νέος φοιτητής'; break;
+                default:
+                    $msg = "Εισήχθησαν {$outcome['success']} νέοι φοιτητές";
+                    break;
+            }
+            $class = 'flashBlue';
+        }
+
+        $this->Session->setFlash($msg, 'default', array('class' => $class));
+        $this->redirect($this->referer());
     }
 
     // Removes all user records that have their 'fresh' attribute set to true.
@@ -192,9 +209,9 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         extract($fields);
 
         // set default values that apply to all new users
-        $fresh = array(
-            'User' => array('role' => 'user',
-                            'fresh' => 1),
+        $user = array('User' => array('role' => 'user',
+                                      'fresh' => 1));
+        $profile = array(
             'Profile' => array('dob' => date('Y') - 18,
             // TODO: can move these to a 'defaults' variable in Profile model
                                'gender' => 0,
@@ -211,21 +228,30 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             ++$records_total;
 
             $username = $data[$i_uname];
-
             // ignore duplicate
             if ($this->User->findByUsername($username)) continue;
 
-            $fresh['User']['username'] = $username;
+            // save User separately from the other models so as to get the id
+            // and use it in the generation of the profile token
+            $user['User']['username'] = $username;
             // TODO: set the appropriate hash
-            $fresh['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
+            $user['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
 
+            $this->User->id = null;
+            $result = $this->User->save($user, false);
+
+            if ($result === false) continue;
+            $user_id = $this->User->id;
+
+            $fresh['Profile']['user_id'] = $user_id;
             $fresh['Profile']['firstname'] = $data[$i_fname];
             $fresh['Profile']['lastname'] = $data[$i_lname];
 
             // perhaps, use the email address from the csv ?
             $fresh['Profile']['email'] = FRESH_EMAIL;
-            // TODO: provide some (more) proper salt
-            $fresh['Profile']['token'] = $this->Token->generate($username);
+            // use user_id as salt (and be in accordance with how such tokens
+            // are generated)
+            $fresh['Profile']['token'] = $this->Token->generate($user_id);
 
             // create new profile and an associated user and preferences
             $result = $this->Profile->saveAll($fresh, $save_options);
@@ -236,7 +262,6 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         setLocale(LC_CTYPE, $defaultLocale);
 
-        echo 'Total: ' . $records_total . ' , successful: ' . $records_success;
         return array('total' => $records_total,
                      'success' => $records_success);
     }
