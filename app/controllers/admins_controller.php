@@ -199,9 +199,8 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // TODO: can move these to a 'defaults' variable in Profile model
                                'gender' => 0,
                                'visible' => 1),
-            'Preference' => $this->Profile->defaults
-        );
-        $options = array('validate' => false);
+            'Preference' => $this->Profile->defaults);
+        $save_options = array('validate' => false);
 
         $records_total = 0;
         $records_success = 0;
@@ -213,6 +212,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
             $username = $data[$i_uname];
 
+            // ignore duplicate
             if ($this->User->findByUsername($username)) continue;
 
             $fresh['User']['username'] = $username;
@@ -222,16 +222,16 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $fresh['Profile']['firstname'] = $data[$i_fname];
             $fresh['Profile']['lastname'] = $data[$i_lname];
 
-            // TODO: read email from some configuration
-            $fresh['Profile']['email'] = 'default@email.com';
+            // perhaps, use the email address from the csv ?
+            $fresh['Profile']['email'] = FRESH_EMAIL;
             // TODO: provide some (more) proper salt
             $fresh['Profile']['token'] = $this->Token->generate($username);
 
             // create new profile and an associated user and preferences
-            $result = $this->Profile->saveAll($fresh, $options);
+            $result = $this->Profile->saveAll($fresh, $save_options);
             if ($result) ++$records_success; // might as well add $result to
                                              // success to avoid the if
-                                            // statement
+                                             // statement
         }
 
         setLocale(LC_CTYPE, $defaultLocale);
