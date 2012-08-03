@@ -186,6 +186,11 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         $defaultLocale = setLocale(LC_CTYPE, 0);
         setLocale(LC_CTYPE, 'el_GR.utf8');
 
+        $fields = $this->csv_fields($handle);
+        if (empty($fields)) return false;
+        // variables defined: i_uname, i_fname and i_lname
+        extract($fields);
+
         // set default values that apply to all new users
         $fresh = array(
             'User' => array('role' => 'user',
@@ -206,10 +211,11 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         while ($data = fgetcsv($handle, 0, FRESH_CSV_DELIMITER)) {
             ++$records_total;
 
-            $username = $data[$i_am];
+            $username = $data[$i_uname];
+
             if ($this->User->findByUsername($username)) continue;
 
-            $fresh['User']['username'] = $data[$i_am];
+            $fresh['User']['username'] = $username;
             // TODO: set the appropriate hash
             $fresh['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
 
@@ -219,28 +225,31 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // TODO: read email from some configuration
             $fresh['Profile']['email'] = 'default@email.com';
             // TODO: provide some (more) proper salt
-            $fresh['Profile']['token'] = $this->Token->generate($data[$i_am]);
+            $fresh['Profile']['token'] = $this->Token->generate($username);
 
             // create new profile and an associated user and preferences
             $result = $this->Profile->saveAll($fresh, $options);
+            if ($result) ++$records_success; // might as well add $result to
+                                             // success to avoid the if
+                                            // statement
         }
 
         setLocale(LC_CTYPE, $defaultLocale);
 
         echo 'Total: ' . $records_total . ' , successful: ' . $records_success;
         return array('total' => $records_total,
-                     'success' => $records_success;
+                     'success' => $records_success);
     }
 
     // Returns (mixed)
-    // NULL, if the specified handle does not correspond to a csv file or if it
+    // false, if the specified handle does not correspond to a csv file or if it
     // a csv file that does not contain the mandatory fields ('username',
     // 'firstname', 'lastname'),
     //
     // an array with keys:
-    //  [uname]
-    //  [fname]
-    //  [lname]
+    //  [i_uname]
+    //  [i_fname]
+    //  [i_lname]
     // with a value that corresponds to the index of each field
     // Uses constants to identify the actual value of the fields to pick (see
     // bootstrap.php).
@@ -248,7 +257,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         $fields = fgetcsv($handle, 0, FRESH_CSV_DELIMITER);
         // check if the handle corresponds to an acceptable csv stream
-        if ($fields === false) return null;
+        if ($fields === false) return false;
 
         // get the indices where the fields we are interested in lay
         $i_uname = array_search(FRESH_CSV_UNAME, $fields);
@@ -257,11 +266,13 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         // if any of the mandatory indices cannot be found, then terminate the
         // process
-        if (! ($i_uname && $i_fname && $i_name)) return null;
+        if ( $i_uname === false || $i_fname === false || $i_lname === false) {
+            return false;
+        }
 
-        return array('uname' => $i_uname,
-                     'fname' => $i_fname,
-                     'lname' => $i_lname);
+        return array('i_uname' => $i_uname,
+                     'i_fname' => $i_fname,
+                     'i_lname' => $i_lname);
     }
 }
 ?>
