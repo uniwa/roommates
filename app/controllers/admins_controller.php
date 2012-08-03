@@ -107,22 +107,34 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         $this->set('title_for_layout','Επιτυχόντες ΤΕΙ Αθήνας');
 
         if (isset($this->data)) {
+
+            $error_general = 'Προέκυψε κάποιο σφάλμα με το αρχείο';
             // check if file is uploaded
             $file = $this->data['Admin']['submittedfile'];
             if (is_uploaded_file($file['tmp_name'])) {
+                // the file-type below depends on the extension of the uploaded
+                // file and could be omitted; format-specific checks are
+                // performed internally by the handler
                 if ($file['type'] === 'text/csv') {
                     $handle = fopen($file['tmp_name'], 'r');
 
                     // show some message about error reading file
                     if ($handle === false) {
-                        // ERROR
-                        return;
+                        $msg = $error_general;
+                        $class = 'flashRed';
                     } else {
                         $this->handle_import($handle);
                     }
+                } else {
+                    $msg = 'Η μορφή του αρχείου δεν είναι η αναμενόμενη';
+                    $class = 'flashRed';
                 }
             } else {
+                $msg = $error_general;
+                $class = 'flashRed';
             }
+            $this->Session->setFlash($msg, 'default', array('class' => $class));
+            $this->redirect($this->referer());
         }
     }
 
