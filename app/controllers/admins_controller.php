@@ -154,9 +154,13 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         // User to Profile and then to Preference, but only from User to
         // Profile. So, it is imperative to delete preferences manually (unless
         // the model association is changed -- but that might break something).
+        $conditions = array(
+            'User.fresh' => true,
+            // avoid deleting users that have accepted the terms
+            'User.terms_accepted' => false);
 
         $options = array(
-            'conditions' => array('User.fresh' => true),
+            'conditions' => $conditions,
             'fields' => array('Profile.preference_id'));
         $profiles = $this->Profile->find('all', $options);
         // these are the preferences that correspond to profiles that are to be
@@ -167,7 +171,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         // the outcome of the deletion of preferences
 
         // delete users and profiles
-        $success = $this->User->deleteAll(array('User.fresh' => true));
+        $success = $this->User->deleteAll($conditions);
 
         // manually delete preferences of the deleted profiles
         $this->Preference->deleteAll(array('Preference.id' => $prefs));
