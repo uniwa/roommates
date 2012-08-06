@@ -242,13 +242,21 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         while ($data = fgetcsv($handle, 0, FRESH_CSV_DELIMITER)) {
             ++$records_total;
 
-            $username = $data[$i_uname];
+            // if any of the indices are not set for a particular record, then
+            // ingore it; do note, though, this simply ensures that the indices
+            // exist (not that they actually correspond to the desired value)
+            $uname = isset($data[$i_uname]) ? $data[$i_uname] : '';
+            $fname = isset($data[$i_fname]) ? $data[$i_fname] : '';
+            $lname = isset($data[$i_lname]) ? $data[$i_lname] : '';
+
+            if (empty($uname) || empty($fname) || empty($lname)) continue;
+
             // ignore duplicate
-            if ($this->User->findByUsername($username)) continue;
+            if ($this->User->findByUsername($uname)) continue;
 
             // save User separately from the other models so as to get the id
             // and use it in the generation of the profile token
-            $user['User']['username'] = $username;
+            $user['User']['username'] = $uname;
             // TODO: set the appropriate hash
             $user['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
 
@@ -259,8 +267,8 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $user_id = $this->User->id;
 
             $fresh['Profile']['user_id'] = $user_id;
-            $fresh['Profile']['firstname'] = $data[$i_fname];
-            $fresh['Profile']['lastname'] = $data[$i_lname];
+            $fresh['Profile']['firstname'] = $fname;
+            $fresh['Profile']['lastname'] = $lname;
 
             // perhaps, use the email address from the csv ?
             $fresh['Profile']['email'] = FRESH_EMAIL;
