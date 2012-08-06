@@ -123,7 +123,9 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                         $msg = $error_general;
                         $class = 'flashRed';
                     } else {
-                        $this->handle_import($handle);
+                        $outcome = $this->handle_import($handle);
+                        $msg = $outcome['msg'];
+                        $class = $outcome['success'] === true ? 'flashBlue' : 'flashRed';
                     }
                 } else {
                     $msg = 'Η μορφή του αρχείου δεν είναι η αναμενόμενη';
@@ -144,6 +146,13 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         }
     }
 
+    // Returns an array with keys:
+    //  [success] boolean; true means that the file has successfully been
+    //  parsed - the required headers were missing all found; false, otherwise.
+    //  Identifying how many records have been actually inserted out of the
+    //  total number of records in the csv is not supported but it is an easy
+    //  tast to implement.
+    //  [msg] string; description of the outcome
     public function handle_import($handle) {
         $outcome = $this->create_fresh_student($handle);
 
@@ -151,8 +160,9 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         if ($outcome === false) {
             $msg = 'Η μορφή του αρχείου δεν είναι η αναμενόμενη';
-            $class = 'flashRed';
+            $success = false;
         } else {
+            $success = true;
             $new = $outcome['success'];
             switch ($new) {
                 case 0: $msg = "Δεν εισήχθησαν νέοι φοιτητές"; break;
@@ -161,11 +171,9 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                     $msg = "Εισήχθησαν {$outcome['success']} νέοι φοιτητές";
                     break;
             }
-            $class = 'flashBlue';
         }
 
-        $this->Session->setFlash($msg, 'default', array('class' => $class));
-        $this->redirect($this->referer());
+        return array('success' => $success, 'msg' => $msg);
     }
 
     // Removes all user records that have their 'fresh' attribute set to true.
@@ -208,7 +216,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     //  false: when the supplied handle does not correspond to a supported csv
     //  file or the mandatory fields are not included (i.e. there is no 'id',
     //  'firstname' or 'lastname' columns)
-    //
+    //  or
     //  an array with keys:
     //  [total] the total number of records in the csv (without the headers)
     //  [success] the number of newly created students (User+Profile+Preference)
