@@ -217,12 +217,15 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
     // returns
     //  false: when the supplied handle does not correspond to a supported csv
-    //  file or the mandatory fields are not included (i.e. there is no 'id',
+    //  file or not all mandatory fields are included (i.e. if there is no 'id',
     //  'firstname' or 'lastname' columns)
     //  or
     //  an array with keys:
-    //  [total] the total number of records in the csv (without the headers)
-    //  [success] the number of newly created students (User+Profile+Preference)
+    //  [total] # of records parsed (excluding headers)
+    //  [new] # of successfully created students (User+Profile+Preference)
+    //  [old] # of records ignored because username pre-existed
+    //  [bad] # of malformed records (eg, empty firstname)
+    //  [fail] # of failures due to db errors (only on extreme situations)
     private function create_fresh_student($handle) {
 
         // locale needs to be set in order for fgetcsv() to accept greek letters
@@ -245,12 +248,11 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             'Preference' => $this->Profile->defaults);
         $save_options = array('validate' => false);
 
-        $records_total = 0;
-        $records_success = 0;
+        $records_total = 0; // # of records parsed (excluding headers)
         $records_new = 0; // # of successfully created students
         $records_old = 0; // # of records ignored because username pre-existed
         $records_bad = 0; // # of malformed records (eg, empty firstname)
-        $records_fail = 0; // # of failed db errors (only on extreme situations)
+        $records_fail = 0; // # of failures due to db errors (extreme)
 
         // TODO: instead of writing one user at a time, create and store groups
         // of users
@@ -321,6 +323,10 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         setLocale(LC_CTYPE, $defaultLocale);
 
         return array('total' => $records_total,
+                     'new' => $records_new,
+                     'old' => $records_old,
+                     'bad' => $records_bad,
+                     'fail' => $records_fail,
                      'success' => $records_success);
     }
 
