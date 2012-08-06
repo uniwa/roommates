@@ -247,6 +247,10 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         $records_total = 0;
         $records_success = 0;
+        $records_new = 0; // # of successfully created students
+        $records_old = 0; // # of records ignored because username pre-existed
+        $records_bad = 0; // # of malformed records (eg, empty firstname)
+        $records_fail = 0; // # of failed db errors (only on extreme situations)
 
         // TODO: instead of writing one user at a time, create and store groups
         // of users
@@ -260,10 +264,16 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $fname = isset($data[$i_fname]) ? $data[$i_fname] : '';
             $lname = isset($data[$i_lname]) ? $data[$i_lname] : '';
 
-            if (empty($uname) || empty($fname) || empty($lname)) continue;
+            if (empty($uname) || empty($fname) || empty($lname)) {
+                ++$records_bad;
+                continue;
+            }
 
             // ignore duplicate
-            if ($this->User->findByUsername($uname)) continue;
+            if ($this->User->findByUsername($uname)) {
+                ++$records_old;
+                continue;
+            }
 
             // save User separately from the other models so as to get the id
             // and use it in the generation of the profile token
@@ -274,7 +284,10 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $this->User->id = null;
             $result = $this->User->save($user, false);
 
-            if ($result === false) continue;
+            if ($result === false) {
+                ++$records_fail;
+                continue;
+            }
             $user_id = $this->User->id;
 
             $fresh['Profile']['user_id'] = $user_id;
@@ -289,7 +302,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
             // create new profile and an associated user and preferences
             $result = $this->Profile->saveAll($fresh, $save_options);
-            if ($result) ++$records_success; // might as well add $result to
+            if ($result) ++$records_new; // might as well add $result to
                                              // success to avoid the if
                                              // statement
         }
