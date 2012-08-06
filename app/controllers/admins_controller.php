@@ -166,14 +166,12 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $success = false;
         } else {
             $success = true;
-            $new = $outcome['success'];
-            switch ($new) {
-                case 0: $msg = "Δεν εισήχθησαν νέοι φοιτητές"; break;
-                case 1: $msg = 'Εισήχθη 1 νέος φοιτητής'; break;
-                default:
-                    $msg = "Εισήχθησαν {$outcome['success']} νέοι φοιτητές";
-                    break;
-            }
+            $msg  = '<p>Η εισαγωγή φοιτητών ολοκληρώθηκε.</p><br>';
+            $msg .= "<p>Συνολικό πλήθος εγγραφών που διαβάστηκαν: {$outcome['total']}</p>";
+            $msg .= "<p>Χρήστες που δημιουργήθηκαν: {$outcome['new']}</p>";
+            $msg .= "<p>Χρήστες που εντοπίστηκαν ότι υπάρχουν ήδη: {$outcome['old']}</p>";
+            $msg .= "<p>Αγνοημένες εγγραφές λόγω ελλιπών στοιχείων: {$outcome['bad']}</p>";
+            $msg .= "<p>Σφάλματα εκτέλεσης: {$outcome['fail']}</p>";
         }
 
         return array('success' => $success, 'msg' => $msg);
@@ -311,7 +309,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // create new profile and an associated user and preferences
             $result = $this->Profile->saveAll($profile, $save_options);
             if ($result) {
-                ++$records_success;
+                ++$records_new;
                 // commit user it its profile and preferences have been created
                 $user_source->commit($this->User);
             } else {
@@ -326,8 +324,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                      'new' => $records_new,
                      'old' => $records_old,
                      'bad' => $records_bad,
-                     'fail' => $records_fail,
-                     'success' => $records_success);
+                     'fail' => $records_fail);
     }
 
     // Returns (mixed)
