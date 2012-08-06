@@ -125,7 +125,8 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                     } else {
                         $outcome = $this->handle_import($handle);
                         $msg = $outcome['msg'];
-                        $class = $outcome['success'] === true ? 'flashBlue' : 'flashRed';
+                        $class = $outcome['success'] === true ?
+                                'flashBlue' : 'flashRed';
                     }
                 } else {
                     $msg = 'Η μορφή του αρχείου δεν είναι η αναμενόμενη';
@@ -137,6 +138,8 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             }
             $this->Session->setFlash($msg, 'default', array('class' => $class));
             $this->redirect($this->referer());
+            $this->log('admin '.$this->Auth->User('id')." import csv: ($msg)",
+                       'info');
         }
     }
 
