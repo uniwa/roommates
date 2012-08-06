@@ -282,10 +282,16 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $user['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
 
             $this->User->id = null;
+            // creating the user is a two-step process because its id in needed
+            // in order to create the profile token
+            $user_source = $this->User->getDataSource();
+            $user_source->begin($this->User);
+
             $result = $this->User->save($user, false);
 
             if ($result === false) {
                 ++$records_fail;
+                $user_source->rollback($this->User);
                 continue;
             }
             $user_id = $this->User->id;
@@ -302,9 +308,14 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
             // create new profile and an associated user and preferences
             $result = $this->Profile->saveAll($profile, $save_options);
-            if ($result) ++$records_new; // might as well add $result to
-                                             // success to avoid the if
-                                             // statement
+            if ($result) {
+                ++$records_success;
+                // commit user it its profile and preferences have been created
+                $user_source->commit($this->User);
+            } else {
+                ++$records_fail;
+                $user_source->rollback($this->User);
+            }
         }
 
         setLocale(LC_CTYPE, $defaultLocale);
