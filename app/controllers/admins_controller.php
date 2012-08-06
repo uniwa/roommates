@@ -290,18 +290,18 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             }
             $user_id = $this->User->id;
 
-            $fresh['Profile']['user_id'] = $user_id;
-            $fresh['Profile']['firstname'] = $fname;
-            $fresh['Profile']['lastname'] = $lname;
+            $profile['Profile']['user_id'] = $user_id;
+            $profile['Profile']['firstname'] = $fname;
+            $profile['Profile']['lastname'] = $lname;
 
             // perhaps, use the email address from the csv ?
-            $fresh['Profile']['email'] = FRESH_EMAIL;
+            $profile['Profile']['email'] = FRESH_EMAIL;
             // use user_id as salt (and be in accordance with how such tokens
             // are generated)
-            $fresh['Profile']['token'] = $this->Token->generate($user_id);
+            $profile['Profile']['token'] = $this->Token->generate($user_id);
 
             // create new profile and an associated user and preferences
-            $result = $this->Profile->saveAll($fresh, $save_options);
+            $result = $this->Profile->saveAll($profile, $save_options);
             if ($result) ++$records_new; // might as well add $result to
                                              // success to avoid the if
                                              // statement
