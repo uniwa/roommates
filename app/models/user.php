@@ -3,7 +3,13 @@ class User extends AppModel{
 
     var $name = 'User';
     var $hasMany = array("House");
-    var $hasOne = array('Profile', 'RealEstate');
+    var $hasOne = array(
+        'RealEstate',
+        'Profile' => array(
+            'className' => 'Profile',
+            // allow cascade on delete
+            'dependent' => true,
+    ));
 
     var $validate = array(
         'username' => array(

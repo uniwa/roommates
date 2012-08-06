@@ -500,17 +500,9 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
     private function create_preferences() {
         $this->Preference->begin();
         $this->Preference->create();
-        $pref["Preference"]["age_min"] = NULL;
-        $pref["Preference"]["age_max"] = NULL;
-        $pref["Preference"]["pref_gender"] = 2;
-        $pref["Preference"]["pref_smoker"] = 2;
-        $pref["Preference"]["pref_pet"] = 2;
-        $pref["Preference"]["pref_child"] = 2;
-        $pref["Preference"]["pref_couple"] = 2;
-        /* house preferences - only fields that don't default to NULL */
-        $pref["Preference"]["pref_furnitured"] = 2;
-        $pref["Preference"]["pref_has_photo"] = 0;
-        $pref["Preference"]["pref_disability_facilities"] = 0;
+
+        // get default values in order to create an empty profile
+        $pref = array('Preference' => $this->Preference->defaults);
 
         if ( $this->Preference->save($pref) === False ) {
             $this->Preference->rollback();

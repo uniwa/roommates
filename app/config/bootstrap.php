@@ -66,3 +66,13 @@ Configure::load( 'redmine' );
 // repeats every year
 define('DEADLINE_MONTH', 11);
 define('DEADLINE_DAY', 30);
+
+// constants used by functions in importing students from csv file
+// delimiter that separates fields in the csv file (for importing students)
+define('FRESH_CSV_DELIMITER', ';');
+// default email for all imported students
+define('FRESH_EMAIL', 'roommates@edu.teiath.gr');
+// headers in the csv file that correspond to user-, first- and lastname
+define('FRESH_CSV_UNAME', 'Α_Μ');
+define('FRESH_CSV_FNAME', 'ΟΝΟΜΑ');
+define('FRESH_CSV_LNAME', 'ΕΠΩΝΥΜΟ');
