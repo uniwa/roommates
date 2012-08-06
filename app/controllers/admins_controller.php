@@ -166,14 +166,12 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $success = false;
         } else {
             $success = true;
-            $new = $outcome['success'];
-            switch ($new) {
-                case 0: $msg = "Δεν εισήχθησαν νέοι φοιτητές"; break;
-                case 1: $msg = 'Εισήχθη 1 νέος φοιτητής'; break;
-                default:
-                    $msg = "Εισήχθησαν {$outcome['success']} νέοι φοιτητές";
-                    break;
-            }
+            $msg  = '<p>Η εισαγωγή φοιτητών ολοκληρώθηκε.</p><br>';
+            $msg .= "<p>Συνολικό πλήθος εγγραφών που διαβάστηκαν: {$outcome['total']}</p>";
+            $msg .= "<p>Χρήστες που δημιουργήθηκαν: {$outcome['new']}</p>";
+            $msg .= "<p>Χρήστες που εντοπίστηκαν ότι υπάρχουν ήδη: {$outcome['old']}</p>";
+            $msg .= "<p>Αγνοημένες εγγραφές λόγω ελλιπών στοιχείων: {$outcome['bad']}</p>";
+            $msg .= "<p>Σφάλματα εκτέλεσης: {$outcome['fail']}</p>";
         }
 
         return array('success' => $success, 'msg' => $msg);
@@ -217,12 +215,15 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
     // returns
     //  false: when the supplied handle does not correspond to a supported csv
-    //  file or the mandatory fields are not included (i.e. there is no 'id',
+    //  file or not all mandatory fields are included (i.e. if there is no 'id',
     //  'firstname' or 'lastname' columns)
     //  or
     //  an array with keys:
-    //  [total] the total number of records in the csv (without the headers)
-    //  [success] the number of newly created students (User+Profile+Preference)
+    //  [total] # of records parsed (excluding headers)
+    //  [new] # of successfully created students (User+Profile+Preference)
+    //  [old] # of records ignored because username pre-existed
+    //  [bad] # of malformed records (eg, empty firstname)
+    //  [fail] # of failures due to db errors (only on extreme situations)
     private function create_fresh_student($handle) {
 
         // locale needs to be set in order for fgetcsv() to accept greek letters
@@ -245,8 +246,11 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             'Preference' => $this->Profile->defaults);
         $save_options = array('validate' => false);
 
-        $records_total = 0;
-        $records_success = 0;
+        $records_total = 0; // # of records parsed (excluding headers)
+        $records_new = 0; // # of successfully created students
+        $records_old = 0; // # of records ignored because username pre-existed
+        $records_bad = 0; // # of malformed records (eg, empty firstname)
+        $records_fail = 0; // # of failures due to db errors (extreme)
 
         // TODO: instead of writing one user at a time, create and store groups
         // of users
@@ -260,10 +264,16 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $fname = isset($data[$i_fname]) ? $data[$i_fname] : '';
             $lname = isset($data[$i_lname]) ? $data[$i_lname] : '';
 
-            if (empty($uname) || empty($fname) || empty($lname)) continue;
+            if (empty($uname) || empty($fname) || empty($lname)) {
+                ++$records_bad;
+                continue;
+            }
 
             // ignore duplicate
-            if ($this->User->findByUsername($uname)) continue;
+            if ($this->User->findByUsername($uname)) {
+                ++$records_old;
+                continue;
+            }
 
             // save User separately from the other models so as to get the id
             // and use it in the generation of the profile token
@@ -272,32 +282,49 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $user['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
 
             $this->User->id = null;
+            // creating the user is a two-step process because its id in needed
+            // in order to create the profile token
+            $user_source = $this->User->getDataSource();
+            $user_source->begin($this->User);
+
             $result = $this->User->save($user, false);
 
-            if ($result === false) continue;
+            if ($result === false) {
+                ++$records_fail;
+                $user_source->rollback($this->User);
+                continue;
+            }
             $user_id = $this->User->id;
 
-            $fresh['Profile']['user_id'] = $user_id;
-            $fresh['Profile']['firstname'] = $fname;
-            $fresh['Profile']['lastname'] = $lname;
+            $profile['Profile']['user_id'] = $user_id;
+            $profile['Profile']['firstname'] = $fname;
+            $profile['Profile']['lastname'] = $lname;
 
             // perhaps, use the email address from the csv ?
-            $fresh['Profile']['email'] = FRESH_EMAIL;
+            $profile['Profile']['email'] = FRESH_EMAIL;
             // use user_id as salt (and be in accordance with how such tokens
             // are generated)
-            $fresh['Profile']['token'] = $this->Token->generate($user_id);
+            $profile['Profile']['token'] = $this->Token->generate($user_id);
 
             // create new profile and an associated user and preferences
-            $result = $this->Profile->saveAll($fresh, $save_options);
-            if ($result) ++$records_success; // might as well add $result to
-                                             // success to avoid the if
-                                             // statement
+            $result = $this->Profile->saveAll($profile, $save_options);
+            if ($result) {
+                ++$records_new;
+                // commit user it its profile and preferences have been created
+                $user_source->commit($this->User);
+            } else {
+                ++$records_fail;
+                $user_source->rollback($this->User);
+            }
         }
 
         setLocale(LC_CTYPE, $defaultLocale);
 
         return array('total' => $records_total,
-                     'success' => $records_success);
+                     'new' => $records_new,
+                     'old' => $records_old,
+                     'bad' => $records_bad,
+                     'fail' => $records_fail);
     }
 
     // Returns (mixed)
