@@ -105,6 +105,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         // the selected element on header
         $this->set('selected_action', 'import_csv');
         $this->set('title_for_layout','Επιτυχόντες ΤΕΙ Αθήνας');
+        $this->checkAccess();
 
         if (isset($this->data)) {
 

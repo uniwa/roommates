@@ -44,6 +44,20 @@
                         'action' => 'api'), array('class' => $linkClass));
                 ?>
             </li>
+            <?php
+                if(!$userNull) {
+                    if($session->read('Auth.User.role') === 'admin') {
+                        $linkClass = 'menu-item menu-footer';
+                        if(isset($selected_action) && $selected_action == 'import_csv'){
+                            $linkClass .= ' menu-selected';
+                        }
+                        $link = array('controller' => 'admins',
+                                      'action' => 'import_csv');
+                        echo '<li>' . $this->Html->link('Νεοεισαχθέντες', $link,
+                            array('class' => $linkClass)) . '</li>';
+                    }
+                }
+            ?>
         </ul>
     </div>
     <div id='footer-main'>
