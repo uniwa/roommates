@@ -158,6 +158,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     //  tast to implement.
     //  [msg] string; description of the outcome
     public function handle_import($handle) {
+
         $outcome = $this->create_fresh_student($handle);
 
         fclose($handle);
@@ -231,7 +232,19 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         $defaultLocale = setLocale(LC_CTYPE, 0);
         setLocale(LC_CTYPE, 'el_GR.utf8');
 
-        $fields = $this->csv_fields($handle);
+        // try to detect file character encoding
+        $sample = fread($handle, 1024);
+        $encoding = mb_detect_encoding($sample);
+        $needs_conversion = !($encoding === CONVERT_CHARSET);
+
+        rewind($handle);
+        $line_read = fgets($handle);
+        if ($needs_conversion) {
+            $line_read = mb_convert_encoding(
+                $line_read, CONVERT_CHARSET, IMPORT_CHARSET);
+        }
+
+        $fields = $this->csv_fields($line_read);
         if (empty($fields)) return false;
         // variables defined: i_uname, i_fname and i_lname
         extract($fields);
@@ -255,7 +268,13 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         // TODO: instead of writing one user at a time, create and store groups
         // of users
-        while ($data = fgetcsv($handle, 0, FRESH_CSV_DELIMITER)) {
+        while ($line_read = fgets($handle)) {
+            if ($needs_conversion) {
+                $line_read = mb_convert_encoding(
+                    $line_read, CONVERT_CHARSET, IMPORT_CHARSET);
+            }
+            $data = str_getcsv($line_read, FRESH_CSV_DELIMITER);
+
             ++$records_total;
 
             // if any of the indices are not set for a particular record, then
@@ -340,9 +359,8 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     // with a value that corresponds to the index of each field
     // Uses constants to identify the actual value of the fields to pick (see
     // bootstrap.php).
-    private function csv_fields($handle) {
-
-        $fields = fgetcsv($handle, 0, FRESH_CSV_DELIMITER);
+    private function csv_fields($string) {
+        $fields = str_getcsv($string, FRESH_CSV_DELIMITER);
         // check if the handle corresponds to an acceptable csv stream
         if ($fields === false) return false;
 
@@ -361,5 +379,6 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                      'i_fname' => $i_fname,
                      'i_lname' => $i_lname);
     }
+
 }
 ?>
