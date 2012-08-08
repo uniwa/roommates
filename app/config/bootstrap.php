@@ -76,3 +76,7 @@ define('FRESH_EMAIL', 'roommates@edu.teiath.gr');
 define('FRESH_CSV_UNAME', 'Α_Μ');
 define('FRESH_CSV_FNAME', 'ΟΝΟΜΑ');
 define('FRESH_CSV_LNAME', 'ΕΠΩΝΥΜΟ');
+// character set to convert from
+define('IMPORT_CHARSET', 'ISO-8859-7');
+// character set to convert to
+define('CONVERT_CHARSET', 'UTF-8');
