@@ -125,7 +125,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                         $class = 'flashRed';
                     } else {
                         $outcome = $this->handle_import($handle);
-                        $this->set('import_report', $outcome['report']);
+                        $this->set('report', $outcome['report']);
 
                         $msg = $outcome['msg'];
                         $class = $outcome['success'] === true ?

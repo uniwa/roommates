@@ -17,5 +17,22 @@
             echo $this->Form->end();
         ?>
         </div>
+        <?php
+
+            // display a report of the outcome and provide descriptions and help
+            if (isset($report)) {
+                $li = '<li class="import-report">';
+                echo <<< REP
+    <h2 class="search-title">Αναφορά</h2>
+    <ul class="import-report">
+        {$li}<p>Πλήθος εγγραφών που διαβάστηκαν: {$report['total']}</p></li>
+        {$li}Χρήστες που δημιουργήθηκαν: {$report['new']}</li>
+        {$li}Χρήστες που εντοπίστηκαν ότι υπάρχουν ήδη: {$report['old']}</li>
+        {$li}Αγνοημένες εγγραφές λόγω ελλιπών στοιχείων: {$report['bad']}</li>
+        {$li}Σφάλματα εκτέλεσης: {$report['fail']}</li>
+    </ul>
+REP;
+            }
+        ?>
     </div>
 </div>
