@@ -1962,3 +1962,22 @@ ul.collapsible{
     margin: 48px auto;
     width: 480px;
 }
+
+.import-report ul {
+    margin: 10px auto;
+    list-style: none outside none;
+}
+
+.import-report li {
+    padding: 5px 0;
+}
+
+.report-stat {
+    font-weight: bold;
+}
+
+.report-hint {
+    text-align: justify;
+    padding: 0.7em 1em;
+    font-size: 90%;
+}
