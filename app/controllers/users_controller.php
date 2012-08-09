@@ -81,7 +81,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
         $target_profile = array(
             'controller' => 'profiles',
             'action' => 'view',
-            $this->Auth->user('id'));
+            /* before using this 'URL', the profile id must be set */);
 
         // redirect non-freshman users to homepage
         if (!$this->Auth->user('fresh')) {
@@ -132,6 +132,9 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
                 $msg .= "<br />Παρακαλώ αποσυνδεθείτε και ξανασυνδεθείτε με τα νέα στοιχεία πρόσβασης.";
                 $this->Session->setFlash($msg, 'default',
                     array('class' => 'flashBlue'));
+
+                $profile_id = $this->Profile->get_id($this->Auth->user('id'));
+                $target_profile[] = $profile_id;
                 $target = $target_profile;
             } else {
                 $msg = "Δεν ήταν δυνατή η μετάβαση στο λογαριασμό του Ιδρύματος.";

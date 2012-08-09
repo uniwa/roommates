@@ -106,6 +106,13 @@ class Profile extends AppModel {
 
 		else return true;
 	}
+
+    public function get_id($user_id) {
+        $options = array('conditions' => array('user_id' => $user_id),
+                         'fields' => 'id');
+        $result = $this->find('first', $options);
+        return isset($result['Profile']['id']) ? $result['Profile']['id'] : false;
+    }
 }
 
 ?>
