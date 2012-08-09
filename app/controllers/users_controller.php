@@ -398,6 +398,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
                 $this->User->id = $this->Auth->user('id');
                 $user = $this->User->read();
+
                 /* Update user field which determines that user accepted the terms*/
                 $user["User"]["terms_accepted"] = 1;
                 $this->User->save($user, false);
@@ -408,9 +409,13 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
                     $pref_id = $this->create_preferences();
                     $profile_id = $this->create_profile($this->User->id, $pref_id);
-                    $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
+                } else {
+                    // if profile already exists for this user, get its id
+                    $profile_id = $this->Profile->get_id($this->User->id);
                 }
 
+                $this->redirect(array('controller' => 'profiles',
+                                      'action' => 'edit', $profile_id));
             } else {
 
                 $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default',
