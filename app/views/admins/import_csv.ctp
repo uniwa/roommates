@@ -24,6 +24,8 @@
                 $li = '<li class="import-report">';
                 echo <<< REP
         <div>
+            <br />
+            <hr />
             <h2 class="search-title">Αναφορά</h2>
             <ul class="import-report">
                 {$li}
