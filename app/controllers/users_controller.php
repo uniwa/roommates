@@ -72,6 +72,118 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 		$this->redirect( $this->Auth->logout() );
 	}
 
+    // Transition freshman users from temporary account to ldap account
+    function transition() {
+        // define common redirect targets
+        $target_transition = array(
+            'controller' => 'users',
+            'action' => 'transition');
+        $target_profile = array(
+            'controller' => 'profiles',
+            'action' => 'view',
+            /* before using this 'URL', the profile id must be set */);
+
+        // redirect non-freshman users to homepage
+        if (!$this->Auth->user('fresh')) {
+            $this->redirect('/');
+        }
+
+        // this variable is used to display properly
+        // the selected element on header
+        $this->set('selected_action', 'transition');
+        $this->set('title_for_layout', 'Μετάβαση σε λογαριασμό του ΤΕΙ Αθήνας');
+
+        if (isset($this->data) && $this->Auth->user()) {
+            // check if username already exists in db and display warning
+            $this->User->recursive = -1;
+            $params = array(
+                'conditions' => array(
+                    'username' => $this->data['User']['username']));
+            $user = $this->User->find('first', $params);
+
+            if ($user) {
+                $msg = "Υπάρχει ήδη χρήστης με το όνομα '{$user['User']['username']}' στην υπηρεσία";
+                $this->Session->setFlash($msg, 'default',
+                    array('class' => 'flashRed'));
+                $this->redirect($target_transition);
+            }
+
+            // verify supplied credentials against ldap
+            $userdata = array(
+                'User.username' => $this->data['User']['username'],
+                'User.password' => $this->data['User']['ldap_password']);
+            $ldapInfo = $this->Auth->_ldapAuth($userdata);
+            if (!$ldapInfo) {
+                $msg = "Λάθος όνομα χρήστη ή/και κωδικός πρόσβασης!";
+                $msg .= "<br />Επιβεβαιώστε τα στοιχεία πρόσβασης και δοκιμάστε ξανά.";
+                $this->Session->setFlash($msg, 'default',
+                    array('class' => 'flashRed'));
+                $this->redirect($target_transition);
+            }
+
+            // replace username, email, firstname, lastname, flag & empty password
+            unset($ldapInfo['name']);
+            $ldapInfo['user_id'] = $this->Auth->user('id');
+            $ldapInfo['username'] = $this->data['User']['username'];
+            $replaced = $this->replaceUserInfo($ldapInfo);
+
+            if ($replaced) {
+                $msg = "Η μετάβαση στο λογαριασμό του Ιδρύματος ολοκληρώθηκε με επιτυχία.";
+                $msg .= "<br />Παρακαλώ αποσυνδεθείτε και ξανασυνδεθείτε με τα νέα στοιχεία πρόσβασης.";
+                $this->Session->setFlash($msg, 'default',
+                    array('class' => 'flashBlue'));
+
+                $profile_id = $this->Profile->get_id($this->Auth->user('id'));
+                $target_profile[] = $profile_id;
+                $target = $target_profile;
+            } else {
+                $msg = "Δεν ήταν δυνατή η μετάβαση στο λογαριασμό του Ιδρύματος.";
+                $msg .= "<br />Παρακαλώ επιβεβαιώστε τα στοιχεία πρόσβασης και προσπαθείστε ξανά.";
+                $this->Session->setFlash($msg, 'default',
+                    array('class' => 'flashRed'));
+                $target = $target_transition;
+            }
+
+            $this->redirect($target);
+        }
+    }
+
+    // Replace user info, including profile info with data from LDAP
+    // $data contains the following:
+    // user_id, username, first_name, last_name, email
+    private function replaceUserInfo($data) {
+        // get current user info
+        $this->User->id = $data['user_id'];
+        $this->User->recursive = 1;
+        $user = $this->User->read();
+
+        if (!empty($user)) {
+            // unset unneeded fields
+            unset($user['RealEstate']);
+            unset($user['House']);
+
+            // replace with new info
+            $user['User']['username'] = $data['username'];
+            $user['User']['password'] = '';
+            $user['User']['fresh'] = 0;
+            $user['Profile']['firstname'] = $data['first_name'];
+            $user['Profile']['lastname'] = $data['last_name'];
+            $user['Profile']['email'] = $data['email'];
+
+            $options = array('validate' => false);
+            $saved = $this->User->saveAll($user, $options);
+            if ($saved) {
+                // replace in session variables
+                $this->Session->write('Auth.User.username', $data['username']);
+                $this->Session->write('Auth.User.fresh', 0);
+            }
+
+            return $saved;
+        }
+
+        return false;
+    }
+
     // Enables currently logged in 'admin' user to act with the permissions of
     // $id user. Currently, $id may only belong to a 'realestate' of type
     // 'owner'. If this function is invoked by a non-admin user (with or without
@@ -286,6 +398,7 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
                 $this->User->id = $this->Auth->user('id');
                 $user = $this->User->read();
+
                 /* Update user field which determines that user accepted the terms*/
                 $user["User"]["terms_accepted"] = 1;
                 $this->User->save($user, false);
@@ -296,9 +409,13 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
 
                     $pref_id = $this->create_preferences();
                     $profile_id = $this->create_profile($this->User->id, $pref_id);
-                    $this->redirect(array('controller' => 'profiles', 'action' => 'edit', $profile_id));
+                } else {
+                    // if profile already exists for this user, get its id
+                    $profile_id = $this->Profile->get_id($this->User->id);
                 }
 
+                $this->redirect(array('controller' => 'profiles',
+                                      'action' => 'edit', $profile_id));
             } else {
 
                 $this->Session->setFlash('Δεν έχετε δεχτεί τους όρους χρήσης', 'default',
@@ -391,17 +508,9 @@ $this->log('user '.$this->Auth->User('username').' logout', 'info');
     private function create_preferences() {
         $this->Preference->begin();
         $this->Preference->create();
-        $pref["Preference"]["age_min"] = NULL;
-        $pref["Preference"]["age_max"] = NULL;
-        $pref["Preference"]["pref_gender"] = 2;
-        $pref["Preference"]["pref_smoker"] = 2;
-        $pref["Preference"]["pref_pet"] = 2;
-        $pref["Preference"]["pref_child"] = 2;
-        $pref["Preference"]["pref_couple"] = 2;
-        /* house preferences - only fields that don't default to NULL */
-        $pref["Preference"]["pref_furnitured"] = 2;
-        $pref["Preference"]["pref_has_photo"] = 0;
-        $pref["Preference"]["pref_disability_facilities"] = 0;
+
+        // get default values in order to create an empty profile
+        $pref = array('Preference' => $this->Preference->defaults);
 
         if ( $this->Preference->save($pref) === False ) {
             $this->Preference->rollback();

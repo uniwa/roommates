@@ -32,6 +32,7 @@
             $userid = $this->Session->read('Auth.User.id');
             $userNull = $this->Session->read("Auth.User") == NULL;
             $userBanned = $this->Session->read('Auth.User.banned');
+            $freshman = $this->Session->read('Auth.User.fresh');
             echo $this->element('topmenu', array("userid" => $userid));
             echo $this->element('topuser', array("userid" => $userid));
         ?>
@@ -40,6 +41,9 @@
         <?php
             if($userBanned){
                 echo $this->element('banned');
+            }
+            if ($freshman) {
+                echo $this->element('freshman');
             }
             echo $this->Session->flash();
             echo $this->Session->flash('auth');
@@ -66,4 +70,3 @@
     <?php echo $this->element('piwik'); ?>
 </body>
 </html>
-

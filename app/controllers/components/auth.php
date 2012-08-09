@@ -968,6 +968,7 @@ class AuthComponent extends Object {
                         'password' => '',
                         'role' => 'user',
                         'banned' => 0,
+                        'fresh' => 0,
                         'terms_accepted' => 0,
                         'enabled' => 1
                     ) ), false );

@@ -16,6 +16,27 @@ class  AppController extends Controller{
 
 
     function beforeFilter(){
+        // Check if the transition deadline has passed
+        $passedDeadline = false;
+        $month = (int)date('m');
+        $day = (int)date('d');
+        if ($month > DEADLINE_MONTH) {
+            $passedDeadline = true;
+        } else {
+            if (($month = DEADLINE_MONTH) && ($day > DEADLINE_DAY)) {
+                $passedDeadline = true;
+            }
+        }
+
+        // For logged in fresh users passed the trasition deadline,
+        // allow logout or force redirect to transition view
+        if ($passedDeadline && $this->Auth->user('fresh')) {
+            if (($this->name !== 'Users')
+                || (($this->action !== 'logout') && ($this->action !== 'transition'))){
+                $this->redirect(array('controller' => 'users', 'action' => 'transition'));
+            }
+        }
+
         /*
          *  we redirect only if user requests a specific page and is not logged in
          */

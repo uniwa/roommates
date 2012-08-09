@@ -71,6 +71,7 @@ CREATE  TABLE IF NOT EXISTS `roommates`.`users` (
   `banned` TINYINT(1) NOT NULL DEFAULT 0 ,
   `terms_accepted` TINYINT(1) NOT NULL DEFAULT 0 ,
   `enabled` TINYINT(1) NOT NULL DEFAULT 1 ,
+  `fresh` TINYINT(1) NOT NULL DEFAULT 0 ,
   `last_login` DATETIME NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
@@ -169,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `preferences` (
   `price_min` INT NULL,
   `price_max` INT NULL,
   `area_min` INT NULL,
-  `area_max` INT NULL, 
+  `area_max` INT NULL,
   `pref_municipality` INT NULL,
   `bedroom_num_min` TINYINT NULL,
   `bathroom_num_min` TINYINT NULL DEFAULT NULL,

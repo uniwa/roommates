@@ -619,6 +619,15 @@ input[type='submit']{
     background-color: #f44;
 }
 
+.freshman-msg {
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    margin: 0px auto 0px auto;
+    padding: 4px 0px 6px 0px;
+    background-color: #acf;
+}
+
 .terms h2, .faq h2 {
 	font-size:1.2em;
 	font-weight: bold;
@@ -919,7 +928,7 @@ img.info{
     cursor: pointer;
 }
 
-.search-title{
+.search-title, .import-title{
     margin: 12px auto 0px auto;
     text-align: center;
     font-family: 'Didact Gothic', Verdana, Tahoma, Arial, sans-serif;
@@ -1943,4 +1952,32 @@ ul.collapsible{
     border: 1px solid #ddd;
     padding: 2px;
     width: 300px;
+}
+
+.mainImport{
+    width: 100%;
+}
+
+#import-cont{
+    margin: 48px auto;
+    width: 480px;
+}
+
+.import-report ul {
+    margin: 10px auto;
+    list-style: none outside none;
+}
+
+.import-report li {
+    padding: 5px 0;
+}
+
+.report-stat {
+    font-weight: bold;
+}
+
+.report-hint {
+    text-align: justify;
+    padding: 0.7em 1em;
+    font-size: 90%;
 }
