@@ -125,7 +125,9 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                         $class = 'flashRed';
                     } else {
                         $outcome = $this->handle_import($handle);
-                        $this->set('report', $outcome['report']);
+                        if ($outcome != false) {
+                            $this->set('report', $outcome['report']);
+                        }
 
                         $msg = $outcome['msg'];
                         $class = $outcome['success'] === true ?
@@ -244,11 +246,6 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     //  [bad] # of malformed records (eg, empty firstname)
     //  [fail] # of failures due to db errors (only on extreme situations)
     private function create_fresh_student($handle) {
-
-        // locale needs to be set in order for fgetcsv() to accept greek letters
-        $defaultLocale = setLocale(LC_CTYPE, 0);
-        setLocale(LC_CTYPE, 'el_GR.utf8');
-
         // try to detect file character encoding
         $sample = fread($handle, 1024);
         $encoding = mb_detect_encoding($sample);
@@ -354,8 +351,6 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                 $user_source->rollback($this->User);
             }
         }
-
-        setLocale(LC_CTYPE, $defaultLocale);
 
         return array('total' => $records_total,
                      'new' => $records_new,
