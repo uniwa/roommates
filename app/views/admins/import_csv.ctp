@@ -23,14 +23,42 @@
             if (isset($report)) {
                 $li = '<li class="import-report">';
                 echo <<< REP
-    <h2 class="search-title">Αναφορά</h2>
-    <ul class="import-report">
-        {$li}<p>Πλήθος εγγραφών που διαβάστηκαν: {$report['total']}</p></li>
-        {$li}Χρήστες που δημιουργήθηκαν: {$report['new']}</li>
-        {$li}Χρήστες που εντοπίστηκαν ότι υπάρχουν ήδη: {$report['old']}</li>
-        {$li}Αγνοημένες εγγραφές λόγω ελλιπών στοιχείων: {$report['bad']}</li>
-        {$li}Σφάλματα εκτέλεσης: {$report['fail']}</li>
-    </ul>
+        <div>
+            <h2 class="search-title">Αναφορά</h2>
+            <ul class="import-report">
+                {$li}
+                    <p class="report-stat">Πλήθος εγγραφών: {$report['total']}</p>
+                    <p class="report-hint">
+                        Το συνολικό πλήθος των εγγραφών που εντοπίστηκαν μέσα στο αρχείο.
+                    </p>
+                </li>
+                {$li}
+                    <p class="report-stat">Νέοι χρήστες: {$report['new']}</p>
+                    <p class="report-hint">
+                        Πλήθος λογαριασμών που δημιουργήθηκαν βάσει των εγγραφών του αρχείου.
+                    </p>
+                </li>
+                {$li}
+                    <p class="report-stat">Ήδη υπαρκτοί χρήστες: {$report['old']}</p>
+                    <p class="report-hint">
+                        Εγγραφές του αρχείου που αγνοήθηκαν επειδή ο ΑΜ τους ταυτίζεται με όνομα υπαρκτού χρήστη της υπηρεσίας.
+                    <p>
+                </li>
+                {$li}
+                    <p class="report-stat">Ελλιπή στοιχεία: {$report['bad']}<p>
+                    <p class="report-hint">
+                        Εγγραφές του αρχείου που αγνοήθηκαν λόγω ελλιπών στοιχείων.
+                        Βεβαιωθείτε για την ορθότητα του αρχείου και προσπαθήστε πάλι.
+                    </p>
+                </li>
+                {$li}
+                    <p class="report-stat">Σφάλματα εκτέλεσης: {$report['fail']}</p>
+                    <p class="report-hint">
+                        Εγγραφές οι οποίες δεν κατέστη δυνατό να δημιουργήσουν νέους λογαριασμούς λόγω αποτυχίας του συστήματος.
+                    </p>
+                </li>
+            </ul>
+        </div>
 REP;
             }
         ?>

@@ -1966,9 +1966,18 @@ ul.collapsible{
 .import-report ul {
     margin: 10px auto;
     list-style: none outside none;
-    text-align: justify;
 }
 
 .import-report li {
     padding: 5px 0;
+}
+
+.report-stat {
+    font-weight: bold;
+}
+
+.report-hint {
+    text-align: justify;
+    padding: 0.7em 1em;
+    font-size: 90%;
 }
