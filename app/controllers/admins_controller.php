@@ -257,7 +257,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // TODO: can move these to a 'defaults' variable in Profile model
                                'gender' => 0,
                                'visible' => 1),
-            'Preference' => $this->Profile->defaults);
+            'Preference' => $this->Preference->defaults);
         $save_options = array('validate' => false);
 
         $records_total = 0; // # of records parsed (excluding headers)
