@@ -125,6 +125,8 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                         $class = 'flashRed';
                     } else {
                         $outcome = $this->handle_import($handle);
+                        $this->set('import_report', $outcome['report']);
+
                         $msg = $outcome['msg'];
                         $class = $outcome['success'] === true ?
                                 'flashBlue' : 'flashRed';
@@ -138,7 +140,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
                 $class = 'flashRed';
             }
             $this->Session->setFlash($msg, 'default', array('class' => $class));
-            $this->redirect($this->referer());
+
             $this->log('admin '.$this->Auth->User('id')." import csv: ($msg)",
                        'info');
         }
@@ -156,7 +158,9 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     //  Identifying how many records have been actually inserted out of the
     //  total number of records in the csv is not supported but it is an easy
     //  tast to implement.
-    //  [msg] string; description of the outcome
+    //  [msg] string; general description of the outcome; may be used as flash
+    //  message
+    //  [report] array, as returned by create_fresh_student()
     public function handle_import($handle) {
 
         $outcome = $this->create_fresh_student($handle);
@@ -167,16 +171,29 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $msg = 'Η μορφή του αρχείου δεν είναι η αναμενόμενη';
             $success = false;
         } else {
-            $success = true;
-            $msg  = '<p>Η εισαγωγή φοιτητών ολοκληρώθηκε.</p><br>';
-            $msg .= "<p>Συνολικό πλήθος εγγραφών που διαβάστηκαν: {$outcome['total']}</p>";
-            $msg .= "<p>Χρήστες που δημιουργήθηκαν: {$outcome['new']}</p>";
-            $msg .= "<p>Χρήστες που εντοπίστηκαν ότι υπάρχουν ήδη: {$outcome['old']}</p>";
-            $msg .= "<p>Αγνοημένες εγγραφές λόγω ελλιπών στοιχείων: {$outcome['bad']}</p>";
-            $msg .= "<p>Σφάλματα εκτέλεσης: {$outcome['fail']}</p>";
+            $total = $outcome['total'];
+            $new = $outcome['new'];
+            if ($total == 0) {
+                $msg = 'Δεν εντοπίστηκαν εγγραφές στο αρχείο.';
+                $success = false;
+            } else if ($total == $new) {
+                $msg = 'Η εισαγωγή φοιτητών ολοκληρώθηκε με επιτυχία.';
+                $success = true;
+            } else {
+
+                if ($new > 0) {
+                    $msg = '<p>Εισήχθησαν νέοι φοιτητές. Ωστόσο, όχι όλοι.</p>';
+                } else {
+                    $msg = '<p>Δεν εισήχθησαν νέοι φοιτητές.</p>';
+                }
+                $msg .= '<p>Δείτε την αναφορά για περισσότερες λεπτομέρειες.</p>';
+                $success = false;
+            }
         }
 
-        return array('success' => $success, 'msg' => $msg);
+        return array('success' => $success,
+                     'msg' => $msg,
+                     'report' => $outcome);
     }
 
     // Removes all user records that have their 'fresh' attribute set to true.
