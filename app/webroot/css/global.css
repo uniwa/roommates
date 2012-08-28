@@ -1777,9 +1777,13 @@ ul.collapsible{
     border: 1px solid #999;
     background-color: #eef;
     margin: 32px 0px 0px 0px;
-    padding: 6px 0;
+    padding: 5px;
     font-style: italic;
-    text-align: center;
+    text-align: justify;
+}
+
+.help-text p {
+    padding: 4px 0;
 }
 
 /* PROFILE EDIT VIEW */
