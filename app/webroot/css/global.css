@@ -1773,7 +1773,7 @@ ul.collapsible{
     padding: 1px 0 0 0;
 }
 
-#loginView #help-text{
+#loginView .help-text{
     border: 1px solid #999;
     background-color: #eef;
     margin: 32px 0px 0px 0px;
