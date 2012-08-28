@@ -318,9 +318,9 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // save User separately from the other models so as to get the id
             // and use it in the generation of the profile token
             $user['User']['username'] = $uname;
-            $password = $lname[0] . $fname[0] . $fathername[0];
+            $password = mb_substr($lname, 0 ,1) . mb_substr($fname, 0 ,1) . mb_substr($fathername, 0 ,1);
             if (! empty($mothername)) {
-                $password .= $mothername[0];
+                $password .= mb_substr($mothername, 0 ,1);
             }
             $salt = Configure::read('Security.salt');
             $user['User']['password'] = Security::hash($salt . $password);
