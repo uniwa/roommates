@@ -76,6 +76,10 @@ define('FRESH_EMAIL', 'roommates@edu.teiath.gr');
 define('FRESH_CSV_UNAME', 'Α_Μ');
 define('FRESH_CSV_FNAME', 'ΟΝΟΜΑ');
 define('FRESH_CSV_LNAME', 'ΕΠΩΝΥΜΟ');
+# father's and mother's name are used in conjunction with {first,last}name
+# to form the user's password
+define('FRESH_CSV_FATHERNAME', 'ΠΑΤΡΩΝΥΜΟ');
+define('FRESH_CSV_MOTHERNAME', 'ΜΗΤΡΩΝΥΜΟ');
 // character set to convert from
 define('IMPORT_CHARSET', 'ISO-8859-7');
 // character set to convert to
