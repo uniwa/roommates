@@ -18,30 +18,35 @@
         ?>
         </div>
         <div>
-            <h4>Οδηγίες προετοιμασίας του αρχείου</h4>
-            <p>Από Excel
+            <br />
+            <br />Οδηγίες προετοιμασίας του αρχείου
+            <br />
+            <br />Από Excel
+            <br />
             <br />Αποθήκευση ως...
             <br />Αποθήκευση ως τύπου: CSV (Οριοθετημένο με κόμματα)
             <?php
-                $this->Html->image('01.png', array(
+                echo $this->Html->image('01.png', array(
                     'alt' => 'αποθήκευση ως CSV'));
             ?>
+            <br />
             <br />Από NotePad
+            <br />
             <br />Αρχείο, Άνοιγμα
             <br />Αρχεία τύπου: Όλα τα αρχεία
             <br />~επιλογή και άνοιγμα του csv~
             <?php
-                $this->Html->image('02.png', array(
+                echo $this->Html->image('02.png', array(
                     'alt' => 'open all files'));
             ?>
+            <br />
             <br />Αποθήκευση ως...
             <br />Αποθήκευση ως τύπου: Όλα τα αρχεία
             <br />Κωδικοποίηση: UTF-8
             <?php
-                $this->Html->image('03.png', array(
+                echo $this->Html->image('03.png', array(
                     'alt' => 'save as utf8'));
             ?>
-            </p>
         </div>
         <?php
 
