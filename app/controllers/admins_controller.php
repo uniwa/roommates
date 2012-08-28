@@ -263,7 +263,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         $fields = $this->csv_fields($line_read);
         if (empty($fields)) return false;
-        // variables defined: i_uname, i_fname and i_lname
+        // variables defined: i_uname, i_fname, i_lname, i_fathername, i_mothername
         extract($fields);
 
         // set default values that apply to all new users
@@ -300,8 +300,11 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $uname = isset($data[$i_uname]) ? $data[$i_uname] : '';
             $fname = isset($data[$i_fname]) ? $data[$i_fname] : '';
             $lname = isset($data[$i_lname]) ? $data[$i_lname] : '';
+            $fathername = isset($data[$i_fathername]) ? $data[$i_fathername] : '';
+            $mothername = isset($data[$i_mothername]) ? $data[$i_mothername] : '';
 
-            if (empty($uname) || empty($fname) || empty($lname)) {
+            // note: $mothername may be empty
+            if (empty($uname) || empty($fname) || empty($lname) || empty($fathername)) {
                 ++$records_bad;
                 continue;
             }
@@ -315,8 +318,12 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // save User separately from the other models so as to get the id
             // and use it in the generation of the profile token
             $user['User']['username'] = $uname;
-            // TODO: set the appropriate hash
-            $user['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
+            $password = $lname[0] . $fname[0] . $fathername[0];
+            if (! empty($mothername)) {
+                $password .= $mothername[0];
+            }
+            $salt = Configure::read('Security.salt');
+            $user['User']['password'] = Security::hash($salt . $password);
 
             $this->User->id = null;
             // creating the user is a two-step process because its id in needed
