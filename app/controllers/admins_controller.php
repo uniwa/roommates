@@ -367,12 +367,15 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     // Returns (mixed)
     // false, if the specified handle does not correspond to a csv file or if it
     // a csv file that does not contain the mandatory fields ('username',
-    // 'firstname', 'lastname'),
+    // 'firstname', 'lastname', 'fathername', 'mothername'),
     //
     // an array with keys:
     //  [i_uname]
     //  [i_fname]
     //  [i_lname]
+    //  [i_fathername]
+    //  [i_mothername]
+    //
     // with a value that corresponds to the index of each field
     // Uses constants to identify the actual value of the fields to pick (see
     // bootstrap.php).
