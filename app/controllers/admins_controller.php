@@ -263,7 +263,7 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
 
         $fields = $this->csv_fields($line_read);
         if (empty($fields)) return false;
-        // variables defined: i_uname, i_fname and i_lname
+        // variables defined: i_uname, i_fname, i_lname, i_fathername, i_mothername
         extract($fields);
 
         // set default values that apply to all new users
@@ -300,8 +300,11 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             $uname = isset($data[$i_uname]) ? $data[$i_uname] : '';
             $fname = isset($data[$i_fname]) ? $data[$i_fname] : '';
             $lname = isset($data[$i_lname]) ? $data[$i_lname] : '';
+            $fathername = isset($data[$i_fathername]) ? $data[$i_fathername] : '';
+            $mothername = isset($data[$i_mothername]) ? $data[$i_mothername] : '';
 
-            if (empty($uname) || empty($fname) || empty($lname)) {
+            // note: $mothername may be empty
+            if (empty($uname) || empty($fname) || empty($lname) || empty($fathername)) {
                 ++$records_bad;
                 continue;
             }
@@ -315,8 +318,12 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
             // save User separately from the other models so as to get the id
             // and use it in the generation of the profile token
             $user['User']['username'] = $uname;
-            // TODO: set the appropriate hash
-            $user['User']['password'] = '8f9bc2b8007a93584efdf303b83619f1fc147016';
+            $password = mb_substr($lname, 0 ,1) . mb_substr($fname, 0 ,1) . mb_substr($fathername, 0 ,1);
+            if (! empty($mothername)) {
+                $password .= mb_substr($mothername, 0 ,1);
+            }
+            $salt = Configure::read('Security.salt');
+            $user['User']['password'] = Security::hash($salt . $password);
 
             $this->User->id = null;
             // creating the user is a two-step process because its id in needed
@@ -367,12 +374,15 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
     // Returns (mixed)
     // false, if the specified handle does not correspond to a csv file or if it
     // a csv file that does not contain the mandatory fields ('username',
-    // 'firstname', 'lastname'),
+    // 'firstname', 'lastname', 'fathername', 'mothername'),
     //
     // an array with keys:
     //  [i_uname]
     //  [i_fname]
     //  [i_lname]
+    //  [i_fathername]
+    //  [i_mothername]
+    //
     // with a value that corresponds to the index of each field
     // Uses constants to identify the actual value of the fields to pick (see
     // bootstrap.php).
@@ -385,16 +395,22 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         $i_uname = array_search(FRESH_CSV_UNAME, $fields);
         $i_fname = array_search(FRESH_CSV_FNAME, $fields);
         $i_lname = array_search(FRESH_CSV_LNAME, $fields);
+        $i_fathername = array_search(FRESH_CSV_FATHERNAME, $fields);
+        $i_mothername = array_search(FRESH_CSV_MOTHERNAME, $fields);
 
         // if any of the mandatory indices cannot be found, then terminate the
         // process
-        if ( $i_uname === false || $i_fname === false || $i_lname === false) {
+        if ( $i_uname === false || $i_fname === false || $i_lname === false ||
+             $i_fathername === false || $i_mothername === false ) {
             return false;
         }
 
         return array('i_uname' => $i_uname,
                      'i_fname' => $i_fname,
-                     'i_lname' => $i_lname);
+                     'i_lname' => $i_lname,
+                     'i_fathername' => $i_fathername,
+                     'i_mothername' => $i_mothername
+                 );
     }
 
 }
