@@ -385,16 +385,22 @@ $this->log('admin '.$this->Auth->User('id').' manage realestates', 'info');
         $i_uname = array_search(FRESH_CSV_UNAME, $fields);
         $i_fname = array_search(FRESH_CSV_FNAME, $fields);
         $i_lname = array_search(FRESH_CSV_LNAME, $fields);
+        $i_fathername = array_search(FRESH_CSV_FATHERNAME, $fields);
+        $i_mothername = array_search(FRESH_CSV_MOTHERNAME, $fields);
 
         // if any of the mandatory indices cannot be found, then terminate the
         // process
-        if ( $i_uname === false || $i_fname === false || $i_lname === false) {
+        if ( $i_uname === false || $i_fname === false || $i_lname === false ||
+             $i_fathername === false || $i_mothername === false ) {
             return false;
         }
 
         return array('i_uname' => $i_uname,
                      'i_fname' => $i_fname,
-                     'i_lname' => $i_lname);
+                     'i_lname' => $i_lname,
+                     'i_fathername' => $i_fathername,
+                     'i_mothername' => $i_mothername
+                 );
     }
 
 }
