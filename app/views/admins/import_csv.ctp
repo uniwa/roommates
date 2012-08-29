@@ -17,7 +17,7 @@
             echo $this->Form->end();
         ?>
         </div>
-        <div>
+        <div class='csv-help'>
             <br />
             <br />Οδηγίες προετοιμασίας του αρχείου
             <br />

@@ -1985,3 +1985,15 @@ ul.collapsible{
     padding: 0.7em 1em;
     font-size: 90%;
 }
+
+.csv-help {
+    margin-top: 10px;
+    background-color: #EEEEFF;
+    padding: 5px;
+    border: 1px solid #999999;
+}
+
+.csv-help img {
+    padding: 5px 0;
+    width: 470px;
+}
