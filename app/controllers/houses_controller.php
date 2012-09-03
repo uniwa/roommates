@@ -17,7 +17,7 @@ class HousesController extends AppController {
 
         $this->set('title_for_layout','Σπίτια');
         if ($this->RequestHandler->isRss()) {
-            $conditions = array("User.banned" => 0, 'House.visible' => 1);
+            $conditions = array("User.banned" => 0, 'House.visible' => 1, 'User.enabled' => 1);
             $houses = $this->House->find('all',
                         array('limit' => 50,
                               'order' => 'House.modified DESC',
