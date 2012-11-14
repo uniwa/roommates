@@ -818,6 +818,26 @@ img.info{
 }
 
 /* LOGIN */
+#loginView #homeText{
+    float: left;
+    width: 620px;
+    margin: 20px 30px 20px 30px;
+    font-size: 14px;
+}
+
+#loginView #loginForm{
+    float: left;
+    width: 216px;
+    padding: 10px;
+    margin: 10px 30px 10px 10px;
+    border: 2px solid #8bf;
+}
+
+#loginView #help-cont{
+    text-align: center;
+    margin: 40px 30px 20px 30px;
+}
+
 #loginView .loginContent{
     margin: 0px auto 0px auto;
     padding: 8px 0px 0px 0px;
