@@ -1,43 +1,60 @@
 <div id='loginView'>
-    <div id='loginForm' class='mainCenter'>
-        <?php
-            echo $this->Form->create('User', array('action' => 'login', 'class' => 'loginForm'));
-        ?>
-        <div class='loginCredential'>
-            Συμπληρώστε το όνομα χρήστη και το συνθηματικό σας:
+    <div id='startPage'>
+        <div id='homeText'>
+            Καλώς ήρθατε στην ιστοσελίδα της Υπηρεσίας Εύρεσης Συγκατοίκων.
+            <br /><br />Η υπηρεσία δίνει τη δυνατότητα στους φοιτητές του ΤΕΙ Αθήνας να αναζητούν σπίτι προς ενοικίαση ή και συγκάτοικο με βάση συγκεκριμένα κριτήρια. Επίσης δίνει τη δυνατότητα σε ενδαφερόμενους ιδιοκτήτες σπιτιών και μεσιτικά γραφεία να αναρτήσουν αγγελίες ενοικίασης των σπιτιών τους με σκοπό να προσελκύσουν τους φοιτητές του ΤΕΙ Αθήνας.
+            <br /><br />Η Υπηρεσία απευθύνεται:
+            <br />- σε μεσιτικά γραφεία που επιθυμούν να καταχωρούν αγγελίες ενοικίασης ακινήτων για φοιτητές.
+            <br />- σε φοιτητές του ΤΕΙ Αθήνας που αναζητούν συγκάτοικο.
+            <br />- σε ιδιώτες που επιθυμούν να νοικιάσουν το σπίτι τους σε φοιτητές.
+            <br /><br />Η υπηρεσία παρέχει τις παρακάτω λειτουργίες:
+            <br />- καταχώρηση αγγελίας εύρεσης συγκατοίκου
+            <br />- αυτόματη πολυκαναλική ενημέρωση μέσω email και RSS feed για συγκατοίκους που ταιριάζουν στις προτιμήσεις του χρήστη
+            <br />- καταχώρηση ακινήτου από την Υπηρεσία Φοιτητικής Μέριμνας του ΤΕΙ Αθήνας και από πιστοποιημένους ιδιοκτήτες και μεσίτες
+            <br />- αναζήτηση ακινήτου βάσει συγκεκριμένων κριτηρίων
+            <br />- αναζήτηση συγκατοίκου βάσει συγκεκριμένων κριτηρίων
+            <br />- ανάρτηση όλων των αγγελιών ακινήτων σε ειδική σελίδα στο Facebook για την ευρύτερη ενημέρωση των χρηστών
+            <br /><br />Η υπηρεσία βασίζεται σε web-based πληροφοριακό σύστημα του οποίου τη λειτουργία, διαχείριση και υποστήριξη αναλαμβάνουν οι αρμόδιες ομάδες του ΤΕΙ Αθήνας. Η υπηρεσία παρέχεται από το Τμήμα Σπουσών και Σπουδαστικής Μέριμνας.
         </div>
-        <div class='loginContent'>
-            <div class='loginCredential'>
-                <?php
-                    echo $this->Form->input('username',
-                        array('label' => 'Όνομα χρήστη', 'class' => 'loginInputCredential', 'autofocus' => 'autofocus' ));
-                ?>
-            </div>
-            <div class='loginCredential'>
-                <?php
-                    echo $this->Form->input('password',
-                        array('label' => 'Συνθηματικό', 'class' => 'loginInputCredential'));
-                ?>
-            </div>
-            <div class='loginCredential'>
-                <?php
-                    echo $this->Form->submit('Είσοδος', array('name' => 'login', 'class' => 'button'));
-                ?>
-            </div>
-        </div>
-        <div id='loginRegistration'>
+        <div id='loginForm'>
             <?php
-                echo $this->Html->link('Εγγραφή ιδιώτη',
-                    array('controller' => 'users', 'action' => 'registerowner'))
-                    .'<br /><br />';
-                echo $this->Html->link('Εγγραφή μεσιτικού γραφείου',
-                    array('controller' => 'users', 'action' => 'registerrealestate'));
-            ?> 
+                echo $this->Form->create('User', array('action' => 'login', 'class' => 'loginForm'));
+            ?>
+            <div class='loginCredential'>
+                Συμπληρώστε το όνομα χρήστη και το συνθηματικό σας:
+            </div>
+            <div class='loginContent'>
+                <div class='loginCredential'>
+                    <?php
+                        echo $this->Form->input('username',
+                            array('label' => 'Όνομα χρήστη', 'class' => 'loginInputCredential', 'autofocus' => 'autofocus' ));
+                    ?>
+                </div>
+                <div class='loginCredential'>
+                    <?php
+                        echo $this->Form->input('password',
+                            array('label' => 'Συνθηματικό', 'class' => 'loginInputCredential'));
+                    ?>
+                </div>
+                <div class='loginCredential'>
+                    <?php
+                        echo $this->Form->submit('Είσοδος', array('name' => 'login', 'class' => 'button'));
+                    ?>
+                </div>
+            </div>
+            <div id='loginRegistration'>
+                <?php
+                    echo $this->Html->link('Εγγραφή ιδιώτη',
+                        array('controller' => 'users', 'action' => 'registerowner'))
+                        .'<br /><br />';
+                    echo $this->Html->link('Εγγραφή μεσιτικού γραφείου',
+                        array('controller' => 'users', 'action' => 'registerrealestate'));
+                ?> 
+            </div>
+            <?php
+                echo $this->Form->end();
+            ?>
         </div>
-        <?php
-            echo $this->Form->end();
-        ?>
-
         <div id='help-cont'>
             <div class='help-text'>
                 <p>Οι φοιτητές του ΤΕΙ Αθήνας μπορούν να εισέρχονται στο σύστημα με τη χρήση
