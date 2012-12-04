@@ -24,6 +24,8 @@ class UsersController extends AppController{
         $this->Auth->allow('pdf');
         $this->Auth->allow('registerowner');
         $this->Auth->allow('registerrealestate');
+        $this->Auth->allow('aboutstudents');
+        $this->Auth->allow('aboutowners');
 
         if( $this->params['action'] === 'register' ) {
             if ($this->Auth->user() || $this->Auth->User('role') != 'admin') {
@@ -33,6 +35,14 @@ class UsersController extends AppController{
         }
     }
 
+    function aboutstudents(){
+        $this->set('title_for_layout', 'Υπηρεσίες για φοιτητές');
+    }
+    
+    function aboutowners(){
+        $this->set('title_for_layout', 'Υπηρεσίες για ιδιώτες και μεσιτικά γραφεία');
+    }
+    
     function login() {
         // this variable is used to display properly
         // the selected element on header
