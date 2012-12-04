@@ -117,5 +117,14 @@
                     array('class' => $linkClass, 'escape' => false));
             ?>
         </li>
+        <li>
+            <?php
+                $linkClass = 'menu-item menu-user';
+                echo $this->Html->link(
+                    $this->Html->image("fb.png", array("alt" => "Facebook")),
+                    "https://www.facebook.com/RoommatesCommunity",
+                    array('class' => $linkClass, 'escape' => false));
+            ?>
+        </li>
     </ul>
 </div>
