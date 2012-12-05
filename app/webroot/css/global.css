@@ -881,6 +881,10 @@ img.info{
     cursor: pointer;
 }
 
+#loginView .loginbanner{
+    margin: -10px 0 20px 0;
+}
+
 /* SEARCH */
 
 .form-title{
