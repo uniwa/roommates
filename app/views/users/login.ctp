@@ -1,6 +1,9 @@
 <div id='loginView'>
     <div id='startPage'>
         <div id='homeText'>
+            <?php
+                echo $this->Html->image('loginbanner.png', array('alt' => 'about banner', 'class' => 'loginbanner'));
+            ?>
             Καλώς ήρθατε στην ιστοσελίδα της Υπηρεσίας Εύρεσης Συγκατοίκων.
             <br /><br />Η υπηρεσία δίνει τη δυνατότητα στους 
             <?php
