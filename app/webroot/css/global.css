@@ -371,6 +371,20 @@ input[type='submit']{
     color: #f0f0f0;
 }
 
+#espa{
+    display: block;
+    margin: 0 auto;
+    padding: 0 0 64px 0;
+    color: #333;
+    text-align: center;
+}
+
+.espa-logos{
+    display: inline;
+    margin: 12px auto;
+    padding: 1px;
+}
+
 #results{
     clear: both;
     margin: 0px auto;
@@ -818,6 +832,12 @@ img.info{
 }
 
 /* LOGIN */
+#loginView h2{
+    margin: 0 0 32px 0;
+    font-size: 14px;
+    font-weight: 900;
+}
+
 #loginView #homeText{
     float: left;
     width: 620px;
