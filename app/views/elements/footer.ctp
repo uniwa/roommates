@@ -61,14 +61,22 @@
         </ul>
     </div>
     <div id='footer-main'>
-        <div class='logos'>
+        <div id='espa'>
             <?php
-                echo $this->Html->image('logos/footer_logo.png', array('alt' => 'logo'));
+                $euflag = $this->Html->image('/img/euflag.png',
+                    array('class' => 'espa-logos', 'alt' => 'EU flag'));
+                echo $this->Html->link($euflag,
+                    "http://europa.eu/", array('escape' => false));
+                $digigrlogo = $this->Html->image('/img/digigrlogo.png',
+                    array('class' => 'espa-logos', 'alt' => 'Ψηφιακή Ελλάδα'));
+                echo $this->Html->link($digigrlogo,
+                    "http://www.digitalplan.gov.gr/portal/", array('escape' => false));
+                $espalogo = $this->Html->image('/img/espalogo.png',
+                    array('class' => 'espa-logos', 'alt' => 'Ε.Σ.Π.Α.'));
+                echo $this->Html->link($espalogo,
+                    "http://www.espa.gr/el/Pages/Default.aspx", array('escape' => false));
+                echo "<p>Με τη συγχρηματοδότηση της Ελλάδας και της Ευρωπαϊκής Ένωσης - Ευρωπαϊκό Ταμείο Περιφερειακής Ανάπτυξης</p>";
             ?>
-        </div>
-        <div class='funding'>
-            Με τη συγχρηματοδότηση της Ελλάδας και της Ευρωπαϊκής Ένωσης
-             - Ευρωπαϊκό Ταμείο Περιφερειακής Ανάπτυξης
         </div>
         <div class='infos'>
             <?php
