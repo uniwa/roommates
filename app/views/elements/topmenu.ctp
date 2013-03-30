@@ -11,6 +11,16 @@
                     'action' => 'display'), array('class' => $linkClass, 'escape' => false));
             ?>
         </li>
+        <li>
+            <?php
+                // TEIath logo
+                $linkClass = 'menu-logo';
+                $teilogo = $this->Html->image('teiath-icon.png',
+                    array('alt' => 'ΤΕΙ Αθήνας', 'title' => 'Ιστότοπος ΤΕΙ Αθήνας'));
+                echo $this->Html->link($teilogo, 'http://www.teiath.gr',
+                    array('class' => $linkClass, 'escape' => false));
+            ?>
+        </li>
             <?php
                 if(!$userNull){
             ?>
